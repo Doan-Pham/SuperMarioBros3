@@ -10,6 +10,8 @@
 #include "Coin.h"
 #include "Platform.h"
 
+#include "TinyXml/tinyxml.h"
+
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -179,6 +181,19 @@ void CPlayScene::_ParseSection_MAP(string line)
 void CPlayScene::LoadMap(LPCWSTR mapFile)
 {
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
+
+	//TiXmlDocument doc((char*)mapFile);
+	wstring wideStringMapFile(mapFile);
+	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
+	const char* charMapFile = stringMapFile.c_str();
+	TiXmlDocument doc(charMapFile);
+	//TiXmlDocument doc("Map_Test_map.tmx");
+	bool result = doc.LoadFile();
+	if (!result) 
+	{
+		DebugOut(L"[ERROR] Failed to load map from %s\n", mapFile);
+		return;
+	}
 
 	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
 }
