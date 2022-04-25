@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-#include "Game.h"
 #include "MapLayer.h"
 
 class CMap

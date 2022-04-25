@@ -1,4 +1,5 @@
 #pragma once
+#include "TileLayer.h"
 class CMapLayer
 {
 protected:
