@@ -58,11 +58,11 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MapLayer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Map\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,10 +136,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
+      <Filter>Map\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapLayer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Map\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +154,15 @@
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{2595b981-36d6-4459-867f-ad9ae285dc4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{69c94e00-ffa2-4077-8142-4269b4e54798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\Header Files">
+      <UniqueIdentifier>{f63f4cc9-5f0b-4137-98c2-43a6c9480b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\Source Files">
+      <UniqueIdentifier>{b695df0c-1abe-427d-9f16-a95adc16cbfa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
