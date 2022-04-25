@@ -64,6 +64,21 @@
     <ClCompile Include="Map.cpp">
       <Filter>Map\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TileLayer.cpp">
+      <Filter>Map\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXml\tinystr.cpp">
+      <Filter>TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXml\tinyxml.cpp">
+      <Filter>TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXml\tinyxmlerror.cpp">
+      <Filter>TinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyXml\tinyxmlparser.cpp">
+      <Filter>TinyXml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -141,6 +156,15 @@
     <ClInclude Include="MapLayer.h">
       <Filter>Map\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TileLayer.h">
+      <Filter>Map\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyXml\tinystr.h">
+      <Filter>TinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyXml\tinyxml.h">
+      <Filter>TinyXml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -163,6 +187,9 @@
     </Filter>
     <Filter Include="Map\Source Files">
       <UniqueIdentifier>{b695df0c-1abe-427d-9f16-a95adc16cbfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TinyXml">
+      <UniqueIdentifier>{0218ccde-3213-4c09-975b-9040bb5bd72c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
