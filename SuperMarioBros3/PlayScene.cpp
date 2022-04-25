@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
+#include "TinyXml/tinyxml.h"
+
+#include "Map.h"
 
 #include "PlayScene.h"
 #include "Utils.h"
@@ -10,7 +13,6 @@
 #include "Coin.h"
 #include "Platform.h"
 
-#include "TinyXml/tinyxml.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -33,7 +35,59 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define ASSETS_SECTION_SPRITES 1
 #define ASSETS_SECTION_ANIMATIONS 2
 
+#define MAP_SECTION_UNKNOWN -1
+#define MAP_SECTION_TILELAYER 1
+#define MAP_SECTION_OBJECTLAYER 2
+
 #define MAX_SCENE_LINE 1024
+
+
+
+void CPlayScene::_ParseSection_ASSETS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 1) return;
+
+	wstring path = ToWSTR(tokens[0]);
+	
+	LoadAssets(path.c_str());
+}
+
+void CPlayScene::LoadAssets(LPCWSTR assetFile)
+{
+	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
+
+	ifstream f;
+	f.open(assetFile);
+
+	int section = ASSETS_SECTION_UNKNOWN;
+
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE))
+	{
+		string line(str);
+
+		if (line[0] == '#') continue;	// skip comment lines	
+
+		if (line == "[SPRITES]") { section = ASSETS_SECTION_SPRITES; continue; };
+		if (line == "[ANIMATIONS]") { section = ASSETS_SECTION_ANIMATIONS; continue; };
+		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+
+		//
+		// data section
+		//
+		switch (section)
+		{
+		case ASSETS_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
+		case ASSETS_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+		}
+	}
+
+	f.close();
+
+	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
+}
 
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
@@ -52,21 +106,10 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	if (tex == NULL)
 	{
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return; 
+		return;
 	}
 
 	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
-}
-
-void CPlayScene::_ParseSection_ASSETS(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 1) return;
-
-	wstring path = ToWSTR(tokens[0]);
-	
-	LoadAssets(path.c_str());
 }
 
 void CPlayScene::_ParseSection_ANIMATIONS(string line)
@@ -182,56 +225,58 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 {
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
 
-	//TiXmlDocument doc((char*)mapFile);
+	//Convert wchar to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
 	const char* charMapFile = stringMapFile.c_str();
+
 	TiXmlDocument doc(charMapFile);
-	//TiXmlDocument doc("Map_Test_map.tmx");
 	bool result = doc.LoadFile();
+
 	if (!result) 
 	{
 		DebugOut(L"[ERROR] Failed to load map from %s\n", mapFile);
 		return;
 	}
 
+	TiXmlElement* root = doc.FirstChildElement();
+	const char* currentElementValue;
+	for (TiXmlElement* currentElement = root->FirstChildElement()
+		; currentElement != nullptr
+		; currentElement = currentElement->NextSiblingElement())
+	{
+	}
+	TiXmlElement* xmlTileSet = root->FirstChildElement("tileset");
+	
+	int firstGid = -999;
+	int tileWidth = -999;
+	int tileHeight = -999;
+	int tileCount = -999;
+	int columnsCount = -999;
+	LPCWSTR imageSourcePath;
+
+	xmlTileSet->Attribute("firstgid", &firstGid);
+	xmlTileSet->Attribute("tilewidth", &tileWidth);
+	xmlTileSet->Attribute("tileheight", &tileHeight);
+	xmlTileSet->Attribute("tilecount", &tileCount);
+	xmlTileSet->Attribute("columns", &columnsCount);
+
+	TiXmlElement* xmlImage = xmlTileSet->FirstChildElement("image");
+	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
+
+	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
+		, tileCount, columnsCount, imageSourcePath);
+
+	DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
+
+
 	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
 }
 
-void CPlayScene::LoadAssets(LPCWSTR assetFile)
+void CPlayScene::_ParseSection_TILELAYER(string line)
 {
-	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
-
-	ifstream f;
-	f.open(assetFile);
-
-	int section = ASSETS_SECTION_UNKNOWN;
-
-	char str[MAX_SCENE_LINE];
-	while (f.getline(str, MAX_SCENE_LINE))
-	{
-		string line(str);
-
-		if (line[0] == '#') continue;	// skip comment lines	
-
-		if (line == "[SPRITES]") { section = ASSETS_SECTION_SPRITES; continue; };
-		if (line == "[ANIMATIONS]") { section = ASSETS_SECTION_ANIMATIONS; continue; };
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
-
-		//
-		// data section
-		//
-		switch (section)
-		{
-		case ASSETS_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case ASSETS_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
-		}
-	}
-
-	f.close();
-
-	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
+
 
 void CPlayScene::Load()
 {

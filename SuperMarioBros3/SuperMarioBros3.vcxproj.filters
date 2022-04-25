@@ -79,6 +79,12 @@
     <ClCompile Include="TinyXml\tinyxmlparser.cpp">
       <Filter>TinyXml</Filter>
     </ClCompile>
+    <ClCompile Include="TileSet.cpp">
+      <Filter>Map\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileSetManager.cpp">
+      <Filter>Map\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -164,6 +170,12 @@
     </ClInclude>
     <ClInclude Include="TinyXml\tinyxml.h">
       <Filter>TinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSet.h">
+      <Filter>Map\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileSetManager.h">
+      <Filter>Map\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

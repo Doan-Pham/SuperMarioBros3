@@ -166,6 +166,8 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="TileLayer.cpp" />
+    <ClCompile Include="TileSet.cpp" />
+    <ClCompile Include="TileSetManager.cpp" />
     <ClCompile Include="TinyXml\tinystr.cpp" />
     <ClCompile Include="TinyXml\tinyxml.cpp" />
     <ClCompile Include="TinyXml\tinyxmlerror.cpp" />
@@ -198,6 +200,8 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="TileLayer.h" />
+    <ClInclude Include="TileSet.h" />
+    <ClInclude Include="TileSetManager.h" />
     <ClInclude Include="TinyXml\tinystr.h" />
     <ClInclude Include="TinyXml\tinyxml.h" />
     <ClInclude Include="Utils.h" />

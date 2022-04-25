@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include "Map.h"
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -16,6 +17,7 @@ protected:
 	LPGAMEOBJECT player;					
 
 	vector<LPGAMEOBJECT> objects;
+	LPMAP map;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -25,6 +27,7 @@ protected:
 
 	void _ParseSection_MAP(string line);
 	void LoadMap(LPCWSTR mapFile);
+	void _ParseSection_TILELAYER(string line);
 	void LoadAssets(LPCWSTR assetFile);
 	
 public: 
