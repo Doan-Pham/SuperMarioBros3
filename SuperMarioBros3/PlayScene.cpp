@@ -290,12 +290,12 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
 
 	DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
-
-	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
-		, tileCount, columnsCount, imageSourcePath);
-
-	CTileSetManager::GetInstance()->Add(1, tileSet);
+	
 	CTextures::GetInstance()->Add(ID_TEX_TILESET_1_1, imageSourcePath);
+	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(ID_TEX_TILESET_1_1);
+
+	CTileSetManager::GetInstance()->Add(1, firstGid, tileWidth, tileHeight
+		, tileCount, columnsCount, tileSetTexture);
 
 	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
 }
@@ -353,7 +353,7 @@ void CPlayScene::Load()
 	{
 		string line(str);
 
-		if (line[0] == '#') continue;	// skip comment lines	
+		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
@@ -413,6 +413,7 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	if (map != nullptr)
 	map->Render();
 }
 
