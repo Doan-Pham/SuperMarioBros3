@@ -7,6 +7,7 @@
 #include "Brick.h"
 #include "Mario.h"
 #include "Goomba.h"
+#include "TinyXml/tinyxml.h"
 //#include "Koopas.h"
 
 
@@ -19,17 +20,19 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	LPMAP map;
 
+	void _ParseSection_ASSETS(string line);
+	void LoadAssets(LPCWSTR assetFile);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
-
-	void _ParseSection_ASSETS(string line);
+	
 	void _ParseSection_OBJECTS(string line);
 
 	void _ParseSection_MAP(string line);
 	void LoadMap(LPCWSTR mapFile);
-	void _ParseSection_TILELAYER(string line);
-	void LoadAssets(LPCWSTR assetFile);
-	
+	void _ParseSection_TILESET(TiXmlElement* xmlElementTileSet);
+	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer);
+
+
 public: 
 	CPlayScene(int id, LPCWSTR filePath);
 

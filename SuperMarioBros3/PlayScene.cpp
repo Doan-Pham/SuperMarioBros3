@@ -5,6 +5,8 @@
 
 #include "Map.h"
 
+#include "TileLayer.h"
+
 #include "PlayScene.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -227,6 +229,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 {
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
 
+	map = new CMap(1, mapFile);
 	//Convert wchar to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
@@ -254,12 +257,12 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 			continue;
 		} 
 
-		if (currentElement->Value() == "layer") {
+		if (strcmp(currentElement->Value(), "layer") == 0) {
 			_ParseSection_TILELAYER(currentElement);
 			continue;
 		}
 
-		if (currentElement->Value() == "objectgroup") {
+		if (strcmp(currentElement->Value(), "objectgroup") == 0) {
 			//_ParseSection_TILELAYER(currentElement);
 			continue;
 		}
@@ -290,24 +293,48 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 
 	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
 		, tileCount, columnsCount, imageSourcePath);
+
 	CTileSetManager::GetInstance()->Add(1, tileSet);
+	CTextures::GetInstance()->Add(ID_TEX_TILESET_1_1, imageSourcePath);
 
 	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
-
 }
 
 void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 {
-	int firstGid = -999;
-	int tileWidth = -999;
-	int tileHeight = -999;
-	int tileCount = -999;
-	int columnsCount = -999;
-	LPCWSTR imageSourcePath;
+	int id = -999;
+	int width = -999;
+	int height = -999;
+	xmlElementTileLayer->Attribute("id", &id);
+	xmlElementTileLayer->Attribute("width", &width);
+	xmlElementTileLayer->Attribute("height", &height);
 
-	xmlElementTileLayer->Attribute("id", &firstGid);
-	xmlElementTileLayer->Attribute("width", &tileWidth);
-	xmlElementTileLayer->Attribute("height", &tileHeight);
+	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
+
+	vector<string> tokens;
+	TiXmlElement* xmlElementTileCoorData = xmlElementTileLayer->FirstChildElement("data");
+	tokens = split(xmlElementTileCoorData->GetText(),",");
+	
+	int** tileMatrix;
+	tileLayer->GetTileMatrix(tileMatrix);
+
+	unsigned int tokenIndex = 0;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			tileMatrix[i][j] = atoi(tokens[tokenIndex].c_str());
+			tokenIndex++;
+			DebugOut(L"i = %i, j = %i, tokenIndex = %i, tileMatrix[i][j] = %i\n"
+				, i, j,tokenIndex, tileMatrix[i][j]);
+		}
+	}
+
+	map->Add(tileLayer);
+	//for (int i = 0; i < height; i++) {
+	//	delete[] tileMatrix[i];
+	//}
+	//delete[] tileMatrix;
 }
 
 
@@ -386,6 +413,7 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	map->Render();
 }
 
 /*
