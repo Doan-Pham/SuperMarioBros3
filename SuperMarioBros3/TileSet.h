@@ -42,7 +42,7 @@ public:
 		sprite.pTexture = texture->getShaderResourceView();
 
 		sprite.TexCoord.x = ((tileGid - 1) * tileWidth) / texWidth;
-		sprite.TexCoord.y = ((tileGid - 1) * tileHeight) / texHeight;
+		sprite.TexCoord.y = (((tileGid - 1)/columnsCount) * tileHeight) / texHeight;
 
 		sprite.TexSize.x = tileWidth / texWidth;
 		sprite.TexSize.y = tileHeight / texHeight;
