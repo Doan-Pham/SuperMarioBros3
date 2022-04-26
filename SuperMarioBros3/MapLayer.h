@@ -1,9 +1,11 @@
 #pragma once
-#include "TileLayer.h"
+
 class CMapLayer
 {
 protected:
+	int id;
 public:
+	CMapLayer(int id) { this->id = id; };
 }; 
 
 typedef CMapLayer* LPMAPLAYER;
