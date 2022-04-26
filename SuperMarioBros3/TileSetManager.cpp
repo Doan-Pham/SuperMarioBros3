@@ -7,12 +7,16 @@ CTileSetManager* CTileSetManager::GetInstance()
 	return __instance;
 }
 
-void CTileSetManager::Add(int id, LPTILESET tileSet)
+void CTileSetManager::Add(int id, int firstGid, int tileWidth, int tileHeight
+	, int tileCount, int columnsCount, LPTEXTURE texture)
 {
 	if (tilesets[id] != NULL)
 		DebugOut(L"[WARNING] Tileset %d already exists\n", id);
 
-	tilesets[id] = tileSet;
+	LPTILESET newTileSet = new CTileSet(
+		firstGid, tileWidth, tileHeight, tileCount, columnsCount, texture);
+
+	tilesets[id] = newTileSet;
 }
 
 LPTILESET CTileSetManager::Get(int id)
