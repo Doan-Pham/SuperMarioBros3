@@ -3,6 +3,9 @@
 #include <Windows.h>
 #include "Game.h"
 #include "debug.h"
+
+
+
 class CTileSet
 {
 protected:
@@ -38,8 +41,8 @@ public:
 		// Set the sprite’s shader resource view
 		sprite.pTexture = texture->getShaderResourceView();
 
-		sprite.TexCoord.x = (tileGid * tileWidth) / texWidth;
-		sprite.TexCoord.y = (tileGid * tileHeight) / texHeight;
+		sprite.TexCoord.x = ((tileGid - 1) * tileWidth) / texWidth;
+		sprite.TexCoord.y = ((tileGid - 1) * tileHeight) / texHeight;
 
 		sprite.TexSize.x = tileWidth / texWidth;
 		sprite.TexSize.y = tileHeight / texHeight;
