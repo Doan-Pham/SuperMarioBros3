@@ -34,12 +34,14 @@ public:
 	void GetTileMatrix(int**& tileMatrix) { tileMatrix = this->tileMatrix; };
 	void Render() {
 
-		for (int i = 0; i < 10;i++)//height; i++)
+		for (int i = 0; i < 39;i++)//height; i++)
 		{
-			for (int j = 0; j < 10;j++)//width; j++)
+			for (int j = 0; j < 100;j++)//width; j++)
 			{
 				//int tileGid = tileMatrix[i][j];
-				tileSets[0]->Draw(i * 16, j * 16, tileMatrix[i][j]);
+				tileSets[0]->Draw(j * 16, i * 16, tileMatrix[i][j]);
+				//DebugOut(L"i = %i, j = %i, tileMatrix[i][j] = %i\n"
+				//	, i, j,tileMatrix[i][j]);
 			}
 		}
 	};
