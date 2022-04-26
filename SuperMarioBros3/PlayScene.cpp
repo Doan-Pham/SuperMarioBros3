@@ -9,6 +9,7 @@
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "TileSetManager.h"
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
@@ -22,6 +23,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	player = NULL;
+	map = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -240,14 +242,34 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 	}
 
 	TiXmlElement* root = doc.FirstChildElement();
-	const char* currentElementValue;
+
+	int section = MAP_SECTION_UNKNOWN;
+
 	for (TiXmlElement* currentElement = root->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
 	{
+		if (strcmp(currentElement->Value(), "tileset") == 0) {
+			_ParseSection_TILESET(currentElement);
+			continue;
+		} 
+
+		if (currentElement->Value() == "layer") {
+			_ParseSection_TILELAYER(currentElement);
+			continue;
+		}
+
+		if (currentElement->Value() == "objectgroup") {
+			//_ParseSection_TILELAYER(currentElement);
+			continue;
+		}
 	}
-	TiXmlElement* xmlTileSet = root->FirstChildElement("tileset");
-	
+
+	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
+}
+
+void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
+{
 	int firstGid = -999;
 	int tileWidth = -999;
 	int tileHeight = -999;
@@ -255,26 +277,37 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 	int columnsCount = -999;
 	LPCWSTR imageSourcePath;
 
-	xmlTileSet->Attribute("firstgid", &firstGid);
-	xmlTileSet->Attribute("tilewidth", &tileWidth);
-	xmlTileSet->Attribute("tileheight", &tileHeight);
-	xmlTileSet->Attribute("tilecount", &tileCount);
-	xmlTileSet->Attribute("columns", &columnsCount);
+	xmlElementTileSet->Attribute("firstgid", &firstGid);
+	xmlElementTileSet->Attribute("tilewidth", &tileWidth);
+	xmlElementTileSet->Attribute("tileheight", &tileHeight);
+	xmlElementTileSet->Attribute("tilecount", &tileCount);
+	xmlElementTileSet->Attribute("columns", &columnsCount);
 
-	TiXmlElement* xmlImage = xmlTileSet->FirstChildElement("image");
+	TiXmlElement* xmlImage = xmlElementTileSet->FirstChildElement("image");
 	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
-
-	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
-		, tileCount, columnsCount, imageSourcePath);
 
 	DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
 
+	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
+		, tileCount, columnsCount, imageSourcePath);
+	CTileSetManager::GetInstance()->Add(1, tileSet);
 
-	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
+	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
+
 }
 
-void CPlayScene::_ParseSection_TILELAYER(string line)
+void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 {
+	int firstGid = -999;
+	int tileWidth = -999;
+	int tileHeight = -999;
+	int tileCount = -999;
+	int columnsCount = -999;
+	LPCWSTR imageSourcePath;
+
+	xmlElementTileLayer->Attribute("id", &firstGid);
+	xmlElementTileLayer->Attribute("width", &tileWidth);
+	xmlElementTileLayer->Attribute("height", &tileHeight);
 }
 
 
