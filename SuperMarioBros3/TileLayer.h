@@ -3,42 +3,46 @@
 #include <Windows.h>
 #include <vector>
 
+#include "TileSet.h"
+#include "MapLayer.h"
+
 using namespace std;
 
-struct CTileSet
-{
-	int id;
-
-	int firstGid;
-
-	LPCWSTR imageSourcePath;
-
-	int tileWidth;
-	int tileHeight;
-
-	int tileCount;
-	int columnsCount;
-};
-typedef CTileSet* LPTILESET;
-
-class CTileLayer
+class CTileLayer : public CMapLayer
 {
 protected:
-	int id;
 
 	int width;
 	int height;
 
 	vector<LPTILESET> tileSets;
-	UINT** tileMatrix;
+	int** tileMatrix;
 public:
-	CTileLayer(int id, int width, int height, vector<LPTILESET> tileSets)
+	CTileLayer(int id, int width, int height):
+		CMapLayer(id)
 	{
-		this->id = id;
 		this->width = width;
 		this->height = height;
 		this->tileSets = tileSets;
+		tileMatrix = new int * [height];
+		for (int i = 0; i < height; i++) tileMatrix[i] = new int[width];
 	}
+	void AddTileSet(LPTILESET tileSet) 
+	{
+		tileSets.push_back(tileSet);
+	};
+	void GetTileMatrix(int**& tileMatrix) { tileMatrix = this->tileMatrix; };
+	void Render() {
+
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				//int tileGid = tileMatrix[i][j];
+				tileSets[0]->Draw(i * 16, j * 16, tileMatrix[i][j]);
+			}
+		}
+	};
 };
 
 typedef CTileLayer* LPTILELAYER;

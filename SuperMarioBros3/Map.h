@@ -18,7 +18,10 @@ public:
 		this->mapFilePath = mapFilePath;
 	}
 	void Add(LPMAPLAYER layer) { layers.push_back(layer); };
-
+	void Render() {
+		for (int i = 0; i < layers.size(); i++)
+			layers[i]->Render();
+	};
 };
 
 typedef CMap* LPMAP;
