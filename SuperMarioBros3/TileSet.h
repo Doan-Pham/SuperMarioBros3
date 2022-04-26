@@ -62,7 +62,6 @@ public:
 		y = (FLOAT)floor(y);
 
 		D3DXMatrixTranslation(&matTranslation, x - cx, g->GetBackBufferHeight() - y + cy, 0.1f);
-		DebugOut(L"x : %0.5f, y: %0.5f, cx: %0.5f, cy: %0.5f",x,y,cx,cy);
 		this->sprite.matWorld = (this->matScaling * matTranslation);
 
 		g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);

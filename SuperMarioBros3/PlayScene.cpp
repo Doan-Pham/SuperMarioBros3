@@ -310,6 +310,8 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	xmlElementTileLayer->Attribute("height", &height);
 
 	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
+	LPTILESET tileSetToUse = CTileSetManager::GetInstance()->Get(1);
+	tileLayer->AddTileSet(tileSetToUse);
 
 	vector<string> tokens;
 	TiXmlElement* xmlElementTileCoorData = xmlElementTileLayer->FirstChildElement("data");
@@ -319,9 +321,9 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	tileLayer->GetTileMatrix(tileMatrix);
 
 	unsigned int tokenIndex = 0;
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < 5;i++)//height; i++)
 	{
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < 5;j++)//width; j++)
 		{
 			tileMatrix[i][j] = atoi(tokens[tokenIndex].c_str());
 			tokenIndex++;
@@ -404,17 +406,19 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy); //0.0f /*cy*/);
 
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
+	if (map != nullptr)
+	{
+		map->Render();
+	}
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
-	if (map != nullptr)
-	map->Render();
 }
 
 /*
