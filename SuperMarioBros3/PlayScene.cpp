@@ -321,14 +321,14 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	tileLayer->GetTileMatrix(tileMatrix);
 
 	unsigned int tokenIndex = 0;
-	for (int i = 0; i < 5;i++)//height; i++)
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0; j < 5;j++)//width; j++)
+		for (int j = 0; j < width; j++)
 		{
 			tileMatrix[i][j] = atoi(tokens[tokenIndex].c_str());
 			tokenIndex++;
-			DebugOut(L"i = %i, j = %i, tokenIndex = %i, tileMatrix[i][j] = %i\n"
-				, i, j,tokenIndex, tileMatrix[i][j]);
+			//DebugOut(L"i = %i, j = %i, tokenIndex = %i, tileMatrix[i][j] = %i\n"
+			//	, i, j,tokenIndex, tileMatrix[i][j]);
 		}
 	}
 
