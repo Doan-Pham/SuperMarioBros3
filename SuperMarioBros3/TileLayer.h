@@ -34,9 +34,9 @@ public:
 	void GetTileMatrix(int**& tileMatrix) { tileMatrix = this->tileMatrix; };
 	void Render() {
 
-		for (int i = 0; i < 39;i++)//height; i++)
+		for (int i = 0; i < height;i++)//height; i++)
 		{
-			for (int j = 0; j < 100;j++)//width; j++)
+			for (int j = 0; j < width;j++)//width; j++)
 			{
 				//int tileGid = tileMatrix[i][j];
 				tileSets[0]->Draw(j * 16, i * 16, tileMatrix[i][j]);

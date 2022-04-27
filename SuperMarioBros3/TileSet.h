@@ -41,8 +41,11 @@ public:
 		// Set the sprite’s shader resource view
 		sprite.pTexture = texture->getShaderResourceView();
 
-		sprite.TexCoord.x = ((tileGid - 1) * tileWidth) / texWidth;
-		sprite.TexCoord.y = (((tileGid - 1)/columnsCount) * tileHeight) / texHeight;
+		sprite.TexCoord.x = (((tileGid - firstGid) % columnsCount) * tileWidth) / texWidth;
+		sprite.TexCoord.y = (((tileGid - firstGid) / columnsCount) * tileHeight) / texHeight;
+
+		//DebugOut(L"tileGid = %i, sprite.TexCoord.x = %f, sprite.TexCoord.y = %f\n"
+		//		, tileGid, sprite.TexCoord.x, sprite.TexCoord.y);
 
 		sprite.TexSize.x = tileWidth / texWidth;
 		sprite.TexSize.y = tileHeight / texHeight;
