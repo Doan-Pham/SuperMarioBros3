@@ -46,6 +46,14 @@ public:
 			}
 		}
 	};
+
+	void Clear() {
+		for (int i = 0; i < height; i++) {
+			delete tileMatrix[i];
+		}
+		delete tileMatrix;
+		tileSets.clear();
+	}
 };
 
 typedef CTileLayer* LPTILELAYER;

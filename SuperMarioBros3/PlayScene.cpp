@@ -465,6 +465,18 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	objects.clear();
+
+	if (map != NULL)
+	{
+		map->Clear();
+		map = NULL;
+	}
+
+	CSprites::GetInstance()->Clear();
+	CAnimations::GetInstance()->Clear();
+	CTileSetManager::GetInstance()->Clear();
+	//CTextures::GetInstance()->Clear();
+
 }
 
 /*

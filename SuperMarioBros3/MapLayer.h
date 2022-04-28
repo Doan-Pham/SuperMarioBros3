@@ -7,6 +7,7 @@ protected:
 public:
 	CMapLayer(int id) { this->id = id; };
 	virtual void Render() = 0;
+	virtual void Clear() = 0;
 }; 
 
 typedef CMapLayer* LPMAPLAYER;

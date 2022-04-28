@@ -22,6 +22,18 @@ public:
 		for (int i = 0; i < layers.size(); i++)
 			layers[i]->Render();
 	};
+	void Clear() {
+		
+		for (int i = 0; i < layers.size(); i++)
+		{
+			layers[i]->Clear();
+		}
+
+		if (mapFilePath != nullptr)
+		{
+			mapFilePath = NULL;
+		}
+	}
 };
 
 typedef CMap* LPMAP;

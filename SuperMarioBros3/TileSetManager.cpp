@@ -32,7 +32,7 @@ void CTileSetManager::Clear()
 	for (auto x : tilesets)
 	{
 		LPTILESET tileSet = x.second;
-		delete tileSet;
+		if (tileSet != nullptr) delete tileSet;
 	}
 
 	tilesets.clear();
