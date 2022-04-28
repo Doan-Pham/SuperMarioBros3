@@ -33,7 +33,11 @@ public:
 		this->columnsCount = columnsCount;
 		this->texture = texture;
 	};
-
+	void GetTileWidthHeight(int& tileWidth, int& tileHeight)
+	{ 
+		tileWidth = this->tileWidth; 
+		tileHeight = this->tileHeight;
+	}
 	void Draw(int x, int y, int tileGid) {
 		float texWidth = (float)texture->getWidth();
 		float texHeight = (float)texture->getHeight();
