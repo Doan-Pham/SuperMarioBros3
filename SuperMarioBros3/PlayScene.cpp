@@ -39,9 +39,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define ASSETS_SECTION_SPRITES 1
 #define ASSETS_SECTION_ANIMATIONS 2
 
-#define MAP_SECTION_UNKNOWN -1
-#define MAP_SECTION_TILELAYER 1
-#define MAP_SECTION_OBJECTLAYER 2
+#define MAP_SECTION_UNKNOWN "unknown"
+#define MAP_SECTION_TILESET "tileset"
+#define MAP_SECTION_TILELAYER "tilelayer"
+#define MAP_SECTION_OBJECTLAYER "objectgroup"
 
 #define MAX_SCENE_LINE 1024
 
@@ -229,7 +230,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 {
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
 
-	map = new CMap(1, mapFile);
+
 	//Convert wchar to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
@@ -245,40 +246,53 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 	}
 
 	TiXmlElement* root = doc.FirstChildElement();
-
-	int section = MAP_SECTION_UNKNOWN;
+	int mapId = -999;
 
 	for (TiXmlElement* currentElement = root->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
 	{
-		if (strcmp(currentElement->Value(), "tileset") == 0) {
+		if (strcmp(currentElement->Value(), "properties") == 0 && 
+			strcmp(currentElement->FirstChildElement()->Attribute("name"), "id") == 0)
+		{
+			mapId = atoi(currentElement->FirstChildElement()->Attribute("value")) ;
+			if (mapId == -999) DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+			map = new CMap(mapId, mapFile);
+			continue;
+		}
+
+		if (strcmp(currentElement->Value(), "tileset") == 0) 
+		{
 			_ParseSection_TILESET(currentElement);
 			continue;
 		} 
 
-		if (strcmp(currentElement->Value(), "layer") == 0) {
+		if (strcmp(currentElement->Value(), "layer") == 0) 
+		{
 			_ParseSection_TILELAYER(currentElement);
 			continue;
 		}
 
-		if (strcmp(currentElement->Value(), "objectgroup") == 0) {
+		if (strcmp(currentElement->Value(), "objectgroup") == 0)
+		{
 			//_ParseSection_TILELAYER(currentElement);
 			continue;
 		}
 	}
-
 	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
+
 }
 
 void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 {
+	int tilesetId = -999;
 	int firstGid = -999;
 	int tileWidth = -999;
 	int tileHeight = -999;
 	int tileCount = -999;
 	int columnsCount = -999;
 	LPCWSTR imageSourcePath;
+	int textureId = -999;
 
 	xmlElementTileSet->Attribute("firstgid", &firstGid);
 	xmlElementTileSet->Attribute("tilewidth", &tileWidth);
@@ -286,15 +300,38 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	xmlElementTileSet->Attribute("tilecount", &tileCount);
 	xmlElementTileSet->Attribute("columns", &columnsCount);
 
+
+	TiXmlElement* xmlProperties = xmlElementTileSet->FirstChildElement("properties");
+	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
+		; currentElement != nullptr
+		; currentElement = currentElement->NextSiblingElement())
+	{
+		if (currentElement->Attribute("name") == string("id"))
+		{
+			tilesetId = atoi(currentElement->Attribute("value"));
+			if (tilesetId == -999) DebugOut(L"[ERROR] Tileset id not found: %i\n", tilesetId);
+
+			continue;
+		}
+
+		if (currentElement->Attribute("name") == string("textureId"))
+		{
+			textureId = atoi(currentElement->Attribute("value"));
+			if (textureId == -999) DebugOut(L"[ERROR] Texture id for tileset not found: %i\n", textureId);
+
+			continue;
+		}
+	}
+
 	TiXmlElement* xmlImage = xmlElementTileSet->FirstChildElement("image");
 	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
 
-	DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
+	//DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
 	
-	CTextures::GetInstance()->Add(ID_TEX_TILESET_1_1, imageSourcePath);
-	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(ID_TEX_TILESET_1_1);
+	CTextures::GetInstance()->Add(textureId, imageSourcePath);
+	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(textureId);
 
-	CTileSetManager::GetInstance()->Add(1, firstGid, tileWidth, tileHeight
+	CTileSetManager::GetInstance()->Add(tilesetId, firstGid, tileWidth, tileHeight
 		, tileCount, columnsCount, tileSetTexture);
 
 	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
@@ -310,7 +347,7 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	xmlElementTileLayer->Attribute("height", &height);
 
 	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
-	LPTILESET tileSetToUse = CTileSetManager::GetInstance()->Get(1);
+	LPTILESET tileSetToUse = CTileSetManager::GetInstance()->Get(ID_TILESET_1_1);
 	tileLayer->AddTileSet(tileSetToUse);
 
 	vector<string> tokens;
@@ -320,7 +357,7 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	int** tileMatrix;
 	tileLayer->GetTileMatrix(tileMatrix);
 
-	unsigned int tokenIndex = 0;
+	int tokenIndex = 0;
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
@@ -333,10 +370,6 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	}
 
 	map->Add(tileLayer);
-	//for (int i = 0; i < height; i++) {
-	//	delete[] tileMatrix[i];
-	//}
-	//delete[] tileMatrix;
 }
 
 
