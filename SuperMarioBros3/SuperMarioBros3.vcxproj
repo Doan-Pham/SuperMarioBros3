@@ -148,7 +148,6 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Brick.cpp" />
-    <ClCompile Include="MapLayer.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -167,7 +166,6 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="TileLayer.cpp" />
     <ClCompile Include="TileSet.cpp" />
-    <ClCompile Include="TileSetManager.cpp" />
     <ClCompile Include="TinyXml\tinystr.cpp" />
     <ClCompile Include="TinyXml\tinyxml.cpp" />
     <ClCompile Include="TinyXml\tinyxmlerror.cpp" />
@@ -180,7 +178,6 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="Brick.h" />
-    <ClInclude Include="MapLayer.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="debug.h" />
@@ -201,7 +198,6 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="TileLayer.h" />
     <ClInclude Include="TileSet.h" />
-    <ClInclude Include="TileSetManager.h" />
     <ClInclude Include="TinyXml\tinystr.h" />
     <ClInclude Include="TinyXml\tinyxml.h" />
     <ClInclude Include="Utils.h" />

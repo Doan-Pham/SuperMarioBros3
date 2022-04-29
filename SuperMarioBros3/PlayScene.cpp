@@ -327,9 +327,12 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	CTextures::GetInstance()->Add(textureId, imageSourcePath);
 	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(textureId);
 
-	CTileSetManager::GetInstance()->Add(tilesetId, firstGid, tileWidth, tileHeight
-		, tileCount, columnsCount, tileSetTexture);
+	//CTileSetManager::GetInstance()->Add(tilesetId, firstGid, tileWidth, tileHeight
+	//	, tileCount, columnsCount, tileSetTexture);
 
+	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
+		, tileCount, columnsCount, tileSetTexture);
+	map->Add(tileSet);
 	//DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
 	
 	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
@@ -345,11 +348,6 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	xmlElementTileLayer->Attribute("height", &height);
 
 	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
-	LPTILESET tileSetToUse = CTileSetManager::GetInstance()->Get(ID_TILESET_1_1);
-	tileLayer->AddTileSet(tileSetToUse);
-
-	tileSetToUse = CTileSetManager::GetInstance()->Get(12);
-	tileLayer->AddTileSet(tileSetToUse);
 
 	vector<string> tokens;
 	TiXmlElement* xmlElementTileCoorData = xmlElementTileLayer->FirstChildElement("data");
@@ -466,18 +464,6 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	objects.clear();
-
-	if (map != NULL)
-	{
-		map->Clear();
-		map = NULL;
-	}
-
-	CSprites::GetInstance()->Clear();
-	CAnimations::GetInstance()->Clear();
-	CTileSetManager::GetInstance()->Clear();
-	//CTextures::GetInstance()->Clear();
-
 }
 
 /*
@@ -494,6 +480,15 @@ void CPlayScene::Unload()
 	objects.clear();
 	player = NULL;
 
+	if (map != NULL)
+	{
+		map->Clear();
+		map = NULL;
+	}
+
+	CSprites::GetInstance()->Clear();
+	CAnimations::GetInstance()->Clear();
+	//CTextures::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
