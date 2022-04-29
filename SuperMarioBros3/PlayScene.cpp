@@ -11,7 +11,6 @@
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
-#include "TileSetManager.h"
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
@@ -285,6 +284,8 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 
 void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 {
+
+	//Parse tileset's general attributes
 	int tilesetId = -999;
 	int firstGid = -999;
 	int tileWidth = -999;
@@ -303,6 +304,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	TiXmlElement* xmlImage = xmlElementTileSet->FirstChildElement("image");
 	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
 
+	//Parse tileset's id and textureId
 	TiXmlElement* xmlProperties = xmlElementTileSet->FirstChildElement("properties");
 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
 		; currentElement != nullptr
@@ -327,11 +329,8 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	CTextures::GetInstance()->Add(textureId, imageSourcePath);
 	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(textureId);
 
-	//CTileSetManager::GetInstance()->Add(tilesetId, firstGid, tileWidth, tileHeight
-	//	, tileCount, columnsCount, tileSetTexture);
-
-	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight
-		, tileCount, columnsCount, tileSetTexture);
+	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight, 
+		tileCount, columnsCount, tileSetTexture);
 	map->Add(tileSet);
 	//DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
 	
@@ -340,6 +339,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 
 void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 {
+	//Parse tilelayer's general attributes
 	int id = -999;
 	int width = -999;
 	int height = -999;
@@ -349,6 +349,7 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 
 	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
 
+	//Parse tilelayer's tile matrix
 	vector<string> tokens;
 	TiXmlElement* xmlElementTileCoorData = xmlElementTileLayer->FirstChildElement("data");
 	tokens = split(xmlElementTileCoorData->GetText(),",");

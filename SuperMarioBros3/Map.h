@@ -4,6 +4,8 @@
 
 #include "TileLayer.h"
 #include "TileSet.h"
+
+//TODO: Consider adding CTileLayerManager, CTileSetManager, CObjectGroupManager
 class CMap
 {
 protected:
@@ -18,18 +20,22 @@ public:
 		this->id = id;
 		this->mapFilePath = mapFilePath;
 	}
-	void Add(LPTILELAYER layer) {
+
+	void Add(LPTILELAYER layer)
+	{
 		for (int i = 0; i < tileSets.size(); i++)
 			layer->AddTileSet(tileSets[i]);
 		tileLayers.push_back(layer);
 	};
 	void Add(LPTILESET tileSet) { tileSets.push_back(tileSet); };
-	void Render() {
+
+	void Render() 
+	{
 		for (int i = 0; i < tileLayers.size(); i++)
 			tileLayers[i]->Render();
 	};
-	void Clear() {
-
+	void Clear() 
+	{
 		for (int i = 0; i < tileLayers.size(); i++)
 		{
 			tileLayers[i]->Clear();

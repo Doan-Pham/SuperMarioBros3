@@ -1,10 +1,12 @@
 #pragma once
 
 #include <Windows.h>
+
 #include "Game.h"
 #include "debug.h"
 
-
+//TODO: CTileSet is quite similar to CSprite, find some way to incorprate the CSprite class
+//into CTileSet
 
 class CTileSet
 {
@@ -17,7 +19,6 @@ protected:
 
 	int tileCount;
 	int columnsCount;
-
 
 	LPTEXTURE texture;
 	D3DX10_SPRITE sprite;
@@ -35,13 +36,17 @@ public:
 		this->lastGid = tileCount + firstGid - 1;
 		this->texture = texture;
 	};
+
 	void GetTileWidthHeight(int& tileWidth, int& tileHeight)
 	{ 
 		tileWidth = this->tileWidth; 
 		tileHeight = this->tileHeight;
 	}
+
 	int GetLastGid() { return lastGid;  }
-	void Draw(int x, int y, int tileGid) {
+
+	void Draw(int x, int y, int tileGid) 
+	{
 		float texWidth = (float)texture->getWidth();
 		float texHeight = (float)texture->getHeight();
 

@@ -5,7 +5,6 @@
 
 #include "TileSet.h"
 
-using namespace std;
 
 class CTileLayer
 {
@@ -14,8 +13,9 @@ protected:
 	int width;
 	int height;
 
-	vector<LPTILESET> tileSets;
+	std::vector<LPTILESET> tileSets;
 	int** tileMatrix;
+
 public:
 	CTileLayer(int id, int width, int height)
 	{
@@ -26,12 +26,16 @@ public:
 		tileMatrix = new int* [height];
 		for (int i = 0; i < height; i++) tileMatrix[i] = new int[width];
 	}
+
 	void AddTileSet(LPTILESET tileSet)
 	{
 		tileSets.push_back(tileSet);
 	};
+
 	void GetTileMatrix(int**& tileMatrix) { tileMatrix = this->tileMatrix; };
-	void Render() {
+
+	void Render() 
+	{
 		int tileWidth, tileHeight = 0;
 
 		for (int i = 0; i < height; i++)
@@ -53,7 +57,8 @@ public:
 		}
 	};
 
-	void Clear() {
+	void Clear()
+	{
 		for (int i = 0; i < height; i++) {
 			delete tileMatrix[i];
 		}
