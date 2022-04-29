@@ -58,9 +58,6 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapLayer.cpp">
-      <Filter>Map\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Map\Source Files</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
       <Filter>TinyXml</Filter>
     </ClCompile>
     <ClCompile Include="TileSet.cpp">
-      <Filter>Map\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TileSetManager.cpp">
       <Filter>Map\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -159,9 +153,6 @@
     <ClInclude Include="Map.h">
       <Filter>Map\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapLayer.h">
-      <Filter>Map\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TileLayer.h">
       <Filter>Map\Header Files</Filter>
     </ClInclude>
@@ -172,9 +163,6 @@
       <Filter>TinyXml</Filter>
     </ClInclude>
     <ClInclude Include="TileSet.h">
-      <Filter>Map\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TileSetManager.h">
       <Filter>Map\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
