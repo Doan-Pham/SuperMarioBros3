@@ -266,6 +266,17 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
 
 
+	if (player != NULL)
+	{
+		DebugOut(L"[ERROR] MARIO object was created before!\n");
+		return;
+	}
+	LPGAMEOBJECT mari = new CMario(20, 10);
+	player = (CMario*)mari;
+
+	DebugOut(L"[INFO] Player object has been created!\n");
+
+	objects.push_back(mari);
 	//Convert wchar to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
@@ -413,7 +424,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 	CGameObject* obj = NULL;
 	int objectType = -999;
 
-	//Parse object type id
+	//Parse object's type id
 	TiXmlElement* xmlProperties = xmlElementObjectGroup->FirstChildElement("properties");
 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
 		; currentElement != nullptr
