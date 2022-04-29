@@ -265,18 +265,6 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 {
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
 
-
-	if (player != NULL)
-	{
-		DebugOut(L"[ERROR] MARIO object was created before!\n");
-		return;
-	}
-	LPGAMEOBJECT mari = new CMario(20, 10);
-	player = (CMario*)mari;
-
-	DebugOut(L"[INFO] Player object has been created!\n");
-
-	objects.push_back(mari);
 	//Convert wchar to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
@@ -447,28 +435,43 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 	{
 		switch (objectType)
 		{
-			case OBJECT_TYPE_PLATFORM:
+		case OBJECT_TYPE_MARIO:
+		{
+			float x = atof(currentElementObject->Attribute("x"));
+			float y = atof(currentElementObject->Attribute("y"));
+			if (player != NULL)
 			{
-				float x = atof(currentElementObject->Attribute("x"));
-				float y = atof(currentElementObject->Attribute("y"));
-				float cell_width = 16;
-				float cell_height = 16;
-				int length = atof(currentElementObject->Attribute("width")) / 16;
-				int sprite_begin = 20001;
-				int sprite_middle = 20001;
-				int sprite_end = 20001;
-
-				obj = new CPlatform(
-					x, y,
-					cell_width, cell_height, length,
-					sprite_begin, sprite_middle, sprite_end
-				);
-				//obj->SetPosition(x, y);
-
-				objects.push_back(obj);
-				break;
+				DebugOut(L"[ERROR] MARIO object was created before!\n");
+				return;
 			}
+			obj = new CMario(x, y);
+			player = (CMario*)obj;
+
+			DebugOut(L"[INFO] Player object has been created!\n");
+			break;
 		}
+		case OBJECT_TYPE_PLATFORM:
+		{
+			float x = atof(currentElementObject->Attribute("x"));
+			float y = atof(currentElementObject->Attribute("y"));
+			float cell_width = 16;
+			float cell_height = 16;
+			int length = atof(currentElementObject->Attribute("width")) / 16;
+			int sprite_begin = 20001;
+			int sprite_middle = 20001;
+			int sprite_end = 20001;
+
+			obj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length,
+				sprite_begin, sprite_middle, sprite_end
+			);
+			//obj->SetPosition(x, y);
+			
+			break;
+		}
+		}
+		objects.push_back(obj);
 	}
 
 }
@@ -479,7 +482,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 0; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
 	}
