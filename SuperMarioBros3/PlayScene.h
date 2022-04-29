@@ -31,6 +31,7 @@ protected:
 	void LoadMap(LPCWSTR mapFile);
 	void _ParseSection_TILESET(TiXmlElement* xmlElementTileSet);
 	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer);
+	void _ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup);
 
 
 public: 

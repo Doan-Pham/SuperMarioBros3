@@ -46,6 +46,42 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define MAX_SCENE_LINE 1024
 
 
+void CPlayScene::Load()
+{
+	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
+
+	ifstream f;
+	f.open(sceneFilePath);
+
+	// current resource section flag
+	int section = SCENE_SECTION_UNKNOWN;
+
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE))
+	{
+		string line(str);
+
+		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
+		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
+		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
+		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+
+		//
+		// data section
+		//
+		switch (section)
+		{
+		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
+		}
+	}
+
+	f.close();
+
+	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+}
 
 void CPlayScene::_ParseSection_ASSETS(string line)
 {
@@ -204,11 +240,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	// General object setup
-	obj->SetPosition(x, y);
+		// General object setup
+		obj->SetPosition(x, y);
 
+		objects.push_back(obj);
 
-	objects.push_back(obj);
 }
 
 /*
@@ -274,7 +310,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 
 		if (strcmp(currentElement->Value(), "objectgroup") == 0)
 		{
-			//_ParseSection_TILELAYER(currentElement);
+			_ParseSection_OBJECTGROUP(currentElement);
 			continue;
 		}
 	}
@@ -372,42 +408,58 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	map->Add(tileLayer);
 }
 
-
-void CPlayScene::Load()
+void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 {
-	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
+	CGameObject* obj = NULL;
+	int objectType = -999;
 
-	ifstream f;
-	f.open(sceneFilePath);
-
-	// current resource section flag
-	int section = SCENE_SECTION_UNKNOWN;					
-
-	char str[MAX_SCENE_LINE];
-	while (f.getline(str, MAX_SCENE_LINE))
+	//Parse object type id
+	TiXmlElement* xmlProperties = xmlElementObjectGroup->FirstChildElement("properties");
+	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
+		; currentElement != nullptr
+		; currentElement = currentElement->NextSiblingElement())
 	{
-		string line(str);
+		if (currentElement->Attribute("name") == string("objectTypeId"))
+		{
+			objectType = atoi(currentElement->Attribute("value"));
+			if (objectType == -999) DebugOut(L"[ERROR] Object type id not found: %i\n", 
+				objectType);
 
-		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
-		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
-		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
-
-		//
-		// data section
-		//
-		switch (section)
-		{ 
-			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
+			continue;
 		}
 	}
 
-	f.close();
+	//Parse objects
+	for (TiXmlElement* currentElementObject = xmlElementObjectGroup->FirstChildElement("object")
+		; currentElementObject != nullptr
+		; currentElementObject = currentElementObject->NextSiblingElement())
+	{
+		switch (objectType)
+		{
+			case OBJECT_TYPE_PLATFORM:
+			{
+				float x = atof(currentElementObject->Attribute("x"));
+				float y = atof(currentElementObject->Attribute("y"));
+				float cell_width = 16;
+				float cell_height = 16;
+				int length = atof(currentElementObject->Attribute("width")) / 16;
+				int sprite_begin = 20001;
+				int sprite_middle = 20001;
+				int sprite_end = 20001;
 
-	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+				obj = new CPlatform(
+					x, y,
+					cell_width, cell_height, length,
+					sprite_begin, sprite_middle, sprite_end
+				);
+				//obj->SetPosition(x, y);
+
+				objects.push_back(obj);
+				break;
+			}
+		}
+	}
+
 }
 
 void CPlayScene::Update(DWORD dt)
