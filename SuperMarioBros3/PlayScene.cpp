@@ -300,6 +300,8 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	xmlElementTileSet->Attribute("tilecount", &tileCount);
 	xmlElementTileSet->Attribute("columns", &columnsCount);
 
+	TiXmlElement* xmlImage = xmlElementTileSet->FirstChildElement("image");
+	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
 
 	TiXmlElement* xmlProperties = xmlElementTileSet->FirstChildElement("properties");
 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
@@ -322,18 +324,14 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 			continue;
 		}
 	}
-
-	TiXmlElement* xmlImage = xmlElementTileSet->FirstChildElement("image");
-	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
-
-	//DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
-	
 	CTextures::GetInstance()->Add(textureId, imageSourcePath);
 	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(textureId);
 
 	CTileSetManager::GetInstance()->Add(tilesetId, firstGid, tileWidth, tileHeight
 		, tileCount, columnsCount, tileSetTexture);
 
+	//DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
+	
 	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
 }
 
@@ -348,6 +346,9 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 
 	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
 	LPTILESET tileSetToUse = CTileSetManager::GetInstance()->Get(ID_TILESET_1_1);
+	tileLayer->AddTileSet(tileSetToUse);
+
+	tileSetToUse = CTileSetManager::GetInstance()->Get(12);
 	tileLayer->AddTileSet(tileSetToUse);
 
 	vector<string> tokens;

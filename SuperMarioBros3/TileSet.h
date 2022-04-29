@@ -10,6 +10,7 @@ class CTileSet
 {
 protected:
 	int firstGid;
+	int lastGid;
 
 	int tileWidth;
 	int tileHeight;
@@ -31,6 +32,7 @@ public:
 		this->tileHeight = tileHeight;
 		this->tileCount = tileCount;
 		this->columnsCount = columnsCount;
+		this->lastGid = tileCount + firstGid - 1;
 		this->texture = texture;
 	};
 	void GetTileWidthHeight(int& tileWidth, int& tileHeight)
@@ -38,6 +40,7 @@ public:
 		tileWidth = this->tileWidth; 
 		tileHeight = this->tileHeight;
 	}
+	int GetLastGid() { return lastGid;  }
 	void Draw(int x, int y, int tileGid) {
 		float texWidth = (float)texture->getWidth();
 		float texHeight = (float)texture->getHeight();

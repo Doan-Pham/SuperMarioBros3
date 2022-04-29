@@ -35,12 +35,13 @@ public:
 	void Render() {
 		int tileWidth, tileHeight = 0;
 
-		tileSets[0]->GetTileWidthHeight(tileWidth, tileHeight);
 		for (int i = 0; i < height;i++)//height; i++)
 		{
 			for (int j = 0; j < width;j++)//width; j++)
 			{
-				tileSets[0]->Draw(j * tileHeight, i * tileWidth, tileMatrix[i][j]);
+				int tileGid = tileMatrix[i][j];
+				tileSets[tileGid / (tileSets[0]->GetLastGid() + 1)]->GetTileWidthHeight(tileWidth, tileHeight);
+				tileSets[tileGid / (tileSets[0]->GetLastGid() + 1)]->Draw(j * tileHeight, i * tileWidth, tileMatrix[i][j]);
 				//DebugOut(L"i = %i, j = %i, tileMatrix[i][j] = %i\n"
 				//	, i, j,tileMatrix[i][j]);
 			}
