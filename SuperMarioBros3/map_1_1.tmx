@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="46">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="75">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
- <tileset firstgid="1" name="Map_Test_bank.png" tilewidth="16" tileheight="16" tilecount="121" columns="11">
+ <tileset firstgid="1" name="map_1_1_tileset" tilewidth="16" tileheight="16" tilecount="121" columns="11">
   <properties>
    <property name="id" type="int" value="11"/>
    <property name="textureId" type="int" value="30"/>
   </properties>
-  <image source="textures/Map_Test_bank.png" width="176" height="176"/>
+  <image source="textures/map_1_1_tileset.png" width="176" height="176"/>
  </tileset>
  <tileset firstgid="122" name="world_1-2_map_bank" tilewidth="16" tileheight="16" tilecount="77" columns="11">
   <properties>
@@ -67,7 +67,7 @@
   <properties>
    <property name="objectTypeId" type="int" value="0"/>
   </properties>
-  <object id="12" x="32" y="384">
+  <object id="12" x="32" y="400">
    <point/>
   </object>
  </objectgroup>
@@ -96,6 +96,8 @@
   <object id="31" x="2320" y="384" width="32" height="32"/>
   <object id="32" x="2256" y="368" width="32" height="48"/>
   <object id="33" x="2256" y="112" width="32" height="208"/>
+  <object id="68" x="1808" y="96" width="16" height="16"/>
+  <object id="69" x="1840" y="128" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="5" name="Bricks">
   <properties>
@@ -110,5 +112,48 @@
   <object id="42" x="704" y="352" width="16" height="16"/>
   <object id="43" x="1472" y="368" width="16" height="16"/>
   <object id="44" x="1440" y="128" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="6" name="Coins">
+  <properties>
+   <property name="objectTypeId" type="int" value="4"/>
+  </properties>
+  <object id="46" x="1072" y="320" width="16" height="16"/>
+  <object id="47" x="1104" y="288" width="16" height="16"/>
+  <object id="48" x="1136" y="256" width="16" height="16"/>
+  <object id="49" x="1168" y="224" width="16" height="16"/>
+  <object id="50" x="1200" y="192" width="16" height="16"/>
+  <object id="51" x="1328" y="80" width="16" height="16"/>
+  <object id="52" x="1344" y="80" width="16" height="16"/>
+  <object id="53" x="1360" y="80" width="16" height="16"/>
+  <object id="54" x="1472" y="112" width="16" height="16"/>
+  <object id="55" x="1488" y="112" width="16" height="16"/>
+  <object id="56" x="1536" y="128" width="16" height="16"/>
+  <object id="57" x="1552" y="128" width="16" height="16"/>
+  <object id="58" x="1568" y="128" width="16" height="16"/>
+  <object id="59" x="1584" y="128" width="16" height="16"/>
+  <object id="60" x="1616" y="112" width="16" height="16"/>
+  <object id="61" x="1632" y="112" width="16" height="16"/>
+  <object id="62" x="1648" y="112" width="16" height="16"/>
+  <object id="63" x="1664" y="112" width="16" height="16"/>
+  <object id="64" x="1696" y="144" width="16" height="16"/>
+  <object id="65" x="1728" y="112" width="16" height="16"/>
+  <object id="67" x="1760" y="128" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="7" name="Goombas">
+  <properties>
+   <property name="objectTypeId" type="int" value="2"/>
+  </properties>
+  <object id="70" x="232" y="408">
+   <point/>
+  </object>
+  <object id="72" x="536" y="408">
+   <point/>
+  </object>
+  <object id="73" x="840" y="392">
+   <point/>
+  </object>
+  <object id="74" x="888" y="392">
+   <point/>
+  </object>
  </objectgroup>
 </map>
