@@ -67,7 +67,7 @@
   <properties>
    <property name="objectTypeId" type="int" value="0"/>
   </properties>
-  <object id="12" x="32" y="400">
+  <object id="12" x="32" y="384">
    <point/>
   </object>
  </objectgroup>
@@ -143,16 +143,16 @@
   <properties>
    <property name="objectTypeId" type="int" value="2"/>
   </properties>
-  <object id="70" x="232" y="408">
+  <object id="70" x="232" y="384">
    <point/>
   </object>
-  <object id="72" x="536" y="408">
+  <object id="72" x="536" y="384">
    <point/>
   </object>
-  <object id="73" x="840" y="392">
+  <object id="73" x="840" y="368">
    <point/>
   </object>
-  <object id="74" x="888" y="392">
+  <object id="74" x="888" y="368">
    <point/>
   </object>
  </objectgroup>
