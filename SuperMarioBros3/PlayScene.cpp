@@ -20,7 +20,7 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
+CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	player = NULL;
@@ -88,7 +88,7 @@ void CPlayScene::_ParseSection_ASSETS(string line)
 	if (tokens.size() < 1) return;
 
 	wstring path = ToWSTR(tokens[0]);
-	
+
 	LoadAssets(path.c_str());
 }
 
@@ -164,7 +164,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
+		int frame_time = atoi(tokens[i + 1].c_str());
 		ani->Add(sprite_id, frame_time);
 	}
 
@@ -189,7 +189,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 {
 	DebugOut(L"[INFO] Start loading map from : %s \n", mapFile);
 
-	//Convert wchar to char* because TinyXml doesn't support wchar
+	//Convert mapFile (type - wchar*) to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
 	const char* charMapFile = stringMapFile.c_str();
@@ -197,7 +197,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 	TiXmlDocument doc(charMapFile);
 	bool result = doc.LoadFile();
 
-	if (!result) 
+	if (!result)
 	{
 		DebugOut(L"[ERROR] Failed to load map from %s\n", mapFile);
 		return;
@@ -210,40 +210,40 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
 	{
-		if (strcmp(currentElement->Value(), "properties") == 0 && 
-			strcmp(currentElement->FirstChildElement()->Attribute("name"), "id") == 0)
+		if (currentElement->Value() == string("properties") &&
+			currentElement->FirstChildElement()->Attribute("name") == string("id"))
 		{
-			mapId = atoi(currentElement->FirstChildElement()->Attribute("value")) ;
+			mapId = atoi(currentElement->FirstChildElement()->Attribute("value"));
 			if (mapId == -999) DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+
 			map = new CMap(mapId, mapFile);
 			continue;
 		}
 
-		if (strcmp(currentElement->Value(), "tileset") == 0) 
+		if (currentElement->Value() == string("tileset"))
 		{
 			_ParseSection_TILESET(currentElement);
 			continue;
-		} 
+		}
 
-		if (strcmp(currentElement->Value(), "layer") == 0) 
+		if (currentElement->Value() == string("layer"))
 		{
 			_ParseSection_TILELAYER(currentElement);
 			continue;
 		}
 
-		if (strcmp(currentElement->Value(), "objectgroup") == 0)
+		if (currentElement->Value() == string("objectgroup"))
 		{
 			_ParseSection_OBJECTGROUP(currentElement);
 			continue;
 		}
 	}
-	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
 
+	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
 }
 
 void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 {
-
 	//Parse tileset's general attributes
 	int tilesetId = -999;
 	int firstGid = -999;
@@ -265,6 +265,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 
 	//Parse tileset's id and textureId
 	TiXmlElement* xmlProperties = xmlElementTileSet->FirstChildElement("properties");
+
 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
@@ -272,7 +273,8 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 		if (currentElement->Attribute("name") == string("id"))
 		{
 			tilesetId = atoi(currentElement->Attribute("value"));
-			if (tilesetId == -999) DebugOut(L"[ERROR] Tileset id not found: %i\n", tilesetId);
+			if (tilesetId == -999) 
+				DebugOut(L"[ERROR] Failed to parse tileset id: %i\n", tilesetId);
 
 			continue;
 		}
@@ -280,20 +282,23 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 		if (currentElement->Attribute("name") == string("textureId"))
 		{
 			textureId = atoi(currentElement->Attribute("value"));
-			if (textureId == -999) DebugOut(L"[ERROR] Texture id for tileset not found: %i\n", textureId);
+			if (textureId == -999)
+				DebugOut(L"[ERROR] Failed to parse texture id for tileset: %i\n", textureId);
 
 			continue;
 		}
 	}
+
 	CTextures::GetInstance()->Add(textureId, imageSourcePath);
 	LPTEXTURE tileSetTexture = CTextures::GetInstance()->Get(textureId);
 
-	LPTILESET tileSet = new CTileSet(firstGid, tileWidth, tileHeight, 
+	LPTILESET tileSet = new CTileSet(
+		firstGid, tileWidth, tileHeight,
 		tileCount, columnsCount, tileSetTexture);
+
 	map->Add(tileSet);
-	//DebugOut(L"[TEST] firstGid: %i, tileWidth : %i, tileHeight: %i \n", firstGid, tileWidth, tileHeight);
-	
-	DebugOut(L"[TEST] Done loading tileset from: %s \n", imageSourcePath);
+
+	DebugOut(L"[INFO] Done loading tileset from: %s \n", imageSourcePath);
 }
 
 void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
@@ -302,6 +307,7 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	int id = -999;
 	int width = -999;
 	int height = -999;
+
 	xmlElementTileLayer->Attribute("id", &id);
 	xmlElementTileLayer->Attribute("width", &width);
 	xmlElementTileLayer->Attribute("height", &height);
@@ -311,8 +317,8 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	//Parse tilelayer's tile matrix
 	vector<string> tokens;
 	TiXmlElement* xmlElementTileCoorData = xmlElementTileLayer->FirstChildElement("data");
-	tokens = split(xmlElementTileCoorData->GetText(),",");
-	
+	tokens = split(xmlElementTileCoorData->GetText(), ",");
+
 	int** tileMatrix;
 	tileLayer->GetTileMatrix(tileMatrix);
 
@@ -323,12 +329,15 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 		{
 			tileMatrix[i][j] = atoi(tokens[tokenIndex].c_str());
 			tokenIndex++;
+
 			//DebugOut(L"i = %i, j = %i, tokenIndex = %i, tileMatrix[i][j] = %i\n"
 			//	, i, j,tokenIndex, tileMatrix[i][j]);
 		}
 	}
 
 	map->Add(tileLayer);
+
+	DebugOut(L"[INFO] Done loading tilelayer with id: %i \n", id);
 }
 
 void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
@@ -340,6 +349,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 	//Parse object's type id
 	TiXmlElement* xmlProperties = xmlElementObjectGroup->FirstChildElement("properties");
+
 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
@@ -349,7 +359,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			objectType = atoi(currentElement->Attribute("value"));
 			if (objectType == -999)
 			{
-				DebugOut(L"[ERROR] Object type id not found: %i\n",
+				DebugOut(L"[ERROR] Failed to parse object's type id: %i\n",
 					objectType);
 				return;
 			}
@@ -363,6 +373,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 	{
 		x = atof(currentElementObject->Attribute("x"));
 		y = atof(currentElementObject->Attribute("y"));
+
 		switch (objectType)
 		{
 		case OBJECT_TYPE_MARIO:
@@ -396,7 +407,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				sprite_begin, sprite_middle, sprite_end
 			);
 			//obj->SetPosition(x, y);
-			
+
 			break;
 		}
 
@@ -416,7 +427,14 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			obj = new CPortal(x, y, r, b, scene_id);
 			break;
 		}
+
+		default:
+		{
+			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);
+			return;
 		}
+		}
+
 		objects.push_back(obj);
 	}
 
@@ -440,13 +458,13 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
+	if (player == NULL) return;
 
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	CGame *game = CGame::GetInstance();
+	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
@@ -483,7 +501,7 @@ void CPlayScene::Clear()
 /*
 	Unload scene
 
-	TODO: Beside objects, we need to clean up sprites, animations and textures as well 
+	TODO: Beside objects, we need to clean up sprites, animations and textures as well
 
 */
 void CPlayScene::Unload()
