@@ -192,38 +192,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		//if (player != NULL)
+		//{
+		//	DebugOut(L"[ERROR] MARIO object was created before!\n");
+		//	return;
+		//}
+		//obj = new CMario(x, y);
+		//player = (CMario*)obj;
 
-		DebugOut(L"[INFO] Player object has been created!\n");
-		break;
+		//DebugOut(L"[INFO] Player object has been created!\n");
+		//break;
+
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
-	case OBJECT_TYPE_PLATFORM:
-	{
 
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-
-		obj = new CPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-
-		break;
-	}
 
 	case OBJECT_TYPE_PORTAL:
 	{
@@ -231,10 +213,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+		break;
 	}
-	break;
-
-
+	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -423,24 +404,27 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		if (currentElement->Attribute("name") == string("objectTypeId"))
 		{
 			objectType = atoi(currentElement->Attribute("value"));
-			if (objectType == -999) DebugOut(L"[ERROR] Object type id not found: %i\n", 
-				objectType);
-
-			continue;
+			if (objectType == -999)
+			{
+				DebugOut(L"[ERROR] Object type id not found: %i\n",
+					objectType);
+				return;
+			}
 		}
 	}
 
-	//Parse objects
+	//Parse all objects of a objectgroup
 	for (TiXmlElement* currentElementObject = xmlElementObjectGroup->FirstChildElement("object")
 		; currentElementObject != nullptr
 		; currentElementObject = currentElementObject->NextSiblingElement())
 	{
+		x = atof(currentElementObject->Attribute("x"));
+		y = atof(currentElementObject->Attribute("y"));
 		switch (objectType)
 		{
 		case OBJECT_TYPE_MARIO:
 		{
-			 x = atof(currentElementObject->Attribute("x"));
-			 y = atof(currentElementObject->Attribute("y"));
+
 			if (player != NULL)
 			{
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
@@ -455,8 +439,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_PLATFORM:
 		{
-			 x = atof(currentElementObject->Attribute("x"));
-			 y = atof(currentElementObject->Attribute("y"));
+
 			float cell_width = 16;
 			float cell_height = 16;
 			int length = atof(currentElementObject->Attribute("width")) / 16;
@@ -474,12 +457,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-		case OBJECT_TYPE_BRICK: 
-		{
-			x = atof(currentElementObject->Attribute("x"));
-			y = atof(currentElementObject->Attribute("y"));
-			obj = new CBrick(x, y); break;
-		}
+		case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+
+		case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+
+		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
 		}
 		objects.push_back(obj);
 	}
