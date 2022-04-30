@@ -4,6 +4,12 @@ mario.txt
 coin.txt
 cloud.txt
 brick.txt
+goomba.txt
+
+# map file to use
+[MAP]
+map_1_1.tmx
+
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

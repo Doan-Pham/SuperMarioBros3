@@ -63,7 +63,6 @@ void CPlayScene::Load()
 
 		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
@@ -73,7 +72,6 @@ void CPlayScene::Load()
 		switch (section)
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
@@ -171,61 +169,6 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	}
 
 	CAnimations::GetInstance()->Add(ani_id, ani);
-}
-
-/*
-	Parse a line in section [OBJECTS] 
-*/
-void CPlayScene::_ParseSection_OBJECTS(string line)
-{
-	vector<string> tokens = split(line);
-
-	// skip invalid lines - an object set must have at least id, x, y
-	if (tokens.size() < 2) return;
-
-	int object_type = atoi(tokens[0].c_str());
-	float x = (float)atof(tokens[1].c_str());
-	float y = (float)atof(tokens[2].c_str());
-
-	CGameObject *obj = NULL;
-
-	switch (object_type)
-	{
-	case OBJECT_TYPE_MARIO:
-		//if (player != NULL)
-		//{
-		//	DebugOut(L"[ERROR] MARIO object was created before!\n");
-		//	return;
-		//}
-		//obj = new CMario(x, y);
-		//player = (CMario*)obj;
-
-		//DebugOut(L"[INFO] Player object has been created!\n");
-		//break;
-
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-
-
-
-	case OBJECT_TYPE_PORTAL:
-	{
-		float r = (float)atof(tokens[3].c_str());
-		float b = (float)atof(tokens[4].c_str());
-		int scene_id = atoi(tokens[5].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-		break;
-	}
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-	default:
-		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
-		return;
-	}
-
-		// General object setup
-		obj->SetPosition(x, y);
-
-		objects.push_back(obj);
-
 }
 
 /*
@@ -462,6 +405,17 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
 		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
+
+		case OBJECT_TYPE_PORTAL:
+		{
+			float r = x + (float)atof(currentElementObject->Attribute("width"));
+			float b = y + (float)atof(currentElementObject->Attribute("height"));
+			int scene_id = atoi(currentElementObject->FirstChildElement("properties")
+				->FirstChildElement("property")->Attribute("value"));
+
+			obj = new CPortal(x, y, r, b, scene_id);
+			break;
+		}
 		}
 		objects.push_back(obj);
 	}
