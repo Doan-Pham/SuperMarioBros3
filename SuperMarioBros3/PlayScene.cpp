@@ -411,6 +411,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 {
 	CGameObject* obj = NULL;
 	int objectType = -999;
+	float x = -999;
+	float y = -999;
 
 	//Parse object's type id
 	TiXmlElement* xmlProperties = xmlElementObjectGroup->FirstChildElement("properties");
@@ -437,8 +439,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		{
 		case OBJECT_TYPE_MARIO:
 		{
-			float x = atof(currentElementObject->Attribute("x"));
-			float y = atof(currentElementObject->Attribute("y"));
+			 x = atof(currentElementObject->Attribute("x"));
+			 y = atof(currentElementObject->Attribute("y"));
 			if (player != NULL)
 			{
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
@@ -450,10 +452,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			DebugOut(L"[INFO] Player object has been created!\n");
 			break;
 		}
+
 		case OBJECT_TYPE_PLATFORM:
 		{
-			float x = atof(currentElementObject->Attribute("x"));
-			float y = atof(currentElementObject->Attribute("y"));
+			 x = atof(currentElementObject->Attribute("x"));
+			 y = atof(currentElementObject->Attribute("y"));
 			float cell_width = 16;
 			float cell_height = 16;
 			int length = atof(currentElementObject->Attribute("width")) / 16;
@@ -470,11 +473,19 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			
 			break;
 		}
+
+		case OBJECT_TYPE_BRICK: 
+		{
+			x = atof(currentElementObject->Attribute("x"));
+			y = atof(currentElementObject->Attribute("y"));
+			obj = new CBrick(x, y); break;
+		}
 		}
 		objects.push_back(obj);
 	}
 
 }
+
 
 void CPlayScene::Update(DWORD dt)
 {
