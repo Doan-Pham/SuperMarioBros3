@@ -447,7 +447,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-		case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+		case OBJECT_TYPE_BRICK: obj = new CBrickQuestionMark(x, y); break;
 
 		case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 

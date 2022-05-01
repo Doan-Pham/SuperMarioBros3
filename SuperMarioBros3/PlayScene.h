@@ -4,7 +4,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "Brick.h"
+#include "BrickQuestionMark.h"
 #include "Mario.h"
 #include "Goomba.h"
 #include "TinyXml/tinyxml.h"
