@@ -1,3 +1,6 @@
+[ASSETSXMLTEST]
+spritesheet_bricks.xml
+
 # list of object assets to load in this scene
 [ASSETS]
 mario.txt
@@ -5,6 +8,8 @@ brick.txt
 coin.txt
 goomba.txt
 cloud.txt
+
+
 
 # map file to load for this scene
 [MAP]

@@ -33,6 +33,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
 #define SCENE_SECTION_MAP 3
+#define SCENE_SECTION_ASSETSXML 4
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -64,6 +65,7 @@ void CPlayScene::Load()
 		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
+		if (line == "[ASSETSXMLTEST]") { section = SCENE_SECTION_ASSETSXML; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -73,6 +75,7 @@ void CPlayScene::Load()
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
+		case SCENE_SECTION_ASSETSXML: _ParseSection_ASSETSXML(line); break;
 		}
 	}
 
@@ -91,7 +94,40 @@ void CPlayScene::_ParseSection_ASSETS(string line)
 
 	LoadAssets(path.c_str());
 }
+void CPlayScene::_ParseSection_ASSETSXML(string line)
+{
+	vector<string> tokens = split(line);
 
+	if (tokens.size() < 1) return;
+
+	wstring path = ToWSTR(tokens[0]);
+
+	TiXmlDocument doc(tokens[0].c_str());
+	bool result = doc.LoadFile();
+
+	TiXmlElement* root = doc.FirstChildElement();
+	int textureId = atoi(root->Attribute("textureId"));
+
+	LPTEXTURE tex = CTextures::GetInstance()->Get(textureId);
+	if (tex == NULL)
+	{
+		DebugOut(L"[ERROR] Texture ID %d not found!\n", textureId);
+		return;
+	}
+	for (TiXmlElement* currentElement = root->FirstChildElement()
+		; currentElement != nullptr
+		; currentElement = currentElement->NextSiblingElement())
+	{
+		int ID = atoi(currentElement->Attribute("n"));
+		int l = atoi(currentElement->Attribute("x"));
+		int t = atoi(currentElement->Attribute("y"));
+		int r = atoi(currentElement->Attribute("w")) + l -1;
+		int b = atoi(currentElement->Attribute("h")) + t - 1;
+
+		CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+	}
+
+}
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);

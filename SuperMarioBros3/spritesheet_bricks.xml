@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Free texture packer v0.6.7 http://free-tex-packer.com
+Format:
+n  => name
+x  => x pos
+y  => y pos
+w  => width
+h  => height
+pX => x pos of the pivot point
+pY => y pos of the pivot point
+oX => x-corner offset
+oY => y-corner offset
+oW => original width
+oH => original height
+r => 'y' if sprite is rotated-->
+<TextureAtlas imagePath="textures/spritesheet_bricks.png" 
+			  width="64" height="16" scale="1" format="RGBA8888"
+			  textureId ="40">
+  <sprite n="20001" x="0" y="0" w="16" h="16" pX="0.5" pY="0.5"/>
+  <sprite n="20002" x="16" y="0" w="16" h="16" pX="0.5" pY="0.5"/>
+  <sprite n="20003" x="32" y="0" w="16" h="16" pX="0.5" pY="0.5"/>
+  <sprite n="20004" x="48" y="0" w="16" h="16" pX="0.5" pY="0.5"/>
+</TextureAtlas>
