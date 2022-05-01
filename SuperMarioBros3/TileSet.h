@@ -4,7 +4,7 @@
 
 #include "Game.h"
 #include "debug.h"
-
+#include "Sprite.h"
 //TODO: CTileSet is quite similar to CSprite, find some way to incorprate the CSprite class
 //into CTileSet
 
@@ -38,51 +38,60 @@ public:
 	};
 
 	void GetTileWidthHeight(int& tileWidth, int& tileHeight)
-	{ 
-		tileWidth = this->tileWidth; 
+	{
+		tileWidth = this->tileWidth;
 		tileHeight = this->tileHeight;
 	}
 
-	int GetLastGid() { return lastGid;  }
+	int GetLastGid() { return lastGid; }
 
-	void Draw(int x, int y, int tileGid) 
+	void Draw(int x, int y, int tileGid)
 	{
-		float texWidth = (float)texture->getWidth();
-		float texHeight = (float)texture->getHeight();
+		int left = ((tileGid - firstGid) % columnsCount) * tileWidth;
+		int top = ((tileGid - firstGid) / columnsCount) * tileHeight;
+		int right = left + tileWidth - 1;
+		int bottom = top + tileHeight - 1;
 
-		// Set the sprite’s shader resource view
-		sprite.pTexture = texture->getShaderResourceView();
+		LPSPRITE spriteToDraw = new CSprite(0, left, top, right, bottom, texture);
+		spriteToDraw->Draw(x, y);
+		delete spriteToDraw;
 
-		sprite.TexCoord.x = (((tileGid - firstGid) % columnsCount) * tileWidth) / texWidth;
-		sprite.TexCoord.y = (((tileGid - firstGid) / columnsCount) * tileHeight) / texHeight;
+		//float texWidth = (float)texture->getWidth();
+		//float texHeight = (float)texture->getHeight();
 
-		//DebugOut(L"tileGid = %i, sprite.TexCoord.x = %f, sprite.TexCoord.y = %f\n"
-		//		, tileGid, sprite.TexCoord.x, sprite.TexCoord.y);
+		//// Set the sprite’s shader resource view
+		//sprite.pTexture = texture->getShaderResourceView();
 
-		sprite.TexSize.x = tileWidth / texWidth;
-		sprite.TexSize.y = tileHeight / texHeight;
+		//sprite.TexCoord.x = (((tileGid - firstGid) % columnsCount) * tileWidth) / texWidth;
+		//sprite.TexCoord.y = (((tileGid - firstGid) / columnsCount) * tileHeight) / texHeight;
 
-		sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		sprite.TextureIndex = 0;
+		////DebugOut(L"tileGid = %i, sprite.TexCoord.x = %f, sprite.TexCoord.y = %f\n"
+		////		, tileGid, sprite.TexCoord.x, sprite.TexCoord.y);
 
-		D3DXMatrixScaling(&this->matScaling, (FLOAT)tileWidth, (FLOAT)tileHeight, 1.0f);
+		//sprite.TexSize.x = tileWidth / texWidth;
+		//sprite.TexSize.y = tileHeight / texHeight;
 
-		CGame* g = CGame::GetInstance();
-		float cx, cy;
-		g->GetCamPos(cx, cy);
+		//sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		//sprite.TextureIndex = 0;
 
-		cx = (FLOAT)floor(cx);
-		cy = (FLOAT)floor(cy);
+		//D3DXMatrixScaling(&this->matScaling, (FLOAT)tileWidth, (FLOAT)tileHeight, 1.0f);
 
-		D3DXMATRIX matTranslation;
+		//CGame* g = CGame::GetInstance();
+		//float cx, cy;
+		//g->GetCamPos(cx, cy);
 
-		x = (FLOAT)floor(x);
-		y = (FLOAT)floor(y);
+		//cx = (FLOAT)floor(cx);
+		//cy = (FLOAT)floor(cy);
 
-		D3DXMatrixTranslation(&matTranslation, x - cx, g->GetBackBufferHeight() - y + cy, 0.1f);
-		this->sprite.matWorld = (this->matScaling * matTranslation);
+		//D3DXMATRIX matTranslation;
 
-		g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
+		//x = (FLOAT)floor(x);
+		//y = (FLOAT)floor(y);
+
+		//D3DXMatrixTranslation(&matTranslation, x - cx, g->GetBackBufferHeight() - y + cy, 0.1f);
+		//this->sprite.matWorld = (this->matScaling * matTranslation);
+
+		//g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
 	}
 };
 
