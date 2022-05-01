@@ -79,6 +79,7 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Helper\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BrickQuestionMark.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -165,6 +166,8 @@
     <ClInclude Include="AssetIDs.h">
       <Filter>Helper\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="BrickQuestionMark.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -230,5 +233,8 @@
     <Filter Include="Helper\Source Files">
       <UniqueIdentifier>{eb1c354d-064c-4370-94fe-33b90ca9ab2b}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SuperMarioBros3.rc" />
   </ItemGroup>
 </Project>
