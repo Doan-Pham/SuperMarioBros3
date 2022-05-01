@@ -7,7 +7,7 @@
 #define ID_ANI_BRICK_QUESTIONMARK 10000
 #define ID_ANI_TEST 11000
 #define BRICK_QUESTION_MARK_GRAVITY 0.002f
-#define BRICK_QUESTION_MARK_BOUNCE_SPEED 0.4f
+#define BRICK_QUESTION_MARK_BOUNCE_SPEED 0.8f
 class CBrickQuestionMark : public CBrick
 {
 protected:
