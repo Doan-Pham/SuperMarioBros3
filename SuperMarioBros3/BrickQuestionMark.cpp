@@ -20,6 +20,7 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy = (y_original - y)/dt;
 	}
 	y += vy * dt;
+	vy = 0;
 	DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
 		y, vy, ay);
 	//if (abs(vx) > abs(maxVx)) vx = maxVx;
