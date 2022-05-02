@@ -13,8 +13,8 @@ class CTileLayer
 {
 protected:
 
-	int width;
-	int height;
+	int width; //Unit: tile
+	int height; //Unit: tile
 
 	std::vector<LPTILESET> tileSets;
 	int** tileMatrix;
@@ -48,6 +48,9 @@ public:
 
 		int maxTilesX = SCREEN_WIDTH / TILE_WIDTH_STANDARD;
 		int maxTilesY = SCREEN_HEIGHT / TILE_HEIGHT_STANDARD;
+
+		//Have to calculate i, j against min(...) because (i + maxTilesY)/(j + maxTilesX) 
+		//may go past the total amount of tiles inside a tilelayer
 		for (int i = firstVisibleTileIndexY; i < min(height,i + maxTilesY); i++)
 		{
 			for (int j = firstVisibleTileIndexX; j < min(width,j + maxTilesX); j++)
