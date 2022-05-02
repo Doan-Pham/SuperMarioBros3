@@ -296,6 +296,17 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	xmlElementTileSet->Attribute("tilecount", &tileCount);
 	xmlElementTileSet->Attribute("columns", &columnsCount);
 
+	if (tileWidth != TILE_WIDTH_STANDARD || tileHeight != TILE_HEIGHT_STANDARD)
+	{
+		DebugOut(L"[ERROR] Tileset's tilewidth (%d) and tileheight (%d) not compatible"
+			" with game's standard tilewidth (%d) and tileheight (%d)\n",
+			tileWidth,
+			tileHeight,
+			TILE_WIDTH_STANDARD,
+			TILE_HEIGHT_STANDARD);
+		return;
+	}
+
 	TiXmlElement* xmlImage = xmlElementTileSet->FirstChildElement("image");
 	imageSourcePath = ToLPCWSTR(xmlImage->Attribute("source"));
 
