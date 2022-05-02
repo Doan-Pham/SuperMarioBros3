@@ -1,7 +1,10 @@
 [ASSETSXMLTEST]
 spritesheet_bricks.xml
+spritesheet_item.xml
 
-# list of object assets to load in this scene
+# list of object assets to load in this scene, for some, only load their animations
+# their sprites might have already been loaded in the .xml file
+
 [ASSETS]
 mario.txt
 brick.txt

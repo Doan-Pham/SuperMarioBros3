@@ -18,3 +18,4 @@ height	240
 10	textures\enemies.png
 20	textures\misc.png
 40	textures\spritesheet_bricks.png
+50	textures\spritesheet_item.png

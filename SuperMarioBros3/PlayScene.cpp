@@ -444,9 +444,9 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			float cell_width = 16;
 			float cell_height = 16;
 			int length = atof(currentElementObject->Attribute("width")) / 16;
-			int sprite_begin = 20001;
-			int sprite_middle = 20001;
-			int sprite_end = 20001;
+			int sprite_begin = 31111;
+			int sprite_middle = 31111;
+			int sprite_end = 31111;
 
 			obj = new CPlatform(
 				x, y,

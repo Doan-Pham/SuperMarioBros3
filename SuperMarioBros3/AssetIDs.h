@@ -9,6 +9,7 @@
 #define ID_TEX_MISC 20
 #define ID_TEX_TILESET_1_1 30
 #define ID_TEX_BRICK 40
+#define ID_TEX_ITEM 50
 
 #define ID_MAP_1_1			11
 #define ID_TILESET_1_1		11
