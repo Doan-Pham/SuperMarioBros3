@@ -4,9 +4,9 @@ void CBrickQuestionMark::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	if (!isHitByMario)
-		animations->Get(ID_ANI_BRICK_QUESTIONMARK)->Render(x, y);
+		animations->Get(ID_ANI_BRICK_QUESTIONMARK_NORMAL)->Render(x, y);
 	else
-		animations->Get(ID_ANI_TEST)->Render(x, y);
+		animations->Get(ID_ANI_BRICK_QUESTIONMARK_HIT)->Render(x, y);
 	RenderBoundingBox();
 }
 
