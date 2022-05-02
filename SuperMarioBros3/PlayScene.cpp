@@ -475,6 +475,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
+		case OBJECT_TYPE_ITEM:
+		{
+			obj = new CMushroomBig(x,y);
+			break;
+		}
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);
