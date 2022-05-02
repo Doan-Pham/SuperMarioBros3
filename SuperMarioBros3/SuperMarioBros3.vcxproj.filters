@@ -82,6 +82,12 @@
     <ClCompile Include="BrickQuestionMark.cpp">
       <Filter>Game Objects\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Game Objects\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MushroomBig.cpp">
+      <Filter>Game Objects\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -169,6 +175,12 @@
       <Filter>Helper\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BrickQuestionMark.h">
+      <Filter>Game Objects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Game Objects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MushroomBig.h">
       <Filter>Game Objects\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
