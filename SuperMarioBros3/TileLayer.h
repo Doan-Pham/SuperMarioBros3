@@ -46,8 +46,8 @@ public:
 		int firstVisibleTileIndexX = camX / TILE_WIDTH_STANDARD;
 		int firstVisibleTileIndexY = camY / TILE_HEIGHT_STANDARD;
 
-		int maxTilesX = 320 / TILE_WIDTH_STANDARD;
-		int maxTilesY = 240 / TILE_HEIGHT_STANDARD;
+		int maxTilesX = SCREEN_WIDTH / TILE_WIDTH_STANDARD;
+		int maxTilesY = SCREEN_HEIGHT / TILE_HEIGHT_STANDARD;
 		for (int i = firstVisibleTileIndexY; i < min(height,i + maxTilesY); i++)
 		{
 			for (int j = firstVisibleTileIndexX; j < min(width,j + maxTilesX); j++)
