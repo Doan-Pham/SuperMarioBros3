@@ -7,7 +7,8 @@
 #define ID_ANI_BRICK_QUESTIONMARK 10000
 #define ID_ANI_TEST 11000
 #define BRICK_QUESTION_MARK_GRAVITY 0.002f
-#define BRICK_QUESTION_MARK_BOUNCE_SPEED 0.8f
+#define BRICK_QUESTION_MARK_BOUNCE_SPEED 0.3f
+
 class CBrickQuestionMark : public CBrick
 {
 protected:
@@ -22,7 +23,6 @@ public:
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-	virtual void OnNoCollision(DWORD dt);
 
 	virtual int IsCollidable() { return 1; };
 
