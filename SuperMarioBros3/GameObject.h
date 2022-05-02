@@ -28,6 +28,10 @@ protected:
 
 	int state;
 
+	//If an object is hidden, player has to hit the container for that hidden object first to
+	//make that object appear, only then mario can collide with that hidden object
+	bool isHidden;
+
 	bool isDeleted; 
 
 public: 
@@ -37,6 +41,10 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
+
+	virtual void UnHide() { this->isHidden = false; }
+	bool IsHidden() { return isHidden; }
+
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
 

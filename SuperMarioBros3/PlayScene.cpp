@@ -501,6 +501,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		if (!objects[i]->IsHidden())
 		coObjects.push_back(objects[i]);
 	}
 

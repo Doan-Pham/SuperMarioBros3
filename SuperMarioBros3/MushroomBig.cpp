@@ -15,6 +15,7 @@ void CMushroomBig::Render()
 
 void CMushroomBig::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (isHidden) return;
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -67,7 +68,8 @@ void CMushroomBig::SetState(int state, int nx)
 
 	//If 
 	case MUSHROOM_STATE_MOVING:
-		// If mario hits the brick on the left side, mushroom moves to the right, and vice versa
+		// If mario hits the brick more on the left side, mushroom moves to the right
+		// and vice versa
 		vx =  -nx * MUSHROOM_MOVING_SPEED;
 		break;
 	}
