@@ -12,13 +12,13 @@
 class CBrickQuestionMark : public CBrick
 {
 protected:
-	bool isContentTaken;
+	bool isHitByMario;
 	float y_original;
 	float ay;
 public:
 	CBrickQuestionMark(float x, float y) : CBrick(x, y) 
 	{
-		isContentTaken = false; ay = 0; y_original = this->y;
+		isHitByMario = false; ay = 0; y_original = this->y;
 	}
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -26,6 +26,7 @@ public:
 
 	virtual int IsCollidable() { return 1; };
 
-
+	virtual int GetScoresGivenWhenHit() { return 100; }
+	virtual int GetCoinsGivenWhenHit() { return 1; }
 };
 

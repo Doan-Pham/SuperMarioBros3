@@ -65,6 +65,10 @@ public:
 	// Is this object blocking other object? If YES, collision framework will automatically push the other object
 	virtual int IsBlocking() { return 1; }
 
+	//The amount of scores and coins an object gives when hit/destroyed
+	virtual int GetScoresGivenWhenHit() { return 0; }
+	virtual int GetCoinsGivenWhenHit() { return 0; }
+
 	~CGameObject();
 
 	static bool IsDeleted(const LPGAMEOBJECT &o) { return o->isDeleted; }
