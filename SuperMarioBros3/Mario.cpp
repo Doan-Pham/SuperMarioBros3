@@ -5,7 +5,7 @@
 #include "Game.h"
 
 #include "Goomba.h"
-#include "Coin.h"
+#include "Item.h"
 #include "Portal.h"
 
 #include "Collision.h"
@@ -50,8 +50,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CCoin*>(e->obj))
-		OnCollisionWithCoin(e);
+	else if (dynamic_cast<CItem*>(e->obj))
+		OnCollisionWithItem(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -91,10 +91,11 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
-	coin++;
+	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
+	//coin++;
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
