@@ -3,13 +3,14 @@ CMushroomBig::CMushroomBig(float x, float y) : CItem(x, y)
 {
 	this->ax = 0;
 	this->ay = MUSHROOM_GRAVITY;
-	vx = -MUSHROOM_MOVING_SPEED;
-	//die_start = -1;
-	//SetState(MUSHROOM_STATE_WALKING);
+	isHidden = true;
+
+	SetState(MUSHROOM_STATE_HIDING);
 }
 void CMushroomBig::Render()
 {
-	CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_MOVING)->Render(x, y);
+	if (!isHidden)
+		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_MOVING)->Render(x, y);
 }
 
 void CMushroomBig::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -49,5 +50,26 @@ void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 	}
 }
+void CMushroomBig::SetState(int state, int nx)
+{
+	CGameObject::SetState(state);
+	switch (state)
+	{
+	case MUSHROOM_STATE_HIDING:
+		vx = 0;
+		vy = 0;
+		ay = 0;
+		break;
 
+	case MUSHROOM_STATE_APPEARING:
+		vy = -MUSHROOM_APPEARING_SPEED;
+		break;
+
+	//If 
+	case MUSHROOM_STATE_MOVING:
+		// If mario hits the brick on the left side, mushroom moves to the right, and vice versa
+		vx =  -nx * MUSHROOM_MOVING_SPEED;
+		break;
+	}
+}
 
