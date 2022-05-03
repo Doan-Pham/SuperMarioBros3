@@ -40,7 +40,7 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Game Objects\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform.cpp">
+    <ClCompile Include="PlatformOneLayer.cpp">
       <Filter>Game Objects\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Portal.cpp">
@@ -138,7 +138,7 @@
     <ClInclude Include="Mario.h">
       <Filter>Game Objects\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform.h">
+    <ClInclude Include="PlatformOneLayer.h">
       <Filter>Game Objects\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">

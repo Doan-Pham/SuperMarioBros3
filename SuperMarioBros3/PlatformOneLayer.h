@@ -5,7 +5,7 @@
 // 
 // The most popular type of object in Mario! 
 // 
-class CPlatform : public CGameObject
+class CPlatformOneLayer : public CGameObject
 {
 protected: 
 	int length;				// Unit: cell 
@@ -14,7 +14,7 @@ protected:
 	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
 
 public: 
-	CPlatform(float x, float y,
+	CPlatformOneLayer(float x, float y,
 		float cell_width, float cell_height, int length,
 		int sprite_id_begin, int sprite_id_middle, int sprite_id_end) :CGameObject(x, y)
 	{
@@ -32,4 +32,4 @@ public:
 	void RenderBoundingBox();
 };
 
-typedef CPlatform* LPPLATFORM;
+typedef CPlatformOneLayer* LPPLATFORM;
