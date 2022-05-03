@@ -21,10 +21,11 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (y + vy * dt < y_destination)
 	{
-		vy = (y - y_destination) / dt;
+		vy = (y_destination - y) / dt;
 	}
-
 	y += vy * dt;
+	if (y == y_destination) SetState(LEAF_STATE_MOVING);;
+	//DebugOutTitle(L"vy = %0.5f, ay * dt = %0.5f", vy, ay * dt);
 }
 
 void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -51,8 +52,8 @@ void CLeaf::SetState(int state)
 		break;
 
 	case LEAF_STATE_MOVING:
-		vx = -nx * LEAF_MOVING_SPEED;
-		ay = LEAF_GRAVITY;
+		//vx = -nx * LEAF_MOVING_SPEED;
+		vy = LEAF_APPEARING_SPEED;
 		break;
 	}
 }
