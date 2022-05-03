@@ -8,7 +8,7 @@
 
 #define MUSHROOM_GRAVITY 0.002f
 #define MUSHROOM_MOVING_SPEED 0.06f
-#define MUSHROOM_APPEARING_SPEED 0.01f
+#define MUSHROOM_APPEARING_SPEED 0.02f
 
 #define MUSHROOM_BBOX_WIDTH 16
 #define MUSHROOM_BBOX_HEIGHT 16
@@ -39,7 +39,7 @@ protected:
 
 public:
 	CMushroomBig(float x, float y);
-	virtual void SetState(int state, int nx = 1);
+	virtual void SetState(int state);
 	virtual int GetScoresGivenWhenHit() { return 1000; }
 };
 

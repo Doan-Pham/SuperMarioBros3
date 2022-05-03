@@ -4,7 +4,7 @@ CMushroomBig::CMushroomBig(float x, float y) : CItem(x, y)
 	this->ax = 0;
 	this->ay = 0;
 	this->y_destination = y - MUSHROOM_BBOX_HEIGHT - 1;
-	SetState(MUSHROOM_STATE_APPEARING);
+	SetState(MUSHROOM_STATE_HIDING);
 }
 void CMushroomBig::Render()
 {
@@ -60,7 +60,7 @@ void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 	}
 }
-void CMushroomBig::SetState(int state, int nx)
+void CMushroomBig::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
