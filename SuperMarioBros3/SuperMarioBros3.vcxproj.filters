@@ -88,6 +88,9 @@
     <ClCompile Include="MushroomBig.cpp">
       <Filter>Game Objects\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>Game Objects\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -181,6 +184,9 @@
       <Filter>Game Objects\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MushroomBig.h">
+      <Filter>Game Objects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
       <Filter>Game Objects\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

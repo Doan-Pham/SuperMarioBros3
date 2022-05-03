@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "BrickQuestionMark.h"
+#include "Leaf.h"
 #include "MushroomBig.h"
 #include "Mario.h"
 #include "Goomba.h"

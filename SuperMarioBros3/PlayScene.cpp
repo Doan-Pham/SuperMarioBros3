@@ -499,7 +499,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_ITEM:
 		{
-			obj = new CMushroomBig(x,y);
+			obj = new CLeaf(x,y);
 			break;
 		}
 		default:
