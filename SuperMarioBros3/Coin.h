@@ -10,6 +10,9 @@
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 
+#define COIN_SCORES_GIVEN_WHEN_HIT 50
+#define COIN_COINS_GIVEN_WHEN_HIT 1
+
 class CCoin : public CGameObject {
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {}
@@ -17,4 +20,6 @@ public:
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
+	virtual int GetScoresGivenWhenHit() { return COIN_SCORES_GIVEN_WHEN_HIT; }
+	virtual int GetCoinsGivenWhenHit() { return COIN_COINS_GIVEN_WHEN_HIT; }
 };

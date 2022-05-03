@@ -20,6 +20,8 @@
 #define LEAF_STATE_APPEARING 200
 #define LEAF_STATE_MOVING 300
 
+#define LEAF_SCORES_GIVEN_WHEN_HIT 1000
+
 class CLeaf : public CItem
 {
 protected:
@@ -39,7 +41,7 @@ protected:
 public:
 	CLeaf(float x, float y);
 	virtual void SetState(int state);
-	virtual int GetScoresGivenWhenHit() { return 1000; }
+	virtual int GetScoresGivenWhenHit() { return LEAF_SCORES_GIVEN_WHEN_HIT; }
 };
 
 

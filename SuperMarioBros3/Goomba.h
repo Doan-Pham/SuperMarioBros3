@@ -17,6 +17,8 @@
 #define ID_ANI_GOOMBA_WALKING 5000
 #define ID_ANI_GOOMBA_DIE 5001
 
+#define GOOMBA_SCORES_GIVEN_WHEN_HIT 100
+
 class CGoomba : public CGameObject
 {
 protected:
@@ -38,5 +40,5 @@ protected:
 public: 	
 	CGoomba(float x, float y);
 	virtual void SetState(int state);
-	virtual int GetScoresGivenWhenHit() { return 100; }
+	virtual int GetScoresGivenWhenHit() { return GOOMBA_SCORES_GIVEN_WHEN_HIT; }
 };
