@@ -34,10 +34,9 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	x += vx * dt;
 
-	//if (x == x_end || x == x_start) vx = -vx;
-	if (y == y_destination) SetState(LEAF_STATE_MOVING);;
-	DebugOutTitle(L"x : %0.5f, y :%0.5f, vx :%0.5f, vy :%0.5f", x, y, vx, vy);
-	//DebugOutTitle(L"vy = %0.5f, ay * dt = %0.5f", vy, ay * dt);
+	if (y == y_destination) SetState(LEAF_STATE_MOVING);
+
+	//DebugOutTitle(L"x : %0.5f, y :%0.5f, vx :%0.5f, vy :%0.5f", x, y, vx, vy);
 }
 
 void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)

@@ -350,6 +350,13 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 
 void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 {
+	
+	if (xmlElementTileLayer->Attribute("visible") != NULL)
+	{
+		int visible = atoi(xmlElementTileLayer->Attribute("visible"));
+		if (!visible) return;
+	};
+
 	//Parse tilelayer's general attributes
 	int id = -999;
 	int width = -999;
@@ -461,22 +468,24 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		case OBJECT_TYPE_BRICK: 
 		{
 			CBrickQuestionMark* newBrick = new CBrickQuestionMark(x, y);
-			if( atoi(currentElementObject->FirstChildElement("properties")
-				->FirstChildElement("property")->Attribute("value")) == 0) return;
-			vector<LPGAMEOBJECT>::iterator it;
-			for (it = objects.end()-1; it != objects.begin(); it--)
+
+			if (currentElementObject->FirstChildElement("properties") != NULL)
 			{
-				LPGAMEOBJECT o = *it;
-				if (dynamic_cast<CItem*>(o))
+				vector<LPGAMEOBJECT>::iterator it;
+				for (it = objects.end() - 1; it != objects.begin(); it--)
 				{
-					float item_x, item_y;
-					o->GetPosition(item_x, item_y);
-					if ((x == item_x) && (y = item_y))
+					LPGAMEOBJECT o = *it;
+					if (dynamic_cast<CItem*>(o))
 					{
-						newBrick->AddHiddenItem((CItem*)o);
+						float item_x, item_y;
+						o->GetPosition(item_x, item_y);
+						if ((x == item_x) && (y = item_y))
+						{
+							newBrick->AddHiddenItem((CItem*)o);
+						}
 					}
 				}
-			}
+			};
 
 			obj = newBrick;
 			break;
@@ -499,7 +508,25 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_ITEM:
 		{
-			obj = new CLeaf(x,y);
+			int objectSubTypeId = atoi(currentElementObject->FirstChildElement("properties")
+				->FirstChildElement("property")->Attribute("value"));
+			switch (objectSubTypeId)
+			{
+			case 1:
+			{
+				obj = new CMushroomBig(x, y);
+				break;
+			}
+			case 2:
+			{
+				obj = new CLeaf(x, y);
+				break;
+			}
+			default:
+				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
+				return;
+				break;
+			}
 			break;
 		}
 		default:

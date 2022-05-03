@@ -3,7 +3,7 @@ CMushroomBig::CMushroomBig(float x, float y) : CItem(x, y)
 {
 	this->ax = 0;
 	this->ay = 0;
-	this->y_destination = y - MUSHROOM_BBOX_HEIGHT - 1;
+	this->y_destination = y - MUSHROOM_BBOX_HEIGHT;
 	SetState(MUSHROOM_STATE_HIDING);
 }
 void CMushroomBig::Render()
