@@ -4,13 +4,16 @@ CLeaf::CLeaf(float x, float y) : CItem(x, y)
 {
 	this->ax = 0;
 	this->ay = 0;
-	this->y_destination = y - LEAF_BBOX_HEIGHT - 50.0f;
+	this->y_destination = y - LEAF_BOUNCE_DISTANCE;
+	this->x_start = x;
+	this->x_end = x + LEAF_MAX_X_DISTANCE;
 	SetState(LEAF_STATE_HIDING);
 }
 void CLeaf::Render()
 {
 	if (state != LEAF_STATE_HIDING)
 		CSprites::GetInstance()->Get(ID_SPRITE_LEAF_MOVING_LEFT)->Draw(x, y);
+	RenderBoundingBox();
 }
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -24,7 +27,16 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy = (y_destination - y) / dt;
 	}
 	y += vy * dt;
+
+	if (x + vx * dt >= x_end || x + vx * dt <= x_start)
+	{
+		vx = -vx;
+	}
+	x += vx * dt;
+
+	//if (x == x_end || x == x_start) vx = -vx;
 	if (y == y_destination) SetState(LEAF_STATE_MOVING);;
+	DebugOutTitle(L"x : %0.5f, y :%0.5f, vx :%0.5f, vy :%0.5f", x, y, vx, vy);
 	//DebugOutTitle(L"vy = %0.5f, ay * dt = %0.5f", vy, ay * dt);
 }
 
@@ -52,8 +64,8 @@ void CLeaf::SetState(int state)
 		break;
 
 	case LEAF_STATE_MOVING:
-		//vx = -nx * LEAF_MOVING_SPEED;
-		vy = LEAF_APPEARING_SPEED;
+		vy = 0.05f;
+		vx = LEAF_MOVING_SPEED;
 		break;
 	}
 }

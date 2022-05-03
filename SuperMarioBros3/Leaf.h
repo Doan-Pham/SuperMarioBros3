@@ -8,7 +8,10 @@
 
 #define LEAF_GRAVITY 0.0001f
 #define LEAF_MOVING_SPEED 0.06f
-#define LEAF_APPEARING_SPEED 0.2f
+#define LEAF_APPEARING_SPEED 0.1f
+
+#define LEAF_BOUNCE_DISTANCE 35.0f
+#define LEAF_MAX_X_DISTANCE 40.0f
 
 #define LEAF_BBOX_WIDTH 16
 #define LEAF_BBOX_HEIGHT 16
@@ -23,7 +26,8 @@ protected:
 	float ax;
 	float ay;
 	float y_destination;
-
+	float x_start;
+	float x_end;
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
