@@ -6,6 +6,8 @@
 
 #include "Goomba.h"
 #include "Item.h"
+#include "MushroomBig.h"
+#include "Leaf.h"
 #include "Portal.h"
 
 #include "Collision.h"
@@ -93,9 +95,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
-	e->obj->Delete();
+	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_BIG);
+	else if (dynamic_cast<CMushroomBig*>(e->obj)) SetLevel(MARIO_LEVEL_BIG);
+
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
-	//coin++;
+	CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
+	e->obj->Delete();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -244,6 +249,7 @@ void CMario::Render()
 	//RenderBoundingBox();
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	//DebugOutTitle(L"mario_x : %0.5f, mario_y : %0.5f, vx: %0.5f, vy: %0.5f", x, y, vx, vy);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y : %0.5f, cam_x: %0.5f, cam_y: %0.5f", x,y, cam_x, cam_y);
 	//DebugOutTitle(L"Coins: %d", coin);
 }
@@ -366,3 +372,7 @@ void CMario::SetLevel(int l)
 	level = l;
 }
 
+int CMario::GetLevel()
+{
+	return level;
+}
