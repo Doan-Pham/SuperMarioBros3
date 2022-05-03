@@ -5,17 +5,17 @@ CMushroomBig::CMushroomBig(float x, float y) : CItem(x, y)
 	this->ay = MUSHROOM_GRAVITY;
 	isHidden = true;
 
-	SetState(MUSHROOM_STATE_HIDING);
+	SetState(MUSHROOM_STATE_APPEARING);
 }
 void CMushroomBig::Render()
 {
-	if (!isHidden)
+	if (state != MUSHROOM_STATE_HIDING)
 		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_MOVING)->Render(x, y);
 }
 
 void CMushroomBig::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isHidden) return;
+	if (state == MUSHROOM_STATE_HIDING) return;
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -45,6 +45,7 @@ void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		SetState(MUSHROOM_STATE_MOVING);
 	}
 	else if (e->nx != 0)
 	{
@@ -64,6 +65,8 @@ void CMushroomBig::SetState(int state, int nx)
 
 	case MUSHROOM_STATE_APPEARING:
 		vy = -MUSHROOM_APPEARING_SPEED;
+		ay = 0;
+		vx = 0;
 		break;
 
 	//If 

@@ -36,7 +36,7 @@ protected:
 
 public:
 	CMushroomBig(float x, float y);
-	virtual void SetState(int state, int nx = 0);
+	virtual void SetState(int state, int nx = 1);
 	virtual int GetScoresGivenWhenHit() { return 1000; }
 };
 
