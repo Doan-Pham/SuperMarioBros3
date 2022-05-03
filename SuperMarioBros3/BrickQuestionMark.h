@@ -14,6 +14,9 @@
 #define BRICK_STATE_NORMAL 100
 #define BRICK_STATE_HIT_BY_MARIO 200
 
+#define BRICK_SCORES_GIVEN_WHEN_HIT
+#define BRICK_COINS_GIVEN_WHEN_HIT
+
 class CBrickQuestionMark : public CBrick
 {
 protected:
@@ -22,6 +25,7 @@ protected:
 
 	bool isHiddenItemAppeared;
 	vector<CItem*> hiddenItems;
+	int hiddenItemToDropIndex;
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -32,8 +36,16 @@ protected:
 public:
 	CBrickQuestionMark(float x, float y);
 
-	virtual int GetScoresGivenWhenHit() { return 100; }
-	virtual int GetCoinsGivenWhenHit() { return 1; }
+	virtual int GetScoresGivenWhenHit() 
+	{
+		if (hiddenItems.size() > 0) return 0;
+		return BRICK_SCORES_GIVEN_WHEN_HIT;
+	}
+	virtual int GetCoinsGivenWhenHit() 
+	{
+		if (hiddenItems.size() > 0) return 0;
+		return BRICK_COINS_GIVEN_WHEN_HIT;
+	}
 
 	virtual void SetState(int state);
 	virtual void AddHiddenItem(CItem* item) { hiddenItems.push_back(item); }

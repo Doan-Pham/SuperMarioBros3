@@ -4,8 +4,8 @@ CBrickQuestionMark::CBrickQuestionMark(float x, float y) : CBrick(x, y)
 {
 	y_original = this->y;
 	isHiddenItemAppeared = false;
+	hiddenItemToDropIndex = 0;
 	SetState(BRICK_STATE_NORMAL);
-	
 }
 
 void CBrickQuestionMark::Render()
@@ -25,9 +25,9 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	//Adjust vy so that the brick won't go past the original postion when falling down after
 	//bouncing up
-	if (y + vy*dt > y_original)
+	if (y + vy * dt > y_original)
 	{
-		vy = (y_original - y)/dt;
+		vy = (y_original - y) / dt;
 	}
 	y += vy * dt;
 
@@ -43,10 +43,8 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
 			}
 			else
-			{
-				for (int i = 0; i < hiddenItems.size(); i++)
-					hiddenItems[i]->SetState(MUSHROOM_STATE_APPEARING);
-			}
+				hiddenItems[hiddenItemToDropIndex]->SetState(MUSHROOM_STATE_APPEARING);
+
 			isHiddenItemAppeared = true;
 		}
 		return;
@@ -62,6 +60,14 @@ void CBrickQuestionMark::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny < 0 && e->nx == 0)
 	{
 		SetState(BRICK_STATE_HIT_BY_MARIO);
+		CMario* mario = dynamic_cast<CMario*>(e->obj);
+
+		//TODO: This is still hardcoded because there's no further logic yet
+		//One possible solution is to create hiddenItem at run-time
+		if (hiddenItems.size() > 1 && mario->GetLevel() != MARIO_LEVEL_SMALL)
+		{
+			hiddenItemToDropIndex = 1;
+		}
 	}
 	//DebugOutTitle(L"Brick Question Mark state is: %d \n",
 	//	isContentTaken);
