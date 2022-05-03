@@ -2,6 +2,7 @@
 
 #include "Item.h"
 #include "Goomba.h"
+#include "BrickQuestionMark.h"
 
 #define ID_ANI_MUSHROOM_MOVING 4110
 
@@ -22,7 +23,7 @@ class CMushroomBig : public CItem
 protected:
 	float ax;
 	float ay;
-	bool isHidden;
+	float y_destination;
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -31,6 +32,8 @@ protected:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
+
+	virtual bool IsHidden() { return (state == MUSHROOM_STATE_HIDING); }
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
