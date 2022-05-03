@@ -22,8 +22,10 @@ void CMushroomBig::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// container brick
 	if (y + vy * dt < y_destination)
 	{
-		vy = ( y - y_destination) / dt;
+		vy = (y_destination - y) / dt;
 	}
+
+	//DebugOutTitle(L"x : %0.5f, y :%0.5f, vx :%0.5f, vy :%0.5f", x, y, vx, vy);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -40,20 +42,17 @@ void CMushroomBig::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
+	if (y == y_destination) SetState(MUSHROOM_STATE_MOVING);;
 }
 
 void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CGoomba*>(e->obj)) return;
-	if (dynamic_cast<CBrickQuestionMark*>(e->obj))
-	{
-		SetState(MUSHROOM_STATE_MOVING);
-	}
+
 	if (e->ny != 0)
 	{
 		vy = 0;
-		
 	}
 	else if (e->nx != 0)
 	{
@@ -78,7 +77,7 @@ void CMushroomBig::SetState(int state)
 	case MUSHROOM_STATE_MOVING:
 		// If mario hits the brick more on the left side, mushroom moves to the right
 		// and vice versa
-		vx =  -nx * MUSHROOM_MOVING_SPEED;
+		vx = -nx * MUSHROOM_MOVING_SPEED;
 		ay = MUSHROOM_GRAVITY;
 		break;
 	}
