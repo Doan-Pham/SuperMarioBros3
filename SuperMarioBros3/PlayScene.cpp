@@ -458,7 +458,29 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-		case OBJECT_TYPE_BRICK: obj = new CBrickQuestionMark(x, y); break;
+		case OBJECT_TYPE_BRICK: 
+		{
+			CBrickQuestionMark* newBrick = new CBrickQuestionMark(x, y);
+			if( atoi(currentElementObject->FirstChildElement("properties")
+				->FirstChildElement("property")->Attribute("value")) == 0) return;
+			vector<LPGAMEOBJECT>::iterator it;
+			for (it = objects.end()-1; it != objects.begin(); it--)
+			{
+				LPGAMEOBJECT o = *it;
+				if (dynamic_cast<CItem*>(o))
+				{
+					float item_x, item_y;
+					o->GetPosition(item_x, item_y);
+					if ((x == item_x) && (y = item_y))
+					{
+						newBrick->AddHiddenItem((CItem*)o);
+					}
+				}
+			}
+
+			obj = newBrick;
+			break;
+		}
 
 		case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
@@ -502,7 +524,7 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (!objects[i]->IsHidden())
-		coObjects.push_back(objects[i]);
+			coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
