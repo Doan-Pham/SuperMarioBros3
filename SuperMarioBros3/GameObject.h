@@ -28,10 +28,6 @@ protected:
 
 	int state;
 
-	//If an object is hidden, player has to hit the container for that hidden object first to
-	//make that object appear, only then mario can collide with that hidden object
-	bool isHidden;
-
 	bool isDeleted; 
 
 public: 
@@ -41,9 +37,6 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
-
-	virtual void UnHide() { this->isHidden = false; }
-	bool IsHidden() { return isHidden; }
 
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
@@ -72,6 +65,10 @@ public:
 	
 	// Is this object blocking other object? If YES, collision framework will automatically push the other object
 	virtual int IsBlocking() { return 1; }
+
+	//If an object is hidden, player has to hit the container for that hidden object first to
+	//make that object appear, only then mario can collide with that hidden object
+	virtual bool IsHidden() { return 0; }
 
 	//The amount of scores and coins an object gives when hit/destroyed
 	virtual int GetScoresGivenWhenHit() { return 0; }
