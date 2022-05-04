@@ -48,7 +48,10 @@ void CMushroomBig::OnNoCollision(DWORD dt)
 void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
+
+	//TODO: Need a more general cast than this, because there will many more enemies
 	if (dynamic_cast<CGoomba*>(e->obj)) return;
+	if (dynamic_cast<CMario*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
