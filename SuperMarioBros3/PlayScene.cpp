@@ -13,7 +13,9 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Coin.h"
-#include "Platform.h"
+
+#include "PlatformTile.h"
+#include "PlatformOneLayer.h"
 
 
 #include "SampleKeyEventHandler.h"
@@ -448,18 +450,22 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		case OBJECT_TYPE_PLATFORM:
 		{
 
-			float cell_width = 16;
-			float cell_height = 16;
-			int length = atof(currentElementObject->Attribute("width")) / 16;
-			int sprite_begin = 31111;
-			int sprite_middle = 31111;
-			int sprite_end = 31111;
+			//float cell_width = 16;
+			//float cell_height = 16;
+			//int length = atof(currentElementObject->Attribute("width")) / 16;
+			//int sprite_begin = 31111;
+			//int sprite_middle = 31111;
+			//int sprite_end = 31111;
 
-			obj = new CPlatform(
-				x, y,
-				cell_width, cell_height, length,
-				sprite_begin, sprite_middle, sprite_end
-			);
+			//obj = new CPlatformOneLayer(
+			//	x, y,
+			//	cell_width, cell_height, length,
+			//	sprite_begin, sprite_middle, sprite_end
+			//);
+
+			int height = atof(currentElementObject->Attribute("height")) ;
+			int width = atof(currentElementObject->Attribute("width")) ;
+			obj = new CPlatformTile(x, y, height, width);
 			//obj->SetPosition(x, y);
 
 			break;

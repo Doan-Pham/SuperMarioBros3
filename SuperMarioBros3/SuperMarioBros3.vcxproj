@@ -162,6 +162,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
     <ClCompile Include="PlatformOneLayer.cpp" />
+    <ClCompile Include="PlatformTile.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
     <ClInclude Include="PlatformOneLayer.h" />
+    <ClInclude Include="PlatformTile.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
