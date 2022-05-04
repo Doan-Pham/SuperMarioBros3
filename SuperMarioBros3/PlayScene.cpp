@@ -48,6 +48,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 #define MAX_SCENE_LINE 1024
 
+#define COORDINATE_ADJUST_TO_COMPATIBLE_WITH_TILED 8
 
 void CPlayScene::Load()
 {
@@ -450,23 +451,17 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		case OBJECT_TYPE_PLATFORM:
 		{
 
-			//float cell_width = 16;
-			//float cell_height = 16;
-			//int length = atof(currentElementObject->Attribute("width")) / 16;
-			//int sprite_begin = 31111;
-			//int sprite_middle = 31111;
-			//int sprite_end = 31111;
-
-			//obj = new CPlatformOneLayer(
-			//	x, y,
-			//	cell_width, cell_height, length,
-			//	sprite_begin, sprite_middle, sprite_end
-			//);
-
 			int height = atof(currentElementObject->Attribute("height")) ;
 			int width = atof(currentElementObject->Attribute("width")) ;
-			obj = new CPlatformTile(x, y, height, width);
-			//obj->SetPosition(x, y);
+
+			//The Tiled software's coordinate system uses the top-left corner convention, but
+			//our program uses the center-center one, therefore we need to adjust the input
+			//coordinates
+			obj = new CPlatformTile(
+				x + width/2 - COORDINATE_ADJUST_TO_COMPATIBLE_WITH_TILED, 
+				y + height/2 - COORDINATE_ADJUST_TO_COMPATIBLE_WITH_TILED,
+				height,
+				width);
 
 			break;
 		}
