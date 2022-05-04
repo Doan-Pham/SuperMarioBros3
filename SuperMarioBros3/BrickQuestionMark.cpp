@@ -20,21 +20,22 @@ void CBrickQuestionMark::Render()
 
 void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	vy += ay * dt;
-
-	//Adjust vy so that the brick won't go past the original postion when falling down after
-	//bouncing up
-	if (y + vy * dt > y_original)
-	{
-		vy = (y_original - y) / dt;
-	}
-	y += vy * dt;
-
-	//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
-	//	y, vy, ay);
+	
 	if (state == BRICK_STATE_HIT_BY_MARIO)
 	{
+		vy += ay * dt;
+
+		//Adjust vy so that the brick won't go past the original postion when falling down after
+		//bouncing up
+		if (y + vy * dt > y_original)
+		{
+			vy = (y_original - y) / dt;
+		}
+		y += vy * dt;
+
+		//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
+		//	y, vy, ay);
+
 		if (y == y_original && !isHiddenItemAppeared)
 		{
 			if (hiddenItems.size() == 0)
@@ -47,8 +48,8 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			isHiddenItemAppeared = true;
 		}
-		return;
 	}
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -63,14 +64,12 @@ void CBrickQuestionMark::OnCollisionWith(LPCOLLISIONEVENT e)
 		CMario* mario = dynamic_cast<CMario*>(e->obj);
 
 		//TODO: This is still hardcoded because there's no further logic yet
-		//One possible solution is to create hiddenItem at run-time
+		//One possible solution to avoid hardcoiding is to create hiddenItem at run-time
 		if (hiddenItems.size() > 1 && mario->GetLevel() != MARIO_LEVEL_SMALL)
 		{
 			hiddenItemToDropIndex = 1;
 		}
 	}
-	//DebugOutTitle(L"Brick Question Mark state is: %d \n",
-	//	isContentTaken);
 }
 
 void CBrickQuestionMark::SetState(int state)
