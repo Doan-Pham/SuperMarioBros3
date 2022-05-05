@@ -8,6 +8,7 @@
 #include "Item.h"
 #include "MushroomBig.h"
 #include "Leaf.h"
+#include "BrickQuestionMark.h"
 #include "Portal.h"
 
 #include "Collision.h"
@@ -55,6 +56,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
+	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
+		e->obj->OnCollisionWith(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }

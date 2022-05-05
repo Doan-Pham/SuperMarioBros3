@@ -57,11 +57,11 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CBrickQuestionMark::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (state == BRICK_STATE_HIT_BY_MARIO) return;
-	if (!(dynamic_cast<CMario*>(e->obj))) return;
-	if (e->ny < 0 && e->nx == 0)
+	if (!(dynamic_cast<CMario*>(e->src_obj))) return;
+	if (e->ny > 0 && e->nx == 0)
 	{
 		SetState(BRICK_STATE_HIT_BY_MARIO);
-		CMario* mario = dynamic_cast<CMario*>(e->obj);
+		CMario* mario = dynamic_cast<CMario*>(e->src_obj);
 
 		// If mario's level is equal to or higher than mario_big, then the brick returns leaf
 		// else, the brick returns the mushroom_big
