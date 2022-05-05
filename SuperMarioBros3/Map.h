@@ -10,15 +10,25 @@ class CMap
 {
 protected:
 	int id;
+	int width; //Unit: tile
+	int height; //Unit: tile
+	int tileWidth;
+	int tileHeight;
+
 	LPCWSTR mapFilePath;
 	std::vector<LPTILESET> tileSets;
 	std::vector<LPTILELAYER> tileLayers;
 
 public:
-	CMap(int id, LPCWSTR mapFilePath)
+	CMap(int id, LPCWSTR mapFilePath, int width,int height,int tileWidth,int tileHeight)
 	{
 		this->id = id;
 		this->mapFilePath = mapFilePath;
+		this->width = width;
+		this->height = height;
+		this->tileWidth = tileWidth;
+		this->tileHeight = tileHeight;
+
 	}
 
 	void Add(LPTILELAYER layer)
@@ -53,6 +63,11 @@ public:
 			mapFilePath = NULL;
 		}
 	}
+
+	void GetSize(int& width, int& height) { width = this->width, height = this->height; };
+	void GetTileSize(int& tileWidth, int& tileHeight) 
+	{
+		tileWidth = this->tileWidth, tileHeight = this->tileHeight; };
 };
 
 typedef CMap* LPMAP;

@@ -48,7 +48,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 #define MAX_SCENE_LINE 1024
 
-#define COORDINATE_ADJUST_TO_COMPATIBLE_WITH_TILED 8
+//The coordinates parsed from the Tiled software need to be adjusted to be in sync with Mario
+//because Tiled uses the top-left corner convention, while this program uses center-center 
+#define COORDINATE_SYNC_TILED 8
 
 void CPlayScene::Load()
 {
@@ -244,6 +246,11 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 
 	TiXmlElement* root = doc.FirstChildElement();
 	int mapId = -999;
+	int width = atoi(root->Attribute("width"));
+	int height = atoi(root->Attribute("height"));
+	int tileWidth = atoi(root->Attribute("tilewidth"));
+	int tileHeight = atoi(root->Attribute("tileheight"));
+
 
 	for (TiXmlElement* currentElement = root->FirstChildElement()
 		; currentElement != nullptr
@@ -255,7 +262,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 			mapId = atoi(currentElement->FirstChildElement()->Attribute("value"));
 			if (mapId == -999) DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
 
-			map = new CMap(mapId, mapFile);
+			map = new CMap(mapId, mapFile, width, height, tileWidth, tileHeight);
 			continue;
 		}
 
@@ -458,8 +465,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			//our program uses the center-center one, therefore we need to adjust the input
 			//coordinates
 			obj = new CPlatformTile(
-				x + width/2 - COORDINATE_ADJUST_TO_COMPATIBLE_WITH_TILED, 
-				y + height/2 - COORDINATE_ADJUST_TO_COMPATIBLE_WITH_TILED,
+				x + width/2 - COORDINATE_SYNC_TILED, 
+				y + height/2 - COORDINATE_SYNC_TILED,
 				height,
 				width);
 
@@ -566,13 +573,23 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
-	player->GetState();
+
+	int mapWidth, mapHeight, mapTileWidth, mapTileHeight;
+	map->GetSize(mapWidth, mapHeight);
+	map->GetTileSize(mapTileWidth, mapTileHeight);
+
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	if (cx > mapWidth * mapTileWidth - game->GetBackBufferWidth() - COORDINATE_SYNC_TILED)
+		cx = mapWidth * mapTileWidth - game->GetBackBufferWidth() - COORDINATE_SYNC_TILED;
+
 	if (cy < 0) cy = 0;
+	if (cy > mapHeight * mapTileHeight - game->GetBackBufferHeight() - COORDINATE_SYNC_TILED)
+		cy = mapHeight * mapTileHeight - game->GetBackBufferHeight() - COORDINATE_SYNC_TILED;
+
 	CGame::GetInstance()->SetCamPos(cx, cy);;
 
 	PurgeDeletedObjects();
