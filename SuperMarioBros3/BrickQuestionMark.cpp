@@ -15,7 +15,7 @@ void CBrickQuestionMark::Render()
 		animations->Get(ID_ANI_BRICK_QUESTIONMARK_NORMAL)->Render(x, y);
 	else
 		animations->Get(ID_ANI_BRICK_QUESTIONMARK_HIT)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -44,7 +44,7 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
 			}
 			else
-				hiddenItems[hiddenItemToDropIndex]->SetState(MUSHROOM_STATE_APPEARING);
+				hiddenItems[hiddenItemToDropIndex]->SetState(ITEM_STATE_APPEARING);
 
 			isHiddenItemAppeared = true;
 		}
@@ -63,11 +63,11 @@ void CBrickQuestionMark::OnCollisionWith(LPCOLLISIONEVENT e)
 		SetState(BRICK_STATE_HIT_BY_MARIO);
 		CMario* mario = dynamic_cast<CMario*>(e->obj);
 
-		//TODO: This is still hardcoded because there's no further logic yet
-		//One possible solution to avoid hardcoiding is to create hiddenItem at run-time
-		if (hiddenItems.size() > 1 && mario->GetLevel() != MARIO_LEVEL_SMALL)
+		// If mario's level is equal to or higher than mario_big, then the brick returns leaf
+		// else, the brick returns the mushroom_big
+		if (hiddenItems.size() > 1)
 		{
-			hiddenItemToDropIndex = 1;
+			hiddenItemToDropIndex = mario->GetLevel() >= MARIO_LEVELS_BASELINE;
 		}
 	}
 }

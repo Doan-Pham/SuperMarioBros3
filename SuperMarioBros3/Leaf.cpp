@@ -7,6 +7,7 @@ CLeaf::CLeaf(float x, float y) : CItem(x, y)
 	this->y_bounce_destination = y - LEAF_BOUNCE_TRAVEL_DISTANCE;
 	SetState(LEAF_STATE_HIDING);
 }
+
 void CLeaf::Render()
 {
 	if (state != LEAF_STATE_HIDING)
@@ -14,14 +15,14 @@ void CLeaf::Render()
 		if (vx <= 0) CSprites::GetInstance()->Get(ID_SPRITE_LEAF_MOVING_LEFT)->Draw(x, y);
 		else CSprites::GetInstance()->Get(ID_SPRITE_LEAF_MOVING_RIGHT)->Draw(x, y);
 	}
-		
+
 	//RenderBoundingBox();
 }
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == LEAF_STATE_HIDING) return;
-	
+
 	vy += ay * dt;
 	vx += ax * dt;
 

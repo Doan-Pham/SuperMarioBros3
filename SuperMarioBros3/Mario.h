@@ -19,6 +19,8 @@
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
+#pragma region MARIO_STATE
+
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
 #define MARIO_STATE_WALKING_RIGHT	100
@@ -32,6 +34,8 @@
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
+
+#pragma endregion
 
 
 #pragma region ANIMATION_ID
@@ -86,6 +90,14 @@
 
 
 
+// Mario has many levels like big, tanooki, raccoon,... which are defined as 1, 2, 3, 4
+// but tanooki or frog or fire is not exactly higher level than raccoon. The above numbers are
+// are just for identification, not the level's actual value. The way this baseline works is to
+// group levels according to their actual values: 
+//	+ Levels lower than baseline: Low level
+//	+ Equal: Mid level
+//	+ Higher: High level
+#define MARIO_LEVELS_BASELINE 2
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2

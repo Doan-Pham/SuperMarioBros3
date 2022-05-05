@@ -2,8 +2,9 @@
 
 #include "Brick.h"
 #include "Mario.h"
+#include "Item.h"
+
 #include "debug.h"
-#include "MushroomBig.h"
 
 #define ID_ANI_BRICK_QUESTIONMARK_NORMAL 3111
 #define ID_ANI_BRICK_QUESTIONMARK_HIT 3112
@@ -29,9 +30,9 @@ protected:
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	virtual int IsCollidable() { return 1; };
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
 	CBrickQuestionMark(float x, float y);

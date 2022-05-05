@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Item.h"
-#include "BrickQuestionMark.h"
 
 #define ID_SPRITE_LEAF_MOVING_LEFT 41311
 #define ID_SPRITE_LEAF_MOVING_RIGHT 41321
@@ -30,10 +29,8 @@ protected:
 	float y_bounce_destination;
 
 	virtual void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
-
-	virtual int IsBlocking() { return 0; }
 
 	virtual bool IsHidden() { return (state == LEAF_STATE_HIDING); }
 

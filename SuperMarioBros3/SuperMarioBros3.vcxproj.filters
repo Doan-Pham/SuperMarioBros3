@@ -64,9 +64,6 @@
     <ClCompile Include="Goomba.cpp">
       <Filter>Game Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Game Object\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Game Object\Mario</Filter>
     </ClCompile>

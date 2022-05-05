@@ -44,7 +44,7 @@ void CPlatformOneLayer::Render()
 	if (length>1)
 		s->Get(this->spriteIdEnd)->Draw(xx, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CPlatformOneLayer::GetBoundingBox(float& l, float& t, float& r, float& b)

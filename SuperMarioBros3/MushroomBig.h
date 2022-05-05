@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Item.h"
+
 #include "Goomba.h"
-#include "BrickQuestionMark.h"
+#include "Mario.h"
 
 #define ID_ANI_MUSHROOM_MOVING 4110
 

@@ -2,6 +2,9 @@
 
 #include "GameObject.h"
 
+#define ITEM_STATE_HIDING 100
+#define ITEM_STATE_APPEARING 200
+#define ITEM_STATE_MOVING 300
 
 class CItem : public CGameObject
 {
@@ -12,7 +15,5 @@ public:
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) = 0;
 	virtual int IsBlocking() { return 0; }
 	virtual void SetState(int state) {};
-	virtual int GetScoresGivenWhenHit() { return 0; }
-	virtual int GetCoinsGivenWhenHit() { return 0; }
 };
 

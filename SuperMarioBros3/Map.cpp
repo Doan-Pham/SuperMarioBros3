@@ -1,1 +1,44 @@
 #include "Map.h"
+
+CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, int tileHeight)
+{
+	this->id = id;
+	this->mapFilePath = mapFilePath;
+	this->width = width;
+	this->height = height;
+	this->tileWidth = tileWidth;
+	this->tileHeight = tileHeight;
+}
+
+void CMap::Add(LPTILELAYER layer)
+{
+	for (int i = 0; i < tileSets.size(); i++)
+		layer->AddTileSet(tileSets[i]);
+	tileLayers.push_back(layer);
+};
+
+void CMap::Render()
+{
+	for (int i = 0; i < tileLayers.size(); i++)
+		tileLayers[i]->Render();
+};
+
+void CMap::Clear()
+{
+	for (int i = 0; i < tileLayers.size(); i++)
+	{
+		tileLayers[i]->Clear();
+	}
+	tileLayers.clear();
+
+	for (int i = 0; i < tileSets.size(); i++)
+	{
+		if (tileSets[i] != nullptr) delete tileSets[i];
+	}
+	tileSets.clear();
+
+	if (mapFilePath != nullptr)
+	{
+		mapFilePath = NULL;
+	}
+}

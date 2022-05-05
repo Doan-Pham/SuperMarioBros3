@@ -29,6 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ",x,y,vy);
 }
 
 void CMario::OnNoCollision(DWORD dt)
