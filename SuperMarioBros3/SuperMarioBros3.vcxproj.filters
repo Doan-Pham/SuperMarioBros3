@@ -34,26 +34,8 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Graphics\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Game Objects\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Game Objects\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlatformOneLayer.cpp">
-      <Filter>Game Objects\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Game Objects\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Game Objects\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Game Objects\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Game Objects</Filter>
+      <Filter>Game Object</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
@@ -79,20 +61,38 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Helper\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BrickQuestionMark.cpp">
-      <Filter>Game Objects\Source Files</Filter>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Game Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
-      <Filter>Game Objects\Source Files</Filter>
+      <Filter>Game Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="MushroomBig.cpp">
-      <Filter>Game Objects\Source Files</Filter>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Game Object\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="Leaf.cpp">
-      <Filter>Game Objects\Source Files</Filter>
+    <ClCompile Include="PlatformOneLayer.cpp">
+      <Filter>Game Object\Platform</Filter>
     </ClCompile>
     <ClCompile Include="PlatformTile.cpp">
-      <Filter>Game Objects\Source Files</Filter>
+      <Filter>Game Object\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Game Object\Brick</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickQuestionMark.cpp">
+      <Filter>Game Object\Brick</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Game Object\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Game Object\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>Game Object\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MushroomBig.cpp">
+      <Filter>Game Object\Item\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,26 +129,8 @@
     <ClInclude Include="Textures.h">
       <Filter>Graphics\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Game Objects\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Game Objects\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Game Objects\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mario.h">
-      <Filter>Game Objects\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformOneLayer.h">
-      <Filter>Game Objects\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>Game Objects\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Game Objects</Filter>
+      <Filter>Game Object</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
@@ -180,20 +162,38 @@
     <ClInclude Include="AssetIDs.h">
       <Filter>Helper\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BrickQuestionMark.h">
-      <Filter>Game Objects\Header Files</Filter>
+    <ClInclude Include="Goomba.h">
+      <Filter>Game Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
-      <Filter>Game Objects\Header Files</Filter>
+      <Filter>Game Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="MushroomBig.h">
-      <Filter>Game Objects\Header Files</Filter>
+    <ClInclude Include="Mario.h">
+      <Filter>Game Object\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="Leaf.h">
-      <Filter>Game Objects\Header Files</Filter>
+    <ClInclude Include="PlatformOneLayer.h">
+      <Filter>Game Object\Platform</Filter>
     </ClInclude>
     <ClInclude Include="PlatformTile.h">
-      <Filter>Game Objects\Header Files</Filter>
+      <Filter>Game Object\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Game Object\Brick</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickQuestionMark.h">
+      <Filter>Game Object\Brick</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Game Object\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Game Object\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>Game Object\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MushroomBig.h">
+      <Filter>Game Object\Item\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,15 +224,6 @@
     <Filter Include="Graphics\Header Files">
       <UniqueIdentifier>{a952b8c4-84ff-4781-955f-660ee89cad65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Objects">
-      <UniqueIdentifier>{56b8d847-69cf-4809-92d6-686a6e40e3b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game Objects\Header Files">
-      <UniqueIdentifier>{2f0b1d01-d51b-4307-8a6e-e2ec7e75ac05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game Objects\Source Files">
-      <UniqueIdentifier>{dd4fe852-c23b-49cc-bf9d-d1c335f48332}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Gameplay">
       <UniqueIdentifier>{62ba0a75-10a4-4551-a7e9-9fdd09120572}</UniqueIdentifier>
     </Filter>
@@ -259,6 +250,33 @@
     </Filter>
     <Filter Include="Helper\Source Files">
       <UniqueIdentifier>{eb1c354d-064c-4370-94fe-33b90ca9ab2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object">
+      <UniqueIdentifier>{56b8d847-69cf-4809-92d6-686a6e40e3b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Enemy">
+      <UniqueIdentifier>{145ec389-f7e3-45dd-b4cf-7029aaec0551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Item">
+      <UniqueIdentifier>{b755f119-4a82-4617-a4a0-881916126c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Mario">
+      <UniqueIdentifier>{ba27269c-1108-4b70-a74c-1490144678a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Platform">
+      <UniqueIdentifier>{ce51d486-e865-472d-b67f-3c0684d2d94e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Brick">
+      <UniqueIdentifier>{830277f7-87be-4888-b74c-45d5a3c4991b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Other">
+      <UniqueIdentifier>{f40e9030-4501-40ab-a759-a6c69f59d656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Item\Header Files">
+      <UniqueIdentifier>{bd5961c7-8767-4670-ab43-d9947663c4ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Item\Source Files">
+      <UniqueIdentifier>{397e0bdb-3b16-4de3-b697-ca6b072f63c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
