@@ -37,7 +37,7 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 #include "Brick.h"
 #include "Goomba.h"
 #include "Coin.h"
-#include "Platform.h"
+#include "PlatformOneLayer.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -72,7 +72,7 @@ void Update(DWORD dt)
 
 	int score, coin;
 	CGame::GetInstance()->GetScoreCoin(score, coin);
-	DebugOutTitle(L"scores: %i, coins: %i", score, coin);
+	//DebugOutTitle(L"scores: %i, coins: %i", score, coin);
 }
 
 /*

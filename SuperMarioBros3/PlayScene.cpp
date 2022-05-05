@@ -50,7 +50,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 //The coordinates parsed from the Tiled software need to be adjusted to be in sync with Mario
 //because Tiled uses the top-left corner convention, while this program uses center-center 
-#define COORDINATE_SYNC_TILED 8
+#define COORDINATE_ADJUST_SYNC_TILED 8
 
 void CPlayScene::Load()
 {
@@ -465,8 +465,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			//our program uses the center-center one, therefore we need to adjust the input
 			//coordinates
 			obj = new CPlatformTile(
-				x + width/2 - COORDINATE_SYNC_TILED, 
-				y + height/2 - COORDINATE_SYNC_TILED,
+				x + width/2 - COORDINATE_ADJUST_SYNC_TILED, 
+				y + height/2 - COORDINATE_ADJUST_SYNC_TILED,
 				height,
 				width);
 
@@ -570,25 +570,48 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
+
+	CGame* game = CGame::GetInstance();
 
 	int mapWidth, mapHeight, mapTileWidth, mapTileHeight;
 	map->GetSize(mapWidth, mapHeight);
 	map->GetTileSize(mapTileWidth, mapTileHeight);
 
-	CGame* game = CGame::GetInstance();
+	float mapLeftEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+	float mapTopEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+	float mapRightEdge = mapWidth * mapTileWidth - COORDINATE_ADJUST_SYNC_TILED;
+	float mapBottomEdge = mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED;
+
+
+	float cx, cy;
+	player->GetPosition(cx, cy);
+
+	// Adjust mario's position to prevent him from going beyond the map's edges
+	// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
+	// mario will get split in half when he comes to the edges.
+	if (cx < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED) 
+		player->SetPosition(mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED, cy);
+	if (cx > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player->SetPosition(mapRightEdge - COORDINATE_ADJUST_SYNC_TILED, cy);
+
+	if (cy < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED) 
+		player->SetPosition(cx, mapTopEdge + COORDINATE_ADJUST_SYNC_TILED);
+	if (cy > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player->SetPosition(cx, mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED);
+
+
+	// Adjust camera's position so it won't go past the map's edge
+	// Update camera to follow mario
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
-	if (cx < 0) cx = 0;
-	if (cx > mapWidth * mapTileWidth - game->GetBackBufferWidth() - COORDINATE_SYNC_TILED)
-		cx = mapWidth * mapTileWidth - game->GetBackBufferWidth() - COORDINATE_SYNC_TILED;
+	if (cx < mapLeftEdge) cx = mapLeftEdge;
+	if (cx > mapRightEdge - game->GetBackBufferWidth()) 
+		cx = mapRightEdge - game->GetBackBufferWidth();
 
-	if (cy < 0) cy = 0;
-	if (cy > mapHeight * mapTileHeight - game->GetBackBufferHeight() - COORDINATE_SYNC_TILED)
-		cy = mapHeight * mapTileHeight - game->GetBackBufferHeight() - COORDINATE_SYNC_TILED;
+	if (cy < mapTopEdge) cy = mapTopEdge;
+	if (cy > mapBottomEdge - game->GetBackBufferHeight())
+		cy = mapBottomEdge - game->GetBackBufferHeight();
 
 	CGame::GetInstance()->SetCamPos(cx, cy);;
 
