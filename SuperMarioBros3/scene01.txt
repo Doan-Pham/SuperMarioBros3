@@ -1,5 +1,5 @@
 [ASSETSXMLTEST]
-spritesheet_bricks.xml
+spritesheet_block.xml
 spritesheet_item.xml
 
 # list of object assets to load in this scene, for some, only load their animations

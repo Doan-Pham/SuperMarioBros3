@@ -99,6 +99,7 @@ void CPlayScene::_ParseSection_ASSETS(string line)
 
 	LoadAssets(path.c_str());
 }
+
 void CPlayScene::_ParseSection_ASSETSXML(string line)
 {
 	vector<string> tokens = split(line);
@@ -133,6 +134,7 @@ void CPlayScene::_ParseSection_ASSETSXML(string line)
 	}
 
 }
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -455,25 +457,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-		case OBJECT_TYPE_PLATFORM:
-		{
-
-			int height = atof(currentElementObject->Attribute("height")) ;
-			int width = atof(currentElementObject->Attribute("width")) ;
-
-			//The Tiled software's coordinate system uses the top-left corner convention, but
-			//our program uses the center-center one, therefore we need to adjust the input
-			//coordinates
-			obj = new CPlatformTile(
-				x + width/2 - COORDINATE_ADJUST_SYNC_TILED, 
-				y + height/2 - COORDINATE_ADJUST_SYNC_TILED,
-				height,
-				width);
-
-			break;
-		}
-
-		case OBJECT_TYPE_BRICK: 
+		case OBJECT_TYPE_BLOCK:
 		{
 			CBrickQuestionMark* newBrick = new CBrickQuestionMark(x, y);
 
@@ -499,9 +483,55 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-		case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+		case OBJECT_TYPE_ITEM:
+		{
+			int objectSubTypeId = atoi(currentElementObject->FirstChildElement("properties")
+				->FirstChildElement("property")->Attribute("value"));
+			switch (objectSubTypeId)
+			{
+			case OBJECT_TYPE_ITEM_MUSHROOM_BIG:
+			{
+				obj = new CMushroomBig(x, y);
+				break;
+			}
+			case OBJECT_TYPE_ITEM_LEAF:
+			{
+				obj = new CLeaf(x, y);
+				break;
+			}
+			case OBJECT_TYPE_ITEM_COIN:
+			{
+				obj = new CCoin(x, y);
+				break;
+			}
+			default:
+				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
+				return;
+				break;
+			}
+			break;
+		}
 
-		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
+		case OBJECT_TYPE_PLATFORM:
+		{
+
+			int height = atof(currentElementObject->Attribute("height")) ;
+			int width = atof(currentElementObject->Attribute("width")) ;
+
+			//The Tiled software's coordinate system uses the top-left corner convention, but
+			//our program uses the center-center one, therefore we need to adjust the input
+			//coordinates
+			obj = new CPlatformTile(
+				x + width/2 - COORDINATE_ADJUST_SYNC_TILED, 
+				y + height/2 - COORDINATE_ADJUST_SYNC_TILED,
+				height,
+				width);
+
+			break;
+		}
+
+
+		case OBJECT_TYPE_ENEMY: obj = new CGoomba(x, y); break;
 
 		case OBJECT_TYPE_PORTAL:
 		{
@@ -514,29 +544,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-		case OBJECT_TYPE_ITEM:
-		{
-			int objectSubTypeId = atoi(currentElementObject->FirstChildElement("properties")
-				->FirstChildElement("property")->Attribute("value"));
-			switch (objectSubTypeId)
-			{
-			case 1:
-			{
-				obj = new CMushroomBig(x, y);
-				break;
-			}
-			case 2:
-			{
-				obj = new CLeaf(x, y);
-				break;
-			}
-			default:
-				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
-				return;
-				break;
-			}
-			break;
-		}
+
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

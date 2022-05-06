@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="97">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="144">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -106,89 +106,156 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Player">
+ <objectgroup id="4" name="Player" visible="0">
   <properties>
-   <property name="objectTypeId" type="int" value="0"/>
+   <property name="objectTypeId" type="int" value="10"/>
   </properties>
   <object id="12" x="32" y="384">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform">
+ <objectgroup id="3" name="Platform" visible="0">
   <properties>
-   <property name="objectTypeId" value="5"/>
+   <property name="objectTypeId" value="50"/>
   </properties>
-  <object id="1" x="0" y="416" width="624" height="16"/>
-  <object id="4" x="624" y="400" width="464" height="32"/>
-  <object id="3" x="352" y="368" width="32" height="48"/>
-  <object id="15" x="1152" y="416" width="352" height="16"/>
-  <object id="16" x="1536" y="416" width="80" height="16"/>
-  <object id="17" x="1664" y="416" width="576" height="16"/>
-  <object id="18" x="2256" y="416" width="560" height="16"/>
-  <object id="19" x="1488" y="176" width="208" height="16"/>
-  <object id="20" x="1408" y="192" width="64" height="16"/>
-  <object id="21" x="1504" y="336" width="32" height="16"/>
-  <object id="22" x="1584" y="384" width="32" height="16"/>
-  <object id="23" x="1665" y="385" width="32" height="16"/>
-  <object id="24" x="1568" y="400" width="48" height="16"/>
-  <object id="26" x="1664" y="400" width="48" height="16"/>
-  <object id="27" x="1792" y="384" width="32" height="32"/>
-  <object id="28" x="1856" y="368" width="32" height="48"/>
-  <object id="29" x="1600" y="368" width="16" height="16"/>
-  <object id="30" x="1664" y="368" width="16" height="16"/>
-  <object id="31" x="2320" y="384" width="32" height="32"/>
-  <object id="32" x="2256" y="368" width="32" height="48"/>
-  <object id="33" x="2256" y="112" width="32" height="208"/>
-  <object id="68" x="1808" y="96" width="16" height="16"/>
-  <object id="69" x="1840" y="128" width="16" height="16"/>
-  <object id="82" x="240" y="368" width="16" height="16"/>
+  <object id="1" type="Platform" x="0" y="416" width="624" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="4" type="Platform" x="624" y="400" width="464" height="32">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="3" type="Platform" x="352" y="368" width="32" height="48">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="15" type="Platform" x="1152" y="416" width="352" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="16" type="Platform" x="1536" y="416" width="80" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="17" type="Platform" x="1664" y="416" width="576" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="18" type="Platform" x="2256" y="416" width="560" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="19" type="Platform" x="1488" y="176" width="208" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="20" type="Platform" x="1408" y="192" width="64" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="21" type="Platform" x="1504" y="336" width="32" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="22" type="Platform" x="1584" y="384" width="32" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="23" type="Platform" x="1665" y="385" width="32" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="24" type="Platform" x="1568" y="400" width="48" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="26" type="Platform" x="1664" y="400" width="48" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="27" type="Platform" x="1792" y="384" width="32" height="32">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="28" type="Platform" x="1856" y="368" width="32" height="48">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="29" type="Platform" x="1600" y="368" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="30" type="Platform" x="1664" y="368" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="31" type="Platform" x="2320" y="384" width="32" height="32">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="32" type="Platform" x="2256" y="368" width="32" height="48">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
+  <object id="33" type="Platform" x="2256" y="112" width="32" height="208">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="51"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="6" name="Coins">
+ <objectgroup id="7" name="Enemies" visible="0">
   <properties>
-   <property name="objectTypeId" type="int" value="4"/>
+   <property name="objectTypeId" type="int" value="60"/>
   </properties>
-  <object id="46" x="1072" y="320" width="16" height="16"/>
-  <object id="47" x="1104" y="288" width="16" height="16"/>
-  <object id="48" x="1136" y="256" width="16" height="16"/>
-  <object id="49" x="1168" y="224" width="16" height="16"/>
-  <object id="50" x="1200" y="192" width="16" height="16"/>
-  <object id="51" x="1328" y="80" width="16" height="16"/>
-  <object id="52" x="1344" y="80" width="16" height="16"/>
-  <object id="53" x="1360" y="80" width="16" height="16"/>
-  <object id="54" x="1472" y="112" width="16" height="16"/>
-  <object id="55" x="1488" y="112" width="16" height="16"/>
-  <object id="56" x="1536" y="128" width="16" height="16"/>
-  <object id="57" x="1552" y="128" width="16" height="16"/>
-  <object id="58" x="1568" y="128" width="16" height="16"/>
-  <object id="59" x="1584" y="128" width="16" height="16"/>
-  <object id="60" x="1616" y="112" width="16" height="16"/>
-  <object id="61" x="1632" y="112" width="16" height="16"/>
-  <object id="62" x="1648" y="112" width="16" height="16"/>
-  <object id="63" x="1664" y="112" width="16" height="16"/>
-  <object id="64" x="1696" y="144" width="16" height="16"/>
-  <object id="65" x="1728" y="112" width="16" height="16"/>
-  <object id="67" x="1760" y="128" width="16" height="16"/>
- </objectgroup>
- <objectgroup id="7" name="Goombas">
-  <properties>
-   <property name="objectTypeId" type="int" value="2"/>
-  </properties>
-  <object id="70" x="232" y="384">
+  <object id="70" type="Enemy" x="232" y="384">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="61"/>
+   </properties>
    <point/>
   </object>
-  <object id="72" x="536" y="384">
+  <object id="72" type="Enemy" x="536" y="384">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="61"/>
+   </properties>
    <point/>
   </object>
-  <object id="73" x="840" y="368">
+  <object id="73" type="Enemy" x="840" y="368">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="61"/>
+   </properties>
    <point/>
   </object>
-  <object id="74" x="888" y="368">
+  <object id="74" type="Enemy" x="888" y="368">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="61"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Portals">
+ <objectgroup id="8" name="Portals" visible="0">
   <properties>
-   <property name="objectTypeId" type="int" value="50"/>
+   <property name="objectTypeId" type="int" value="0"/>
   </properties>
   <object id="76" x="224" y="112" width="128" height="48">
    <properties>
@@ -198,49 +265,196 @@
  </objectgroup>
  <objectgroup id="9" name="Items">
   <properties>
-   <property name="objectTypeId" type="int" value="6"/>
+   <property name="objectTypeId" type="int" value="30"/>
   </properties>
   <object id="84" type="Item" x="240" y="304" width="16" height="16">
    <properties>
-    <property name="objectSubTypeId" type="int" value="2"/>
+    <property name="objectSubTypeId" type="int" value="33"/>
    </properties>
   </object>
   <object id="78" type="Item" x="240" y="304" width="16" height="16">
    <properties>
-    <property name="objectSubTypeId" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="31"/>
    </properties>
   </object>
   <object id="95" type="Item" x="656" y="384" width="16" height="16">
    <properties>
-    <property name="objectSubTypeId" type="int" value="2"/>
+    <property name="objectSubTypeId" type="int" value="33"/>
    </properties>
   </object>
   <object id="96" type="Item" x="656" y="384" width="16" height="16">
    <properties>
-    <property name="objectSubTypeId" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="31"/>
+   </properties>
+  </object>
+  <object id="97" type="Item" x="1072" y="320" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="121" type="Item" x="1104" y="288" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="122" type="Item" x="1136" y="256" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="123" type="Item" x="1168" y="224" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="124" type="Item" x="1200" y="192" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="125" type="Item" x="1328" y="80" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="126" type="Item" x="1344" y="80" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="127" type="Item" x="1360" y="80" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="128" type="Item" x="1472" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="129" type="Item" x="1488" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="131" type="Item" x="1536" y="128" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="132" type="Item" x="1552" y="128" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="133" type="Item" x="1568" y="128" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="134" type="Item" x="1584" y="128" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="135" type="Item" x="1616" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="136" type="Item" x="1632" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="137" type="Item" x="1648" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="138" type="Item" x="1664" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="139" type="Item" x="1696" y="144" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="140" type="Item" x="1728" y="112" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="141" type="Item" x="1760" y="128" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="142" type="Item" x="1808" y="96" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
+   </properties>
+  </object>
+  <object id="143" type="Item" x="1840" y="128" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="45"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Bricks">
+ <objectgroup id="5" name="Blocks" visible="0">
   <properties>
-   <property name="objectTypeId" type="int" value="1"/>
+   <property name="objectTypeId" type="int" value="20"/>
   </properties>
   <object id="85" type="Brick_QuestionMark" x="240" y="304" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="87" x="176" y="352" width="16" height="16"/>
-  <object id="88" x="192" y="352" width="16" height="16"/>
-  <object id="89" x="224" y="304" width="16" height="16"/>
-  <object id="90" x="416" y="320" width="16" height="16"/>
-  <object id="91" x="704" y="352" width="16" height="16"/>
+  <object id="87" type="Brick_QuestionMark" x="176" y="352" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="88" type="Brick_QuestionMark" x="192" y="352" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="89" type="Brick_QuestionMark" x="224" y="304" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="90" type="Brick_QuestionMark" x="416" y="320" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="91" type="Brick_QuestionMark" x="704" y="352" width="16" height="16">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
   <object id="92" type="Brick_QuestionMark" x="656" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="93" x="1472" y="368" width="16" height="16"/>
-  <object id="94" x="1440" y="128" width="16" height="16"/>
+  <object id="93" type="Brick_QuestionMark" x="1472" y="368" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="94" type="Brick_QuestionMark" x="1440" y="128" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
