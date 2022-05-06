@@ -9,6 +9,7 @@
 #include "MushroomBig.h"
 #include "Leaf.h"
 #include "BrickQuestionMark.h"
+#include "PlatformGhost.h"
 #include "Portal.h"
 
 #include "Collision.h"
@@ -43,11 +44,13 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
-		vy = 0;
 		if (e->ny < 0) isOnPlatform = true;
+		if (dynamic_cast<CPlatformGhost*>(e->obj) && e->ny > 0);
+		vy = 0;
+		
 	}
 	else 
-	if (e->nx != 0 && e->obj->IsBlocking())
+	if (e->nx != 0 && e->obj->IsBlocking() && !(dynamic_cast<CPlatformGhost*>(e->obj)))
 	{
 		vx = 0;
 	}
@@ -57,7 +60,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
-		e->obj->OnCollisionWith(e);
+		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -112,6 +115,15 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
+
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	if (e->ny > 0 && e->nx == 0)
+	{
+		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+	}
+}
+
 
 //
 // Get animation ID for small Mario

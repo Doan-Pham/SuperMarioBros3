@@ -131,6 +131,7 @@ class CMario : public CGameObject
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -153,10 +154,7 @@ public:
 	void Render();
 	void SetState(int state);
 
-	int IsCollidable()
-	{ 
-		return (state != MARIO_STATE_DIE); 
-	}
+	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
 

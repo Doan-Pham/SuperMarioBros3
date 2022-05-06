@@ -14,6 +14,7 @@
 
 #define BRICK_STATE_NORMAL 100
 #define BRICK_STATE_HIT_BY_MARIO 200
+#define BRICK_STATE_GIVE_CONTENT 300
 
 #define BRICK_SCORES_GIVEN_WHEN_HIT 100
 #define BRICK_COINS_GIVEN_WHEN_HIT 1
@@ -24,14 +25,18 @@ protected:
 	float y_original;
 	float ay;
 
-	bool isHiddenItemAppeared;
 	vector<CItem*> hiddenItems;
 	int hiddenItemToDropIndex;
+
+	// This variable is to stop mario from making the brick bounce after its content is
+	// already given
+	bool isHitByMario;
+	bool isContentGiven;
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
 	CBrickQuestionMark(float x, float y);

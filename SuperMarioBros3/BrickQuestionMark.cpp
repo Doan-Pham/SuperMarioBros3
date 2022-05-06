@@ -3,8 +3,9 @@
 CBrickQuestionMark::CBrickQuestionMark(float x, float y) : CBrick(x, y)
 {
 	y_original = this->y;
-	isHiddenItemAppeared = false;
-	hiddenItemToDropIndex = 0;
+	hiddenItemToDropIndex = 1;
+	isHitByMario = false;
+	isContentGiven = false;
 	SetState(BRICK_STATE_NORMAL);
 }
 
@@ -16,11 +17,12 @@ void CBrickQuestionMark::Render()
 	else
 		animations->Get(ID_ANI_BRICK_QUESTIONMARK_HIT)->Render(x, y);
 	//RenderBoundingBox();
+	//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
+	//	y, vy, ay);
 }
 
 void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
 	if (state == BRICK_STATE_HIT_BY_MARIO)
 	{
 		vy += ay * dt;
@@ -36,38 +38,9 @@ void CBrickQuestionMark::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
 		//	y, vy, ay);
 
-		if (y == y_original && !isHiddenItemAppeared)
+		if (y == y_original)
 		{
-			if (hiddenItems.size() == 0)
-			{
-				CGame::GetInstance()->UpdateCoins(this->GetCoinsGivenWhenHit());
-				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
-			}
-			else
-				hiddenItems[hiddenItemToDropIndex]->SetState(ITEM_STATE_APPEARING);
-
-			isHiddenItemAppeared = true;
-		}
-	}
-
-	CCollision::GetInstance()->Process(this, dt, coObjects);
-}
-
-
-void CBrickQuestionMark::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if (state == BRICK_STATE_HIT_BY_MARIO) return;
-	if (!(dynamic_cast<CMario*>(e->src_obj))) return;
-	if (e->ny > 0 && e->nx == 0)
-	{
-		SetState(BRICK_STATE_HIT_BY_MARIO);
-		CMario* mario = dynamic_cast<CMario*>(e->src_obj);
-
-		// If mario's level is equal to or higher than mario_big, then the brick returns leaf
-		// else, the brick returns the mushroom_big
-		if (hiddenItems.size() > 1)
-		{
-			hiddenItemToDropIndex = mario->GetLevel() >= MARIO_LEVELS_BASELINE;
+			SetState(BRICK_STATE_GIVE_CONTENT);
 		}
 	}
 }
@@ -82,8 +55,29 @@ void CBrickQuestionMark::SetState(int state)
 		break;
 
 	case BRICK_STATE_HIT_BY_MARIO:
-		vy = -BRICK_QUESTION_MARK_BOUNCE_SPEED;
-		ay = BRICK_QUESTION_MARK_GRAVITY;
+		if (!isHitByMario)
+		{
+			vy = -BRICK_QUESTION_MARK_BOUNCE_SPEED;
+			ay = BRICK_QUESTION_MARK_GRAVITY;
+			isHitByMario = true;
+		}
+		break;
+
+	case BRICK_STATE_GIVE_CONTENT:
+		vy = 0;
+		ay = 0;
+		if (!isContentGiven)
+		{
+			if (hiddenItems.size() == 0)
+			{
+				CGame::GetInstance()->UpdateCoins(this->GetCoinsGivenWhenHit());
+				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
+			}
+			else
+				hiddenItems[hiddenItemToDropIndex]->SetState(ITEM_STATE_APPEARING);
+			isContentGiven = true;
+		}
+
 		break;
 	}
 }
