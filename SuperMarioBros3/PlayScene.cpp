@@ -16,7 +16,7 @@
 
 #include "PlatformTile.h"
 #include "PlatformOneLayer.h"
-
+#include "PlatformGhost.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -514,20 +514,55 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_PLATFORM:
 		{
+			int objectSubTypeId = atoi(currentElementObject->FirstChildElement("properties")
+				->FirstChildElement("property")->Attribute("value"));
+			switch (objectSubTypeId)
+			{
+			case OBJECT_TYPE_PLATFORM_TILE:
+			{
+				int height = atof(currentElementObject->Attribute("height"));
+				int width = atof(currentElementObject->Attribute("width"));
 
-			int height = atof(currentElementObject->Attribute("height")) ;
-			int width = atof(currentElementObject->Attribute("width")) ;
+				//The Tiled software's coordinate system uses the top-left corner convention, but
+				//our program uses the center-center one, therefore we need to adjust the input
+				//coordinates
+				obj = new CPlatformTile(
+					x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
+					y + height / 2 - COORDINATE_ADJUST_SYNC_TILED,
+					height,
+					width);
 
-			//The Tiled software's coordinate system uses the top-left corner convention, but
-			//our program uses the center-center one, therefore we need to adjust the input
-			//coordinates
-			obj = new CPlatformTile(
-				x + width/2 - COORDINATE_ADJUST_SYNC_TILED, 
-				y + height/2 - COORDINATE_ADJUST_SYNC_TILED,
-				height,
-				width);
+				break;
+			}
+			case OBJECT_TYPE_PLATFORM_ONE_LAYER:
+			{
+				obj = new CCoin(x, y);
+				break;
+			}
+			case OBJECT_TYPE_PLATFORM_GHOST:
+			{
+				int height = atof(currentElementObject->Attribute("height"));
+				int width = atof(currentElementObject->Attribute("width"));
 
+				//The Tiled software's coordinate system uses the top-left corner convention, but
+				//our program uses the center-center one, therefore we need to adjust the input
+				//coordinates
+				obj = new CPlatformGhost(
+					x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
+					y + height / 2 - COORDINATE_ADJUST_SYNC_TILED,
+					height,
+					width);
+
+				break;
+				break;
+			}
+			default:
+				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
+				return;
+				break;
+			}
 			break;
+
 		}
 
 

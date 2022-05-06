@@ -91,6 +91,9 @@
     <ClCompile Include="MushroomBig.cpp">
       <Filter>Game Object\Item\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformGhost.cpp">
+      <Filter>Game Object\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -191,6 +194,9 @@
     </ClInclude>
     <ClInclude Include="MushroomBig.h">
       <Filter>Game Object\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformGhost.h">
+      <Filter>Game Object\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

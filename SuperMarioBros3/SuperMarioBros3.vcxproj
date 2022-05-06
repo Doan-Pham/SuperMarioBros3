@@ -160,6 +160,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
+    <ClCompile Include="PlatformGhost.cpp" />
     <ClCompile Include="PlatformOneLayer.cpp" />
     <ClCompile Include="PlatformTile.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
+    <ClInclude Include="PlatformGhost.h" />
     <ClInclude Include="PlatformOneLayer.h" />
     <ClInclude Include="PlatformTile.h" />
     <ClInclude Include="PlayScene.h" />

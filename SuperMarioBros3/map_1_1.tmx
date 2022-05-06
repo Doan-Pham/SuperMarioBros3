@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="144">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="146">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -114,7 +114,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform" visible="0">
+ <objectgroup id="3" name="Platform">
   <properties>
    <property name="objectTypeId" value="50"/>
   </properties>
@@ -223,6 +223,11 @@
     <property name="objectSubTypeId" type="int" value="51"/>
    </properties>
   </object>
+  <object id="144" type="Platform" x="240" y="368" width="48" height="48">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="53"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="7" name="Enemies" visible="0">
   <properties>
@@ -257,13 +262,8 @@
   <properties>
    <property name="objectTypeId" type="int" value="0"/>
   </properties>
-  <object id="76" x="224" y="112" width="128" height="48">
-   <properties>
-    <property name="sceneId" type="int" value="5"/>
-   </properties>
-  </object>
  </objectgroup>
- <objectgroup id="9" name="Items">
+ <objectgroup id="9" name="Items" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="30"/>
   </properties>
