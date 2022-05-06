@@ -112,8 +112,9 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
-
 #define MARIO_UNTOUCHABLE_TIME 2500
+
+#define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CMario : public CGameObject
 {
@@ -126,12 +127,13 @@ class CMario : public CGameObject
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
-	int coin; 
+	DWORD dtTracker;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -148,7 +150,8 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
-		coin = 0;
+
+		dtTracker = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

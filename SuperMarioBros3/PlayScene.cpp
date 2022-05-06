@@ -514,6 +514,12 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_PLATFORM:
 		{
+			if (currentElementObject->FirstChildElement("properties") == NULL)
+			{
+				DebugOut(L"[ERROR] This object doesn't have subtype id \n");
+				return;
+			}
+
 			int objectSubTypeId = atoi(currentElementObject->FirstChildElement("properties")
 				->FirstChildElement("property")->Attribute("value"));
 			switch (objectSubTypeId)
@@ -541,8 +547,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			}
 			case OBJECT_TYPE_PLATFORM_GHOST:
 			{
-				int height = atof(currentElementObject->Attribute("height"));
-				int width = atof(currentElementObject->Attribute("width"));
+				float height = atof(currentElementObject->Attribute("height"));
+				float width = atof(currentElementObject->Attribute("width"));
 
 				//The Tiled software's coordinate system uses the top-left corner convention, but
 				//our program uses the center-center one, therefore we need to adjust the input
@@ -553,7 +559,6 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 					height,
 					width);
 
-				break;
 				break;
 			}
 			default:

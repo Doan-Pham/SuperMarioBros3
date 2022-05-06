@@ -14,7 +14,7 @@
 
 #include "Collision.h"
 
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
@@ -22,7 +22,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
@@ -31,7 +31,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ",x,y,vy);
+	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ", x, y, vy);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -45,16 +45,16 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		if (e->ny < 0) isOnPlatform = true;
-		if (dynamic_cast<CPlatformGhost*>(e->obj) && e->ny > 0);
 		vy = 0;
-		
-	}
-	else 
-	if (e->nx != 0 && e->obj->IsBlocking() && !(dynamic_cast<CPlatformGhost*>(e->obj)))
-	{
-		vx = 0;
-	}
 
+	}
+	else
+		if (e->nx != 0 && e->obj->IsBlocking())
+		{
+			vx = 0;
+		}
+	if (dynamic_cast<CPlatformGhost*>(e->obj))
+		OnCollisionWithPlatformGhost(e);
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CItem*>(e->obj))
@@ -124,6 +124,37 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0)
+	{
+		isOnPlatform = true;
+
+		CPlatformGhost* platform = dynamic_cast<CPlatformGhost*>(e->obj);
+		float platform_l, platform_t, platform_r, platform_b;
+
+		platform->GetBoundingBox(platform_l, platform_t, platform_r, platform_b);
+
+		float marioCurBBoxHeight;
+		if (level >= MARIO_LEVEL_BIG)
+		{
+			if (isSitting)
+				marioCurBBoxHeight = MARIO_BIG_SITTING_BBOX_HEIGHT;
+			else
+				marioCurBBoxHeight = MARIO_BIG_BBOX_HEIGHT;
+		}
+		else
+			marioCurBBoxHeight = MARIO_SMALL_BBOX_HEIGHT;
+
+		// Have to directly change mario's y because ghost platform is non-blocking, so the 
+		// collisions with it are not handled by the framework (inside that, the coordinates
+		// of the src_obj that collided with blocking things are automatically adjusted
+		// to be the correct numbers using some calculations with BLOCK_PUSH_FACTOR)
+		y = platform_t - marioCurBBoxHeight / 2 - BLOCK_PUSH_FACTOR_GHOST_PLATFORM;
+
+		vy = 0;
+	}
+}
 
 //
 // Get animation ID for small Mario
@@ -273,7 +304,7 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE) return; 
+	if (this->state == MARIO_STATE_DIE) return;
 
 	switch (state)
 	{
@@ -305,10 +336,10 @@ void CMario::SetState(int state)
 		if (isSitting) break;
 		//if (isOnPlatform)
 		//{
-			if (abs(this->vx) == MARIO_RUNNING_SPEED)
-				vy = -MARIO_JUMP_RUN_SPEED_Y;
-			else
-				vy = -MARIO_JUMP_SPEED_Y;
+		if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			vy = -MARIO_JUMP_RUN_SPEED_Y;
+		else
+			vy = -MARIO_JUMP_SPEED_Y;
 		//}
 		break;
 
@@ -322,7 +353,7 @@ void CMario::SetState(int state)
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
 			vx = 0; vy = 0.0f;
-			y +=MARIO_SIT_HEIGHT_ADJUST;
+			y += MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
 
@@ -350,9 +381,9 @@ void CMario::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level==MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL_BIG)
 	{
 		if (isSitting)
 		{
@@ -361,18 +392,18 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
 		}
-		else 
+		else
 		{
-			left = x - MARIO_BIG_BBOX_WIDTH/2;
-			top = y - MARIO_BIG_BBOX_HEIGHT/2;
+			left = x - MARIO_BIG_BBOX_WIDTH / 2;
+			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
 	else
 	{
-		left = x - MARIO_SMALL_BBOX_WIDTH/2;
-		top = y - MARIO_SMALL_BBOX_HEIGHT/2;
+		left = x - MARIO_SMALL_BBOX_WIDTH / 2;
+		top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
 		right = left + MARIO_SMALL_BBOX_WIDTH;
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
 	}
