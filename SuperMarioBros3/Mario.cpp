@@ -3,6 +3,7 @@
 
 #include "Mario.h"
 #include "Game.h"
+#include "PlayScene.h"
 
 #include "Goomba.h"
 #include "Item.h"
@@ -118,8 +119,25 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
+
 	if (e->ny > 0 && e->nx == 0)
 	{
+		CBrickQuestionMark* brick = dynamic_cast<CBrickQuestionMark*>(e->obj);
+		if (brick->IsHidingItem())
+		{
+			float brick_x, brick_y;
+			brick->GetPosition(brick_x, brick_y);
+
+			CItem* hiddenItem;
+
+			if (level == MARIO_LEVEL_SMALL)
+				hiddenItem = new CMushroomBig(brick_x, brick_y);
+			else
+				hiddenItem = new CLeaf(brick_x, brick_y);
+
+			brick->AddHiddenItem(hiddenItem);
+			this->currentScene->AddObject(hiddenItem);
+		}
 		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 	}
 }
