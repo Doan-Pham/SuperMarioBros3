@@ -1,9 +1,9 @@
 #include "BrickQuestionMark.h"
 
-CBrickQuestionMark::CBrickQuestionMark(float x, float y) : CBrick(x, y)
+CBrickQuestionMark::CBrickQuestionMark(float x, float y, bool isHidingItem) : CBrick(x, y)
 {
 	y_original = this->y;
-	hiddenItemToDropIndex = 1;
+	this->isHidingItem = isHidingItem;
 	isHitByMario = false;
 	isContentGiven = false;
 	SetState(BRICK_STATE_NORMAL);
@@ -68,13 +68,13 @@ void CBrickQuestionMark::SetState(int state)
 		ay = 0;
 		if (!isContentGiven)
 		{
-			if (hiddenItems.size() == 0)
+			if (hiddenItem == nullptr)
 			{
 				CGame::GetInstance()->UpdateCoins(this->GetCoinsGivenWhenHit());
 				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
 			}
 			else
-				hiddenItems[hiddenItemToDropIndex]->SetState(ITEM_STATE_APPEARING);
+				hiddenItem->SetState(ITEM_STATE_APPEARING);
 			isContentGiven = true;
 		}
 

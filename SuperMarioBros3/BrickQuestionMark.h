@@ -25,12 +25,15 @@ protected:
 	float y_original;
 	float ay;
 
-	vector<CItem*> hiddenItems;
-	int hiddenItemToDropIndex;
+
+	CItem* hiddenItem;
+	bool isHidingItem;
 
 	// This variable is to stop mario from making the brick bounce after its content is
 	// already given
 	bool isHitByMario;
+
+
 	bool isContentGiven;
 
 	virtual void Render();
@@ -39,20 +42,22 @@ protected:
 	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-	CBrickQuestionMark(float x, float y);
+	CBrickQuestionMark(float x, float y, bool isHidingItem);
 
-	virtual int GetScoresGivenWhenHit() 
+	virtual int GetScoresGivenWhenHit()
 	{
-		if (hiddenItems.size() > 0) return 0;
+		if (hiddenItem == nullptr) return 0;
 		return BRICK_SCORES_GIVEN_WHEN_HIT;
 	}
-	virtual int GetCoinsGivenWhenHit() 
+	virtual int GetCoinsGivenWhenHit()
 	{
-		if (hiddenItems.size() > 0) return 0;
+		if (hiddenItem == nullptr) return 0;
 		return BRICK_COINS_GIVEN_WHEN_HIT;
 	}
 
 	virtual void SetState(int state);
-	virtual void AddHiddenItem(CItem* item) { hiddenItems.push_back(item); }
+	virtual bool IsHidingItem() { return isHidingItem; }
+
+	virtual void AddHiddenItem(CItem* item) { this->hiddenItem = item; }
 };
 

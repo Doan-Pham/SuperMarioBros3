@@ -19,7 +19,10 @@ protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
 
-	vector<LPGAMEOBJECT> objects;
+	// Make this static so other classes can access and add object
+	// The classes accessing this must have a  ***CONST***  reference to the playscene
+	static vector<LPGAMEOBJECT> objects;
+
 	LPMAP map;
 
 	void _ParseSection_ASSETS(string line);
@@ -44,6 +47,8 @@ public:
 	virtual void Unload();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
+
+	void static AddObject(LPGAMEOBJECT object) { objects.push_back(object); }
 
 	void Clear();
 	void PurgeDeletedObjects();

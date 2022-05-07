@@ -6,6 +6,9 @@
 
 #include "debug.h"
 
+class CPlayScene;
+typedef CPlayScene* LPPLAYSCENE;
+
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 
@@ -127,7 +130,10 @@ class CMario : public CGameObject
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
-	DWORD dtTracker;
+
+
+	// *** CONST *** pointer to the current playscene
+	const LPPLAYSCENE currentScene;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
@@ -139,7 +145,8 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 
 public:
-	CMario(float x, float y) : CGameObject(x, y)
+	CMario(float x, float y, const LPPLAYSCENE& currentScene) 
+		: CGameObject(x, y), currentScene(currentScene)
 	{
 		isSitting = false;
 		maxVx = 0.0f;
@@ -150,8 +157,6 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
-
-		dtTracker = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

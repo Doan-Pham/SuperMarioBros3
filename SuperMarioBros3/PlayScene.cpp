@@ -22,6 +22,9 @@
 
 using namespace std;
 
+// Definition of static member
+vector<LPGAMEOBJECT> CPlayScene::objects;
+
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
@@ -450,7 +453,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
 				return;
 			}
-			obj = new CMario(x, y);
+			obj = new CMario(x, y,this);
 			player = (CMario*)obj;
 
 			DebugOut(L"[INFO] Player object has been created!\n");
@@ -459,25 +462,9 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_BLOCK:
 		{
-			CBrickQuestionMark* newBrick = new CBrickQuestionMark(x, y);
+			bool isHidingItem = currentElementObject->FirstChildElement("properties") != NULL;
+			CBrickQuestionMark* newBrick = new CBrickQuestionMark(x, y, isHidingItem);
 
-			if (currentElementObject->FirstChildElement("properties") != NULL)
-			{
-				vector<LPGAMEOBJECT>::iterator it;
-				for (it = objects.end() - 1; it != objects.begin(); it--)
-				{
-					LPGAMEOBJECT o = *it;
-					if (dynamic_cast<CItem*>(o))
-					{
-						float item_x, item_y;
-						o->GetPosition(item_x, item_y);
-						if ((x == item_x) && (y = item_y))
-						{
-							newBrick->AddHiddenItem((CItem*)o);
-						}
-					}
-				}
-			};
 
 			obj = newBrick;
 			break;
