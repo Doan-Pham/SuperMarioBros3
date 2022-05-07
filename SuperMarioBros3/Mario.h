@@ -174,4 +174,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	// This is so that mario will always be the first object in the vector "objects"
+	virtual int GetRenderPriority() { return 99999999; }
 };

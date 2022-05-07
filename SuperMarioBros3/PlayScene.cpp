@@ -659,6 +659,15 @@ void CPlayScene::Render()
 	{
 		map->Render();
 	}
+
+	// A lambda expression to sort vector objects according to the object's render priority
+	// 
+	sort(objects.begin(), objects.end(),
+		[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
+		{
+			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
+		});
+
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }

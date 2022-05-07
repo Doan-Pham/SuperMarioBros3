@@ -39,7 +39,8 @@ protected:
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
-	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	// Lower than items and cover them
+	virtual int GetRenderPriority() { return 20; }
 
 public:
 	CBrickQuestionMark(float x, float y, bool isHidingItem);

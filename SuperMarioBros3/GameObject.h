@@ -74,6 +74,9 @@ public:
 	virtual int GetScoresGivenWhenHit() { return 0; }
 	virtual int GetCoinsGivenWhenHit() { return 0; }
 
+	// Objects with higher priority are rendered first and can be covered by others
+	virtual int GetRenderPriority() { return 0; }
+
 	~CGameObject();
 
 	static bool IsDeleted(const LPGAMEOBJECT &o) { return o->isDeleted; }
