@@ -130,7 +130,7 @@ void CPlayScene::_ParseSection_ASSETSXML(string line)
 		int ID = atoi(currentElement->Attribute("n"));
 		int l = atoi(currentElement->Attribute("x"));
 		int t = atoi(currentElement->Attribute("y"));
-		int r = atoi(currentElement->Attribute("w")) + l -1;
+		int r = atoi(currentElement->Attribute("w")) + l - 1;
 		int b = atoi(currentElement->Attribute("h")) + t - 1;
 
 		CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
@@ -335,7 +335,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 		if (currentElement->Attribute("name") == string("id"))
 		{
 			tilesetId = atoi(currentElement->Attribute("value"));
-			if (tilesetId == -999) 
+			if (tilesetId == -999)
 				DebugOut(L"[ERROR] Failed to parse tileset id: %i\n", tilesetId);
 
 			continue;
@@ -365,7 +365,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 
 void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 {
-	
+
 	if (xmlElementTileLayer->Attribute("visible") != NULL)
 	{
 		int visible = atoi(xmlElementTileLayer->Attribute("visible"));
@@ -409,6 +409,8 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	DebugOut(L"[INFO] Done loading tilelayer with id: %i \n", id);
 }
 
+// TODO: Find some way to make this smaller, probably by moving some of the case
+// to their separate methods and group them inside another utility class
 void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 {
 	CGameObject* obj = NULL;
@@ -453,7 +455,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
 				return;
 			}
-			obj = new CMario(x, y,this);
+			obj = new CMario(x, y, this);
 			player = (CMario*)obj;
 
 			DebugOut(L"[INFO] Player object has been created!\n");
@@ -462,11 +464,48 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_BLOCK:
 		{
-			bool isHidingItem = currentElementObject->FirstChildElement("properties") != NULL;
-			CBrickQuestionMark* newBrick = new CBrickQuestionMark(x, y, isHidingItem);
 
+			bool isHidingItem = 0;
+			int objectSubTypeId = -999;
+			TiXmlElement* xmlBlockProperties =
+				currentElementObject->FirstChildElement("properties");
 
-			obj = newBrick;
+			for (TiXmlElement* currentBlockProperty = xmlBlockProperties->FirstChildElement()
+				; currentBlockProperty != nullptr
+				; currentBlockProperty = currentBlockProperty->NextSiblingElement())
+			{
+				if (currentBlockProperty->Attribute("name") == string("isHidingItem"))
+				{
+
+					isHidingItem = atoi(currentBlockProperty->Attribute("value"));
+				}
+				if (currentBlockProperty->Attribute("name") == string("objectSubTypeId"))
+				{
+					objectSubTypeId = atoi(currentBlockProperty->Attribute("value"));
+					if (objectType == -999)
+					{
+						DebugOut(L"[ERROR] Failed to parse block's sub type id: %i\n",
+							objectType);
+						return;
+					}
+				}
+			}
+
+			switch (objectSubTypeId)
+			{
+			case OBJECT_TYPE_BLOCK_BRICK_QUESTIONMARK:
+			{
+				obj = new CBrickQuestionMark(x, y, isHidingItem);
+				break;
+			}
+
+			default:
+			{
+				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
+				return;
+				break;
+			}
+			}
 			break;
 		}
 
@@ -557,7 +596,6 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		}
 
-
 		case OBJECT_TYPE_ENEMY: obj = new CGoomba(x, y); break;
 
 		case OBJECT_TYPE_PORTAL:
@@ -624,12 +662,12 @@ void CPlayScene::Update(DWORD dt)
 	// Adjust mario's position to prevent him from going beyond the map's edges
 	// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
 	// mario will get split in half when he comes to the edges.
-	if (cx < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED) 
+	if (cx < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
 		player->SetPosition(mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED, cy);
 	if (cx > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
 		player->SetPosition(mapRightEdge - COORDINATE_ADJUST_SYNC_TILED, cy);
 
-	if (cy < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED) 
+	if (cy < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
 		player->SetPosition(cx, mapTopEdge + COORDINATE_ADJUST_SYNC_TILED);
 	if (cy > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
 		player->SetPosition(cx, mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED);
@@ -641,7 +679,7 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < mapLeftEdge) cx = mapLeftEdge;
-	if (cx > mapRightEdge - game->GetBackBufferWidth()) 
+	if (cx > mapRightEdge - game->GetBackBufferWidth())
 		cx = mapRightEdge - game->GetBackBufferWidth();
 
 	if (cy < mapTopEdge) cy = mapTopEdge;
