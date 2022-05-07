@@ -130,12 +130,9 @@ class CMario : public CGameObject
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
-<<<<<<< HEAD
 
 
 	// *** CONST *** pointer to the current playscene
-=======
->>>>>>> 450af1d9ef0cd83b7529a905e3faa8fd6f258de3
 	const LPPLAYSCENE currentScene;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
