@@ -5,7 +5,15 @@ void CPMeter::SetState(int state)
 
 	switch (state)
 	{
+	//case P_METER_STATE_KEY_A_HIT:
+	//	
+	//	key_A_hit_start = GetTickCount64();
+	//	break;
+
 	case P_METER_STATE_INCREASING:
+		//if ((DWORD)(GetTickCount64() - key_A_hit_start) >= P_METER_WAIT_BEFORE_INCREASE)
+		//	increase_start = GetTickCount64();
+
 		if ((DWORD)(GetTickCount64() - increase_start) >= increasingRate)
 		{
 			if (currentValue + increasingIncrement > maxValue) currentValue = maxValue;
@@ -23,7 +31,7 @@ void CPMeter::SetState(int state)
 
 			decrease_start = GetTickCount64();
 		}
-			
+		key_A_hit_start = GetTickCount64();
 		break;
 	}
 

@@ -6,6 +6,11 @@
 #define P_METER_MIN_VALUE				0
 #define P_METER_MAX_VALUE				120
 
+
+// In the original game, after the player click "A", the game waits for a second before increasing 
+// the p-meter
+#define P_METER_WAIT_BEFORE_INCREASE	1000
+
 // This rate means every "x" miliseconds, the p-meter increases by 1 increment
 #define P_METER_INCREASING_RATE			250
 
@@ -15,8 +20,9 @@
 #define P_METER_INCREASING_INCREMENT	20
 #define P_METER_DECREASING_INCREMENT	20
 
-#define P_METER_STATE_INCREASING		100
-#define P_METER_STATE_DECREASING		200
+#define P_METER_STATE_KEY_A_HIT			100
+#define P_METER_STATE_INCREASING		200
+#define P_METER_STATE_DECREASING		300
 
 class CPMeter
 {
@@ -34,6 +40,10 @@ class CPMeter
 	int increasingIncrement;
 	int decreasingIncrement;
 
+	// In the original game, after the player click "A", the game waits for a second before increasing 
+	// the p-meter
+	ULONGLONG key_A_hit_start;
+
 	ULONGLONG increase_start;
 	ULONGLONG decrease_start;
 
@@ -49,6 +59,8 @@ public:
 		decreasingIncrement = P_METER_DECREASING_INCREMENT;
 		currentValue = minValue;
 
+		key_A_hit_start = -1;
+		//increase_start = 9999999999;
 		increase_start = -1;
 		decrease_start = -1;
 	}

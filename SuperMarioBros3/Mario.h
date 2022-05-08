@@ -218,4 +218,5 @@ public:
 
 	bool IsPMeterFullyCharged(){ return pMeter->isFullyCharged(); }
 	void IncreasePMeter() { pMeter->SetState(P_METER_STATE_INCREASING); }
+	void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };
