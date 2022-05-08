@@ -43,28 +43,28 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #pragma region ANIMATION_ID
 
-#define ID_ANI_MARIO_IDLE_RIGHT 400
-#define ID_ANI_MARIO_IDLE_LEFT 401
+#define ID_ANI_MARIO_IDLE_RIGHT 1112
+#define ID_ANI_MARIO_IDLE_LEFT 1111
 
-#define ID_ANI_MARIO_WALKING_RIGHT 500
-#define ID_ANI_MARIO_WALKING_LEFT 501
+#define ID_ANI_MARIO_WALKING_RIGHT 1122
+#define ID_ANI_MARIO_WALKING_LEFT 1121
 
-#define ID_ANI_MARIO_RUNNING_RIGHT 600
-#define ID_ANI_MARIO_RUNNING_LEFT 601
+#define ID_ANI_MARIO_RUNNING_RIGHT 1132
+#define ID_ANI_MARIO_RUNNING_LEFT 1131
 
-#define ID_ANI_MARIO_JUMP_WALK_RIGHT 700
-#define ID_ANI_MARIO_JUMP_WALK_LEFT 701
+#define ID_ANI_MARIO_JUMP_WALK_RIGHT  1142
+#define ID_ANI_MARIO_JUMP_WALK_LEFT 1141
 
-#define ID_ANI_MARIO_JUMP_RUN_RIGHT 800
-#define ID_ANI_MARIO_JUMP_RUN_LEFT 801
+#define ID_ANI_MARIO_JUMP_RUN_RIGHT	 1192
+#define ID_ANI_MARIO_JUMP_RUN_LEFT 1191
 
-#define ID_ANI_MARIO_SIT_RIGHT 900
-#define ID_ANI_MARIO_SIT_LEFT 901
+#define ID_ANI_MARIO_SIT_RIGHT 1152
+#define ID_ANI_MARIO_SIT_LEFT 1151
 
-#define ID_ANI_MARIO_BRACE_RIGHT 1000
-#define ID_ANI_MARIO_BRACE_LEFT 1001
+#define ID_ANI_MARIO_BRACE_RIGHT 1162
+#define ID_ANI_MARIO_BRACE_LEFT 1161
 
-#define ID_ANI_MARIO_RACCOON_IDLE_RIGHT 400
+//#define ID_ANI_MARIO_RACCOON_IDLE_RIGHT 400
 
 #define ID_ANI_MARIO_DIE 999
 
@@ -126,8 +126,8 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
-	int level; 
-	int untouchable; 
+	int level;
+	int untouchable;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 
@@ -145,13 +145,13 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 
 public:
-	CMario(float x, float y, const LPPLAYSCENE& currentScene) 
+	CMario(float x, float y, const LPPLAYSCENE& currentScene)
 		: CGameObject(x, y), currentScene(currentScene)
 	{
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
-		ay = MARIO_GRAVITY; 
+		ay = MARIO_GRAVITY;
 
 		level = MARIO_LEVEL_BIG;
 		untouchable = 0;
@@ -164,7 +164,7 @@ public:
 
 	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
+	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);

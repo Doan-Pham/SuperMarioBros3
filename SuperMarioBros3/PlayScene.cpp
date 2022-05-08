@@ -129,8 +129,8 @@ void CPlayScene::_ParseSection_ASSETSXML(string line)
 	{
 		int ID = atoi(currentElement->Attribute("n"));
 		int l = atoi(currentElement->Attribute("x"));
-		int t = atoi(currentElement->Attribute("y"));
-		int r = atoi(currentElement->Attribute("w")) + l - 1;
+		int t = atoi(currentElement->Attribute("y")) ;
+		int r = atoi(currentElement->Attribute("w")) + l -1 ;
 		int b = atoi(currentElement->Attribute("h")) + t - 1;
 
 		CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
@@ -175,25 +175,25 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
-	vector<string> tokens = split(line);
+	//vector<string> tokens = split(line);
 
-	if (tokens.size() < 6) return; // skip invalid lines
+	//if (tokens.size() < 6) return; // skip invalid lines
 
-	int ID = atoi(tokens[0].c_str());
-	int l = atoi(tokens[1].c_str());
-	int t = atoi(tokens[2].c_str());
-	int r = atoi(tokens[3].c_str());
-	int b = atoi(tokens[4].c_str());
-	int texID = atoi(tokens[5].c_str());
+	//int ID = atoi(tokens[0].c_str());
+	//int l = atoi(tokens[1].c_str());
+	//int t = atoi(tokens[2].c_str());
+	//int r = atoi(tokens[3].c_str());
+	//int b = atoi(tokens[4].c_str());
+	//int texID = atoi(tokens[5].c_str());
 
-	LPTEXTURE tex = CTextures::GetInstance()->Get(texID);
-	if (tex == NULL)
-	{
-		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return;
-	}
+	//LPTEXTURE tex = CTextures::GetInstance()->Get(texID);
+	//if (tex == NULL)
+	//{
+	//	DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
+	//	return;
+	//}
 
-	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+	//CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
 }
 
 void CPlayScene::_ParseSection_ANIMATIONS(string line)
@@ -596,7 +596,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		}
 
-		case OBJECT_TYPE_ENEMY: obj = new CGoomba(x, y); break;
+		case OBJECT_TYPE_ENEMY: obj = new CCoin(x, y); break;
 
 		case OBJECT_TYPE_PORTAL:
 		{
