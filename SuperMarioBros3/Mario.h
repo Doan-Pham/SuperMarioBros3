@@ -4,10 +4,13 @@
 #include "Animation.h"
 #include "Animations.h"
 
+#include "PMeter.h"
+
 #include "debug.h"
 
 class CPlayScene;
 typedef CPlayScene* LPPLAYSCENE;
+
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
@@ -117,7 +120,6 @@ typedef CPlayScene* LPPLAYSCENE;
 #define GROUND_Y 160.0f
 
 
-
 // Mario has many levels like big, tanooki, raccoon,... which are defined as 1, 2, 3, 4
 // but tanooki or frog or fire is not exactly higher level than raccoon. The above numbers are
 // are just for identification, not the level's actual value. The way this baseline works is to
@@ -157,6 +159,7 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 
+	LPPMETER pMeter;
 
 	// *** CONST *** pointer to the current playscene
 	const LPPLAYSCENE currentScene;
@@ -184,6 +187,8 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
+
+		pMeter = new CPMeter();
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

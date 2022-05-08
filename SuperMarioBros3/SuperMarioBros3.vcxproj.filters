@@ -94,6 +94,9 @@
     <ClCompile Include="PlatformGhost.cpp">
       <Filter>Game Object\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="PMeter.cpp">
+      <Filter>Game Object\Mario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="PlatformGhost.h">
       <Filter>Game Object\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="PMeter.h">
+      <Filter>Game Object\Mario</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

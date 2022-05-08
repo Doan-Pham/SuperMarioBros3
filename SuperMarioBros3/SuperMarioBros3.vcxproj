@@ -164,6 +164,7 @@
     <ClCompile Include="PlatformOneLayer.cpp" />
     <ClCompile Include="PlatformTile.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="PMeter.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="PlatformOneLayer.h" />
     <ClInclude Include="PlatformTile.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="PMeter.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />

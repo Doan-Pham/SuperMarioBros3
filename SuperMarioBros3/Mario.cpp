@@ -32,7 +32,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ", x, y, vy);
+	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ", x, y, vy);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -394,6 +394,8 @@ void CMario::SetState(int state)
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
+
+		pMeter->SetState(P_METER_STATE_INCREASING);
 		break;
 
 	case MARIO_STATE_RUNNING_LEFT:
@@ -401,6 +403,8 @@ void CMario::SetState(int state)
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
+
+		pMeter->SetState(P_METER_STATE_INCREASING);
 		break;
 
 	case MARIO_STATE_WALKING_RIGHT:
@@ -408,6 +412,8 @@ void CMario::SetState(int state)
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
+
+		pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 
 	case MARIO_STATE_WALKING_LEFT:
@@ -415,6 +421,8 @@ void CMario::SetState(int state)
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
+
+		pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 
 	case MARIO_STATE_JUMP:
@@ -454,6 +462,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		ax = 0.0f;
 		vx = 0.0f;
+
+		pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 
 	case MARIO_STATE_FLY:
