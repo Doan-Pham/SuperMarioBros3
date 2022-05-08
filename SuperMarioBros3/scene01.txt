@@ -1,6 +1,7 @@
 [ASSETSXMLTEST]
 spritesheet_block.xml
 spritesheet_item.xml
+spritesheet_mario.xml
 
 # list of object assets to load in this scene, for some, only load their animations
 # their sprites might have already been loaded in the .xml file
@@ -9,8 +10,8 @@ spritesheet_item.xml
 mario.txt
 brick.txt
 coin.txt
-goomba.txt
-cloud.txt
+#goomba.txt
+#cloud.txt
 
 
 
