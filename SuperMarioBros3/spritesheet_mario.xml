@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:b64d6539c76e0e0256131f1f59bc17f2:4adc7fd5d983e54a5fde30d5a26af9c8:82021aeba44d030b869f1afa2b573e8a$ -->
+<!-- $TexturePacker:SmartUpdate:34df86ee63291b858fa61806193fcaa7:5344dedd7980b5989a44dec1fad0d63d:82021aeba44d030b869f1afa2b573e8a$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -19,7 +19,7 @@ vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
 verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
-<TextureAtlas imagePath="spritesheet_mario.png" width="512" height="256"
+<TextureAtlas imagePath="spritesheet_mario.png" width="512" height="512"
 			  textureId ="1">
     <sprite n="11111" x="10" y="10" w="14" h="27"/>
     <sprite n="11121" x="44" y="10" w="14" h="27"/>
@@ -69,5 +69,43 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="13822" x="149" y="151" w="15" h="16"/>
     <sprite n="13911" x="184" y="151" w="16" h="16"/>
     <sprite n="13921" x="220" y="151" w="16" h="16"/>
-    <sprite n="29999" x="256" y="151" w="16" h="16"/>
+    <sprite n="15111" x="256" y="151" w="21" h="28"/>
+    <sprite n="15121" x="297" y="151" w="21" h="28"/>
+    <sprite n="15211" x="338" y="151" w="22" h="28"/>
+    <sprite n="15212" x="380" y="151" w="23" h="27"/>
+    <sprite n="15221" x="423" y="151" w="22" h="28"/>
+    <sprite n="15222" x="465" y="151" w="23" h="27"/>
+    <sprite n="15311" x="10" y="199" w="24" h="28"/>
+    <sprite n="15312" x="54" y="199" w="24" h="28"/>
+    <sprite n="15313" x="98" y="199" w="24" h="27"/>
+    <sprite n="15321" x="142" y="199" w="24" h="28"/>
+    <sprite n="15322" x="186" y="199" w="24" h="28"/>
+    <sprite n="15323" x="230" y="199" w="24" h="27"/>
+    <sprite n="15411" x="274" y="199" w="23" h="27"/>
+    <sprite n="15421" x="317" y="199" w="23" h="27"/>
+    <sprite n="15511" x="360" y="199" w="22" h="18"/>
+    <sprite n="15521" x="402" y="199" w="22" h="18"/>
+    <sprite n="15611" x="444" y="199" w="16" h="30"/>
+    <sprite n="15621" x="480" y="199" w="16" h="30"/>
+    <sprite n="15711" x="10" y="249" w="22" h="28"/>
+    <sprite n="15721" x="52" y="249" w="22" h="28"/>
+    <sprite n="15811" x="94" y="249" w="21" h="28"/>
+    <sprite n="15812" x="135" y="249" w="22" h="28"/>
+    <sprite n="15813" x="177" y="249" w="23" h="27"/>
+    <sprite n="15821" x="220" y="249" w="21" h="28"/>
+    <sprite n="15822" x="261" y="249" w="22" h="28"/>
+    <sprite n="15823" x="303" y="249" w="23" h="27"/>
+    <sprite n="15911" x="346" y="249" w="24" h="28"/>
+    <sprite n="15912" x="390" y="249" w="24" h="27"/>
+    <sprite n="15913" x="434" y="249" w="24" h="27"/>
+    <sprite n="15921" x="478" y="249" w="24" h="28"/>
+    <sprite n="15922" x="10" y="297" w="24" h="27"/>
+    <sprite n="15923" x="54" y="297" w="24" h="27"/>
+    <sprite n="16111" x="98" y="297" w="23" h="28"/>
+    <sprite n="16121" x="141" y="297" w="23" h="28"/>
+    <sprite n="16211" x="184" y="297" w="23" h="27"/>
+    <sprite n="16212" x="227" y="297" w="22" h="28"/>
+    <sprite n="16221" x="269" y="297" w="23" h="27"/>
+    <sprite n="16222" x="312" y="297" w="22" h="28"/>
+    <sprite n="29999" x="354" y="297" w="16" h="16"/>
 </TextureAtlas>
