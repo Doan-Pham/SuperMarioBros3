@@ -395,24 +395,28 @@ void CMario::SetState(int state)
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
+
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 		break;
+
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
 		break;
+
 	case MARIO_STATE_WALKING_LEFT:
 		if (isSitting) break;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 		break;
+
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
 		//if (isOnPlatform)
@@ -450,6 +454,14 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		ax = 0.0f;
 		vx = 0.0f;
+		break;
+
+	case MARIO_STATE_FLY:
+		if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			vy = -MARIO_JUMP_RUN_SPEED_Y;
+		else
+			vy = -0.1f;
+		ay = 0;
 		break;
 
 	case MARIO_STATE_DIE:

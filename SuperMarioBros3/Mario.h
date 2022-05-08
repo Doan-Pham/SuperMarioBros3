@@ -38,6 +38,7 @@ typedef CPlayScene* LPPLAYSCENE;
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
+#define MARIO_STATE_FLY				700
 #pragma endregion
 
 
