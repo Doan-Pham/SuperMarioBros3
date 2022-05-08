@@ -4,16 +4,16 @@
 #include "debug.h"
 
 #define P_METER_MIN_VALUE				0
-#define P_METER_MAX_VALUE				100
+#define P_METER_MAX_VALUE				120
 
 // This rate means every "x" miliseconds, the p-meter increases by 1 increment
-#define P_METER_INCREASING_RATE			500
+#define P_METER_INCREASING_RATE			250
 
 // This rate means every "x" miliseconds, the p-meter decreases by 1 increment
-#define P_METER_DECREASING_RATE			800
+#define P_METER_DECREASING_RATE			500
 
 #define P_METER_INCREASING_INCREMENT	20
-#define P_METER_DECREASING_INCREMENT	10
+#define P_METER_DECREASING_INCREMENT	20
 
 #define P_METER_STATE_INCREASING		100
 #define P_METER_STATE_DECREASING		200

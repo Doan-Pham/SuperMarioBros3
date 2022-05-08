@@ -6,19 +6,21 @@ void CPMeter::SetState(int state)
 	switch (state)
 	{
 	case P_METER_STATE_INCREASING:
-		if ((DWORD)(GetTickCount64() - increase_start) >= increasingRate && 
-			(currentValue + increasingIncrement) <= maxValue)
+		if ((DWORD)(GetTickCount64() - increase_start) >= increasingRate)
 		{
-			currentValue += increasingIncrement;
+			if (currentValue + increasingIncrement > maxValue) currentValue = maxValue;
+			else currentValue += increasingIncrement;
+
 			increase_start = GetTickCount64();
 		}
 		break;
 
 	case P_METER_STATE_DECREASING:
-		if ((DWORD)(GetTickCount64() - decrease_start) >= decreasingRate
-			&& currentValue - decreasingIncrement >= minValue)
+		if ((DWORD)(GetTickCount64() - decrease_start) >= decreasingRate)
 		{
-			currentValue -= decreasingIncrement;
+			if (currentValue - decreasingIncrement < minValue) currentValue = minValue;
+			else currentValue -= decreasingIncrement;
+
 			decrease_start = GetTickCount64();
 		}
 			
