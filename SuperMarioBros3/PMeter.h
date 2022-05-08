@@ -12,7 +12,6 @@
 // This rate means every "x" miliseconds, the p-meter decreases by 1 increment
 #define P_METER_DECREASING_RATE			800
 
-
 #define P_METER_INCREASING_INCREMENT	20
 #define P_METER_DECREASING_INCREMENT	10
 
@@ -26,11 +25,14 @@ class CPMeter
 	int minValue;
 	int maxValue;
 
-	// Unit: number of increases/milliseconds
+	// Unit: number of times P-meter increases/milliseconds
 	int increasingRate;
 
-	// Unit: number of decreases/milliseconds
+	// Unit: number of times P-meter decreases/milliseconds
 	int decreasingRate;
+
+	int increasingIncrement;
+	int decreasingIncrement;
 
 	ULONGLONG increase_start;
 	ULONGLONG decrease_start;
@@ -42,6 +44,9 @@ public:
 		maxValue = P_METER_MAX_VALUE;
 		increasingRate = P_METER_INCREASING_RATE;
 		decreasingRate = P_METER_DECREASING_RATE;
+
+		increasingIncrement = P_METER_INCREASING_INCREMENT;
+		decreasingIncrement = P_METER_DECREASING_INCREMENT;
 		currentValue = minValue;
 
 		increase_start = -1;
