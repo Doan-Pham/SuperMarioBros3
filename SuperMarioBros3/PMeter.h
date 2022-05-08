@@ -10,7 +10,7 @@
 #define P_METER_INCREASING_RATE			250
 
 // This rate means every "x" miliseconds, the p-meter decreases by 1 increment
-#define P_METER_DECREASING_RATE			500
+#define P_METER_DECREASING_RATE			400
 
 #define P_METER_INCREASING_INCREMENT	20
 #define P_METER_DECREASING_INCREMENT	20
@@ -53,6 +53,7 @@ public:
 		decrease_start = -1;
 	}
 	void SetState(int state);
+	bool isFullyCharged() { return currentValue == maxValue; }
 };
 
 typedef CPMeter* LPPMETER;

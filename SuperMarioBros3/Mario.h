@@ -12,6 +12,12 @@ class CPlayScene;
 typedef CPlayScene* LPPLAYSCENE;
 
 
+// TODO: Change the time of each frame for mario's walking animation to
+// make mario move faster when p-meter is not fully charged
+
+// TODO: Make the framtime for mario running animation shorter to create an illusion of him 
+// moving quick
+
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 
@@ -209,4 +215,7 @@ public:
 
 	// This is so that mario will always be the first object in the vector "objects"
 	virtual int GetRenderPriority() { return 99999999; }
+
+	bool IsPMeterFullyCharged(){ return pMeter->isFullyCharged(); }
+	void IncreasePMeter() { pMeter->SetState(P_METER_STATE_INCREASING); }
 };
