@@ -29,7 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if (GetTickCount64() - fly_start > MARIO_WAIT_BEFORE_FALLING)
+	if (GetTickCount64() - fly_start > MARIO_WAIT_BEFORE_FALLING && vy < 0)
 	{
 		SetState(MARIO_STATE_FALLING);
 	}
@@ -431,7 +431,14 @@ void CMario::SetState(int state)
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
 
-		pMeter->SetState(P_METER_STATE_DECREASING);
+		if (isOnPlatform)
+		{
+			pMeter->SetState(P_METER_STATE_DECREASING);
+			if (level == MARIO_LEVEL_RACCOON)
+			DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_RIGHT \n");
+			DebugOut(L"Current state %d\n", this->state);
+		}
+			
 		break;
 
 	case MARIO_STATE_WALKING_LEFT:
@@ -440,7 +447,14 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 
-		pMeter->SetState(P_METER_STATE_DECREASING);
+		if (isOnPlatform)
+		{
+			pMeter->SetState(P_METER_STATE_DECREASING);
+			if (level == MARIO_LEVEL_RACCOON)
+			DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_LEFT \n");
+			DebugOut(L"Current state %d\n", this->state);
+		}
+			
 		break;
 
 	case MARIO_STATE_JUMP:
@@ -478,10 +492,21 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_IDLE:
+
+		if (this->state == MARIO_STATE_FLY) return;
 		ax = 0.0f;
 		vx = 0.0f;
-
-		pMeter->SetState(P_METER_STATE_DECREASING);
+		if (isOnPlatform)
+		{
+			pMeter->SetState(P_METER_STATE_DECREASING);
+			if (level == MARIO_LEVEL_RACCOON)
+			{
+				DebugOut(L"P_METER_STATE_DECREASING was set in MARIO_STATE_IDLE \n");
+				DebugOut(L"Current state %d\n", this->state);
+			}
+			
+		}
+			
 		break;
 
 	case MARIO_STATE_FLY:
@@ -492,6 +517,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_FALLING:
 		ay = MARIO_GRAVITY;
+		//if (vy == 0) SetState(MARIO_STATE_IDLE);
 		break;
 
 	case MARIO_STATE_DIE:
@@ -502,6 +528,7 @@ void CMario::SetState(int state)
 	}
 
 	CGameObject::SetState(state);
+	//DebugOutTitle(L"Mario state: %d", this->state);
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)

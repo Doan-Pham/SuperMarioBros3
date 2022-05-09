@@ -155,7 +155,7 @@ typedef CPlayScene* LPPLAYSCENE;
 
 // When mario starts flying, the player has to keep hitting the "S" key to keep him in the sky
 // or else, after this amount of time, mario will fall
-#define MARIO_WAIT_BEFORE_FALLING 400
+#define MARIO_WAIT_BEFORE_FALLING 350
 
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
