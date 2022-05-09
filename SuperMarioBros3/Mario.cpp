@@ -59,7 +59,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	isOnPlatform = false;
 	DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
+	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f ", x, y, vx, ax);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -508,6 +508,11 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_RIGHT:
 	{
 		if (isSitting) break;
+		if (isFlying)
+		{
+			SetState(MARIO_STATE_WALKING_RIGHT);
+			break;
+		}
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
@@ -520,6 +525,11 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_LEFT:
 	{
 		if (isSitting) break;
+		if (isFlying)
+		{
+			SetState(MARIO_STATE_WALKING_LEFT);
+			break;
+		}
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
