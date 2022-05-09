@@ -17,6 +17,7 @@ void CTileLayer::AddTileSet(LPTILESET tileSet)
 
 void CTileLayer::Render()
 {
+	//int renderCount = 0;
 	int tileWidth, tileHeight = 0;
 
 	float camX, camY = 0.0f;
@@ -29,9 +30,11 @@ void CTileLayer::Render()
 
 	//Have to calculate i, j against min(...) because (i + maxTilesY)/(j + maxTilesX) 
 	//may go past the total amount of tiles inside a tilelayer
-	for (int i = firstVisibleTileIndexY; i < min(height, i + maxTilesY); i++)
+	
+	//Also take (firstVisible + maxTiles) plus 1 to avoid cropping at the end of the camera
+	for (int i = firstVisibleTileIndexY; i < min(height, firstVisibleTileIndexY + maxTilesY +1); i++)
 	{
-		for (int j = firstVisibleTileIndexX; j < min(width, j + maxTilesX); j++)
+		for (int j = firstVisibleTileIndexX; j < min(width, firstVisibleTileIndexX + maxTilesX + 1); j++)
 		{
 			int tileGid = tileMatrix[i][j];
 			int usedTileSetIndex = tileGid / (tileSets[0]->GetLastGid() + 1);
@@ -42,11 +45,12 @@ void CTileLayer::Render()
 				i * TILE_HEIGHT_STANDARD,
 				tileMatrix[i][j]);
 
+			//renderCount++;
 			//DebugOut(L"i = %i, j = %i, tileMatrix[i][j] = %i\n"
 			//	, i, j,tileMatrix[i][j]);
 		}
 	}
-
+	//DebugOut(L"Render count: %d \n", renderCount);
 	//DebugOutTitle(L"camX: %0.5f, camY : %0.5f, currentPositionX : %0.5f, currentPositionY : %0.5f",
 	//	camX, camY, currentPositionX, currentPositionY);
 };
