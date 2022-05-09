@@ -13,7 +13,9 @@ using namespace std;
 #include "KeyEventHandler.h"
 #include "Scene.h"
 
-#define MAX_FRAME_RATE 100
+// Have to limit FPS because the game was running too fast and rendering even the frames
+// where mario was falling through platform and being pushed back
+#define MAX_FRAME_RATE 30 // 100
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
 
