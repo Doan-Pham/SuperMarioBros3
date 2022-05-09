@@ -29,6 +29,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
+	if (GetTickCount64() - fly_start > MARIO_WAIT_BEFORE_FALLING)
+	{
+		SetState(MARIO_STATE_FALLING);
+	}
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -441,13 +445,13 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
-		//if (isOnPlatform)
-		//{
+		if (isOnPlatform)
+		{
 		if (abs(this->vx) == MARIO_RUNNING_SPEED)
 			vy = -MARIO_JUMP_RUN_SPEED_Y;
 		else
 			vy = -MARIO_JUMP_SPEED_Y;
-		//}
+		}
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
@@ -481,11 +485,13 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_FLY:
-		if (abs(this->vx) == MARIO_RUNNING_SPEED)
-			vy = -MARIO_JUMP_RUN_SPEED_Y;
-		else
-			vy = -0.1f;
+		fly_start = GetTickCount64();
+		vy = -0.1f;
 		ay = 0;
+		break;
+
+	case MARIO_STATE_FALLING:
+		ay = MARIO_GRAVITY;
 		break;
 
 	case MARIO_STATE_DIE:

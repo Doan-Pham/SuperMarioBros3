@@ -48,6 +48,8 @@ typedef CPlayScene* LPPLAYSCENE;
 #define MARIO_STATE_SIT_RELEASE		601
 
 #define MARIO_STATE_FLY				700
+#define MARIO_STATE_FALLING			800
+
 #pragma endregion
 
 
@@ -151,6 +153,10 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 
+// When mario starts flying, the player has to keep hitting the "S" key to keep him in the sky
+// or else, after this amount of time, mario will fall
+#define MARIO_WAIT_BEFORE_FALLING 400
+
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CMario : public CGameObject
@@ -163,6 +169,9 @@ class CMario : public CGameObject
 	int level;
 	int untouchable;
 	ULONGLONG untouchable_start;
+
+	ULONGLONG fly_start;
+
 	BOOLEAN isOnPlatform;
 
 	LPPMETER pMeter;
@@ -192,6 +201,9 @@ public:
 		level = MARIO_LEVEL_BIG;
 		untouchable = 0;
 		untouchable_start = -1;
+
+		fly_start = -1;
+
 		isOnPlatform = false;
 
 		pMeter = new CPMeter();

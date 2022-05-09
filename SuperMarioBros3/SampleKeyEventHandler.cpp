@@ -17,10 +17,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_S:
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->IsPMeterFullyCharged())
 			mario->SetState(MARIO_STATE_FLY);
 		else
-		mario->SetState(MARIO_STATE_JUMP);
+			mario->SetState(MARIO_STATE_JUMP);
 		break;
 	case DIK_A:
 		//mario->NotifyPMeterAKeyHit();
@@ -51,8 +51,11 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		// Release jump will make mario fall down immediately, which is not the case for mario raccoon
+		if (!(mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->IsPMeterFullyCharged()))
+			mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		break;
+
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
