@@ -20,7 +20,7 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
-#define MARIO_FLYING_SPEED		0.1f
+#define MARIO_FLYING_SPEED_Y	0.13f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
@@ -163,7 +163,7 @@ typedef CPlayScene* LPPLAYSCENE;
 // When mario starts flying, the player has to keep hitting the "S" key to keep him in the sky
 // or else, after this amount of time, mario will fall, but the player can hit "S" key to make him
 // fly again, as long as the the total fly time hasn't been passed
-#define MARIO_WAIT_BEFORE_FALLING 300
+#define MARIO_WAIT_BEFORE_FALLING 200
 
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 

@@ -30,22 +30,25 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if (now - fly_individual_start > MARIO_WAIT_BEFORE_FALLING && vy < 0)
+	if (isFlying && ((now - fly_individual_start) > MARIO_WAIT_BEFORE_FALLING) && vy < 0)
 	{
 		SetState(MARIO_STATE_FALLING);
+		DebugOut(L"1 was called \n");
+		
+	}
+	//DebugOutTitle(L"now - fly_individual_start %d", now - fly_individual_start);
+	if (isFalling && (now - tail_wag_start > MARIO_WAIT_BEFORE_FALLING))
+	{
+		SetState(MARIO_STATE_FALLING);
+		DebugOut(L"2 was called \n");
 	}
 
-	//if (now - tail_wag_start > MARIO_WAIT_BEFORE_FALLING && vy < 0)
-	//{
-	//	SetState(MARIO_STATE_FALLING);
-	//}
-	if (GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
+	if (isFlying && GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
 	{
 		isFlying = false;
 		isFalling = true;
 	}
 		
-
 	if (isOnPlatform)
 	{
 		fly_total_start = -1;
@@ -54,7 +57,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	isOnPlatform = false;
-	//DebugOutTitle(L"Current state %d\n", this->state);
+	DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
 }
@@ -438,8 +441,9 @@ void CMario::SetState(int state)
 	{
 
 	case MARIO_STATE_IDLE:
-
+	{
 		if (isFlying) return;
+
 		//if (level == MARIO_LEVEL_RACCOON)
 		//	DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
 		ax = 0.0f;
@@ -448,8 +452,10 @@ void CMario::SetState(int state)
 			pMeter->SetState(P_METER_STATE_DECREASING);
 
 		break;
+	}
 
 	case MARIO_STATE_SIT:
+	{
 		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
 		{
 			state = MARIO_STATE_IDLE;
@@ -458,8 +464,10 @@ void CMario::SetState(int state)
 			y += MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
+	}
 
 	case MARIO_STATE_SIT_RELEASE:
+	{
 		if (isSitting)
 		{
 			isSitting = false;
@@ -467,9 +475,10 @@ void CMario::SetState(int state)
 			y -= MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
-
+	}
 
 	case MARIO_STATE_WALKING_RIGHT:
+	{
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
@@ -479,8 +488,11 @@ void CMario::SetState(int state)
 			pMeter->SetState(P_METER_STATE_DECREASING);
 
 		break;
+	}
+
 
 	case MARIO_STATE_WALKING_LEFT:
+	{
 		if (isSitting) break;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
@@ -490,8 +502,11 @@ void CMario::SetState(int state)
 			pMeter->SetState(P_METER_STATE_DECREASING);
 
 		break;
+	}
+
 
 	case MARIO_STATE_RUNNING_RIGHT:
+	{
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
@@ -499,8 +514,11 @@ void CMario::SetState(int state)
 
 		pMeter->SetState(P_METER_STATE_INCREASING);
 		break;
+	}
+
 
 	case MARIO_STATE_RUNNING_LEFT:
+	{
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
@@ -508,8 +526,11 @@ void CMario::SetState(int state)
 
 		pMeter->SetState(P_METER_STATE_INCREASING);
 		break;
+	}
+
 
 	case MARIO_STATE_JUMP:
+	{
 		if (isSitting) break;
 		if (isOnPlatform)
 		{
@@ -519,12 +540,16 @@ void CMario::SetState(int state)
 				vy = -MARIO_JUMP_SPEED_Y;
 		}
 		break;
+	}
 
 	case MARIO_STATE_RELEASE_JUMP:
+	{
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
+	}
 
 	case MARIO_STATE_FLY:
+	{
 		if (fly_total_start == -1)
 		{
 			fly_total_start = GetTickCount64();
@@ -532,28 +557,30 @@ void CMario::SetState(int state)
 		}
 		if (!isFlying) return;
 		fly_individual_start = GetTickCount64();
-		vy = -MARIO_FLYING_SPEED;
+		vy = -MARIO_FLYING_SPEED_Y;
 		ay = 0;
 		break;
+	}
 
 	case MARIO_STATE_FALLING:
 		ay = MARIO_GRAVITY;
-		//isFlying = false;
-		//isFalling = true;
 		break;
 
 	case MARIO_STATE_TAIL_WAGGING:
-		if (!isFalling) return;
+	{
+		//if (!isFalling) return;
 		//tail_wag_start = GetTickCount64();
-		ay = MARIO_GRAVITY_SLOW_FALL;
-		//vy /= 4;
+		//ay = MARIO_GRAVITY_SLOW_FALL;
+	}
 		break;
 
 	case MARIO_STATE_DIE:
+	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
 		break;
+	}
 	}
 
 	CGameObject::SetState(state);
