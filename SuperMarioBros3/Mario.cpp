@@ -22,17 +22,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
+	ULONGLONG now = GetTickCount64();
 	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	if (now - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
 
-	if (GetTickCount64() - fly_start > MARIO_WAIT_BEFORE_FALLING && vy < 0)
+	if (now - fly_individual_start > MARIO_WAIT_BEFORE_FALLING && vy < 0)
 	{
 		SetState(MARIO_STATE_FALLING);
 	}
+
+	if (isOnPlatform) fly_total_start = -1;
 	isOnPlatform = false;
 	//DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -425,14 +428,7 @@ void CMario::SetState(int state)
 		ax = 0.0f;
 		vx = 0.0f;
 		if (isOnPlatform)
-		{
 			pMeter->SetState(P_METER_STATE_DECREASING);
-			//if (level == MARIO_LEVEL_RACCOON)
-			//{
-			//	DebugOut(L"P_METER_STATE_DECREASING was set in MARIO_STATE_IDLE \n");
-
-			//}
-		}
 
 		break;
 
@@ -463,12 +459,7 @@ void CMario::SetState(int state)
 		nx = 1;
 
 		if (isOnPlatform)
-		{
 			pMeter->SetState(P_METER_STATE_DECREASING);
-			//if (level == MARIO_LEVEL_RACCOON)
-			//	DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_RIGHT \n");
-			//DebugOut(L"Current state %d\n", this->state);
-		}
 
 		break;
 
@@ -479,12 +470,7 @@ void CMario::SetState(int state)
 		nx = -1;
 
 		if (isOnPlatform)
-		{
 			pMeter->SetState(P_METER_STATE_DECREASING);
-			//if (level == MARIO_LEVEL_RACCOON)
-			//	DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_LEFT \n");
-			//DebugOut(L"Current state %d\n", this->state);
-		}
 
 		break;
 
@@ -522,16 +508,19 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_FLY:
-		fly_start = GetTickCount64();
+		if (fly_total_start == -1) fly_total_start = GetTickCount64();
+		if (GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME) return;
+
+		fly_individual_start = GetTickCount64();
+
 		isFlying = true;
-		vy = -0.1f;
+		vy = -MARIO_FLYING_SPEED;
 		ay = 0;
 		break;
 
 	case MARIO_STATE_FALLING:
 		ay = MARIO_GRAVITY;
 		isFlying = false;
-		//if (vy == 0) SetState(MARIO_STATE_IDLE);
 		break;
 
 	case MARIO_STATE_DIE:

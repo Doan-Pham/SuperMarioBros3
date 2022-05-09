@@ -15,11 +15,12 @@ typedef CPlayScene* LPPLAYSCENE;
 // TODO: Change the time of each frame for mario's walking animation to
 // make mario move faster when p-meter is not fully charged
 
-// TODO: Make the framtime for mario running animation shorter to create an illusion of him 
+// TODO: Make the frametime for mario running animation shorter to create an illusion of him 
 // moving quick
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_FLYING_SPEED		0.1f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
@@ -155,8 +156,12 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 
+
+#define MARIO_MAX_TOTAL_FLY_TIME 4000
+
 // When mario starts flying, the player has to keep hitting the "S" key to keep him in the sky
-// or else, after this amount of time, mario will fall
+// or else, after this amount of time, mario will fall, but the player can hit "S" key to make him
+// fly again, as long as the the total fly time hasn't been passed
 #define MARIO_WAIT_BEFORE_FALLING 300
 
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
@@ -174,7 +179,12 @@ class CMario : public CGameObject
 	int untouchable;
 	ULONGLONG untouchable_start;
 
-	ULONGLONG fly_start;
+	// Mario can fly for 4 seconds in total
+	ULONGLONG fly_total_start;
+
+	// During the 4 seconds of total fly time, mario can fly a bit, then fall, then fly again, this
+	// timer is for that case
+	ULONGLONG fly_individual_start;
 
 	BOOLEAN isOnPlatform;
 
@@ -207,7 +217,8 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 
-		fly_start = -1;
+		fly_total_start = -1;
+		fly_individual_start = -1;
 
 		isOnPlatform = false;
 
