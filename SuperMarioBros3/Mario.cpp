@@ -326,6 +326,7 @@ int CMario::GetAniIdRaccoon()
 			else
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
 		}
+		// If mario is not flying but his vy < 0, this means he's jumping
 		else if (vy < 0)
 		{
 			if (nx >= 0)
@@ -333,9 +334,13 @@ int CMario::GetAniIdRaccoon()
 			else
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
 		}
+		// If mario is not flying, but he's in the sky, he's falling down
 		else
 		{
-
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_RACCOON_TAIL_WAG_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_RACCOON_TAIL_WAG_LEFT;
 		}
 	}
 	else
