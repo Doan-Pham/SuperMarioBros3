@@ -35,11 +35,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(MARIO_STATE_FALLING);
 	}
 
-	if (isOnPlatform) fly_total_start = -1;
+	//if (now - tail_wag_start > MARIO_WAIT_BEFORE_FALLING && vy < 0)
+	//{
+	//	SetState(MARIO_STATE_FALLING);
+	//}
+	if (GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
+	{
+		isFlying = false;
+		isFalling = true;
+	}
+		
+
+	if (isOnPlatform)
+	{
+		fly_total_start = -1;
+		isFlying = false;
+		isFalling = false;
+	}
+
 	isOnPlatform = false;
 	//DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ", x, y, vy);
+	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -423,8 +440,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 
 		if (isFlying) return;
-		if (level == MARIO_LEVEL_RACCOON)
-			DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
+		//if (level == MARIO_LEVEL_RACCOON)
+		//	DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
 		ax = 0.0f;
 		vx = 0.0f;
 		if (isOnPlatform)
@@ -508,19 +525,28 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_FLY:
-		if (fly_total_start == -1) fly_total_start = GetTickCount64();
-		if (GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME) return;
-
+		if (fly_total_start == -1)
+		{
+			fly_total_start = GetTickCount64();
+			isFlying = true;
+		}
+		if (!isFlying) return;
 		fly_individual_start = GetTickCount64();
-
-		isFlying = true;
 		vy = -MARIO_FLYING_SPEED;
 		ay = 0;
 		break;
 
 	case MARIO_STATE_FALLING:
 		ay = MARIO_GRAVITY;
-		isFlying = false;
+		//isFlying = false;
+		//isFalling = true;
+		break;
+
+	case MARIO_STATE_TAIL_WAGGING:
+		if (!isFalling) return;
+		//tail_wag_start = GetTickCount64();
+		ay = MARIO_GRAVITY_SLOW_FALL;
+		//vy /= 4;
 		break;
 
 	case MARIO_STATE_DIE:

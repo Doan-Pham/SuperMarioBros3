@@ -26,10 +26,10 @@ typedef CPlayScene* LPPLAYSCENE;
 #define MARIO_ACCEL_RUN_X	0.0007f
 
 #define MARIO_JUMP_SPEED_Y		0.3f
-#define MARIO_JUMP_RUN_SPEED_Y	0.5f
+#define MARIO_JUMP_RUN_SPEED_Y	0.4f
 
 #define MARIO_GRAVITY			0.0006f
-
+#define MARIO_GRAVITY_SLOW_FALL		0.0000006f
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
 #pragma region MARIO_STATE
@@ -51,6 +51,7 @@ typedef CPlayScene* LPPLAYSCENE;
 #define MARIO_STATE_FLY				700
 #define MARIO_STATE_FALLING			800
 
+#define MARIO_STATE_TAIL_WAGGING	900
 #pragma endregion
 
 
@@ -170,6 +171,7 @@ class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
+	BOOLEAN isFalling;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -185,6 +187,8 @@ class CMario : public CGameObject
 	// During the 4 seconds of total fly time, mario can fly a bit, then fall, then fly again, this
 	// timer is for that case
 	ULONGLONG fly_individual_start;
+
+	ULONGLONG tail_wag_start;
 
 	BOOLEAN isOnPlatform;
 
@@ -209,6 +213,8 @@ public:
 	{
 		isSitting = false;
 		isFlying = false;
+		isFalling = false;
+
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
@@ -219,6 +225,7 @@ public:
 
 		fly_total_start = -1;
 		fly_individual_start = -1;
+		tail_wag_start = -1;
 
 		isOnPlatform = false;
 
@@ -231,6 +238,10 @@ public:
 	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
+
+	BOOLEAN IsFlying() { return isFlying; }
+
+	BOOLEAN IsFalling() { return isFalling; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -246,5 +257,5 @@ public:
 
 	bool IsPMeterFullyCharged() { return pMeter->isFullyCharged(); }
 	void IncreasePMeter() { pMeter->SetState(P_METER_STATE_INCREASING); }
-	void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
+	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

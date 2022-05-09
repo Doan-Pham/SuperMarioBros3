@@ -17,8 +17,24 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_S:
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->IsPMeterFullyCharged())
-			mario->SetState(MARIO_STATE_FLY);
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON )
+		{ 
+			float mario_vx, mario_vy;
+			mario->GetSpeed(mario_vx, mario_vy);
+			if (mario->IsPMeterFullyCharged())
+				mario->SetState(MARIO_STATE_FLY);
+
+			else if (mario_vy == 0)
+				mario->SetState(MARIO_STATE_JUMP);
+			else if (mario_vy > 0)
+				mario->SetState(MARIO_STATE_TAIL_WAGGING);
+			//if (mario_vy <= 0)
+				
+			//else 
+			//	mario->SetState(MARIO_STATE_TAIL_WAGGING);
+				
+		}
+			
 		else
 			mario->SetState(MARIO_STATE_JUMP);
 		break;
