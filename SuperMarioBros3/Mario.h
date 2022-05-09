@@ -55,72 +55,73 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #pragma region ANIMATION_ID
 
-#define ID_ANI_MARIO_IDLE_RIGHT					1112
 #define ID_ANI_MARIO_IDLE_LEFT					1111
+#define ID_ANI_MARIO_IDLE_RIGHT					1112
 
-#define ID_ANI_MARIO_WALKING_RIGHT				1122
 #define ID_ANI_MARIO_WALKING_LEFT				1121
+#define ID_ANI_MARIO_WALKING_RIGHT				1122
 
-#define ID_ANI_MARIO_RUNNING_RIGHT				1132
 #define ID_ANI_MARIO_RUNNING_LEFT				1131
+#define ID_ANI_MARIO_RUNNING_RIGHT				1132
 
-#define ID_ANI_MARIO_JUMP_WALK_RIGHT			1142
 #define ID_ANI_MARIO_JUMP_WALK_LEFT				1141
+#define ID_ANI_MARIO_JUMP_WALK_RIGHT			1142
 
-#define ID_ANI_MARIO_JUMP_RUN_RIGHT				1192
-#define ID_ANI_MARIO_JUMP_RUN_LEFT				1191
-
-#define ID_ANI_MARIO_SIT_RIGHT					1152
 #define ID_ANI_MARIO_SIT_LEFT					1151
+#define ID_ANI_MARIO_SIT_RIGHT					1152
 
-#define ID_ANI_MARIO_BRACE_RIGHT				1162
 #define ID_ANI_MARIO_BRACE_LEFT					1161
+#define ID_ANI_MARIO_BRACE_RIGHT				1162
 
-//#define ID_ANI_MARIO_RACCOON_IDLE_RIGHT 400
+#define ID_ANI_MARIO_JUMP_RUN_LEFT				1191
+#define ID_ANI_MARIO_JUMP_RUN_RIGHT				1192
+
+
 
 #define ID_ANI_MARIO_DIE 999
 
 // SMALL MARIO
-#define ID_ANI_MARIO_SMALL_IDLE_RIGHT			1312
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT			1311
+#define ID_ANI_MARIO_SMALL_IDLE_RIGHT			1312
 
-#define ID_ANI_MARIO_SMALL_WALKING_RIGHT		1322
 #define ID_ANI_MARIO_SMALL_WALKING_LEFT			1321
+#define ID_ANI_MARIO_SMALL_WALKING_RIGHT		1322
 
-#define ID_ANI_MARIO_SMALL_RUNNING_RIGHT		1332
 #define ID_ANI_MARIO_SMALL_RUNNING_LEFT			1331
+#define ID_ANI_MARIO_SMALL_RUNNING_RIGHT		1332
+
+#define ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT		1341
+#define ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT		1342
 
 #define ID_ANI_MARIO_SMALL_BRACE_RIGHT			1361
 #define ID_ANI_MARIO_SMALL_BRACE_LEFT			1362
-
-#define ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT		1342
-#define ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT		1341
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT		1392
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT		1391
 
 
-
-#define ID_ANI_MARIO_RACCOON_IDLE_RIGHT			1512
+// RACCOON MARIO
 #define ID_ANI_MARIO_RACCOON_IDLE_LEFT			1511
+#define ID_ANI_MARIO_RACCOON_IDLE_RIGHT			1512
 
-#define ID_ANI_MARIO_RACCOON_WALKING_RIGHT		1522
 #define ID_ANI_MARIO_RACCOON_WALKING_LEFT		1521
+#define ID_ANI_MARIO_RACCOON_WALKING_RIGHT		1522
 
-#define ID_ANI_MARIO_RACCOON_RUNNING_RIGHT		1532
 #define ID_ANI_MARIO_RACCOON_RUNNING_LEFT		1531
+#define ID_ANI_MARIO_RACCOON_RUNNING_RIGHT		1532
 
-#define ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT	1542
 #define ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT		1541
+#define ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT	1542
 
-#define ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT		1592
 #define ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT		1591
+#define ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT		1592
 
-#define ID_ANI_MARIO_RACCOON_SIT_RIGHT			1552
 #define ID_ANI_MARIO_RACCOON_SIT_LEFT			1551
+#define ID_ANI_MARIO_RACCOON_SIT_RIGHT			1552
 
-#define ID_ANI_MARIO_RACCOON_BRACE_RIGHT		1562
 #define ID_ANI_MARIO_RACCOON_BRACE_LEFT			1561
+#define ID_ANI_MARIO_RACCOON_BRACE_RIGHT		1562
+
 
 
 #pragma endregion
@@ -155,13 +156,15 @@ typedef CPlayScene* LPPLAYSCENE;
 
 // When mario starts flying, the player has to keep hitting the "S" key to keep him in the sky
 // or else, after this amount of time, mario will fall
-#define MARIO_WAIT_BEFORE_FALLING 350
+#define MARIO_WAIT_BEFORE_FALLING 300
 
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
+	BOOLEAN isFlying;
+
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -194,6 +197,7 @@ public:
 		: CGameObject(x, y), currentScene(currentScene)
 	{
 		isSitting = false;
+		isFlying = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
@@ -228,7 +232,7 @@ public:
 	// This is so that mario will always be the first object in the vector "objects"
 	virtual int GetRenderPriority() { return 99999999; }
 
-	bool IsPMeterFullyCharged(){ return pMeter->isFullyCharged(); }
+	bool IsPMeterFullyCharged() { return pMeter->isFullyCharged(); }
 	void IncreasePMeter() { pMeter->SetState(P_METER_STATE_INCREASING); }
 	void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

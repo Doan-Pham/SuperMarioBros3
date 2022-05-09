@@ -35,5 +35,5 @@ void CPMeter::SetState(int state)
 		break;
 	}
 
-	DebugOutTitle(L"minValue = %d, maxValue = %d, currentValue = %d,", minValue, maxValue, currentValue);
+	//DebugOutTitle(L"minValue = %d, maxValue = %d, currentValue = %d,", minValue, maxValue, currentValue);
 }

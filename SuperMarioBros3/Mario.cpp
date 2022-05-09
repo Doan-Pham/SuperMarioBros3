@@ -34,7 +34,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(MARIO_STATE_FALLING);
 	}
 	isOnPlatform = false;
-
+	//DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f ", x, y, vy);
 }
@@ -285,13 +285,13 @@ int CMario::GetAniIdBig()
 			{
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
-				else 
+				else
 				{
 					// If p-meter is not changing or increasing but not fully charged, mario's
 					// animation will be that of walking
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
 					if (pMeter->isFullyCharged())
-						aniId = ID_ANI_MARIO_RUNNING_RIGHT;			
+						aniId = ID_ANI_MARIO_RUNNING_RIGHT;
 				}
 			}
 			else // vx < 0
@@ -319,19 +319,23 @@ int CMario::GetAniIdRaccoon()
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (isFlying)//abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT;
 			else
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
 		}
-		else
+		else if (vy < 0)
 		{
 			if (nx >= 0)
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
 			else
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+		}
+		else
+		{
+
 		}
 	}
 	else
@@ -368,7 +372,7 @@ int CMario::GetAniIdRaccoon()
 					aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
 					if (pMeter->isFullyCharged())
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
-				}	
+				}
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
@@ -407,69 +411,24 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
-	case MARIO_STATE_RUNNING_RIGHT:
-		if (isSitting) break;
-		maxVx = MARIO_RUNNING_SPEED;
-		ax = MARIO_ACCEL_RUN_X;
-		nx = 1;
 
-		pMeter->SetState(P_METER_STATE_INCREASING);
-		break;
+	case MARIO_STATE_IDLE:
 
-	case MARIO_STATE_RUNNING_LEFT:
-		if (isSitting) break;
-		maxVx = -MARIO_RUNNING_SPEED;
-		ax = -MARIO_ACCEL_RUN_X;
-		nx = -1;
-
-		pMeter->SetState(P_METER_STATE_INCREASING);
-		break;
-
-	case MARIO_STATE_WALKING_RIGHT:
-		if (isSitting) break;
-		maxVx = MARIO_WALKING_SPEED;
-		ax = MARIO_ACCEL_WALK_X;
-		nx = 1;
-
+		if (isFlying) return;
+		if (level == MARIO_LEVEL_RACCOON)
+			DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
+		ax = 0.0f;
+		vx = 0.0f;
 		if (isOnPlatform)
 		{
 			pMeter->SetState(P_METER_STATE_DECREASING);
-			if (level == MARIO_LEVEL_RACCOON)
-			DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_RIGHT \n");
-			DebugOut(L"Current state %d\n", this->state);
+			//if (level == MARIO_LEVEL_RACCOON)
+			//{
+			//	DebugOut(L"P_METER_STATE_DECREASING was set in MARIO_STATE_IDLE \n");
+
+			//}
 		}
-			
-		break;
 
-	case MARIO_STATE_WALKING_LEFT:
-		if (isSitting) break;
-		maxVx = -MARIO_WALKING_SPEED;
-		ax = -MARIO_ACCEL_WALK_X;
-		nx = -1;
-
-		if (isOnPlatform)
-		{
-			pMeter->SetState(P_METER_STATE_DECREASING);
-			if (level == MARIO_LEVEL_RACCOON)
-			DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_LEFT \n");
-			DebugOut(L"Current state %d\n", this->state);
-		}
-			
-		break;
-
-	case MARIO_STATE_JUMP:
-		if (isSitting) break;
-		if (isOnPlatform)
-		{
-		if (abs(this->vx) == MARIO_RUNNING_SPEED)
-			vy = -MARIO_JUMP_RUN_SPEED_Y;
-		else
-			vy = -MARIO_JUMP_SPEED_Y;
-		}
-		break;
-
-	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
 
 	case MARIO_STATE_SIT:
@@ -491,32 +450,82 @@ void CMario::SetState(int state)
 		}
 		break;
 
-	case MARIO_STATE_IDLE:
 
-		if (this->state == MARIO_STATE_FLY) return;
-		ax = 0.0f;
-		vx = 0.0f;
+	case MARIO_STATE_WALKING_RIGHT:
+		if (isSitting) break;
+		maxVx = MARIO_WALKING_SPEED;
+		ax = MARIO_ACCEL_WALK_X;
+		nx = 1;
+
 		if (isOnPlatform)
 		{
 			pMeter->SetState(P_METER_STATE_DECREASING);
-			if (level == MARIO_LEVEL_RACCOON)
-			{
-				DebugOut(L"P_METER_STATE_DECREASING was set in MARIO_STATE_IDLE \n");
-				DebugOut(L"Current state %d\n", this->state);
-			}
-			
+			//if (level == MARIO_LEVEL_RACCOON)
+			//	DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_RIGHT \n");
+			//DebugOut(L"Current state %d\n", this->state);
 		}
-			
+
+		break;
+
+	case MARIO_STATE_WALKING_LEFT:
+		if (isSitting) break;
+		maxVx = -MARIO_WALKING_SPEED;
+		ax = -MARIO_ACCEL_WALK_X;
+		nx = -1;
+
+		if (isOnPlatform)
+		{
+			pMeter->SetState(P_METER_STATE_DECREASING);
+			//if (level == MARIO_LEVEL_RACCOON)
+			//	DebugOut(L"P_METER_STATE_DECREASING was set in STATE_WALK_LEFT \n");
+			//DebugOut(L"Current state %d\n", this->state);
+		}
+
+		break;
+
+	case MARIO_STATE_RUNNING_RIGHT:
+		if (isSitting) break;
+		maxVx = MARIO_RUNNING_SPEED;
+		ax = MARIO_ACCEL_RUN_X;
+		nx = 1;
+
+		pMeter->SetState(P_METER_STATE_INCREASING);
+		break;
+
+	case MARIO_STATE_RUNNING_LEFT:
+		if (isSitting) break;
+		maxVx = -MARIO_RUNNING_SPEED;
+		ax = -MARIO_ACCEL_RUN_X;
+		nx = -1;
+
+		pMeter->SetState(P_METER_STATE_INCREASING);
+		break;
+
+	case MARIO_STATE_JUMP:
+		if (isSitting) break;
+		if (isOnPlatform)
+		{
+			if (abs(this->vx) == MARIO_RUNNING_SPEED)
+				vy = -MARIO_JUMP_RUN_SPEED_Y;
+			else
+				vy = -MARIO_JUMP_SPEED_Y;
+		}
+		break;
+
+	case MARIO_STATE_RELEASE_JUMP:
+		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
 
 	case MARIO_STATE_FLY:
 		fly_start = GetTickCount64();
+		isFlying = true;
 		vy = -0.1f;
 		ay = 0;
 		break;
 
 	case MARIO_STATE_FALLING:
 		ay = MARIO_GRAVITY;
+		isFlying = false;
 		//if (vy == 0) SetState(MARIO_STATE_IDLE);
 		break;
 
