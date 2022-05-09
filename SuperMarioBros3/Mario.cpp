@@ -30,14 +30,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if (isFlying && ((now - fly_individual_start) > MARIO_WAIT_BEFORE_FALLING) && vy < 0)
+	if (isFlying && ((now - fly_individual_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_FLY) && vy < 0)
 	{
 		SetState(MARIO_STATE_FALLING);
 		DebugOut(L"1 was called \n");
 		
 	}
 	//DebugOutTitle(L"now - fly_individual_start %d", now - fly_individual_start);
-	if (isFalling && (now - tail_wag_start > MARIO_WAIT_BEFORE_FALLING))
+	if ((isFalling && ((now - tail_wag_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG))
+		|| isOnPlatform)
 	{
 		SetState(MARIO_STATE_FALLING);
 		DebugOut(L"2 was called \n");
@@ -54,12 +55,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		fly_total_start = -1;
 		isFlying = false;
 		isFalling = false;
+		ay = MARIO_GRAVITY;
 	}
-
+	else if (vy > 0) isFalling = true;
 	isOnPlatform = false;
-	DebugOutTitle(L"Current state %d\n", this->state);
+	//DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f ", x, y, vx, ax);
+	DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -538,7 +540,6 @@ void CMario::SetState(int state)
 		break;
 	}
 
-
 	case MARIO_STATE_JUMP:
 	{
 		if (isSitting) break;
@@ -578,11 +579,14 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_TAIL_WAGGING:
 	{
-		//if (!isFalling) return;
-		//tail_wag_start = GetTickCount64();
-		//ay = MARIO_GRAVITY_SLOW_FALL;
-	}
+		tail_wag_start = GetTickCount64();
+
+		// Assign vy = 0 to avoid the stacking of vy from STATE_FALLING, this stacking will just
+		// overwhelme the ay assigned here
+		vy = 0;
+		ay = MARIO_GRAVITY_SLOW_FALL;
 		break;
+	}
 
 	case MARIO_STATE_DIE:
 	{
