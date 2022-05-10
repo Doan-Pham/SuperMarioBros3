@@ -497,7 +497,9 @@ void CMario::SetState(int state)
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
 
-		if (isOnPlatform) pMeter->SetState(P_METER_STATE_DECREASING);
+		// As long as mario's still in the state flying, he can fly again, even if he's on the
+		// platform
+		if (isOnPlatform && !isFlying) pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
 
@@ -509,7 +511,9 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 
-		if (isOnPlatform) pMeter->SetState(P_METER_STATE_DECREASING);
+		// As long as mario's still in the state flying, he can fly again, even if he's on the
+		// platform
+		if (isOnPlatform && !isFlying) pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
 
