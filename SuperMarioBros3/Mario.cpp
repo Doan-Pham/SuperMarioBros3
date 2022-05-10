@@ -63,16 +63,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isTrulyFalling = false;
 		ay = MARIO_GRAVITY;
 	}
+
 	// If we don't check for isFlying, mario won't be able to hit "S" to fly again after falling
 	// down a bit
 	else if (vy > 0 && !isFlying) isTrulyFalling = true;
 
+	if (isTailWhipping && GetTickCount64() - tail_whip_start > MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT)
+	{
+		isTailWhipping = false;
+	}
 
 	isOnPlatform = false;
-	//DebugOutTitle(L"Current state %d\n", this->state);
+	
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	DebugOutTitle(L"isTailWhipping %d", isTailWhipping);
+	//DebugOutTitle(L"Current state %d", this->state);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
-	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
+	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -415,7 +423,11 @@ int CMario::GetAniIdRaccoon()
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				}
 			}
-
+	if (isTailWhipping)
+	{
+		if (nx == 1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT;
+		else if (nx == -1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 
 	return aniId;
@@ -434,7 +446,7 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_RACCOON)
 		aniId = GetAniIdRaccoon();
-
+	//DebugOutTitle(L"aniId: %d", aniId);
 	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
@@ -617,6 +629,13 @@ void CMario::SetState(int state)
 		// Assign vy = 0 to avoid the stacking of vy from STATE_FALLING, this stacking will just
 		// overwhelme the ay assigned here
 		vy = 0;
+		break;
+	}
+
+	case MARIO_STATE_TAIL_WHIPPING:
+	{
+		tail_whip_start = GetTickCount64();
+		isTailWhipping = true;
 		break;
 	}
 

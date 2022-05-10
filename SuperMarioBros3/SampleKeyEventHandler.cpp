@@ -40,6 +40,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 
 	case DIK_A:
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		mario->SetState(MARIO_STATE_TAIL_WHIPPING);
 		//mario->NotifyPMeterAKeyHit();
 		break;
 	case DIK_1:

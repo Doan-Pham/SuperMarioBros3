@@ -59,6 +59,7 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_STATE_TAIL_WAGGING	900
 
+#define MARIO_STATE_TAIL_WHIPPING	1000
 #pragma endregion
 
 
@@ -131,6 +132,9 @@ typedef CPlayScene* LPPLAYSCENE;
 #define ID_ANI_MARIO_RACCOON_BRACE_LEFT			1561
 #define ID_ANI_MARIO_RACCOON_BRACE_RIGHT		1562
 
+#define ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT		1611
+#define ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT	1612
+
 #define ID_ANI_MARIO_RACCOON_TAIL_WAG_LEFT		1621
 #define ID_ANI_MARIO_RACCOON_TAIL_WAG_RIGHT		1622
 
@@ -181,6 +185,7 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG 300
 
+#define MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT 350
 #pragma endregion 
 
 
@@ -191,6 +196,7 @@ class CMario : public CGameObject
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
 	BOOLEAN isTrulyFalling;
+	BOOLEAN isTailWhipping;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -208,6 +214,9 @@ class CMario : public CGameObject
 	ULONGLONG fly_individual_start;
 
 	ULONGLONG tail_wag_start;
+
+	ULONGLONG tail_whip_start;
+
 
 	BOOLEAN isOnPlatform;
 
@@ -233,6 +242,7 @@ public:
 		isSitting = false;
 		isFlying = false;
 		isTrulyFalling = false;
+		isTailWhipping = false;
 
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -245,6 +255,8 @@ public:
 		fly_total_start = -1;
 		fly_individual_start = -1;
 		tail_wag_start = -1;
+
+		tail_whip_start = -1;;
 
 		isOnPlatform = false;
 
