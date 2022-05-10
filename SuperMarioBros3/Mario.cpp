@@ -134,15 +134,23 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level < MARIO_LEVEL_BIG)
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+				else if (level == MARIO_LEVEL_BIG)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
 				else
 				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
+					if (isTailWhipping && e->nx != 0 && e->ny == 0)
+					{
+						goomba->SetState(GOOMBA_STATE_DIE);
+						CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+					}
 				}
 			}
 		}
