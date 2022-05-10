@@ -594,6 +594,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			}
 			case OBJECT_TYPE_ENEMY_PLANT_RED_FIRE:
 			{
+				obj = new CPlantRedFire(x, y); break;
 				break;
 			}
 
@@ -606,6 +607,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 			break;
 		}
+
 		case OBJECT_TYPE_PORTAL:
 		{
 			float r = x + (float)atof(currentElementObject->Attribute("width"));
@@ -658,8 +660,10 @@ void CPlayScene::Update(DWORD dt)
 	map->GetSize(mapWidth, mapHeight);
 	map->GetTileSize(mapTileWidth, mapTileHeight);
 
-	float mapLeftEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
-	float mapTopEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+	float mapLeftEdge = 0;
+	float mapTopEdge = 0;
+
+	// Adjust the right, bottom edges to avoid seeing empty tiles
 	float mapRightEdge = (float)(mapWidth * mapTileWidth - COORDINATE_ADJUST_SYNC_TILED);
 	float mapBottomEdge = (float)( mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED);
 

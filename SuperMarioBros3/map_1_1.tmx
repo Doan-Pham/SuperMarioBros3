@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="147">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="149">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -106,7 +106,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Player" visible="0">
+ <objectgroup id="4" name="Player">
   <properties>
    <property name="objectTypeId" type="int" value="10"/>
   </properties>
@@ -114,7 +114,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform" visible="0">
+ <objectgroup id="3" name="Platform">
   <properties>
    <property name="objectTypeId" value="50"/>
   </properties>
@@ -233,43 +233,43 @@
   <properties>
    <property name="objectTypeId" type="int" value="60"/>
   </properties>
-  <object id="70" type="Enemy" x="232" y="384">
+  <object id="70" type="Enemy" x="224" y="384">
    <properties>
     <property name="objectSubTypeId" type="int" value="61"/>
    </properties>
    <point/>
   </object>
-  <object id="72" type="Enemy" x="536" y="384">
+  <object id="72" type="Enemy" x="528" y="384">
    <properties>
     <property name="objectSubTypeId" type="int" value="61"/>
    </properties>
    <point/>
   </object>
-  <object id="73" type="Enemy" x="840" y="368">
+  <object id="73" type="Enemy" x="832" y="368">
    <properties>
     <property name="objectSubTypeId" type="int" value="61"/>
    </properties>
    <point/>
   </object>
-  <object id="74" type="Enemy" x="888" y="368">
+  <object id="74" type="Enemy" x="880" y="368">
    <properties>
     <property name="objectSubTypeId" type="int" value="61"/>
    </properties>
    <point/>
   </object>
-  <object id="146" type="Enemy" x="368" y="400">
+  <object id="146" type="Enemy" x="360" y="376">
    <properties>
     <property name="objectSubTypeId" type="int" value="69"/>
    </properties>
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Portals" visible="0">
+ <objectgroup id="8" name="Portals">
   <properties>
    <property name="objectTypeId" type="int" value="0"/>
   </properties>
  </objectgroup>
- <objectgroup id="9" name="Items" visible="0">
+ <objectgroup id="9" name="Items">
   <properties>
    <property name="objectTypeId" type="int" value="30"/>
   </properties>
@@ -409,7 +409,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Blocks" visible="0">
+ <objectgroup id="5" name="Blocks">
   <properties>
    <property name="objectTypeId" type="int" value="20"/>
   </properties>

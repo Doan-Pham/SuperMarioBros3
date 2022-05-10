@@ -38,10 +38,10 @@ void CTileLayer::Render()
 			int tileGid = tileMatrix[i][j];
 			int usedTileSetIndex = tileGid / (tileSets[0]->GetLastGid() + 1);
 
-			//Draw the respective tile in the tileset
+
 			tileSets[usedTileSetIndex]->Draw(
-				j * TILE_WIDTH_STANDARD,
-				i * TILE_HEIGHT_STANDARD,
+				j * TILE_WIDTH_STANDARD ,
+				i * TILE_HEIGHT_STANDARD ,
 				tileMatrix[i][j]);
 
 			//renderCount++;
