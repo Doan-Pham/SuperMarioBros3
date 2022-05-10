@@ -15,22 +15,28 @@ typedef CPlayScene* LPPLAYSCENE;
 // TODO: Change the time of each frame for mario's walking animation to
 // make mario move faster when p-meter is not fully charged
 
-// TODO: Make the frametime for mario running animation shorter to create an illusion of him 
-// moving quick
 
-#define MARIO_WALKING_SPEED		0.1f
-#define MARIO_RUNNING_SPEED		0.2f
-#define MARIO_FLYING_SPEED_Y	0.13f
 
-#define MARIO_ACCEL_WALK_X	0.0005f
-#define MARIO_ACCEL_RUN_X	0.0007f
+#pragma region MARIO_SPEED
 
-#define MARIO_JUMP_SPEED_Y		0.3f
-#define MARIO_JUMP_RUN_SPEED_Y	0.4f
+#define MARIO_WALKING_SPEED			0.1f
+#define MARIO_RUNNING_SPEED			0.2f
 
-#define MARIO_GRAVITY			0.0006f
+#define MARIO_TAKE_OFF_SPEED_Y		0.2f
+#define MARIO_FLYING_SPEED_Y		0.13f
+
+#define MARIO_ACCEL_WALK_X			0.0005f
+#define MARIO_ACCEL_RUN_X			0.0007f
+
+#define MARIO_JUMP_SPEED_Y			0.3f
+#define MARIO_JUMP_RUN_SPEED_Y		0.4f
+
+#define MARIO_GRAVITY				0.0006f
 #define MARIO_GRAVITY_SLOW_FALL		0.0004f
-#define MARIO_JUMP_DEFLECT_SPEED  0.4f
+#define MARIO_JUMP_DEFLECT_SPEED	0.4f
+
+#pragma endregion 
+
 
 #pragma region MARIO_STATE
 
@@ -52,6 +58,7 @@ typedef CPlayScene* LPPLAYSCENE;
 #define MARIO_STATE_FALLING			800
 
 #define MARIO_STATE_TAIL_WAGGING	900
+
 #pragma endregion
 
 
@@ -129,9 +136,6 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #pragma endregion
 
-#define GROUND_Y 160.0f
-
-
 // Mario has many levels like big, tanooki, raccoon,... which are defined as 1, 2, 3, 4
 // but tanooki or frog or fire is not exactly higher level than raccoon. The above numbers are
 // are just for identification, not the level's actual value. The way this baseline works is to
@@ -139,11 +143,15 @@ typedef CPlayScene* LPPLAYSCENE;
 //	+ Levels lower than baseline: Low level
 //	+ Equal: Mid level
 //	+ Higher: High level
+
 #define MARIO_LEVELS_BASELINE 2
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_RACCOON 3
+
+
+#pragma region MARIO_SIZE
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -154,6 +162,12 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
+
+
+#pragma endregion
+
+
+#pragma region MARIO_TIME
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 
@@ -167,13 +181,16 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG 300
 
+#pragma endregion 
+
+
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
-	BOOLEAN isFalling;
+	BOOLEAN isTrulyFalling;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -215,7 +232,7 @@ public:
 	{
 		isSitting = false;
 		isFlying = false;
-		isFalling = false;
+		isTrulyFalling = false;
 
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -243,7 +260,7 @@ public:
 
 	BOOLEAN IsFlying() { return isFlying; }
 
-	BOOLEAN IsFalling() { return isFalling; }
+	BOOLEAN IsTrulyFalling() { return isTrulyFalling; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -258,6 +275,5 @@ public:
 	virtual int GetRenderPriority() { return 99999999; }
 
 	bool IsPMeterFullyCharged() { return pMeter->isFullyCharged(); }
-	void IncreasePMeter() { pMeter->SetState(P_METER_STATE_INCREASING); }
 	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

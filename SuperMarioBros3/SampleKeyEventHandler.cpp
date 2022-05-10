@@ -9,7 +9,7 @@
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	switch (KeyCode)
 	{
@@ -17,31 +17,28 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_S:
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON )
-		{ 
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		{
 			float mario_vx, mario_vy;
 			mario->GetSpeed(mario_vx, mario_vy);
+
+			// P-meter is full in 2 cases: mario's flying, and mario's has finished flying and falling
+			// but has not touched the ground
 			if (mario->IsPMeterFullyCharged())
 			{
-				mario->SetState(MARIO_STATE_FLY);
-
-				if (mario->IsFalling()) mario->SetState(MARIO_STATE_TAIL_WAGGING);
+				if (!mario->IsTrulyFalling()) mario->SetState(MARIO_STATE_FLY);
+				else mario->SetState(MARIO_STATE_TAIL_WAGGING);
 			}
-				
 			else if (mario_vy == 0)
 				mario->SetState(MARIO_STATE_JUMP);
 			else if (mario_vy > 0)
 				mario->SetState(MARIO_STATE_TAIL_WAGGING);
-			//if (mario_vy <= 0)
-				
-			//else 
-			//	mario->SetState(MARIO_STATE_TAIL_WAGGING);
-				
 		}
-			
+
 		else
 			mario->SetState(MARIO_STATE_JUMP);
 		break;
+
 	case DIK_A:
 		//mario->NotifyPMeterAKeyHit();
 		break;
@@ -71,10 +68,11 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		// Release jump will make mario fall down immediately, which is not the case for mario raccoon
+		// Release jump will make mario fall down immediately, which is not always the case for 
+		// mario raccoon: when he's flying, and when he's falling
 		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
 		{
-			if (!mario->IsFalling())
+			if (!mario->IsTrulyFalling() && !mario->IsFlying())
 				mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 		else mario->SetState(MARIO_STATE_RELEASE_JUMP);
@@ -86,7 +84,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	}
 }
 
-void CSampleKeyHandler::KeyState(BYTE *states)
+void CSampleKeyHandler::KeyState(BYTE* states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();

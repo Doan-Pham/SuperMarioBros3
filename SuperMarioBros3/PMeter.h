@@ -31,10 +31,10 @@ class CPMeter
 	int minValue;
 	int maxValue;
 
-	// Unit: number of times P-meter increases/milliseconds
+	// Unit: milliseconds per 1 timer P-meter increases
 	int increasingRate;
 
-	// Unit: number of times P-meter decreases/milliseconds
+	// Unit: milliseconds per 1 timer P-meter decreases
 	int decreasingRate;
 
 	int increasingIncrement;
@@ -42,7 +42,7 @@ class CPMeter
 
 	// In the original game, after the player click "A", the game waits for a second before increasing 
 	// the p-meter
-	ULONGLONG key_A_hit_start;
+	//ULONGLONG key_A_hit_start;
 
 	ULONGLONG increase_start;
 	ULONGLONG decrease_start;
@@ -59,7 +59,8 @@ public:
 		decreasingIncrement = P_METER_DECREASING_INCREMENT;
 		currentValue = minValue;
 
-		key_A_hit_start = -1;
+		state = P_METER_STATE_DECREASING;
+		//key_A_hit_start = -1;
 		//increase_start = 9999999999;
 		increase_start = -1;
 		decrease_start = -1;

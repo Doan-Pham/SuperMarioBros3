@@ -31,7 +31,7 @@ void CPMeter::SetState(int state)
 
 			decrease_start = GetTickCount64();
 		}
-		key_A_hit_start = GetTickCount64();
+		//key_A_hit_start = GetTickCount64();
 		break;
 	}
 

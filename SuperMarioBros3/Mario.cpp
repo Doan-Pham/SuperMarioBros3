@@ -30,34 +30,44 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
+	// If mario's flying and he doesn't hit the "S" key fast enough, make him fall, but he can
+	// still fly again
 	if (isFlying && ((now - fly_individual_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_FLY))
 	{
 		SetState(MARIO_STATE_FALLING);
-		DebugOut(L"1 was called \n");
-		
+		//DebugOut(L"Mario's state set to falling after flying \n");
 	}
-	//DebugOutTitle(L"now - fly_individual_start %d", now - fly_individual_start);
-	if ((isFalling && ((now - tail_wag_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG))
+
+	// If mario's falling and he doesn't hit the "S" key fast enough, make him fall, but he can still
+	// wag tail again to fall slowly
+	if ((isTrulyFalling && ((now - tail_wag_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG))
 		|| isOnPlatform)
 	{
 		SetState(MARIO_STATE_FALLING);
-		DebugOut(L"2 was called \n");
+		//DebugOut(L"Mario's state set to falling after wagging tail \n");
 	}
 
 	if (isFlying && GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
 	{
 		isFlying = false;
-		isFalling = true;
+		isTrulyFalling = true;
 	}
-		
+	
+	// Reset flags and fly timer
 	if (isOnPlatform)
 	{
 		fly_total_start = -1;
-		isFlying = false;
-		isFalling = false;
+
+		// If we don't set this, mario can't start flying because if he will fail the isTrulyFalling()
+		// check in KeyEventHandler
+		isTrulyFalling = false;
 		ay = MARIO_GRAVITY;
 	}
-	else if (vy > 0 && !isFlying) isFalling = true;
+	// If we don't check for isFlying, mario won't be able to hit "S" to fly again after falling
+	// down a bit
+	else if (vy > 0 && !isFlying) isTrulyFalling = true;
+
+
 	isOnPlatform = false;
 	//DebugOutTitle(L"Current state %d\n", this->state);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -313,7 +323,7 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
 				else
 				{
-					// If p-meter is not changing or increasing but not fully charged, mario's
+					// If p-meter is not changing or if it is increasing but not fully charged, mario's
 					// animation will be that of walking
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
 					if (pMeter->isFullyCharged())
@@ -451,8 +461,8 @@ void CMario::SetState(int state)
 		//	DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
 		ax = 0.0f;
 		vx = 0.0f;
-		if (isOnPlatform)
-			pMeter->SetState(P_METER_STATE_DECREASING);
+
+		pMeter->SetState(P_METER_STATE_DECREASING);
 
 		break;
 	}
@@ -487,9 +497,7 @@ void CMario::SetState(int state)
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
 
-		if (isOnPlatform)
-			pMeter->SetState(P_METER_STATE_DECREASING);
-
+		if (isOnPlatform) pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
 
@@ -501,16 +509,16 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 
-		if (isOnPlatform)
-			pMeter->SetState(P_METER_STATE_DECREASING);
-
+		if (isOnPlatform) pMeter->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
-
 
 	case MARIO_STATE_RUNNING_RIGHT:
 	{
 		if (isSitting) break;
+
+		// TODO: Maybe divide flying state into fly left and fly right
+		// This is to keep mario's vx when flying to be at the same value
 		if (isFlying)
 		{
 			SetState(MARIO_STATE_WALKING_RIGHT);
@@ -528,6 +536,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_LEFT:
 	{
 		if (isSitting) break;
+
+		// This is to keep mario's vx when flying to be at the same value
 		if (isFlying)
 		{
 			SetState(MARIO_STATE_WALKING_LEFT);
@@ -562,19 +572,31 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_FLY:
 	{
+
+		// fly_total_start being equal -1 means mario's on the platform and can start flying
 		if (fly_total_start == -1)
 		{
 			fly_total_start = GetTickCount64();
-			isFlying = true;
-			isOnPlatform = false;
 			fly_individual_start = GetTickCount64();
-			vy = -0.2f;
+			isFlying = true;
+	
+			// If we don't set this, the "isOnPlatform" check in Update() will resset fly_total_start
+			// and prevent mario from flying
+			isOnPlatform = false;
+
+			// A boost vy to help mario overcome gravity when he takes off
+			vy = -MARIO_TAKE_OFF_SPEED_Y;
+
 			ay = 0;
 			break;
 		}
+
 		if (!isFlying) return;
 		fly_individual_start = GetTickCount64();
 		vy = -MARIO_FLYING_SPEED_Y;
+
+		// Set ay = 0, so that mario's not dragged down by gravity and feel like he's really flying
+		// instead of just jumping infinitely
 		ay = 0;
 		break;
 	}
@@ -586,11 +608,11 @@ void CMario::SetState(int state)
 	case MARIO_STATE_TAIL_WAGGING:
 	{
 		tail_wag_start = GetTickCount64();
+		ay = MARIO_GRAVITY_SLOW_FALL;
 
 		// Assign vy = 0 to avoid the stacking of vy from STATE_FALLING, this stacking will just
 		// overwhelme the ay assigned here
 		vy = 0;
-		ay = MARIO_GRAVITY_SLOW_FALL;
 		break;
 	}
 
