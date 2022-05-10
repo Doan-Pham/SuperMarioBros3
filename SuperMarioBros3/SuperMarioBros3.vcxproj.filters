@@ -97,6 +97,9 @@
     <ClCompile Include="PMeter.cpp">
       <Filter>Game Object\Mario</Filter>
     </ClCompile>
+    <ClCompile Include="PlantRedFire.cpp">
+      <Filter>Game Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -203,6 +206,9 @@
     </ClInclude>
     <ClInclude Include="PMeter.h">
       <Filter>Game Object\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantRedFire.h">
+      <Filter>Game Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

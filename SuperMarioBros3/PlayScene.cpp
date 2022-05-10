@@ -520,7 +520,9 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				obj = new CMushroomBig(x, y);
 				break;
 			}
+
 			case OBJECT_TYPE_ITEM_LEAF:
+
 			{
 				obj = new CLeaf(x, y);
 				break;
@@ -530,10 +532,13 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				obj = new CCoin(x, y);
 				break;
 			}
+
 			default:
+			{
 				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
 				return;
-				break;
+			}
+
 			}
 			break;
 		}
@@ -596,8 +601,50 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		}
 
-		case OBJECT_TYPE_ENEMY: obj = new CGoomba(x, y); break;
+		case OBJECT_TYPE_ENEMY:
+		{
+			int objectSubTypeId = -999;
 
+			TiXmlElement* xmlElementProperties = currentElementObject->FirstChildElement("properties");
+
+			for (TiXmlElement* currentProprety = xmlElementProperties->FirstChildElement()
+				; currentProprety != nullptr
+				; currentProprety = currentProprety->NextSiblingElement())
+			{
+				if (currentProprety->Attribute("name") == string("objectSubTypeId"))
+				{
+					objectSubTypeId = atoi(currentProprety->Attribute("value"));
+					if (objectType == -999)
+					{
+						DebugOut(L"[ERROR] Failed to parse enemy's sub type id: %i\n",
+							objectType);
+						return;
+					}
+				}
+			}
+
+			switch (objectSubTypeId)
+			{
+
+			case OBJECT_TYPE_ENEMY_GOOMBA:
+			{
+				obj = new CGoomba(x, y); break;
+				break;
+			}
+			case OBJECT_TYPE_ENEMY_PLANT_RED_FIRE:
+			{
+				break;
+			}
+
+			default:
+			{
+				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
+				return;
+			}
+			}
+
+			break;
+		}
 		case OBJECT_TYPE_PORTAL:
 		{
 			float r = x + (float)atof(currentElementObject->Attribute("width"));
