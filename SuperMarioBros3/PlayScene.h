@@ -1,14 +1,20 @@
 #pragma once
 #include "Game.h"
-#include "Map.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "Map.h"
+
 #include "GameObject.h"
+#include "Mario.h"
+
 #include "BrickQuestionMark.h"
+
 #include "Leaf.h"
 #include "MushroomBig.h"
-#include "Mario.h"
+
 #include "Goomba.h"
+#include "PlantRedFire.h"
+
 #include "TinyXml/tinyxml.h"
 //#include "Koopas.h"
 
