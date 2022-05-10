@@ -596,7 +596,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		}
 
-		case OBJECT_TYPE_ENEMY: obj = new CCoin(x, y); break;
+		case OBJECT_TYPE_ENEMY: obj = new CGoomba(x, y); break;
 
 		case OBJECT_TYPE_PORTAL:
 		{
@@ -659,19 +659,25 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
+	float player_new_x = cx;
+	float player_new_y = cy;
 	// Adjust mario's position to prevent him from going beyond the map's edges
 	// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
 	// mario will get split in half when he comes to the edges.
+
 	if (cx < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
-		player->SetPosition(mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED, cy);
+		player_new_x = mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED;
+
 	if (cx > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
-		player->SetPosition(mapRightEdge - COORDINATE_ADJUST_SYNC_TILED, cy);
+		player_new_x = mapRightEdge - COORDINATE_ADJUST_SYNC_TILED;
 
 	if (cy < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
-		player->SetPosition(cx, mapTopEdge + COORDINATE_ADJUST_SYNC_TILED);
-	if (cy > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
-		player->SetPosition(cx, mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED);
+		player_new_y = mapTopEdge + COORDINATE_ADJUST_SYNC_TILED;
 
+	if (cy > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player_new_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
+
+	player->SetPosition(player_new_x, player_new_y);
 
 	// Adjust camera's position so it won't go past the map's edge
 	// Update camera to follow mario
@@ -686,7 +692,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > mapBottomEdge - game->GetBackBufferHeight())
 		cy = mapBottomEdge - game->GetBackBufferHeight();
 
-	CGame::GetInstance()->SetCamPos(cx, cy);;
+	CGame::GetInstance()->SetCamPos(cx,cy);
 
 	PurgeDeletedObjects();
 }

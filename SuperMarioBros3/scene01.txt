@@ -2,6 +2,7 @@
 spritesheet_block.xml
 spritesheet_item.xml
 spritesheet_mario.xml
+spritesheet_enemy.xml
 
 # list of object assets to load in this scene, for some, only load their animations
 # their sprites might have already been loaded in the .xml file
@@ -10,7 +11,7 @@ spritesheet_mario.xml
 mario.txt
 brick.txt
 coin.txt
-#goomba.txt
+goomba.txt
 #cloud.txt
 
 
