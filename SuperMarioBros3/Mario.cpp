@@ -47,7 +47,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//DebugOut(L"Mario's state set to falling after wagging tail \n");
 	}
 
-	if (isFlying && GetTickCount64() - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
+	if (isFlying && now - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
 	{
 		isFlying = false;
 		isTrulyFalling = true;
@@ -68,7 +68,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// down a bit
 	else if (vy > 0 && !isFlying) isTrulyFalling = true;
 
-	if (isTailWhipping && GetTickCount64() - tail_whip_start > MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT)
+	if (isTailWhipping && ((now - tail_whip_start) > MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT))
 	{
 		isTailWhipping = false;
 	}
@@ -77,7 +77,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	DebugOutTitle(L"isTailWhipping %d", isTailWhipping);
+	DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
 	//DebugOutTitle(L"Current state %d", this->state);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
@@ -423,7 +423,7 @@ int CMario::GetAniIdRaccoon()
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				}
 			}
-	if (isTailWhipping)
+	if (isTailWhipping )
 	{
 		if (nx == 1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT;
 		else if (nx == -1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT;
@@ -634,8 +634,11 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_TAIL_WHIPPING:
 	{
-		tail_whip_start = GetTickCount64();
-		isTailWhipping = true;
+		if (!isTailWhipping)
+		{
+			tail_whip_start = GetTickCount64();
+			isTailWhipping = true;
+		}
 		break;
 	}
 
