@@ -18,7 +18,6 @@ void CTileLayer::AddTileSet(LPTILESET tileSet)
 void CTileLayer::Render()
 {
 	//int renderCount = 0;
-	int tileWidth, tileHeight = 0;
 
 	float camX, camY = 0.0f;
 	CGame::GetInstance()->GetCamPos(camX, camY);

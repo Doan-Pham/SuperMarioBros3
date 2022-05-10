@@ -12,7 +12,7 @@ CTileSet::CTileSet(int firstGid, int tileWidth, int tileHeight
 	this->texture = texture;
 };
 
-void CTileSet::Draw(int x, int y, int tileGid)
+void CTileSet::Draw(float x, float y, int tileGid)
 {
 	int left = ((tileGid - firstGid) % columnsCount) * tileWidth;
 	int top = ((tileGid - firstGid) / columnsCount) * tileHeight;

@@ -34,7 +34,7 @@ public:
 
 	int GetLastGid() { return lastGid; }
 
-	void Draw(int x, int y, int tileGid);
+	void Draw(float x, float y, int tileGid);
 };
 
 typedef CTileSet* LPTILESET;

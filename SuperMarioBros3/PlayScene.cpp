@@ -207,7 +207,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	for (unsigned int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i + 1].c_str());
@@ -442,8 +442,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		; currentElementObject != nullptr
 		; currentElementObject = currentElementObject->NextSiblingElement())
 	{
-		x = atof(currentElementObject->Attribute("x"));
-		y = atof(currentElementObject->Attribute("y"));
+		x = (float) atof(currentElementObject->Attribute("x"));
+		y = (float) atof(currentElementObject->Attribute("y"));
 
 		switch (objectType)
 		{
@@ -557,8 +557,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			{
 			case OBJECT_TYPE_PLATFORM_TILE:
 			{
-				int height = atof(currentElementObject->Attribute("height"));
-				int width = atof(currentElementObject->Attribute("width"));
+				float height = (float) atof(currentElementObject->Attribute("height"));
+				float width = (float) atof(currentElementObject->Attribute("width"));
 
 				//The Tiled software's coordinate system uses the top-left corner convention, but
 				//our program uses the center-center one, therefore we need to adjust the input
@@ -578,8 +578,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			}
 			case OBJECT_TYPE_PLATFORM_GHOST:
 			{
-				float height = atof(currentElementObject->Attribute("height"));
-				float width = atof(currentElementObject->Attribute("width"));
+				float height = (float) atof(currentElementObject->Attribute("height"));
+				float width = (float) atof(currentElementObject->Attribute("width"));
 
 				//The Tiled software's coordinate system uses the top-left corner convention, but
 				//our program uses the center-center one, therefore we need to adjust the input
@@ -699,8 +699,8 @@ void CPlayScene::Update(DWORD dt)
 
 	float mapLeftEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
 	float mapTopEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
-	float mapRightEdge = mapWidth * mapTileWidth - COORDINATE_ADJUST_SYNC_TILED;
-	float mapBottomEdge = mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED;
+	float mapRightEdge = (float)(mapWidth * mapTileWidth - COORDINATE_ADJUST_SYNC_TILED);
+	float mapBottomEdge = (float)( mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED);
 
 
 	float cx, cy;
@@ -759,7 +759,7 @@ void CPlayScene::Render()
 			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
 		});
 
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
 
@@ -784,7 +784,7 @@ void CPlayScene::Clear()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
 	objects.clear();
