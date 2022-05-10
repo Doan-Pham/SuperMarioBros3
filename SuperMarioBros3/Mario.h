@@ -159,8 +159,15 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
+
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
+
+#define MARIO_RACCOON_BBOX_WIDTH  22
+#define MARIO_RACCOON_BBOX_HEIGHT 24
+
+#define MARIO_RACCOON_SITTING_BBOX_WIDTH  22
+#define MARIO_RACCOON_SITTING_BBOX_HEIGHT 16
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
 
@@ -228,7 +235,7 @@ class CMario : public CGameObject
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
-	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
