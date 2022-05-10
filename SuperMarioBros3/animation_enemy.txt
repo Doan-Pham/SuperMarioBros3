@@ -1,0 +1,6 @@
+# Load ANIMATIONS for enemies
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+
+5111	51111	100	51112	100
+5112	51121	100

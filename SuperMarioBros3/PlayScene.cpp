@@ -35,14 +35,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 
 #define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_ASSETS	1
-#define SCENE_SECTION_OBJECTS	2
+#define SCENE_SECTION_SPRITE 1
+#define SCENE_SECTION_ANIMATION	2
 #define SCENE_SECTION_MAP 3
-#define SCENE_SECTION_ASSETSXML 4
 
-#define ASSETS_SECTION_UNKNOWN -1
-#define ASSETS_SECTION_SPRITES 1
-#define ASSETS_SECTION_ANIMATIONS 2
 
 #define MAP_SECTION_UNKNOWN "unknown"
 #define MAP_SECTION_TILESET "tileset"
@@ -71,9 +67,9 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
-		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
+		if (line == "[SPRITE]") { section = SCENE_SECTION_SPRITE; continue; }
+		if (line == "[ANIMATION]") { section = SCENE_SECTION_ANIMATION; continue; };
 		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
-		if (line == "[ASSETSXMLTEST]") { section = SCENE_SECTION_ASSETSXML; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -81,9 +77,9 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
-		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+		case SCENE_SECTION_SPRITE: _ParseSection_SPRITE(line); break;
+		case SCENE_SECTION_ANIMATION: _ParseSection_ANIMATION(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
-		case SCENE_SECTION_ASSETSXML: _ParseSection_ASSETSXML(line); break;
 		}
 	}
 
@@ -92,18 +88,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
-void CPlayScene::_ParseSection_ASSETS(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 1) return;
-
-	wstring path = ToWSTR(tokens[0]);
-
-	LoadAssets(path.c_str());
-}
-
-void CPlayScene::_ParseSection_ASSETSXML(string line)
+void CPlayScene::_ParseSection_SPRITE(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -113,6 +98,14 @@ void CPlayScene::_ParseSection_ASSETSXML(string line)
 
 	TiXmlDocument doc(tokens[0].c_str());
 	bool result = doc.LoadFile();
+
+	if (!result)
+	{
+		DebugOut(L"[ERROR] Failed to load sprites from %s\n", path.c_str());
+		return;
+	}
+
+	DebugOut(L"[INFO] Start loading sprites from : %s \n", path.c_str());
 
 	TiXmlElement* root = doc.FirstChildElement();
 	int textureId = atoi(root->Attribute("textureId"));
@@ -129,93 +122,61 @@ void CPlayScene::_ParseSection_ASSETSXML(string line)
 	{
 		int ID = atoi(currentElement->Attribute("n"));
 		int l = atoi(currentElement->Attribute("x"));
-		int t = atoi(currentElement->Attribute("y")) ;
-		int r = atoi(currentElement->Attribute("w")) + l -1 ;
+		int t = atoi(currentElement->Attribute("y"));
+		int r = atoi(currentElement->Attribute("w")) + l - 1;
 		int b = atoi(currentElement->Attribute("h")) + t - 1;
 
 		CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
 	}
 
+	DebugOut(L"[INFO] Done loading sprites from : %s \n", path.c_str());
 }
 
-void CPlayScene::LoadAssets(LPCWSTR assetFile)
+
+void CPlayScene::_ParseSection_ANIMATION(string line)
 {
-	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 1) return;
+
+	wstring path = ToWSTR(tokens[0]);
+
+	DebugOut(L"[INFO] Start loading animations from : %s \n", path.c_str());
 
 	ifstream f;
-	f.open(assetFile);
-
-	int section = ASSETS_SECTION_UNKNOWN;
+	f.open(path.c_str());
 
 	char str[MAX_SCENE_LINE];
 	while (f.getline(str, MAX_SCENE_LINE))
 	{
 		string line(str);
 
-		if (line[0] == '#') continue;	// skip comment lines	
+		if (line[0] == '#' || line[0] == '\0') continue;	// skip comment lines and m
 
-		if (line == "[SPRITES]") { section = ASSETS_SECTION_SPRITES; continue; };
-		if (line == "[ANIMATIONS]") { section = ASSETS_SECTION_ANIMATIONS; continue; };
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+		vector<string> tokens = split(line);
 
-		//
-		// data section
-		//
-		switch (section)
+		if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+
+		//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+		LPANIMATION ani = new CAnimation();
+
+		int ani_id = atoi(tokens[0].c_str());
+		for (unsigned int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 		{
-		case ASSETS_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case ASSETS_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+			int sprite_id = atoi(tokens[i].c_str());
+			int frame_time = atoi(tokens[i + 1].c_str());
+			ani->Add(sprite_id, frame_time);
 		}
+
+		CAnimations::GetInstance()->Add(ani_id, ani);
 	}
 
 	f.close();
 
-	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
+	DebugOut(L"[INFO] Done loading animations from %s\n", path.c_str());
 }
 
-void CPlayScene::_ParseSection_SPRITES(string line)
-{
-	//vector<string> tokens = split(line);
-
-	//if (tokens.size() < 6) return; // skip invalid lines
-
-	//int ID = atoi(tokens[0].c_str());
-	//int l = atoi(tokens[1].c_str());
-	//int t = atoi(tokens[2].c_str());
-	//int r = atoi(tokens[3].c_str());
-	//int b = atoi(tokens[4].c_str());
-	//int texID = atoi(tokens[5].c_str());
-
-	//LPTEXTURE tex = CTextures::GetInstance()->Get(texID);
-	//if (tex == NULL)
-	//{
-	//	DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-	//	return;
-	//}
-
-	//CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
-}
-
-void CPlayScene::_ParseSection_ANIMATIONS(string line)
-{
-	vector<string> tokens = split(line);
-
-	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
-
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
-
-	LPANIMATION ani = new CAnimation();
-
-	int ani_id = atoi(tokens[0].c_str());
-	for (unsigned int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
-	{
-		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i + 1].c_str());
-		ani->Add(sprite_id, frame_time);
-	}
-
-	CAnimations::GetInstance()->Add(ani_id, ani);
-}
 
 /*
 	Parse a line in section [MAP]

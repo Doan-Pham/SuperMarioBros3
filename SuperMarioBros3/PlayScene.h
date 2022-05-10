@@ -25,11 +25,8 @@ protected:
 
 	LPMAP map;
 
-	void _ParseSection_ASSETS(string line);
-	void _ParseSection_ASSETSXML(string line);
-	void LoadAssets(LPCWSTR assetFile);
-	void _ParseSection_SPRITES(string line);
-	void _ParseSection_ANIMATIONS(string line);
+	void _ParseSection_SPRITE(string line);
+	void _ParseSection_ANIMATION(string line);
 
 	void _ParseSection_MAP(string line);
 	void LoadMap(LPCWSTR mapFile);

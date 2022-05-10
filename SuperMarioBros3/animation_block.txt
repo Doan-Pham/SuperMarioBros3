@@ -1,8 +1,6 @@
-# id	left	top	right	bottom	texture_id
-[SPRITES]
-#20001	372	153	387	168	20
+# Load ANIMATIONS for blocks
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
-[ANIMATIONS]
+
 3111	31111	100	31112	100	31113	100	31114	100
 3112	31121	100
