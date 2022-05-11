@@ -23,16 +23,24 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float mario_x, mario_y;
 	mario->GetPosition(mario_x, mario_y);
 	ULONGLONG now = GetTickCount64();
-	if (state == PLANT_STATE_HIDING && now - disappear_start > PLANT_TIME_BETWEEN_APPEARANCES)
+
+	if (state == PLANT_STATE_HIDING 
+		&& (PLANT_APPEARING_ZONE_MIN < abs(mario_x - x) && abs(mario_x - x) < PLANT_APPEARING_ZONE_MAX)
+		&& now - disappear_start > PLANT_TIME_BETWEEN_APPEARANCES)
 	{
 		SetState(PLANT_STATE_APPEARING);
 	}
-	if (y + vy * dt < appearing_destination_y)
-		vy = (appearing_destination_y - y) / dt;
-	else if (y + vy * dt == appearing_destination_y)
-		SetState(PLANT_STATE_FIRING);
 
-	y += vy * dt;
+	if (state == PLANT_STATE_APPEARING)
+	{
+		if (y + vy * dt < appearing_destination_y)
+			vy = (appearing_destination_y - y) / dt;
+		else if (y + vy * dt == appearing_destination_y)
+			SetState(PLANT_STATE_FIRING);
+		y += vy * dt;
+	}
+	DebugOutTitle(L"mario_x : %0.5f, x: %0.5f, |mario_x - x|: %0.5f", mario_x, x, abs(mario_x - x));
+
 }
 
 void CPlantRedFire::Render()
@@ -63,8 +71,11 @@ void CPlantRedFire::SetState(int state)
 		vy = -PLANT_MOVING_SPEED;
 		break;
 
-	case PLANT_STATE_FIRING:
+	case PLANT_STATE_AIMING:
 		vy = 0;
+		break;
+
+	case PLANT_STATE_FIRING:
 		break;
 
 	case PLANT_STATE_DISAPPEARING:
