@@ -8,6 +8,8 @@
 #include "Mario.h"
 #include "PlayScene.h"
 
+#include "FireBall.h"
+
 #define	PLANT_RENDER_PRIORITY	10
 
 #define PLANT_BBOX_WIDTH 16
@@ -50,15 +52,23 @@ protected:
 	ULONGLONG aim_start;
 	ULONGLONG fire_start;
 
+	int relative_nx_to_mario;
+	int relative_ny_to_mario;
+
+	float fireball_dest_x, fireball_dest_y; // To tell the fireball which angle to shoot
+
 	BOOLEAN isMarioInFireZone;
 	float appearing_destination_y;
 	float disappearing_destination_y;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void GetPositionRelativeToMario(int mario_x, int mario_y, int& nx, int& ny);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	int GetPlantAniSpriId();
+	int GetPlantSpriteId();
+
+	int GetPlantAniId();
 
 	virtual int IsBlocking() { return 0; }
 	virtual bool IsHidden() { return (state == PLANT_STATE_HIDING); }
