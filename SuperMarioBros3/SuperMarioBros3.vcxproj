@@ -160,6 +160,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlantRedFire.cpp" />
     <ClCompile Include="PlatformGhost.cpp" />
     <ClCompile Include="PlatformOneLayer.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlantRedFire.h" />
     <ClInclude Include="PlatformGhost.h" />
     <ClInclude Include="PlatformOneLayer.h" />

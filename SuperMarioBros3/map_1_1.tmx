@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="149">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="152">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -106,7 +106,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Player">
+ <objectgroup id="4" name="Player" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="10"/>
   </properties>
@@ -114,7 +114,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform">
+ <objectgroup id="3" name="Platform" visible="0">
   <properties>
    <property name="objectTypeId" value="50"/>
   </properties>
@@ -124,11 +124,6 @@
    </properties>
   </object>
   <object id="4" type="Platform" x="624" y="400" width="464" height="32">
-   <properties>
-    <property name="objectSubTypeId" type="int" value="51"/>
-   </properties>
-  </object>
-  <object id="3" type="Platform" x="352" y="368" width="32" height="48">
    <properties>
     <property name="objectSubTypeId" type="int" value="51"/>
    </properties>
@@ -229,7 +224,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Enemies">
+ <objectgroup id="7" name="Enemies" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="60"/>
   </properties>
@@ -264,12 +259,12 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Portals">
+ <objectgroup id="8" name="Portals" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="0"/>
   </properties>
  </objectgroup>
- <objectgroup id="9" name="Items">
+ <objectgroup id="9" name="Items" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="30"/>
   </properties>
@@ -409,7 +404,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Blocks">
+ <objectgroup id="5" name="Blocks" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="20"/>
   </properties>
@@ -460,6 +455,18 @@
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="13" name="Pipes">
+  <properties>
+   <property name="objectTypeId" type="int" value="90"/>
+  </properties>
+  <object id="151" type="Pipe" x="352" y="368" width="32" height="48">
+   <properties>
+    <property name="cellHeight" type="float" value="16"/>
+    <property name="cellWidth" type="float" value="16"/>
+    <property name="direction" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>

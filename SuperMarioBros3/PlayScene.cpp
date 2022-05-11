@@ -17,6 +17,7 @@
 #include "PlatformTile.h"
 #include "PlatformOneLayer.h"
 #include "PlatformGhost.h"
+#include "Pipe.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -437,7 +438,6 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			{
 				if (currentBlockProperty->Attribute("name") == string("isHidingItem"))
 				{
-
 					isHidingItem = atoi(currentBlockProperty->Attribute("value"));
 				}
 				if (currentBlockProperty->Attribute("name") == string("objectSubTypeId"))
@@ -553,6 +553,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 				break;
 			}
+
 			default:
 				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
 				return;
@@ -575,10 +576,10 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				if (currentProprety->Attribute("name") == string("objectSubTypeId"))
 				{
 					objectSubTypeId = atoi(currentProprety->Attribute("value"));
-					if (objectType == -999)
+					if (objectSubTypeId == -999)
 					{
 						DebugOut(L"[ERROR] Failed to parse enemy's sub type id: %i\n",
-							objectType);
+							objectSubTypeId);
 						return;
 					}
 				}
@@ -604,6 +605,64 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				return;
 			}
 			}
+
+			break;
+		}
+
+
+		case OBJECT_TYPE_PIPE:
+		{
+
+			float height = (float)atof(currentElementObject->Attribute("height"));
+			float width = (float)atof(currentElementObject->Attribute("width"));
+
+			float cellWidth = -1.0f;
+			float cellHeight = -1.0f;
+			int direction = -1;
+
+			TiXmlElement* xmlElementProperties = currentElementObject->FirstChildElement("properties");
+
+			for (TiXmlElement* currentProprety = xmlElementProperties->FirstChildElement()
+				; currentProprety != nullptr
+				; currentProprety = currentProprety->NextSiblingElement())
+			{
+				if (currentProprety->Attribute("name") == string("direction"))
+				{
+					direction = atoi(currentProprety->Attribute("value"));
+					if (direction == -1)
+					{
+						DebugOut(L"[ERROR] Pipe's direction unknown: %i\n",direction);
+						return;
+					}
+				}
+
+				if (currentProprety->Attribute("name") == string("cellWidth"))
+				{
+					cellWidth = atof(currentProprety->Attribute("value"));
+					if (cellWidth == -1.0f)
+					{
+						DebugOut(L"[ERROR] Pipe's cell width unknown: %i\n", cellWidth);
+						return;
+					}
+				}
+				if (currentProprety->Attribute("name") == string("cellHeight"))
+				{
+					cellHeight = atof(currentProprety->Attribute("value"));
+					if (cellHeight == -1.0f)
+					{
+						DebugOut(L"[ERROR] Pipe's cell height unknown: %i\n", cellHeight);
+						return;
+					}
+				}
+			}
+
+			
+			obj = new CPipe( 
+				x + width/2 - COORDINATE_ADJUST_SYNC_TILED,
+				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
+				width/cellWidth, height/cellHeight,
+				cellWidth, cellHeight,
+				direction);
 
 			break;
 		}

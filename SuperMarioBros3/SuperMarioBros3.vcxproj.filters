@@ -100,6 +100,9 @@
     <ClCompile Include="PlantRedFire.cpp">
       <Filter>Game Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Game Object\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -209,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="PlantRedFire.h">
       <Filter>Game Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Game Object\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
