@@ -114,7 +114,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform" visible="0">
+ <objectgroup id="3" name="Platform">
   <properties>
    <property name="objectTypeId" value="50"/>
   </properties>
@@ -224,7 +224,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Enemies" visible="0">
+ <objectgroup id="7" name="Enemies">
   <properties>
    <property name="objectTypeId" type="int" value="60"/>
   </properties>
@@ -252,7 +252,7 @@
    </properties>
    <point/>
   </object>
-  <object id="146" type="Enemy" x="360" y="376">
+  <object id="146" type="Enemy" x="360" y="378">
    <properties>
     <property name="objectSubTypeId" type="int" value="69"/>
    </properties>
@@ -458,7 +458,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Pipes">
+ <objectgroup id="13" name="Pipes" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>

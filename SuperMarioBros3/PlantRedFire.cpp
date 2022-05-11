@@ -3,6 +3,8 @@
 
 CPlantRedFire::CPlantRedFire(float x, float y) : CGameObject(x,y)
 {
+	disappear_start = -1;
+	appearing_destination_y = y - PLANT_BBOX_HEIGHT;
 	SetState(PLANT_STATE_HIDING);
 }
 
@@ -16,7 +18,21 @@ void CPlantRedFire::GetBoundingBox(float& left, float& top, float& right, float&
 
 void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// TODO: Need to find some way to avoid having to reference so many general objects
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	float mario_x, mario_y;
+	mario->GetPosition(mario_x, mario_y);
+	ULONGLONG now = GetTickCount64();
+	if (state == PLANT_STATE_HIDING && now - disappear_start > PLANT_TIME_BETWEEN_APPEARANCES)
+	{
+		SetState(PLANT_STATE_APPEARING);
+	}
+	if (y + vy * dt < appearing_destination_y)
+		vy = (appearing_destination_y - y) / dt;
+	else if (y + vy * dt == appearing_destination_y)
+		SetState(PLANT_STATE_FIRING);
 
+	y += vy * dt;
 }
 
 void CPlantRedFire::Render()
@@ -30,9 +46,8 @@ void CPlantRedFire::Render()
 
 int CPlantRedFire::GetPlantAniSpriId()
 {
-	int aniSprId;
-	if (this->state == PLANT_STATE_FIRING) aniSprId = ID_SPRITE_PLANT_RED_FIRE_OPEN_TOP_LEFT;
-	else aniSprId = ID_ANI_PLANT_RED_FIRE_OPEN_CLOSE_TOP_LEFT;
+	if (this->state == PLANT_STATE_FIRING) return ID_SPRITE_PLANT_RED_FIRE_OPEN_TOP_LEFT;
+	else return ID_ANI_PLANT_RED_FIRE_OPEN_CLOSE_TOP_LEFT;
 }
 
 void CPlantRedFire::SetState(int state)
@@ -49,9 +64,11 @@ void CPlantRedFire::SetState(int state)
 		break;
 
 	case PLANT_STATE_FIRING:
+		vy = 0;
 		break;
 
 	case PLANT_STATE_DISAPPEARING:
+		disappear_start = GetTickCount64();
 		vy = PLANT_MOVING_SPEED;
 		break;
 	}

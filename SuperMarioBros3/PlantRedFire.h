@@ -3,6 +3,11 @@
 #include "GameObject.h"
 #include "debug.h"
 
+#include "Game.h"
+
+#include "Mario.h"
+#include "PlayScene.h"
+
 #define	PLANT_RENDER_PRIORITY	10
 
 #define PLANT_BBOX_WIDTH 16
@@ -27,11 +32,20 @@
 #define PLANT_STATE_FIRING			300
 #define PLANT_STATE_DISAPPEARING	400
 
+#define PLANT_APPEARING_ZONE_MAX	160
+#define PLANT_APPEARING_ZONE_MIN	10
 
+#define PLANT_TIME_BETWEEN_APPEARANCES	3000
+#define PLANT_APPEARING_TRAVEL_DISTANCE 35.0f
 
 class CPlantRedFire : public CGameObject
 {
 protected:
+
+	ULONGLONG disappear_start;
+
+	float appearing_destination_y;
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
