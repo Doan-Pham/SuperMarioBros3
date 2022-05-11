@@ -1,0 +1,5 @@
+# Load ANIMATIONS for misc
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+####Fireball#####
+8110	81101	100	81102	100	81103	100

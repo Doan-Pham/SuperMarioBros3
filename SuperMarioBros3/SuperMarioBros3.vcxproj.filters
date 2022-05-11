@@ -103,6 +103,9 @@
     <ClCompile Include="Pipe.cpp">
       <Filter>Game Object\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Game Object\Projectile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -216,6 +219,9 @@
     <ClInclude Include="Pipe.h">
       <Filter>Game Object\Platform</Filter>
     </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>Game Object\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -298,6 +304,9 @@
     </Filter>
     <Filter Include="Game Object\Item\Source Files">
       <UniqueIdentifier>{397e0bdb-3b16-4de3-b697-ca6b072f63c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Projectile">
+      <UniqueIdentifier>{a5a7964c-3d40-4eba-826e-af43d0699dd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
