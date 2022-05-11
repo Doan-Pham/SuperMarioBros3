@@ -10,6 +10,9 @@
 
 #include "FireBall.h"
 
+class CPlayScene;
+class CMario;
+
 #define	PLANT_RENDER_PRIORITY	10
 
 #define PLANT_BBOX_WIDTH 16

@@ -233,7 +233,9 @@ class CMario : public CGameObject
 	const LPPLAYSCENE currentScene;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
+	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
@@ -283,7 +285,6 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-
 	void SetLevel(int l);
 	int GetLevel();
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }

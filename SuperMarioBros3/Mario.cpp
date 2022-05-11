@@ -12,6 +12,8 @@
 #include "BrickQuestionMark.h"
 #include "PlatformGhost.h"
 #include "Portal.h"
+#include "FireBall.h"
+#include "PlantRedFire.h"
 
 #include "Collision.h"
 
@@ -52,7 +54,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isFlying = false;
 		isTrulyFalling = true;
 	}
-	
+
 	// Reset flags and fly timer
 	if (isOnPlatform)
 	{
@@ -74,7 +76,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	isOnPlatform = false;
-	
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 	DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
@@ -97,17 +99,20 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		vy = 0;
 
 	}
-	else
-		if (e->nx != 0 && e->obj->IsBlocking())
-		{
-			vx = 0;
-		}
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		vx = 0;
+	}
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
+	else if (dynamic_cast<CFireBall*>(e->obj))
+		OnCollisionWithFireBall(e);
+	else if (dynamic_cast<CPlantRedFire*>(e->obj))
+		OnCollisionWithPlant(e);
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -157,14 +162,67 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+	CPlantRedFire* plant = dynamic_cast<CPlantRedFire*>(e->obj);
+	if (untouchable == 0)
+	{
+		if (level < MARIO_LEVEL_BIG)
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			if (isTailWhipping && e->nx != 0 && e->ny == 0)
+			{
+				CGame::GetInstance()->UpdateScores(plant->GetScoresGivenWhenHit());
+				plant->Delete();
+			}
+			else
+			{
+				level = MARIO_LEVEL_BIG;
+				StartUntouchable();
+			}
+		}
+
+	}
+}
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_BIG);
+	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_RACCOON);
 	else if (dynamic_cast<CMushroomBig*>(e->obj)) SetLevel(MARIO_LEVEL_BIG);
 
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
 	e->obj->Delete();
+}
+
+void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
+{
+	if (untouchable == 0)
+	{
+		if (level < MARIO_LEVEL_BIG)
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -175,7 +233,7 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 {
-	
+
 	if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
 	{
 		CBrickQuestionMark* brick = dynamic_cast<CBrickQuestionMark*>(e->obj);
@@ -431,7 +489,7 @@ int CMario::GetAniIdRaccoon()
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				}
 			}
-	if (isTailWhipping )
+	if (isTailWhipping)
 	{
 		if (nx == 1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT;
 		else if (nx == -1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT;
@@ -603,7 +661,7 @@ void CMario::SetState(int state)
 			fly_total_start = GetTickCount64();
 			fly_individual_start = GetTickCount64();
 			isFlying = true;
-	
+
 			// If we don't set this, the "isOnPlatform" check in Update() will resset fly_total_start
 			// and prevent mario from flying
 			isOnPlatform = false;
