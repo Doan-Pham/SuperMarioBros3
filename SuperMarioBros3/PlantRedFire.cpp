@@ -3,8 +3,14 @@
 
 CPlantRedFire::CPlantRedFire(float x, float y) : CGameObject(x,y)
 {
-	disappear_start = -1;
+	hide_start = -1;
+	aim_start = -1;
+	fire_start = -1;
+
+	isMarioInFireZone = false;
 	appearing_destination_y = y - PLANT_BBOX_HEIGHT;
+	disappearing_destination_y = y;
+
 	SetState(PLANT_STATE_HIDING);
 }
 
@@ -26,7 +32,7 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == PLANT_STATE_HIDING 
 		&& (PLANT_APPEARING_ZONE_MIN < abs(mario_x - x) && abs(mario_x - x) < PLANT_APPEARING_ZONE_MAX)
-		&& now - disappear_start > PLANT_TIME_BETWEEN_APPEARANCES)
+		&& now - hide_start > PLANT_TIME_BETWEEN_APPEARANCES)
 	{
 		SetState(PLANT_STATE_APPEARING);
 	}
@@ -36,10 +42,39 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (y + vy * dt < appearing_destination_y)
 			vy = (appearing_destination_y - y) / dt;
 		else if (y + vy * dt == appearing_destination_y)
-			SetState(PLANT_STATE_FIRING);
+			SetState(PLANT_STATE_AIMING);
 		y += vy * dt;
 	}
-	DebugOutTitle(L"mario_x : %0.5f, x: %0.5f, |mario_x - x|: %0.5f", mario_x, x, abs(mario_x - x));
+
+	if (state == PLANT_STATE_AIMING)
+	{
+		if (now - aim_start < PLANT_AIMING_TIMEOUT)
+		{
+			if (abs(mario_x - x) < PLANT_FIRING_ZONE_MAX) isMarioInFireZone = true;		
+		}
+		else
+		{
+			if (isMarioInFireZone) SetState(PLANT_STATE_FIRING);
+			else if (now - aim_start > PLANT_AIMING_TIMEOUT + PLANT_FIRING_TIMEOUT) 
+				SetState(PLANT_STATE_DISAPPEARING);
+		}	
+	}
+
+	if (state == PLANT_STATE_FIRING)
+	{
+		if (now - fire_start > PLANT_FIRING_TIMEOUT)
+			SetState(PLANT_STATE_DISAPPEARING);
+	}
+
+	if (state == PLANT_STATE_DISAPPEARING)
+	{
+		if (y + vy * dt > disappearing_destination_y)
+			vy = (disappearing_destination_y - y) / dt;
+		else if (y + vy * dt == disappearing_destination_y)
+			SetState(PLANT_STATE_HIDING);
+		y += vy * dt;
+	}
+	//DebugOutTitle(L"mario_x : %0.5f, x: %0.5f, |mario_x - x|: %0.5f", mario_x, x, abs(mario_x - x));
 
 }
 
@@ -65,22 +100,28 @@ void CPlantRedFire::SetState(int state)
 	{
 	case PLANT_STATE_HIDING:
 		vy = 0;
+		hide_start = GetTickCount64();
 		break;
 
 	case PLANT_STATE_APPEARING:
 		vy = -PLANT_MOVING_SPEED;
+		DebugOutTitle(L"Plant : appearing");
 		break;
 
 	case PLANT_STATE_AIMING:
 		vy = 0;
+		aim_start = GetTickCount64();
+		DebugOutTitle(L"Plant : aiming");
 		break;
 
 	case PLANT_STATE_FIRING:
+		fire_start = GetTickCount64();
+		DebugOutTitle(L"Plant : firing");
 		break;
 
 	case PLANT_STATE_DISAPPEARING:
-		disappear_start = GetTickCount64();
-		vy = PLANT_MOVING_SPEED;
+		vy = PLANT_MOVING_SPEED;	
+		DebugOutTitle(L"Plant : disappearing");
 		break;
 	}
 }

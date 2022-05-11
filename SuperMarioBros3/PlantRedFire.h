@@ -13,7 +13,7 @@
 #define PLANT_BBOX_WIDTH 16
 #define PLANT_BBOX_HEIGHT 32
 
-#define PLANT_MOVING_SPEED 0.02f
+#define PLANT_MOVING_SPEED 0.07f
 
 #define ID_SPRITE_PLANT_RED_FIRE_OPEN_TOP_LEFT				53211
 #define ID_SPRITE_PLANT_RED_FIRE_OPEN_TOP_RIGHT				53221
@@ -33,21 +33,26 @@
 #define PLANT_STATE_FIRING			400
 #define PLANT_STATE_DISAPPEARING	500
 
-#define PLANT_APPEARING_ZONE_MAX	140
-#define PLANT_APPEARING_ZONE_MIN	10
+#define PLANT_APPEARING_ZONE_MAX	160
+#define PLANT_APPEARING_ZONE_MIN	30
 
-#define PLANT_FIRING_ZONE_MAX	(PLANT_APPEARING_ZONE_MAX - 10)
+#define PLANT_FIRING_ZONE_MAX	(PLANT_APPEARING_ZONE_MAX - 20)
 
-#define PLANT_TIME_BETWEEN_APPEARANCES	3000
-#define PLANT_AIMING_TIMEOUT			3000
+#define PLANT_TIME_BETWEEN_APPEARANCES	1500
+#define PLANT_AIMING_TIMEOUT			1500
+#define PLANT_FIRING_TIMEOUT			1500
 
 class CPlantRedFire : public CGameObject
 {
 protected:
 
-	ULONGLONG disappear_start;
+	ULONGLONG hide_start;
+	ULONGLONG aim_start;
+	ULONGLONG fire_start;
 
+	BOOLEAN isMarioInFireZone;
 	float appearing_destination_y;
+	float disappearing_destination_y;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
