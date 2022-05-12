@@ -14,6 +14,7 @@
 
 #include "Goomba.h"
 #include "PlantRedFire.h"
+#include "KoopaRedNormal.h"
 
 #include "TinyXml/tinyxml.h"
 //#include "Koopas.h"

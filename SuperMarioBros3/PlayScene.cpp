@@ -588,11 +588,18 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			switch (objectSubTypeId)
 			{
 
-			case OBJECT_TYPE_ENEMY_GOOMBA:
+			case OBJECT_TYPE_ENEMY_GOOMBA_BROWN_NORMAL:
 			{
 				obj = new CGoomba(x, y); break;
 				break;
 			}
+
+			case OBJECT_TYPE_ENEMY_KOOPA_RED_NORMAL:
+			{
+				obj = new CKoopaRedNormal(x, y);
+				break;
+			}
+
 			case OBJECT_TYPE_ENEMY_PLANT_RED_FIRE:
 			{
 				obj = new CPlantRedFire(x, y); break;
