@@ -39,7 +39,7 @@
 #define KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD				600
 #define KOOPA_STATE_SHELL_UPSIDE_MOVING					700
 
-
+#define KOOPA_SHELL_TIMEOUT	5000
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CPlayScene;
@@ -53,6 +53,10 @@ protected:
 
 	CAttachedBBox* attachedBBox;
 
+	BOOLEAN isShell;
+	BOOLEAN isBeingHeld;
+
+	ULONGLONG shell_start;
 	// *** CONST *** pointer to the current playscene
 	const LPPLAYSCENE currentScene;
 

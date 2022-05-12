@@ -5,6 +5,9 @@
 CKoopaRedNormal::CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene)
 	:CGameObject(x, y), currentScene(currentScene)
 {
+	isShell = false;
+	isBeingHeld = false;
+	shell_start = -1;
 	nx = -1;
 	this->ay = KOOPA_GRAVITY;
 	SetState(KOOPA_STATE_WALKING);
@@ -42,6 +45,20 @@ void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
 		this->currentScene->AddObject(attachedBBox);
 	}
+
+	if (isShell && GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT &&
+		state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING &&
+		state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+	{
+		if (isBeingHeld)
+		{
+			CMario* mario = (CMario*)this->currentScene->GetPlayer();
+			mario->ReleaseHeldShell();
+		}
+		SetState(KOOPA_STATE_WALKING);
+	}
+			
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
@@ -204,8 +221,10 @@ void CKoopaRedNormal::SetState(int state)
 	{
 		case KOOPA_STATE_WALKING:
 		{
+			isShell = false;
 			vx = nx * KOOPA_WALKING_SPEED;
 			ay = KOOPA_GRAVITY;
+			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT) / 2;
 			if (attachedBBox == NULL)
 			{
 				attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
@@ -216,17 +235,21 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_DOWNSIDE_STILL:
 		{
+			isShell = true;
+			shell_start = GetTickCount64();
+			vx = 0;
+
 			if (attachedBBox != NULL)
 			{
 				attachedBBox->Delete();
 				attachedBBox = NULL;
 			}
-			vx = 0;
 			break;
 		}
 
 		case KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD:
 		{
+			isBeingHeld = true;
 			vx = 0;
 			vy = 0;
 			ay = 0;
@@ -237,19 +260,18 @@ void CKoopaRedNormal::SetState(int state)
 		{
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
-			if (attachedBBox != NULL)
-			{
-				attachedBBox->Delete();
-				attachedBBox = NULL;
-			}
 			break;
 		}
 
 		case KOOPA_STATE_SHELL_UPSIDE_STILL:
 		{
+			shell_start = GetTickCount64();
+			isShell = true;
+
 			vx = 0;
 			vy = 0;
 			ay = 0;
+
 			if (attachedBBox != NULL)
 			{
 				attachedBBox->Delete();
@@ -260,6 +282,7 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD:
 		{
+			isBeingHeld = true;
 			vx = 0;
 			vy = 0;
 			ay = 0;
@@ -270,11 +293,6 @@ void CKoopaRedNormal::SetState(int state)
 		{
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
-			if (attachedBBox != NULL)
-			{
-				attachedBBox->Delete();
-				attachedBBox = NULL;
-			}
 			break;
 		}
 

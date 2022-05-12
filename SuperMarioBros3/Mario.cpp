@@ -877,11 +877,6 @@ void CMario::SetState(int state)
 		}
 		break;
 	}
-
-	case MARIO_STATE_KICK_SHELL:
-	{
-		break;
-	}
 		
 	case MARIO_STATE_DIE:
 	{

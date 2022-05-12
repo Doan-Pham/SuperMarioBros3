@@ -62,7 +62,6 @@ class CKoopaRedNormal;
 
 #define MARIO_STATE_TAIL_WHIPPING	1000
 
-#define MARIO_STATE_KICK_SHELL		1100
 #pragma endregion
 
 
@@ -330,6 +329,10 @@ public:
 	bool IsPMeterFullyCharged() { return pMeter->isFullyCharged(); }
 
 	bool IsHoldingShell() { return isHoldingShell; }
+
+	// This if for when koopa turns back to shell and mario no longer holds the shell
+	void ReleaseHeldShell() { isHoldingShell = false; ; shellBeingHeld = NULL;};
+
 	void KickHeldShell();
 	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };
