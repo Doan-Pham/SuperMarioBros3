@@ -6,7 +6,7 @@ CKoopaRedNormal::CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentSce
 	:CGameObject(x, y), currentScene(currentScene)
 {
 	nx = -1;
-	this->ay = KOOPA_NORMAL_GRAVITY;
+	this->ay = KOOPA_GRAVITY;
 	SetState(KOOPA_STATE_WALKING);
 }
 
@@ -137,7 +137,7 @@ void CKoopaRedNormal::SetState(int state)
 	{
 		case KOOPA_STATE_WALKING:
 		{
-			vx = nx * KOOPA_NORMAL_WALKING_SPEED;
+			vx = nx * KOOPA_WALKING_SPEED;
 			
 			if (attachedBBox == NULL)
 			{
@@ -160,7 +160,7 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
 		{
-			vx = nx * KOOPA_NORMAL_WALKING_SPEED;
+			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 
 			if (attachedBBox != NULL)
 			{
@@ -184,7 +184,7 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
 		{
-			vx = nx * KOOPA_NORMAL_WALKING_SPEED;
+			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 
 			if (attachedBBox != NULL)
 			{
