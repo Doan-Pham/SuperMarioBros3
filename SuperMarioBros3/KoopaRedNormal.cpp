@@ -69,9 +69,20 @@ void CKoopaRedNormal::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
+
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+
+	else if (dynamic_cast<CPlantRedFire*>(e->obj))
+		OnCollisionWithPlantRedFire(e);
+
+	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
+		OnCollisionWithBrickQuestionMark(e);
 }
+
 void CKoopaRedNormal::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0)
@@ -92,6 +103,52 @@ void CKoopaRedNormal::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 
 		vy = 0;
 	}
+}
+
+void CKoopaRedNormal::OnCollisionWithPlantRedFire(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+		return;
+	CPlantRedFire* plant = dynamic_cast<CPlantRedFire*>(e->obj);
+	CGame::GetInstance()->UpdateScores(plant->GetScoresGivenWhenHit());
+	plant->Delete();
+}
+
+void CKoopaRedNormal::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+		return;
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	if (goomba->GetState() != GOOMBA_STATE_DIE)
+	{
+		goomba->SetState(GOOMBA_STATE_DIE);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+	}
+}
+
+void CKoopaRedNormal::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+		return;
+	CBrickQuestionMark* brick = dynamic_cast<CBrickQuestionMark*>(e->obj);
+	if (brick->IsHidingItem())
+	{
+		float brick_x, brick_y;
+		brick->GetPosition(brick_x, brick_y);
+
+		CItem* hiddenItem;
+
+		// TODO: Need a better way than referencing like this
+		CMario* mario = (CMario*)this->currentScene->GetPlayer();
+		if (mario->GetLevel() == MARIO_LEVEL_SMALL)
+			hiddenItem = new CMushroomBig(brick_x, brick_y);
+		else
+			hiddenItem = new CLeaf(brick_x, brick_y);
+
+		brick->AddHiddenItem(hiddenItem);
+		this->currentScene->AddObject(hiddenItem);
+	}
+	e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 }
 
 int CKoopaRedNormal::GetAniId()
@@ -121,6 +178,7 @@ int CKoopaRedNormal::GetAniId()
 	}
 
 }
+
 void CKoopaRedNormal::Render()
 {
 	

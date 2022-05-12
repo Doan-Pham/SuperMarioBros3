@@ -64,6 +64,13 @@ protected:
 
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
+	void OnCollisionWithPlantRedFire(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
+
+
 public:
 	CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene);
 	virtual void SetState(int state);
