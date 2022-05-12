@@ -101,6 +101,25 @@ int CKoopaRedNormal::GetAniId()
 		if (vx <= 0) return ID_ANI_KOOPA_WALKING_LEFT;
 		else return ID_ANI_KOOPA_WALKING_RIGHT;
 	}
+
+	if (state == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
+		return ID_ANI_KOOPA_SHELL_DOWNSIDE_STILL;
+
+	if (state == KOOPA_STATE_SHELL_UPSIDE_STILL)
+		return ID_ANI_KOOPA_SHELL_UPSIDE_STILL;
+
+	if (state == KOOPA_STATE_SHELL_DOWNSIDE_MOVING)
+	{
+		if (vx <= 0) return ID_ANI_KOOPA_SHELL_DOWNSIDE_MOVING_LEFT;
+		else return ID_ANI_KOOPA_SHELL_DOWNSIDE_MOVING_RIGHT;
+	}
+
+	if (state == KOOPA_STATE_SHELL_UPSIDE_MOVING)
+	{
+		if (vx <= 0) return ID_ANI_KOOPA_SHELL_UPSIDE_MOVING_LEFT;
+		else return ID_ANI_KOOPA_SHELL_UPSIDE_MOVING_RIGHT;
+	}
+
 }
 void CKoopaRedNormal::Render()
 {
@@ -127,5 +146,53 @@ void CKoopaRedNormal::SetState(int state)
 			}
 			break;
 		}
+		case KOOPA_STATE_SHELL_DOWNSIDE_STILL:
+		{
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
+			
+			vx = 0;
+			break;
+		}
+
+		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
+		{
+			vx = nx * KOOPA_NORMAL_WALKING_SPEED;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
+			break;
+		}
+
+		case KOOPA_STATE_SHELL_UPSIDE_STILL:
+		{
+			vx = 0;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
+			break;
+		}
+
+		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
+		{
+			vx = nx * KOOPA_NORMAL_WALKING_SPEED;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
+			break;
+		}
+
 	}
 }

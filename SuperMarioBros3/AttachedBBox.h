@@ -36,6 +36,5 @@ protected:
 public:
 	CAttachedBBox(float x, float y, float vx, float vy);
 	virtual void SetState(int state);
-	int GetState() { return this->state; }
 };
 

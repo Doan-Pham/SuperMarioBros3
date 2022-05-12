@@ -14,6 +14,7 @@
 #include "Portal.h"
 #include "FireBall.h"
 #include "PlantRedFire.h"
+#include "KoopaRedNormal.h"
 
 #include "Collision.h"
 
@@ -79,7 +80,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
+	//DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
 	//DebugOutTitle(L"Current state %d", this->state);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
@@ -107,6 +108,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlatformGhost(e);
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+		OnCollisionWithKoopaNormal(e);
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
 	else if (dynamic_cast<CFireBall*>(e->obj))
@@ -156,11 +159,81 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 						goomba->SetState(GOOMBA_STATE_DIE);
 						CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
 					}
+					else
+					{
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
 				}
 			}
 		}
 	}
 }
+
+void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
+{
+	CKoopaRedNormal* koopa = dynamic_cast<CKoopaRedNormal*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit 
+	if (e->ny < 0)
+	{
+		switch (koopa->GetState())
+		{
+		case KOOPA_STATE_WALKING:
+		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
+			koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_STILL);
+			break;
+
+		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
+			koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_STILL);
+			break;
+
+		case KOOPA_STATE_SHELL_DOWNSIDE_STILL:
+			koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
+			break;
+
+		case KOOPA_STATE_SHELL_UPSIDE_STILL:
+			koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+			break;
+		}
+		CGame::GetInstance()->UpdateScores(koopa->GetScoresGivenWhenHit());
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+	}
+	else // hit by koopa
+	{
+		if (untouchable == 0)
+		{
+			if (koopa->GetState() == KOOPA_STATE_WALKING || 
+				koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_MOVING || 
+				koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_MOVING)
+			{
+				if (level < MARIO_LEVEL_BIG)
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+				else if (level == MARIO_LEVEL_BIG)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					if (isTailWhipping && e->nx != 0 && e->ny == 0)
+					{
+						koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_STILL);
+					}
+					else
+					{
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
+				}
+			}
+		}
+	}
+}
+
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
@@ -193,6 +266,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 
 	}
 }
+
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_RACCOON);
