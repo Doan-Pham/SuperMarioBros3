@@ -11,6 +11,7 @@
 class CPlayScene;
 typedef CPlayScene* LPPLAYSCENE;
 
+class CKoopaRedNormal;
 
 // TODO: Change the time of each frame for mario's walking animation to
 // make mario move faster when p-meter is not fully charged
@@ -60,6 +61,8 @@ typedef CPlayScene* LPPLAYSCENE;
 #define MARIO_STATE_TAIL_WAGGING	900
 
 #define MARIO_STATE_TAIL_WHIPPING	1000
+
+#define MARIO_STATE_KICK_SHELL		1100
 #pragma endregion
 
 
@@ -86,6 +89,9 @@ typedef CPlayScene* LPPLAYSCENE;
 #define ID_ANI_MARIO_KICK_LEFT					1171
 #define ID_ANI_MARIO_KICK_RIGHT					1172
 
+#define ID_ANI_MARIO_HOLD_LEFT					1181
+#define ID_ANI_MARIO_HOLD_RIGHT					1182
+
 #define ID_ANI_MARIO_JUMP_RUN_LEFT				1191
 #define ID_ANI_MARIO_JUMP_RUN_RIGHT				1192
 
@@ -111,6 +117,9 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define ID_ANI_MARIO_SMALL_KICK_LEFT			1371
 #define ID_ANI_MARIO_SMALL_KICK_RIGHT			1372
+
+#define ID_ANI_MARIO_SMALL_HOLD_LEFT			1381
+#define ID_ANI_MARIO_SMALL_HOLD_RIGHT			1382
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT		1391
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT		1392
@@ -141,6 +150,9 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define ID_ANI_MARIO_RACCOON_KICK_LEFT			1571
 #define ID_ANI_MARIO_RACCOON_KICK_RIGHT			1572
+
+#define ID_ANI_MARIO_RACCOON_HOLD_LEFT			1581
+#define ID_ANI_MARIO_RACCOON_HOLD_RIGHT			1582
 
 #define ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT		1611
 #define ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT	1612
@@ -216,6 +228,9 @@ class CMario : public CGameObject
 	BOOLEAN isTailWhipping;
 
 	BOOLEAN isKicking;
+	BOOLEAN isReadyToHoldShell;
+	BOOLEAN isHoldingShell;
+
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -239,6 +254,8 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 
 	LPPMETER pMeter;
+
+	CKoopaRedNormal* shellBeingHeld;
 
 	// *** CONST *** pointer to the current playscene
 	const LPPLAYSCENE currentScene;
@@ -265,6 +282,8 @@ public:
 		isTrulyFalling = false;
 		isTailWhipping = false;
 		isKicking = false;
+		isReadyToHoldShell = false;
+		isHoldingShell = false;
 
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -283,6 +302,7 @@ public:
 		isOnPlatform = false;
 
 		pMeter = new CPMeter();
+		shellBeingHeld = NULL;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -308,5 +328,8 @@ public:
 	virtual int GetRenderPriority() { return 99999999; }
 
 	bool IsPMeterFullyCharged() { return pMeter->isFullyCharged(); }
+
+	bool IsHoldingShell() { return isHoldingShell; }
+	void KickHeldShell();
 	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

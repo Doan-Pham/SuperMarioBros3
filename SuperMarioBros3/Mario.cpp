@@ -26,6 +26,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	ULONGLONG now = GetTickCount64();
+
 	// reset untouchable timer if untouchable time has passed
 	if (now - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -61,7 +62,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		fly_total_start = -1;
 
-		// If we don't set this, mario can't start flying because if he will fail the isTrulyFalling()
+		// If we don't set this, mario can't start flying because he will fail the isTrulyFalling()
 		// check in KeyEventHandler
 		isTrulyFalling = false;
 		ay = MARIO_GRAVITY;
@@ -76,14 +77,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isTailWhipping = false;
 	}
 
+	
+
 	isKicking = false; 
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
+
 	//DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
 	//DebugOutTitle(L"Current state %d", this->state);
-	//DebugOutTitle(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f ", x, y, vy, ay);
+	//DebugOut(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f \n", x, y, vy, ay);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
 
@@ -91,6 +95,10 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
+
+	// In the case
+	if (isHoldingShell)
+		shellBeingHeld->SetPosition(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y);
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -105,6 +113,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
+
+	if (isHoldingShell)
+		shellBeingHeld->SetPosition(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y);
 
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
@@ -241,15 +252,44 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 			}
 			else
 			{
-				isKicking = true;
-				koopa->SetDirection(this->nx);
-				if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
-					koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
-				else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
-					koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+				// Mario collides with shell when player's pressing "A" key, mario holds shell
+				if (isReadyToHoldShell)
+				{
+					isHoldingShell = true;
+					shellBeingHeld = koopa;
+					if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
+					koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD);
+
+					else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
+					koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD);
+				}
+
+				// Mario collides with shell when player's not pressing "A", mario kicks shell
+				else
+				{
+					isHoldingShell = false;
+					isKicking = true;
+					koopa->SetDirection(this->nx);
+					if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
+						koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
+					else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
+						koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+				}
 			}
 		}
 	}
+}
+
+void CMario::KickHeldShell()
+{
+	isHoldingShell = false;
+	isKicking = true;
+	shellBeingHeld->SetDirection(this->nx);
+	if (shellBeingHeld->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD)
+		shellBeingHeld->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
+	else if (shellBeingHeld->GetState() == KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD)
+		shellBeingHeld->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+	shellBeingHeld = NULL;
 }
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
@@ -444,6 +484,12 @@ int CMario::GetAniIdSmall()
 		if (nx > 0) aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
 		else aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
 	}
+
+	if (isHoldingShell)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_SMALL_HOLD_RIGHT;
+		else aniId = ID_ANI_MARIO_SMALL_HOLD_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
 	return aniId;
@@ -517,6 +563,11 @@ int CMario::GetAniIdBig()
 		else aniId = ID_ANI_MARIO_KICK_LEFT;
 	}
 
+	if (isHoldingShell)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_HOLD_RIGHT;
+		else aniId = ID_ANI_MARIO_HOLD_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 
 	return aniId;
@@ -602,6 +653,12 @@ int CMario::GetAniIdRaccoon()
 		if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_KICK_RIGHT;
 		else aniId = ID_ANI_MARIO_RACCOON_KICK_LEFT;
 	}
+
+	if (isHoldingShell)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_HOLD_RIGHT;
+		else aniId = ID_ANI_MARIO_RACCOON_HOLD_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 
 	return aniId;
@@ -647,6 +704,7 @@ void CMario::SetState(int state)
 		//	DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
 		ax = 0.0f;
 		vx = 0.0f;
+		isReadyToHoldShell = false;
 
 		pMeter->SetState(P_METER_STATE_DECREASING);
 
@@ -655,12 +713,13 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_SIT:
 	{
-		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
+		if (isOnPlatform && level != MARIO_LEVEL_SMALL && !isHoldingShell)
 		{
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
 			vx = 0; vy = 0.0f;
 			y += MARIO_SIT_HEIGHT_ADJUST;
+			isReadyToHoldShell = false;
 		}
 		break;
 	}
@@ -682,7 +741,7 @@ void CMario::SetState(int state)
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
-
+		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
 		if (isOnPlatform && !isFlying) pMeter->SetState(P_METER_STATE_DECREASING);
@@ -697,6 +756,7 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 
+		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
 		if (isOnPlatform && !isFlying) pMeter->SetState(P_METER_STATE_DECREASING);
@@ -718,6 +778,7 @@ void CMario::SetState(int state)
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 
+		isReadyToHoldShell = true;
 		pMeter->SetState(P_METER_STATE_INCREASING);
 		break;
 	}
@@ -737,6 +798,7 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 
+		isReadyToHoldShell = true;
 		pMeter->SetState(P_METER_STATE_INCREASING);
 		break;
 	}
@@ -816,6 +878,11 @@ void CMario::SetState(int state)
 		break;
 	}
 
+	case MARIO_STATE_KICK_SHELL:
+	{
+		break;
+	}
+		
 	case MARIO_STATE_DIE:
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -873,6 +940,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
 	}
 }
+
 
 void CMario::SetLevel(int l)
 {

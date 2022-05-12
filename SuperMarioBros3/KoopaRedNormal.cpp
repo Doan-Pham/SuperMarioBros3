@@ -45,7 +45,7 @@ void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	//DebugOut(L"[INFO] Koopa's Update() has been called \n");
+	//DebugOut(L"[INFO] Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f \n", x, y, vx, vy);
 }
 
 
@@ -159,10 +159,12 @@ int CKoopaRedNormal::GetAniId()
 		else return ID_ANI_KOOPA_WALKING_RIGHT;
 	}
 
-	if (state == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
+	if (state == KOOPA_STATE_SHELL_DOWNSIDE_STILL ||
+		state == KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD)
 		return ID_ANI_KOOPA_SHELL_DOWNSIDE_STILL;
 
-	if (state == KOOPA_STATE_SHELL_UPSIDE_STILL)
+	if (state == KOOPA_STATE_SHELL_UPSIDE_STILL ||
+		state == KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD)
 		return ID_ANI_KOOPA_SHELL_UPSIDE_STILL;
 
 	if (state == KOOPA_STATE_SHELL_DOWNSIDE_MOVING)
@@ -177,14 +179,21 @@ int CKoopaRedNormal::GetAniId()
 		else return ID_ANI_KOOPA_SHELL_UPSIDE_MOVING_RIGHT;
 	}
 
+	return -1;
 }
 
 void CKoopaRedNormal::Render()
 {
-	
-	CAnimations::GetInstance()->Get(GetAniId())->Render(x, y);
+	int aniId = GetAniId();
+	if (aniId == -1)
+	{
+		DebugOut(L"[ERROR] Render failed ! Can't find koopa_red_normal's ani \n");
+		return;
+	}
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 
+	DebugOutTitle(L"koopa's state: %d", state);
 	//DebugOut(L"[INFO] Koopa's Render() has been called \n");
 }
 
@@ -196,7 +205,7 @@ void CKoopaRedNormal::SetState(int state)
 		case KOOPA_STATE_WALKING:
 		{
 			vx = nx * KOOPA_WALKING_SPEED;
-			
+			ay = KOOPA_GRAVITY;
 			if (attachedBBox == NULL)
 			{
 				attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
@@ -204,6 +213,7 @@ void CKoopaRedNormal::SetState(int state)
 			}
 			break;
 		}
+
 		case KOOPA_STATE_SHELL_DOWNSIDE_STILL:
 		{
 			if (attachedBBox != NULL)
@@ -211,15 +221,22 @@ void CKoopaRedNormal::SetState(int state)
 				attachedBBox->Delete();
 				attachedBBox = NULL;
 			}
-			
 			vx = 0;
+			break;
+		}
+
+		case KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD:
+		{
+			vx = 0;
+			vy = 0;
+			ay = 0;
 			break;
 		}
 
 		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
 		{
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
-
+			ay = KOOPA_GRAVITY;
 			if (attachedBBox != NULL)
 			{
 				attachedBBox->Delete();
@@ -231,7 +248,8 @@ void CKoopaRedNormal::SetState(int state)
 		case KOOPA_STATE_SHELL_UPSIDE_STILL:
 		{
 			vx = 0;
-
+			vy = 0;
+			ay = 0;
 			if (attachedBBox != NULL)
 			{
 				attachedBBox->Delete();
@@ -240,10 +258,18 @@ void CKoopaRedNormal::SetState(int state)
 			break;
 		}
 
+		case KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD:
+		{
+			vx = 0;
+			vy = 0;
+			ay = 0;
+			break;
+		}
+
 		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
 		{
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
-
+			ay = KOOPA_GRAVITY;
 			if (attachedBBox != NULL)
 			{
 				attachedBBox->Delete();
