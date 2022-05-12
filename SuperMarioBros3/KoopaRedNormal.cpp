@@ -3,7 +3,7 @@
 
 CKoopaRedNormal::CKoopaRedNormal(float x, float y) :CGameObject(x, y)
 {
-	this->ay = KOOPA_NORMAL_GRAVITY;
+	//this->ay = KOOPA_NORMAL_GRAVITY;
 	//SetState(KOOPA_NORMAL_STATE_WALKING);
 }
 
@@ -27,44 +27,47 @@ void CKoopaRedNormal::GetBoundingBox(float& left, float& top, float& right, floa
 
 void CKoopaRedNormal::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	//x += vx * dt;
+	//y += vy * dt;
 };
 
 void CKoopaRedNormal::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj)) return;
-	//if (dynamic_cast<CMario*>(e->obj)) return;
+	//if (!e->obj->IsBlocking()) return;
+	//if (dynamic_cast<CKoopaRedNormal*>(e->obj)) return;
+	////if (dynamic_cast<CMario*>(e->obj)) return;
 
-	if (e->ny != 0)
-	{
-		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
-	}
+	//if (e->ny != 0)
+	//{
+	//	vy = 0;
+	//}
+	//else if (e->nx != 0)
+	//{
+	//	vx = -vx;
+	//}
 }
 
 void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
+	//vy += ay * dt;
 
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
+	//CGameObject::Update(dt, coObjects);
+	//CCollision::GetInstance()->Process(this, dt, coObjects);
+	DebugOut(L"[INFO] Koopa's Update() has been called \n");
 }
 
 
 void CKoopaRedNormal::Render()
 {
-	//int aniId = ID_ANI_KOOPA_NORMAL_WALKING;
+	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
 	//if (state == KOOPA_NORMAL_STATE_DIE)
 	//{
 	//	aniId = ID_ANI_KOOPA_NORMAL_DIE;
 	//}
 
-	//CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	DebugOut(L"[INFO] Koopa's Render() has been called \n");
 	//RenderBoundingBox();
 }
 
