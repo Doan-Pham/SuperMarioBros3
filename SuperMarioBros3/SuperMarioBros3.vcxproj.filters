@@ -109,6 +109,9 @@
     <ClCompile Include="KoopaRedNormal.cpp">
       <Filter>Game Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="AttachedBBox.cpp">
+      <Filter>Game Object\Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -227,6 +230,9 @@
     </ClInclude>
     <ClInclude Include="KoopaRedNormal.h">
       <Filter>Game Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="AttachedBBox.h">
+      <Filter>Game Object\Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
