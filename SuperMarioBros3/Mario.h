@@ -20,20 +20,20 @@ typedef CPlayScene* LPPLAYSCENE;
 #pragma region MARIO_SPEED
 
 #define MARIO_WALKING_SPEED			0.1f
-#define MARIO_RUNNING_SPEED			0.2f
+#define MARIO_RUNNING_SPEED			0.15f
 
 #define MARIO_TAKE_OFF_SPEED_Y		0.2f
 #define MARIO_FLYING_SPEED_Y		0.13f
 
-#define MARIO_ACCEL_WALK_X			0.0005f
-#define MARIO_ACCEL_RUN_X			0.0007f
+#define MARIO_ACCEL_WALK_X			0.0003f
+#define MARIO_ACCEL_RUN_X			0.0005f
 
 #define MARIO_JUMP_SPEED_Y			0.3f
-#define MARIO_JUMP_RUN_SPEED_Y		0.3f
+#define MARIO_JUMP_RUN_SPEED_Y		0.35f
 
 #define MARIO_GRAVITY				0.0006f
 #define MARIO_GRAVITY_SLOW_FALL		0.0004f
-#define MARIO_JUMP_DEFLECT_SPEED	0.3f
+#define MARIO_JUMP_DEFLECT_SPEED	0.25f
 
 #pragma endregion 
 

@@ -104,20 +104,28 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
+
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
+
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+
 	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
 		OnCollisionWithKoopaNormal(e);
+
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
+
 	else if (dynamic_cast<CFireBall*>(e->obj))
 		OnCollisionWithFireBall(e);
+
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))
 		OnCollisionWithPlant(e);
+
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
+
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -233,7 +241,6 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 		}
 	}
 }
-
 
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
