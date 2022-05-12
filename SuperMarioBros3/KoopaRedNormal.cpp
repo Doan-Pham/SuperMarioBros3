@@ -1,74 +1,103 @@
 #include "KoopaRedNormal.h"
-
+#include "Mario.h"
+#include "PlatformGhost.h"
 
 CKoopaRedNormal::CKoopaRedNormal(float x, float y) :CGameObject(x, y)
 {
-	//this->ay = KOOPA_NORMAL_GRAVITY;
-	//SetState(KOOPA_NORMAL_STATE_WALKING);
+	this->ay = KOOPA_NORMAL_GRAVITY;
+	SetState(KOOPA_STATE_WALKING);
 }
 
 void CKoopaRedNormal::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	//if (state == KOOPA_NORMAL_STATE_DIE)
-	//{
-	//	left = x - KOOPA_NORMAL_BBOX_WIDTH / 2;
-	//	top = y - KOOPA_NORMAL_BBOX_HEIGHT_DIE / 2;
-	//	right = left + KOOPA_NORMAL_BBOX_WIDTH;
-	//	bottom = top + KOOPA_NORMAL_BBOX_HEIGHT_DIE;
-	//}
-	//else
-	//{
-	//	left = x - KOOPA_NORMAL_BBOX_WIDTH / 2;
-	//	top = y - KOOPA_NORMAL_BBOX_HEIGHT / 2;
-	//	right = left + KOOPA_NORMAL_BBOX_WIDTH;
-	//	bottom = top + KOOPA_NORMAL_BBOX_HEIGHT;
-	//}
+	if (state == KOOPA_STATE_WALKING)
+	{
+		left = x - KOOPA_NORMAL_BBOX_WIDTH / 2;
+		top = y - KOOPA_NORMAL_BBOX_HEIGHT / 2;
+		right = left + KOOPA_NORMAL_BBOX_WIDTH;
+		bottom = top + KOOPA_NORMAL_BBOX_HEIGHT;
+	}
+	else
+	{
+		left = x - KOOPA_SHELL_BBOX_WIDTH / 2;
+		top = y - KOOPA_SHELL_BBOX_HEIGHT / 2;
+		right = left + KOOPA_SHELL_BBOX_WIDTH;
+		bottom = top + KOOPA_SHELL_BBOX_HEIGHT;
+	}
 }
+
+
+void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	vy += ay * dt;
+
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	//DebugOut(L"[INFO] Koopa's Update() has been called \n");
+}
+
 
 void CKoopaRedNormal::OnNoCollision(DWORD dt)
 {
-	//x += vx * dt;
-	//y += vy * dt;
+	x += vx * dt;
+	y += vy * dt;
 };
 
 void CKoopaRedNormal::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	//if (!e->obj->IsBlocking()) return;
-	//if (dynamic_cast<CKoopaRedNormal*>(e->obj)) return;
-	////if (dynamic_cast<CMario*>(e->obj)) return;
+	if (dynamic_cast<CKoopaRedNormal*>(e->obj)) return;
+	if (dynamic_cast<CMario*>(e->obj)) return;
 
-	//if (e->ny != 0)
-	//{
-	//	vy = 0;
-	//}
-	//else if (e->nx != 0)
-	//{
-	//	vx = -vx;
-	//}
+	if (e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = 0;
+
+	}
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		vx = -vx;
+	}
+	if (dynamic_cast<CPlatformGhost*>(e->obj))
+		OnCollisionWithPlatformGhost(e);
 }
-
-void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CKoopaRedNormal::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 {
-	//vy += ay * dt;
+	if (e->ny < 0)
+	{
 
-	//CGameObject::Update(dt, coObjects);
-	//CCollision::GetInstance()->Process(this, dt, coObjects);
-	DebugOut(L"[INFO] Koopa's Update() has been called \n");
+		CPlatformGhost* platform = dynamic_cast<CPlatformGhost*>(e->obj);
+		float platform_l, platform_t, platform_r, platform_b;
+		platform->GetBoundingBox(platform_l, platform_t, platform_r, platform_b);
+
+		float koopa_l, koopa_t, koopa_r, koopa_b;
+		this->GetBoundingBox(koopa_l, koopa_t, koopa_r, koopa_b);
+
+		// Have to directly change koopa's y because ghost platform is non-blocking, so the 
+		// collisions with it are not handled by the framework (inside that, the coordinates
+		// of the src_obj that collided with blocking things are automatically adjusted
+		// to be the correct numbers using some calculations with BLOCK_PUSH_FACTOR)
+		y = platform_t - (koopa_b - koopa_t)/ 2 - BLOCK_PUSH_FACTOR_GHOST_PLATFORM;
+
+		vy = 0;
+	}
 }
 
-
+int CKoopaRedNormal::GetAniId()
+{
+	if (state == KOOPA_STATE_WALKING)
+	{
+		if (vx <= 0) return ID_ANI_KOOPA_WALKING_LEFT;
+		else return ID_ANI_KOOPA_WALKING_RIGHT;
+	}
+}
 void CKoopaRedNormal::Render()
 {
-	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
-	//if (state == KOOPA_NORMAL_STATE_DIE)
-	//{
-	//	aniId = ID_ANI_KOOPA_NORMAL_DIE;
-	//}
-
 	
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	DebugOut(L"[INFO] Koopa's Render() has been called \n");
-	//RenderBoundingBox();
+	CAnimations::GetInstance()->Get(GetAniId())->Render(x, y);
+	RenderBoundingBox();
+
+	//DebugOut(L"[INFO] Koopa's Render() has been called \n");
 }
 
 void CKoopaRedNormal::SetState(int state)
@@ -76,16 +105,10 @@ void CKoopaRedNormal::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-		//case KOOPA_NORMAL_STATE_DIE:
-		//	die_start = GetTickCount64();
-		//	y += (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_NORMAL_BBOX_HEIGHT_DIE) / 2;
-		//	vx = 0;
-		//	vy = 0;
-		//	ay = 0;
-		//	break;
-		//case KOOPA_NORMAL_STATE_WALKING:
-		//	vx = -KOOPA_NORMAL_WALKING_SPEED;
-		//	break;
-		//}
+		case KOOPA_STATE_WALKING:
+		{
+			vx = -KOOPA_NORMAL_WALKING_SPEED;
+			break;
+		}
 	}
 }
