@@ -73,6 +73,7 @@ protected:
 
 public:
 	CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene);
+	void SetDirection(int nx) { this->nx = nx; }
 	virtual void SetState(int state);
 	virtual int GetScoresGivenWhenHit() { return KOOPA_SCORES_GIVEN_WHEN_HIT; }
 };

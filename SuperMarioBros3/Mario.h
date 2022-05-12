@@ -83,6 +83,9 @@ typedef CPlayScene* LPPLAYSCENE;
 #define ID_ANI_MARIO_BRACE_LEFT					1161
 #define ID_ANI_MARIO_BRACE_RIGHT				1162
 
+#define ID_ANI_MARIO_KICK_LEFT					1171
+#define ID_ANI_MARIO_KICK_RIGHT					1172
+
 #define ID_ANI_MARIO_JUMP_RUN_LEFT				1191
 #define ID_ANI_MARIO_JUMP_RUN_RIGHT				1192
 
@@ -103,11 +106,15 @@ typedef CPlayScene* LPPLAYSCENE;
 #define ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT		1341
 #define ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT		1342
 
-#define ID_ANI_MARIO_SMALL_BRACE_RIGHT			1361
-#define ID_ANI_MARIO_SMALL_BRACE_LEFT			1362
+#define ID_ANI_MARIO_SMALL_BRACE_LEFT			1361
+#define ID_ANI_MARIO_SMALL_BRACE_RIGHT			1362
 
-#define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT		1392
+#define ID_ANI_MARIO_SMALL_KICK_LEFT			1371
+#define ID_ANI_MARIO_SMALL_KICK_RIGHT			1372
+
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT		1391
+#define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT		1392
+
 
 
 // RACCOON MARIO
@@ -131,6 +138,9 @@ typedef CPlayScene* LPPLAYSCENE;
 
 #define ID_ANI_MARIO_RACCOON_BRACE_LEFT			1561
 #define ID_ANI_MARIO_RACCOON_BRACE_RIGHT		1562
+
+#define ID_ANI_MARIO_RACCOON_KICK_LEFT			1571
+#define ID_ANI_MARIO_RACCOON_KICK_RIGHT			1572
 
 #define ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT		1611
 #define ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT	1612
@@ -205,6 +215,7 @@ class CMario : public CGameObject
 	BOOLEAN isTrulyFalling;
 	BOOLEAN isTailWhipping;
 
+	BOOLEAN isKicking;
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -253,6 +264,7 @@ public:
 		isFlying = false;
 		isTrulyFalling = false;
 		isTailWhipping = false;
+		isKicking = false;
 
 		maxVx = 0.0f;
 		ax = 0.0f;

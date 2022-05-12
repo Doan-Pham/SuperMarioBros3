@@ -76,6 +76,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isTailWhipping = false;
 	}
 
+	isKicking = false; 
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -182,7 +183,7 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 {
 	CKoopaRedNormal* koopa = dynamic_cast<CKoopaRedNormal*>(e->obj);
 
-	// jump on top >> kill Goomba and deflect a bit 
+	// jump on top >> kill koopa and deflect a bit 
 	if (e->ny < 0)
 	{
 		switch (koopa->GetState())
@@ -237,6 +238,15 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 						StartUntouchable();
 					}
 				}
+			}
+			else
+			{
+				isKicking = true;
+				koopa->SetDirection(this->nx);
+				if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
+					koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
+				else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
+					koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
 			}
 		}
 	}
@@ -429,6 +439,11 @@ int CMario::GetAniIdSmall()
 				}
 			}
 
+	if (isKicking)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
+		else aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
 	return aniId;
@@ -496,6 +511,11 @@ int CMario::GetAniIdBig()
 						aniId = ID_ANI_MARIO_RUNNING_LEFT;
 				}
 			}
+	if (isKicking)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_KICK_RIGHT;
+		else aniId = ID_ANI_MARIO_KICK_LEFT;
+	}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 
@@ -572,8 +592,15 @@ int CMario::GetAniIdRaccoon()
 			}
 	if (isTailWhipping)
 	{
-		if (nx == 1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT;
-		else if (nx == -1) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT;
+		if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_RIGHT;
+		else aniId = ID_ANI_MARIO_RACCOON_TAIL_WHIP_LEFT;
+	}
+
+	// Kicking has higher render priority than tail whipping
+	if (isKicking)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_KICK_RIGHT;
+		else aniId = ID_ANI_MARIO_RACCOON_KICK_LEFT;
 	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 
