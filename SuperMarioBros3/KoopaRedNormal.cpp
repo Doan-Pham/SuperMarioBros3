@@ -2,8 +2,10 @@
 #include "Mario.h"
 #include "PlatformGhost.h"
 
-CKoopaRedNormal::CKoopaRedNormal(float x, float y) :CGameObject(x, y)
+CKoopaRedNormal::CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene)
+	:CGameObject(x, y), currentScene(currentScene)
 {
+	nx = -1;
 	this->ay = KOOPA_NORMAL_GRAVITY;
 	SetState(KOOPA_STATE_WALKING);
 }
@@ -30,7 +32,16 @@ void CKoopaRedNormal::GetBoundingBox(float& left, float& top, float& right, floa
 void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-
+	if (state == KOOPA_STATE_WALKING &&
+		attachedBBox != NULL && 
+		attachedBBox->GetState() == ATTACHED_BBOX_STATE_FALL)
+	{
+		vx = -vx;
+		nx = -nx;
+		attachedBBox->Delete();
+		attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
+		this->currentScene->AddObject(attachedBBox);
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
@@ -107,7 +118,13 @@ void CKoopaRedNormal::SetState(int state)
 	{
 		case KOOPA_STATE_WALKING:
 		{
-			vx = -KOOPA_NORMAL_WALKING_SPEED;
+			vx = nx * KOOPA_NORMAL_WALKING_SPEED;
+			
+			if (attachedBBox == NULL)
+			{
+				attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
+				this->currentScene->AddObject(attachedBBox);
+			}
 			break;
 		}
 	}

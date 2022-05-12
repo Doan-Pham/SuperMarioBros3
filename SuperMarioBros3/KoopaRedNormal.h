@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 #include "debug.h"
+#include "AttachedBBox.h"
+#include "PlayScene.h"
 
 #define ID_ANI_KOOPA_WALKING_LEFT					5231
 #define ID_ANI_KOOPA_WALKING_RIGHT					5232
@@ -35,11 +37,20 @@
 
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
+class CPlayScene;
+typedef CPlayScene* LPPLAYSCENE;
+
+
 class CKoopaRedNormal : public CGameObject
 {
 protected:
 
 	float ay;
+
+	CAttachedBBox* attachedBBox;
+
+	// *** CONST *** pointer to the current playscene
+	const LPPLAYSCENE currentScene;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -54,7 +65,7 @@ protected:
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
 public:
-	CKoopaRedNormal(float x, float y);
+	CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene);
 	virtual void SetState(int state);
 	virtual int GetScoresGivenWhenHit() { return KOOPA_SCORES_GIVEN_WHEN_HIT; }
 };

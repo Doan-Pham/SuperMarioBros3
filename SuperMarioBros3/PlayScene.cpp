@@ -596,7 +596,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 			case OBJECT_TYPE_ENEMY_KOOPA_RED_NORMAL:
 			{
-				obj = new CKoopaRedNormal(x, y);
+				obj = new CKoopaRedNormal(x, y, this);
 				break;
 			}
 
