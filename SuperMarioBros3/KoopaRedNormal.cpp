@@ -226,7 +226,11 @@ void CKoopaRedNormal::SetState(int state)
 			isShell = false;
 			vx = nx * KOOPA_WALKING_SPEED;
 			ay = KOOPA_GRAVITY;
-			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT) / 2;
+
+			// To keep koopa on the platform after turning from shell to normal (just like with
+			// mario_big to mario_small)
+			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
+
 			if (attachedBBox == NULL)
 			{
 				attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
