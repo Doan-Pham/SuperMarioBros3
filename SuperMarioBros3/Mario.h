@@ -159,6 +159,38 @@ class CKoopaRedNormal;
 #define ID_ANI_MARIO_RACCOON_TAIL_WAG_LEFT		1621
 #define ID_ANI_MARIO_RACCOON_TAIL_WAG_RIGHT		1622
 
+
+// FIRE MARIO
+
+#define ID_ANI_MARIO_FIRE_IDLE_LEFT					1711
+#define ID_ANI_MARIO_FIRE_IDLE_RIGHT				1712
+
+#define ID_ANI_MARIO_FIRE_WALKING_LEFT				1721
+#define ID_ANI_MARIO_FIRE_WALKING_RIGHT				1722
+
+#define ID_ANI_MARIO_FIRE_RUNNING_LEFT				1731
+#define ID_ANI_MARIO_FIRE_RUNNING_RIGHT				1732
+
+#define ID_ANI_MARIO_FIRE_JUMP_WALK_LEFT			1741
+#define ID_ANI_MARIO_FIRE_JUMP_WALK_RIGHT			1742
+
+#define ID_ANI_MARIO_FIRE_SIT_LEFT					1751
+#define ID_ANI_MARIO_FIRE_SIT_RIGHT					1752
+
+#define ID_ANI_MARIO_FIRE_BRACE_LEFT				1761
+#define ID_ANI_MARIO_FIRE_BRACE_RIGHT				1762
+
+#define ID_ANI_MARIO_FIRE_KICK_LEFT					1771
+#define ID_ANI_MARIO_FIRE_KICK_RIGHT				1772
+
+#define ID_ANI_MARIO_FIRE_HOLD_LEFT					1781
+#define ID_ANI_MARIO_FIRE_HOLD_RIGHT				1782
+
+#define ID_ANI_MARIO_FIRE_JUMP_RUN_LEFT				1791
+#define ID_ANI_MARIO_FIRE_JUMP_RUN_RIGHT			1792
+
+#define ID_ANI_MARIO_FIRE_THROW_FIREBALLLEFT		1811
+#define ID_ANI_MARIO_FIRE_THROW_FIREBALLRIGHT		1821
 #pragma endregion
 
 // Mario has many levels like big, tanooki, raccoon,... which are defined as 1, 2, 3, 4
@@ -174,7 +206,7 @@ class CKoopaRedNormal;
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_RACCOON 3
-
+#define MARIO_LEVEL_FIRE	4
 
 #pragma region MARIO_SIZE
 
@@ -305,6 +337,7 @@ public:
 		shellBeingHeld = NULL;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	int GetAniIdFire();
 	void Render();
 	void SetState(int state);
 

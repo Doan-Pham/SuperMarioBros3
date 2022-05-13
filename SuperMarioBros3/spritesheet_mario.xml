@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:5bf0d8fb0cc63a3b367d8a791d9a5ceb:f60034c85ba3a3c6338c76f35cc4643a:82021aeba44d030b869f1afa2b573e8a$ -->
+<!-- $TexturePacker:SmartUpdate:9578abbf98fa911d3cae2e9a7884aaf3:934b571547f9c91e64cc371ce7514a7f:82021aeba44d030b869f1afa2b573e8a$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -23,10 +23,10 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
 			  textureId ="1">
     <sprite n="11111" x="10" y="10" w="14" h="27"/>
     <sprite n="11121" x="44" y="10" w="14" h="27"/>
-    <sprite n="11212" x="78" y="10" w="16" h="27"/>
-    <sprite n="11213" x="114" y="10" w="16" h="26"/>
-    <sprite n="11222" x="150" y="10" w="16" h="27"/>
-    <sprite n="11223" x="186" y="10" w="16" h="26"/>
+    <sprite n="11211" x="78" y="10" w="16" h="27"/>
+    <sprite n="11212" x="114" y="10" w="16" h="26"/>
+    <sprite n="11221" x="150" y="10" w="16" h="27"/>
+    <sprite n="11222" x="186" y="10" w="16" h="26"/>
     <sprite n="11311" x="222" y="10" w="19" h="27"/>
     <sprite n="11312" x="261" y="10" w="19" h="27"/>
     <sprite n="11313" x="300" y="10" w="19" h="26"/>
@@ -109,5 +109,37 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="16222" x="312" y="297" w="22" h="28"/>
     <sprite n="16911" x="354" y="297" w="16" h="28"/>
     <sprite n="16921" x="390" y="297" w="16" h="28"/>
-    <sprite n="29999" x="426" y="297" w="16" h="16"/>
+    <sprite n="17111" x="426" y="297" w="14" h="27"/>
+    <sprite n="17121" x="460" y="297" w="14" h="27"/>
+    <sprite n="17211" x="10" y="345" w="16" h="27"/>
+    <sprite n="17212" x="46" y="345" w="16" h="26"/>
+    <sprite n="17221" x="82" y="345" w="16" h="27"/>
+    <sprite n="17222" x="118" y="345" w="16" h="26"/>
+    <sprite n="17311" x="154" y="345" w="19" h="27"/>
+    <sprite n="17312" x="193" y="345" w="19" h="27"/>
+    <sprite n="17313" x="232" y="345" w="19" h="26"/>
+    <sprite n="17321" x="271" y="345" w="19" h="27"/>
+    <sprite n="17322" x="310" y="345" w="19" h="27"/>
+    <sprite n="17323" x="349" y="345" w="19" h="26"/>
+    <sprite n="17411" x="388" y="345" w="16" h="26"/>
+    <sprite n="17421" x="424" y="345" w="16" h="26"/>
+    <sprite n="17511" x="460" y="345" w="14" h="18"/>
+    <sprite n="17521" x="10" y="392" w="14" h="18"/>
+    <sprite n="17611" x="44" y="392" w="16" h="28"/>
+    <sprite n="17621" x="80" y="392" w="16" h="28"/>
+    <sprite n="17711" x="116" y="392" w="21" h="27"/>
+    <sprite n="17721" x="157" y="392" w="21" h="27"/>
+    <sprite n="17811" x="198" y="392" w="14" h="27"/>
+    <sprite n="17812" x="232" y="392" w="15" h="27"/>
+    <sprite n="17813" x="267" y="392" w="16" h="26"/>
+    <sprite n="17821" x="303" y="392" w="14" h="27"/>
+    <sprite n="17822" x="337" y="392" w="15" h="27"/>
+    <sprite n="17823" x="372" y="392" w="16" h="26"/>
+    <sprite n="17911" x="408" y="392" w="19" h="26"/>
+    <sprite n="17921" x="447" y="392" w="19" h="26"/>
+    <sprite n="18111" x="486" y="392" w="14" h="27"/>
+    <sprite n="18112" x="10" y="440" w="14" h="27"/>
+    <sprite n="18121" x="44" y="440" w="14" h="27"/>
+    <sprite n="18122" x="78" y="440" w="14" h="27"/>
+    <sprite n="29999" x="112" y="440" w="16" h="16"/>
 </TextureAtlas>

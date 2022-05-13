@@ -539,7 +539,6 @@ int CMario::GetAniIdSmall()
 	return aniId;
 }
 
-
 //
 // Get animdation ID for big Mario
 //
@@ -708,6 +707,83 @@ int CMario::GetAniIdRaccoon()
 	return aniId;
 }
 
+//
+// Get animdation ID for fire Mario
+//
+int CMario::GetAniIdFire()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_FIRE_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_FIRE_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_FIRE_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_FIRE_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_FIRE_SIT_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_FIRE_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_FIRE_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_FIRE_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_MARIO_FIRE_BRACE_RIGHT;
+				else
+				{
+					// If p-meter is not changing or if it is increasing but not fully charged, mario's
+					// animation will be that of walking
+					aniId = ID_ANI_MARIO_FIRE_WALKING_RIGHT;
+					if (pMeter->isFullyCharged())
+						aniId = ID_ANI_MARIO_FIRE_RUNNING_RIGHT;
+				}
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_MARIO_FIRE_BRACE_LEFT;
+				else
+				{
+					aniId = ID_ANI_MARIO_FIRE_WALKING_LEFT;
+					if (pMeter->isFullyCharged())
+						aniId = ID_ANI_MARIO_FIRE_RUNNING_LEFT;
+				}
+			}
+	if (isKicking)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_FIRE_KICK_RIGHT;
+		else aniId = ID_ANI_MARIO_FIRE_KICK_LEFT;
+	}
+
+	if (isHoldingShell)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_FIRE_HOLD_RIGHT;
+		else aniId = ID_ANI_MARIO_FIRE_HOLD_LEFT;
+	}
+	if (aniId == -1) aniId = ID_ANI_MARIO_FIRE_IDLE_RIGHT;
+
+	return aniId;
+}
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -721,6 +797,8 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_RACCOON)
 		aniId = GetAniIdRaccoon();
+	else if (level == MARIO_LEVEL_FIRE)
+		aniId = GetAniIdFire();
 	//DebugOutTitle(L"aniId: %d", aniId);
 	animations->Get(aniId)->Render(x, y);
 
@@ -937,7 +1015,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
 	{
 		if (isSitting)
 		{
@@ -989,34 +1067,16 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 float CMario::GetBBoxWidth()
 {
-	if (level == MARIO_LEVEL_BIG)
-	{
-		if (isSitting) return MARIO_BIG_SITTING_BBOX_WIDTH;
-		else return MARIO_BIG_BBOX_WIDTH;
-	}
-	else if (level == MARIO_LEVEL_RACCOON)
-	{
-		if (isSitting) return MARIO_RACCOON_SITTING_BBOX_WIDTH;
-		else return MARIO_RACCOON_BBOX_WIDTH;
-	}
-	else
-		return  MARIO_SMALL_BBOX_WIDTH;
+	float cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b;
+	GetBoundingBox(cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b);
+	return cur_bbox_r - cur_bbox_l;
 }
 
 float CMario::GetBBoxHeight()
 {
-	if (level == MARIO_LEVEL_BIG)
-	{
-		if (isSitting) return MARIO_BIG_SITTING_BBOX_HEIGHT;
-		else return MARIO_BIG_BBOX_HEIGHT;
-	}
-	else if (level == MARIO_LEVEL_RACCOON)
-	{
-		if (isSitting) return MARIO_RACCOON_SITTING_BBOX_HEIGHT;
-		else return MARIO_RACCOON_BBOX_HEIGHT;
-	}
-	else
-		return  MARIO_SMALL_BBOX_HEIGHT;
+	float cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b;
+	GetBoundingBox(cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b);
+	return cur_bbox_b - cur_bbox_t;
 }
 
 void CMario::SetLevel(int l)
