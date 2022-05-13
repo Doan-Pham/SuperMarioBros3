@@ -45,6 +45,7 @@ void CGoombaRedWing::SetState(int state)
 		break;
 
 	case GOOMBA_RED_WING_STATE_DIE:
+		isStillHaveWing = false;
 		die_start = GetTickCount64();
 		y += (GOOMBA_NORMAL_BBOX_HEIGHT - GOOMBA_DIE_BBOX_HEIGHT) / 2;
 		vx = 0;

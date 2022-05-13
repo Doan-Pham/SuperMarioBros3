@@ -91,8 +91,9 @@ void CKoopaRedNormal::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
 
-	else if (dynamic_cast<CGoomba*>(e->obj))
+	else if (dynamic_cast<CGoomba*>(e->obj) || dynamic_cast<CGoombaRedWing*>(e->obj))
 		OnCollisionWithGoomba(e);
+
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))
 		OnCollisionWithPlantRedFire(e);
@@ -136,12 +137,26 @@ void CKoopaRedNormal::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
 		return;
-	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	if (goomba->GetState() != GOOMBA_STATE_DIE)
+	if (dynamic_cast<CGoomba*>(e->obj))
 	{
-		goomba->SetState(GOOMBA_STATE_DIE);
-		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+		CGoomba* goomba = (dynamic_cast<CGoomba*>(e->obj));
+		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		{
+			goomba->SetState(GOOMBA_STATE_DIE);
+			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+		}
 	}
+	else if (dynamic_cast<CGoombaRedWing*>(e->obj))
+	{
+		CGoombaRedWing* goomba = (dynamic_cast<CGoombaRedWing*>(e->obj));
+		if (goomba->GetState() != GOOMBA_RED_WING_STATE_DIE)
+		{
+			goomba->SetState(GOOMBA_RED_WING_STATE_DIE);
+			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+		}
+	}
+
+
 }
 
 void CKoopaRedNormal::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
