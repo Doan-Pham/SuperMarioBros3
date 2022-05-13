@@ -309,7 +309,7 @@ public:
 
 	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
+	int IsBlocking() { return 0; }
 
 	BOOLEAN IsFlying() { return isFlying; }
 
