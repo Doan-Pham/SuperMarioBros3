@@ -12,7 +12,7 @@
 #include "BrickQuestionMark.h"
 #include "PlatformGhost.h"
 #include "Portal.h"
-#include "FireBall.h"
+#include "FireShot.h"
 #include "PlantRedFire.h"
 #include "KoopaRedNormal.h"
 #include "GoombaRedWing.h"
@@ -128,7 +128,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
 
-	else if (dynamic_cast<CFireBall*>(e->obj))
+	else if (dynamic_cast<CFireShot*>(e->obj))
 		OnCollisionWithFireBall(e);
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))

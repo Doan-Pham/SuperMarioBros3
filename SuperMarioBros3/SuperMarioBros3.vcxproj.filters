@@ -103,7 +103,7 @@
     <ClCompile Include="Pipe.cpp">
       <Filter>Game Object\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="FireBall.cpp">
+    <ClCompile Include="FireShot.cpp">
       <Filter>Game Object\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="KoopaRedNormal.cpp">
@@ -228,7 +228,7 @@
     <ClInclude Include="Pipe.h">
       <Filter>Game Object\Platform</Filter>
     </ClInclude>
-    <ClInclude Include="FireBall.h">
+    <ClInclude Include="FireShot.h">
       <Filter>Game Object\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="KoopaRedNormal.h">

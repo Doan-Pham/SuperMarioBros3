@@ -32,8 +32,8 @@ void CPlantRedFire::GetPositionRelativeToMario(int mario_x, int mario_y, int& nx
 	if (mario_y < y) ny = 1;
 	else ny = -1;
 
-	this->fireball_dest_x = mario_x;
-	this->fireball_dest_y = mario_y;
+	this->fireshot_dest_x = mario_x;
+	this->fireshot_dest_y = mario_y;
 }
 
 void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -153,7 +153,7 @@ void CPlantRedFire::SetState(int state)
 	case PLANT_STATE_APPEARING:
 	{
 		vy = -PLANT_MOVING_SPEED;
-		DebugOutTitle(L"Plant : appearing");
+		//DebugOutTitle(L"Plant : appearing");
 		break;
 
 	}
@@ -162,7 +162,7 @@ void CPlantRedFire::SetState(int state)
 	{
 		vy = 0;
 		aim_start = GetTickCount64();
-		DebugOutTitle(L"Plant : aiming");
+		//DebugOutTitle(L"Plant : aiming");
 		break;
 
 	}
@@ -170,17 +170,17 @@ void CPlantRedFire::SetState(int state)
 	case PLANT_STATE_FIRING:
 	{
 		fire_start = GetTickCount64();
-		CFireBall* fireBall = new CFireBall(x, y, fireball_dest_x, fireball_dest_y);
+		CFireShot* fireBall = new CFireShot(x, y, fireshot_dest_x, fireshot_dest_y);
 
 		((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->AddObject(fireBall);
-		DebugOutTitle(L"Plant : firing");
+		//DebugOutTitle(L"Plant : firing");
 		break;
 	}
 
 	case PLANT_STATE_DISAPPEARING:
 	{
 		vy = PLANT_MOVING_SPEED;
-		DebugOutTitle(L"Plant : disappearing");
+		//DebugOutTitle(L"Plant : disappearing");
 		break;
 	}
 	}

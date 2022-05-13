@@ -8,7 +8,7 @@
 #include "Mario.h"
 #include "PlayScene.h"
 
-#include "FireBall.h"
+#include "FireShot.h"
 
 class CPlayScene;
 class CMario;
@@ -58,7 +58,7 @@ protected:
 	int relative_nx_to_mario;
 	int relative_ny_to_mario;
 
-	float fireball_dest_x, fireball_dest_y; // To tell the fireball which angle to shoot
+	float fireshot_dest_x, fireshot_dest_y; // To tell the fireshot which angle to shoot
 
 	BOOLEAN isMarioInFireZone;
 	float appearing_destination_y;
