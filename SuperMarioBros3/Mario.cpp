@@ -15,7 +15,7 @@
 #include "FireBall.h"
 #include "PlantRedFire.h"
 #include "KoopaRedNormal.h"
-
+#include "GoombaRedWing.h"
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -119,6 +119,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 
+	if (dynamic_cast<CGoombaRedWing*>(e->obj))
+		OnCollisionWithGoombaRedWing(e);
+
 	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
 		OnCollisionWithKoopaNormal(e);
 
@@ -173,6 +176,62 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 					if (isTailWhipping && e->nx != 0 && e->ny == 0)
 					{
 						goomba->SetState(GOOMBA_STATE_DIE);
+						CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+					}
+					else
+					{
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
+				}
+			}
+		}
+	}
+}
+
+
+void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
+{
+	CGoombaRedWing* goomba = dynamic_cast<CGoombaRedWing*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit 
+	if (e->ny < 0)
+	{
+		if (goomba->GetState() != GOOMBA_RED_WING_STATE_DIE)
+		{
+			if (goomba->GetState() == GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING ||
+				goomba->GetState() == GOOMBA_RED_WING_STATE_HOPPING ||
+				goomba->GetState() == GOOMBA_RED_WING_STATE_JUMPING)
+			{
+				goomba->SetState(GOOMBA_RED_WING_STATE_WALKING_NORMAL);
+			}
+			else goomba->SetState(GOOMBA_RED_WING_STATE_DIE);
+
+			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else // hit by Goomba
+	{
+		if (untouchable == 0)
+		{
+			if (goomba->GetState() != GOOMBA_RED_WING_STATE_DIE)
+			{
+				if (level < MARIO_LEVEL_BIG)
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+				else if (level == MARIO_LEVEL_BIG)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					if (isTailWhipping && e->nx != 0 && e->ny == 0)
+					{
+						goomba->SetState(GOOMBA_RED_WING_STATE_DIE);
 						CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
 					}
 					else
@@ -904,6 +963,13 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 			right = left + MARIO_RACCOON_SITTING_BBOX_WIDTH;
 			bottom = top + MARIO_RACCOON_SITTING_BBOX_HEIGHT;
 		}
+		else if (isTailWhipping)
+		{
+			left = x - MARIO_RACCOON_BBOX_WIDTH / 2 - 10;
+			top = y - MARIO_RACCOON_BBOX_HEIGHT / 2;
+			right = left + MARIO_RACCOON_BBOX_WIDTH + 10;
+			bottom = top + MARIO_RACCOON_BBOX_HEIGHT;
+		}
 		else
 		{
 			left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
@@ -952,6 +1018,7 @@ float CMario::GetBBoxHeight()
 	else
 		return  MARIO_SMALL_BBOX_HEIGHT;
 }
+
 void CMario::SetLevel(int l)
 {
 	// Adjust position to avoid falling off platform

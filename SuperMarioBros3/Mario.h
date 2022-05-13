@@ -260,6 +260,7 @@ class CMario : public CGameObject
 	const LPPLAYSCENE currentScene;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
