@@ -69,7 +69,6 @@ void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopaRedNormal::OnNoCollision(DWORD dt)
 {
-	if (isBeingHeld) return;
 	x += vx * dt;
 	y += vy * dt;
 };
@@ -212,7 +211,7 @@ void CKoopaRedNormal::Render()
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 
-	DebugOutTitle(L"koopa's state: %d", state);
+	//DebugOutTitle(L"koopa's state: %d", state);
 	//DebugOut(L"[INFO] Koopa's Render() has been called \n");
 }
 
@@ -265,6 +264,7 @@ void CKoopaRedNormal::SetState(int state)
 		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
 		{
 			isBeingHeld = false;
+			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
 			break;
@@ -296,6 +296,7 @@ void CKoopaRedNormal::SetState(int state)
 		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
 		{
 			isBeingHeld = false;
+			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
 			break;
