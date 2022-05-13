@@ -13,6 +13,7 @@ typedef CPlayScene* LPPLAYSCENE;
 
 class CKoopaRedNormal;
 
+class CFireBall;
 // TODO: Change the time of each frame for mario's walking animation to
 // make mario move faster when p-meter is not fully charged
 
@@ -190,8 +191,8 @@ class CKoopaRedNormal;
 #define ID_ANI_MARIO_FIRE_JUMP_RUN_LEFT				1791
 #define ID_ANI_MARIO_FIRE_JUMP_RUN_RIGHT			1792
 
-#define ID_ANI_MARIO_FIRE_THROW_FIREBALLLEFT		1811
-#define ID_ANI_MARIO_FIRE_THROW_FIREBALLRIGHT		1821
+#define ID_ANI_MARIO_FIRE_THROW_FIREBALL_LEFT		1811
+#define ID_ANI_MARIO_FIRE_THROW_FIREBALL_RIGHT		1812
 #pragma endregion
 
 // Mario has many levels like big, tanooki, raccoon,... which are defined as 1, 2, 3, 4
@@ -247,9 +248,11 @@ class CKoopaRedNormal;
 #define MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG 300
 
 #define MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT 200
+
+#define MARIO_FIRE_THROW_FIREBALL_ANI_TIMEOUT 200
 #pragma endregion 
 
-
+#define MARIO_FIRE_MAX_FIREBALLS_NUM	2
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CMario : public CGameObject
@@ -262,6 +265,10 @@ class CMario : public CGameObject
 	BOOLEAN isKicking;
 	BOOLEAN isReadyToHoldShell;
 	BOOLEAN isHoldingShell;
+	BOOLEAN isThrowingFireball;
+
+	// This vector manages how many fireballs mario have left, when and how the fireballs are deleted
+	vector<CFireBall*> fireBalls;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -282,6 +289,7 @@ class CMario : public CGameObject
 
 	ULONGLONG tail_whip_start;
 
+	ULONGLONG throw_fireball_start;
 
 	BOOLEAN isOnPlatform;
 
@@ -305,6 +313,7 @@ class CMario : public CGameObject
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRaccoon();
+	int GetAniIdFire();
 
 public:
 	CMario(float x, float y, const LPPLAYSCENE& currentScene)
@@ -328,17 +337,22 @@ public:
 
 		fly_total_start = -1;
 		fly_individual_start = -1;
-		tail_wag_start = -1;
 
+		tail_wag_start = -1;
 		tail_whip_start = -1;;
+
+		throw_fireball_start = -1;
 
 		isOnPlatform = false;
 
 		pMeter = new CPMeter();
 		shellBeingHeld = NULL;
 	}
+
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	int GetAniIdFire();
+
+
+
 	void Render();
 	void SetState(int state);
 

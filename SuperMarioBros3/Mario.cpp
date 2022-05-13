@@ -83,9 +83,34 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	
+	if (isThrowingFireball && ((now - throw_fireball_start) > MARIO_FIRE_THROW_FIREBALL_ANI_TIMEOUT))
+	{
+		isThrowingFireball = false;
+	}
+	for (int i = 0; i < fireBalls.size(); i++)
+	{
+		// Let mario handle the case where fireballs get destroyed when going off screen
+		if (!fireBalls[i]->IsDestroyed())
+		{
+			float fireball_x, fireball_y;
+			fireBalls[i]->GetPosition(fireball_x, fireball_y);
+			if ((abs(x - fireball_x) > SCREEN_WIDTH / 2) || (abs(y - fireball_y) > SCREEN_HEIGHT / 2))
+			{
+				fireBalls[i]->Delete();
+				fireBalls.erase(fireBalls.begin() + i);
+			}
+		}
+		else
+		{
+			fireBalls[i]->Delete();
+			fireBalls.erase(fireBalls.begin() + i);
+		}
+
+	}
 
 	isKicking = false; 
 	isOnPlatform = false;
+
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
@@ -784,6 +809,11 @@ int CMario::GetAniIdFire()
 		if (nx > 0) aniId = ID_ANI_MARIO_FIRE_HOLD_RIGHT;
 		else aniId = ID_ANI_MARIO_FIRE_HOLD_LEFT;
 	}
+	if (isThrowingFireball)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_FIRE_THROW_FIREBALL_RIGHT;
+		else aniId = ID_ANI_MARIO_FIRE_THROW_FIREBALL_LEFT;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_FIRE_IDLE_RIGHT;
 
 	return aniId;
@@ -1007,9 +1037,18 @@ void CMario::SetState(int state)
 		
 	case MARIO_STATE_THROW_FIRE:
 	{
-		this->currentScene->AddObject(new CFireBall(x,y,nx));
+		if (fireBalls.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
+		{
+			throw_fireball_start = GetTickCount64();
+			isThrowingFireball = true;
+
+			CFireBall* newFireBall = new CFireBall(x, y, nx);
+			fireBalls.push_back(newFireBall);
+			this->currentScene->AddObject(newFireBall);
+		}
 		break;
 	}
+
 	case MARIO_STATE_DIE:
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
