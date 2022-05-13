@@ -594,6 +594,12 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				break;
 			}
 
+			case OBJECT_TYPE_ENEMY_GOOMBA_RED_WING:
+			{
+				obj = new CGoombaRedWing(x, y); break;
+				break;
+			}
+
 			case OBJECT_TYPE_ENEMY_KOOPA_RED_NORMAL:
 			{
 				obj = new CKoopaRedNormal(x, y, this);

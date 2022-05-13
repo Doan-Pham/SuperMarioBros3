@@ -112,6 +112,9 @@
     <ClCompile Include="AttachedBBox.cpp">
       <Filter>Game Object\Other</Filter>
     </ClCompile>
+    <ClCompile Include="GoombaRedWing.cpp">
+      <Filter>Game Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="AttachedBBox.h">
       <Filter>Game Object\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="GoombaRedWing.h">
+      <Filter>Game Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@
 #include "MushroomBig.h"
 
 #include "Goomba.h"
+#include "GoombaRedWing.h"
 #include "PlantRedFire.h"
 #include "KoopaRedNormal.h"
 

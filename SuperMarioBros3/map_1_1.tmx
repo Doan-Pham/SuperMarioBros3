@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="159">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="160">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -286,6 +286,12 @@
   <object id="158" type="Enemy" x="576" y="352">
    <properties>
     <property name="objectSubTypeId" type="int" value="67"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="159" type="Enemy" x="944" y="368">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="64"/>
    </properties>
    <point/>
   </object>

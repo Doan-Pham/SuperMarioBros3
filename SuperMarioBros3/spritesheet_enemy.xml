@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:21301d3c19c08e05e44e25af76fe6ee9:be17a74eca093c2d28b1eda92fef38a1:b52778b62eb1796616fe9b5a279a3742$ -->
+<!-- $TexturePacker:SmartUpdate:7287635678e2e6aa0426d27c7d2447d7:ae5f6a9ff30f2b9cc531b57c85cf1b44:b52778b62eb1796616fe9b5a279a3742$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -24,32 +24,39 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="51111" x="5" y="5" w="16" h="16"/>
     <sprite n="51112" x="31" y="5" w="16" h="16"/>
     <sprite n="51121" x="57" y="5" w="16" h="8"/>
-    <sprite n="52311" x="83" y="5" w="16" h="27"/>
-    <sprite n="52312" x="109" y="5" w="16" h="26"/>
-    <sprite n="52321" x="135" y="5" w="16" h="26"/>
-    <sprite n="52322" x="161" y="5" w="16" h="25"/>
-    <sprite n="52331" x="187" y="5" w="16" h="16"/>
-    <sprite n="52332" x="213" y="5" w="16" h="16"/>
-    <sprite n="52333" x="5" y="42" w="16" h="16"/>
-    <sprite n="52334" x="31" y="42" w="16" h="16"/>
-    <sprite n="52341" x="57" y="42" w="16" h="16"/>
-    <sprite n="52342" x="83" y="42" w="16" h="16"/>
-    <sprite n="52343" x="109" y="42" w="16" h="16"/>
-    <sprite n="52344" x="135" y="42" w="16" h="16"/>
-    <sprite n="52351" x="161" y="42" w="16" h="16"/>
-    <sprite n="52352" x="187" y="42" w="16" h="16"/>
-    <sprite n="52353" x="213" y="42" w="16" h="16"/>
-    <sprite n="52354" x="5" y="68" w="16" h="16"/>
-    <sprite n="52361" x="31" y="68" w="16" h="16"/>
-    <sprite n="52362" x="57" y="68" w="16" h="16"/>
-    <sprite n="52363" x="83" y="68" w="16" h="16"/>
-    <sprite n="52364" x="109" y="68" w="16" h="16"/>
-    <sprite n="53211" x="135" y="68" w="16" h="33"/>
-    <sprite n="53221" x="161" y="68" w="16" h="33"/>
-    <sprite n="53231" x="187" y="68" w="16" h="33"/>
-    <sprite n="53241" x="213" y="68" w="16" h="33"/>
-    <sprite n="53251" x="5" y="111" w="16" h="31"/>
-    <sprite n="53261" x="31" y="111" w="16" h="32"/>
-    <sprite n="53271" x="57" y="111" w="16" h="31"/>
-    <sprite n="53281" x="83" y="111" w="16" h="31"/>
+    <sprite n="51411" x="83" y="5" w="16" h="16"/>
+    <sprite n="51412" x="109" y="5" w="16" h="16"/>
+    <sprite n="51421" x="135" y="5" w="20" h="19"/>
+    <sprite n="51422" x="165" y="5" w="20" h="19"/>
+    <sprite n="51431" x="195" y="5" w="20" h="24"/>
+    <sprite n="51432" x="225" y="5" w="20" h="24"/>
+    <sprite n="51441" x="5" y="39" w="16" h="8"/>
+    <sprite n="52311" x="31" y="39" w="16" h="27"/>
+    <sprite n="52312" x="57" y="39" w="16" h="26"/>
+    <sprite n="52321" x="83" y="39" w="16" h="26"/>
+    <sprite n="52322" x="109" y="39" w="16" h="25"/>
+    <sprite n="52331" x="135" y="39" w="16" h="16"/>
+    <sprite n="52332" x="161" y="39" w="16" h="16"/>
+    <sprite n="52333" x="187" y="39" w="16" h="16"/>
+    <sprite n="52334" x="213" y="39" w="16" h="16"/>
+    <sprite n="52341" x="5" y="76" w="16" h="16"/>
+    <sprite n="52342" x="31" y="76" w="16" h="16"/>
+    <sprite n="52343" x="57" y="76" w="16" h="16"/>
+    <sprite n="52344" x="83" y="76" w="16" h="16"/>
+    <sprite n="52351" x="109" y="76" w="16" h="16"/>
+    <sprite n="52352" x="135" y="76" w="16" h="16"/>
+    <sprite n="52353" x="161" y="76" w="16" h="16"/>
+    <sprite n="52354" x="187" y="76" w="16" h="16"/>
+    <sprite n="52361" x="213" y="76" w="16" h="16"/>
+    <sprite n="52362" x="5" y="102" w="16" h="16"/>
+    <sprite n="52363" x="31" y="102" w="16" h="16"/>
+    <sprite n="52364" x="57" y="102" w="16" h="16"/>
+    <sprite n="53211" x="83" y="102" w="16" h="33"/>
+    <sprite n="53221" x="109" y="102" w="16" h="33"/>
+    <sprite n="53231" x="135" y="102" w="16" h="33"/>
+    <sprite n="53241" x="161" y="102" w="16" h="33"/>
+    <sprite n="53251" x="187" y="102" w="16" h="31"/>
+    <sprite n="53261" x="213" y="102" w="16" h="32"/>
+    <sprite n="53271" x="5" y="145" w="16" h="31"/>
+    <sprite n="53281" x="31" y="145" w="16" h="31"/>
 </TextureAtlas>
