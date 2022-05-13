@@ -4,19 +4,24 @@
 #include "Mario.h"
 #include "Game.h"
 #include "PlayScene.h"
+#include "Collision.h"
 
-#include "Goomba.h"
 #include "Item.h"
 #include "MushroomBig.h"
 #include "Leaf.h"
+
 #include "BrickQuestionMark.h"
 #include "PlatformGhost.h"
 #include "Portal.h"
+
 #include "FireShot.h"
+#include "FireBall.h"
+
+#include "Goomba.h"
 #include "PlantRedFire.h"
 #include "KoopaRedNormal.h"
 #include "GoombaRedWing.h"
-#include "Collision.h"
+
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -1000,6 +1005,11 @@ void CMario::SetState(int state)
 		break;
 	}
 		
+	case MARIO_STATE_THROW_FIRE:
+	{
+		this->currentScene->AddObject(new CFireBall(x,y,nx));
+		break;
+	}
 	case MARIO_STATE_DIE:
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;

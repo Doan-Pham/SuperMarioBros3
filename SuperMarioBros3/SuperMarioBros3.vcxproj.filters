@@ -115,6 +115,9 @@
     <ClCompile Include="GoombaRedWing.cpp">
       <Filter>Game Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Game Object\Projectile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -239,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="GoombaRedWing.h">
       <Filter>Game Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>Game Object\Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

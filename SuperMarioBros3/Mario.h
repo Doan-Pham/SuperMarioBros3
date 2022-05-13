@@ -62,6 +62,7 @@ class CKoopaRedNormal;
 
 #define MARIO_STATE_TAIL_WHIPPING	1000
 
+#define MARIO_STATE_THROW_FIRE		1100
 #pragma endregion
 
 
