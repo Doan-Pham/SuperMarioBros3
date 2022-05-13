@@ -87,7 +87,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	//DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
 	//DebugOutTitle(L"Current state %d", this->state);
-	//DebugOut(L"mario_x : %0.5f, mario_y: %0.5f, mario_vy: %0.5f, ay : %0.5f \n", x, y, vy, ay);
+
+	if (isHoldingShell)
+		shellBeingHeld->SetPosition(x + nx * GetBBoxWidth() / 2, y);
+	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
 
@@ -95,10 +98,6 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
-
-	// In the case
-	if (isHoldingShell)
-		shellBeingHeld->SetPosition(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y);
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -113,9 +112,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
-
-	if (isHoldingShell)
-		shellBeingHeld->SetPosition(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y);
 
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
@@ -398,22 +394,11 @@ void CMario::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 
 		platform->GetBoundingBox(platform_l, platform_t, platform_r, platform_b);
 
-		float marioCurBBoxHeight;
-		if (level >= MARIO_LEVEL_BIG)
-		{
-			if (isSitting)
-				marioCurBBoxHeight = MARIO_BIG_SITTING_BBOX_HEIGHT;
-			else
-				marioCurBBoxHeight = MARIO_BIG_BBOX_HEIGHT;
-		}
-		else
-			marioCurBBoxHeight = MARIO_SMALL_BBOX_HEIGHT;
-
 		// Have to directly change mario's y because ghost platform is non-blocking, so the 
 		// collisions with it are not handled by the framework (inside that, the coordinates
 		// of the src_obj that collided with blocking things are automatically adjusted
 		// to be the correct numbers using some calculations with BLOCK_PUSH_FACTOR)
-		y = platform_t - marioCurBBoxHeight / 2 - BLOCK_PUSH_FACTOR_GHOST_PLATFORM;
+		y = platform_t - GetBBoxHeight() / 2 - BLOCK_PUSH_FACTOR_GHOST_PLATFORM;
 
 		vy = 0;
 	}
@@ -936,7 +921,37 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	}
 }
 
+float CMario::GetBBoxWidth()
+{
+	if (level == MARIO_LEVEL_BIG)
+	{
+		if (isSitting) return MARIO_BIG_SITTING_BBOX_WIDTH;
+		else return MARIO_BIG_BBOX_WIDTH;
+	}
+	else if (level == MARIO_LEVEL_RACCOON)
+	{
+		if (isSitting) return MARIO_RACCOON_SITTING_BBOX_WIDTH;
+		else return MARIO_RACCOON_BBOX_WIDTH;
+	}
+	else
+		return  MARIO_SMALL_BBOX_WIDTH;
+}
 
+float CMario::GetBBoxHeight()
+{
+	if (level == MARIO_LEVEL_BIG)
+	{
+		if (isSitting) return MARIO_BIG_SITTING_BBOX_HEIGHT;
+		else return MARIO_BIG_BBOX_HEIGHT;
+	}
+	else if (level == MARIO_LEVEL_RACCOON)
+	{
+		if (isSitting) return MARIO_RACCOON_SITTING_BBOX_HEIGHT;
+		else return MARIO_RACCOON_BBOX_HEIGHT;
+	}
+	else
+		return  MARIO_SMALL_BBOX_HEIGHT;
+}
 void CMario::SetLevel(int l)
 {
 	// Adjust position to avoid falling off platform

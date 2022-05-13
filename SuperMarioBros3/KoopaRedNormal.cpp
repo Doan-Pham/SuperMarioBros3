@@ -54,6 +54,7 @@ void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			CMario* mario = (CMario*)this->currentScene->GetPlayer();
 			mario->ReleaseHeldShell();
+			isBeingHeld = false;
 		}
 		SetState(KOOPA_STATE_WALKING);
 	}
@@ -61,13 +62,14 @@ void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-
+	//if (isBeingHeld)
 	//DebugOut(L"[INFO] Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f \n", x, y, vx, vy);
 }
 
 
 void CKoopaRedNormal::OnNoCollision(DWORD dt)
 {
+	if (isBeingHeld) return;
 	x += vx * dt;
 	y += vy * dt;
 };
@@ -258,6 +260,7 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
 		{
+			isBeingHeld = false;
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
 			break;
@@ -265,12 +268,9 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_UPSIDE_STILL:
 		{
-			shell_start = GetTickCount64();
 			isShell = true;
-
+			shell_start = GetTickCount64();
 			vx = 0;
-			vy = 0;
-			ay = 0;
 
 			if (attachedBBox != NULL)
 			{
@@ -291,6 +291,7 @@ void CKoopaRedNormal::SetState(int state)
 
 		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
 		{
+			isBeingHeld = false;
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
 			break;
