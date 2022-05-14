@@ -87,12 +87,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// If mario's falling and he doesn't hit the "S" key fast enough, make him fall, but he can still
 	// wag tail again to fall slowly
 	if ((isTrulyFalling && ((now - tail_wag_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG))
-		|| isOnPlatform)
+		|| isOnPlatform )
 	{
 		SetState(MARIO_STATE_FALLING);
 		//DebugOut(L"Mario's state set to falling after wagging tail \n");
 	}
 
+	// The total fly time for mario is over, make him fall and not allow him to fly again
 	if (isFlying && now - fly_total_start > MARIO_MAX_TOTAL_FLY_TIME)
 	{
 		isFlying = false;
@@ -103,35 +104,39 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isOnPlatform)
 	{
 		fly_total_start = -1;
+		ay = MARIO_GRAVITY;
 
 		// If we don't set this, mario can't start flying because he will fail the isTrulyFalling()
 		// check in KeyEventHandler
 		isTrulyFalling = false;
-		ay = MARIO_GRAVITY;
 	}
 
 	// If we don't check for isFlying, mario won't be able to hit "S" to fly again after falling
 	// down a bit
 	else if (vy > 0 && !isFlying) isTrulyFalling = true;
 
+	// Setting this will let mario whip tail for a certain amount of time before stopping
 	if (isTailWhipping && ((now - tail_whip_start) > MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT))
 	{
 		isTailWhipping = false;
 	}
 
-	
+	// Setting this allows the fireball_throwing animation to last a bit longer
 	if (isThrowingFireball && ((now - throw_fireball_start) > MARIO_FIRE_THROW_FIREBALL_ANI_TIMEOUT))
 	{
 		isThrowingFireball = false;
 	}
 	for (unsigned int i = 0; i < fireBalls.size(); i++)
 	{
-		// Let mario handle the case where fireballs get destroyed when going off screen
+		// Let mario handle the case where fireballs go off screen
 		if (!fireBalls[i]->IsDestroyed())
 		{
-			float fireball_x, fireball_y;
+			float fireball_x, fireball_y, cam_x, cam_y;
 			fireBalls[i]->GetPosition(fireball_x, fireball_y);
-			if ((abs(x - fireball_x) > SCREEN_WIDTH / 2) || (abs(y - fireball_y) > SCREEN_HEIGHT / 2))
+			CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+
+			if ((fireball_x < cam_x) || (fireball_x > (cam_x + SCREEN_WIDTH)) ||
+				(fireball_y < cam_y) || (fireball_y > (cam_y + SCREEN_HEIGHT)))
 			{
 				fireBalls[i]->Delete();
 				fireBalls.erase(fireBalls.begin() + i);
