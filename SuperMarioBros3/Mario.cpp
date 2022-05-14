@@ -34,6 +34,7 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	isReadyToHoldShell = false;
 	isHoldingShell = false;
 	isThrowingFireball = false;
+	isThrowingHammer = false;
 
 	maxVx = 0.0f;
 	ax = 0.0f;
@@ -50,7 +51,7 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	tail_whip_start = -1;;
 
 	throw_fireball_start = -1;
-
+	throw_hammer_start = -1;
 	isOnPlatform = false;
 
 	pMeter = new CPMeter();
@@ -875,6 +876,87 @@ int CMario::GetAniIdFire()
 	return aniId;
 }
 
+//
+// Get animdation ID for Hammer Mario
+//
+int CMario::GetAniIdHammer()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_HAMMER_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_HAMMER_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_HAMMER_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_HAMMER_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_HAMMER_SIT_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_HAMMER_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_HAMMER_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_HAMMER_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_MARIO_HAMMER_BRACE_RIGHT;
+				else
+				{
+					// If p-meter is not changing or if it is increasing but not fully charged, mario's
+					// animation will be that of walking
+					aniId = ID_ANI_MARIO_HAMMER_WALKING_RIGHT;
+					if (pMeter->isFullyCharged())
+						aniId = ID_ANI_MARIO_HAMMER_RUNNING_RIGHT;
+				}
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_MARIO_HAMMER_BRACE_LEFT;
+				else
+				{
+					aniId = ID_ANI_MARIO_HAMMER_WALKING_LEFT;
+					if (pMeter->isFullyCharged())
+						aniId = ID_ANI_MARIO_HAMMER_RUNNING_LEFT;
+				}
+			}
+	if (isKicking)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_HAMMER_KICK_RIGHT;
+		else aniId = ID_ANI_MARIO_HAMMER_KICK_LEFT;
+	}
+
+	if (isHoldingShell)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_HAMMER_HOLD_RIGHT;
+		else aniId = ID_ANI_MARIO_HAMMER_HOLD_LEFT;
+	}
+	if (isThrowingHammer)
+	{
+		if (nx > 0) aniId = ID_ANI_MARIO_HAMMER_THROW_HAMMER_RIGHT;
+		else aniId = ID_ANI_MARIO_HAMMER_THROW_HAMMER_LEFT;
+	}
+	if (aniId == -1) aniId = ID_ANI_MARIO_HAMMER_IDLE_RIGHT;
+
+	return aniId;
+}
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -890,6 +972,9 @@ void CMario::Render()
 		aniId = GetAniIdRaccoon();
 	else if (level == MARIO_LEVEL_FIRE)
 		aniId = GetAniIdFire();
+	else if (level == MARIO_LEVEL_HAMMER)
+		aniId = GetAniIdHammer();
+
 	//DebugOutTitle(L"aniId: %d", aniId);
 	animations->Get(aniId)->Render(x, y);
 
@@ -1110,6 +1195,19 @@ void CMario::SetState(int state)
 		break;
 	}
 
+	case MARIO_STATE_THROW_HAMMER:
+	{
+		if (fireBalls.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
+		{
+			throw_fireball_start = GetTickCount64();
+			isThrowingHammer = true;
+
+			CFireBall* newFireBall = new CFireBall(x, y, nx);
+			fireBalls.push_back(newFireBall);
+			this->currentScene->AddObject(newFireBall);
+		}
+		break;
+	}
 	case MARIO_STATE_DIE:
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -1135,7 +1233,7 @@ void CMario::SetLevel(int l)
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
+	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE || level == MARIO_LEVEL_HAMMER)
 	{
 		if (isSitting)
 		{

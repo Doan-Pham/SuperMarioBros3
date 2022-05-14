@@ -47,18 +47,27 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_THROW_FIRE);
 		//mario->NotifyPMeterAKeyHit();
 		break;
+
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
 		break;
+
 	case DIK_2:
 		mario->SetLevel(MARIO_LEVEL_BIG);
 		break;
+
 	case DIK_3:
 		mario->SetLevel(MARIO_LEVEL_RACCOON);
 		break;
+
 	case DIK_4:
 		mario->SetLevel(MARIO_LEVEL_FIRE);
 		break;
+
+	case DIK_5:
+		mario->SetLevel(MARIO_LEVEL_HAMMER);
+		break;
+
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;

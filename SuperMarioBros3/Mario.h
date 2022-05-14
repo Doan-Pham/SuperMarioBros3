@@ -64,6 +64,8 @@ class CFireBall;
 #define MARIO_STATE_TAIL_WHIPPING	1000
 
 #define MARIO_STATE_THROW_FIRE		1100
+#define MARIO_STATE_THROW_HAMMER	1200
+
 #pragma endregion
 
 
@@ -193,6 +195,39 @@ class CFireBall;
 
 #define ID_ANI_MARIO_FIRE_THROW_FIREBALL_LEFT		1811
 #define ID_ANI_MARIO_FIRE_THROW_FIREBALL_RIGHT		1812
+
+// HAMMER MARIO
+
+#define ID_ANI_MARIO_HAMMER_IDLE_LEFT				1911
+#define ID_ANI_MARIO_HAMMER_IDLE_RIGHT				1912
+
+#define ID_ANI_MARIO_HAMMER_WALKING_LEFT			1921
+#define ID_ANI_MARIO_HAMMER_WALKING_RIGHT			1922
+
+#define ID_ANI_MARIO_HAMMER_RUNNING_LEFT			1931
+#define ID_ANI_MARIO_HAMMER_RUNNING_RIGHT			1932
+
+#define ID_ANI_MARIO_HAMMER_JUMP_WALK_LEFT			1941
+#define ID_ANI_MARIO_HAMMER_JUMP_WALK_RIGHT			1942
+
+#define ID_ANI_MARIO_HAMMER_SIT_LEFT				1951
+#define ID_ANI_MARIO_HAMMER_SIT_RIGHT				1952
+
+#define ID_ANI_MARIO_HAMMER_BRACE_LEFT				1961
+#define ID_ANI_MARIO_HAMMER_BRACE_RIGHT				1962
+
+#define ID_ANI_MARIO_HAMMER_KICK_LEFT				1971
+#define ID_ANI_MARIO_HAMMER_KICK_RIGHT				1972
+
+#define ID_ANI_MARIO_HAMMER_HOLD_LEFT				1981
+#define ID_ANI_MARIO_HAMMER_HOLD_RIGHT				1982
+
+#define ID_ANI_MARIO_HAMMER_JUMP_RUN_LEFT			1991
+#define ID_ANI_MARIO_HAMMER_JUMP_RUN_RIGHT			1992
+
+#define ID_ANI_MARIO_HAMMER_THROW_HAMMER_LEFT		2011
+#define ID_ANI_MARIO_HAMMER_THROW_HAMMER_RIGHT		2012
+
 #pragma endregion
 
 
@@ -200,6 +235,7 @@ class CFireBall;
 #define	MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_RACCOON 3
 #define MARIO_LEVEL_FIRE	4
+#define MARIO_LEVEL_HAMMER	5
 
 #pragma region MARIO_SIZE
 
@@ -258,6 +294,7 @@ class CMario : public CGameObject
 	BOOLEAN isHoldingShell;
 
 	BOOLEAN isThrowingFireball;
+	BOOLEAN isThrowingHammer;
 
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;
@@ -281,6 +318,7 @@ class CMario : public CGameObject
 	ULONGLONG tail_whip_start;
 
 	ULONGLONG throw_fireball_start;
+	ULONGLONG throw_hammer_start;
 
 	BOOLEAN isOnPlatform;
 
@@ -306,6 +344,7 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 	int GetAniIdRaccoon();
 	int GetAniIdFire();
+	int GetAniIdHammer();
 
 public:
 	CMario(float x, float y, const LPPLAYSCENE& currentScene);
