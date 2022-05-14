@@ -45,6 +45,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 		else if (mario->GetLevel() == MARIO_LEVEL_FIRE)
 			mario->SetState(MARIO_STATE_THROW_FIRE);
+
+		else if (mario->GetLevel() == MARIO_LEVEL_HAMMER)
+			mario->SetState(MARIO_STATE_THROW_HAMMER);
+
 		//mario->NotifyPMeterAKeyHit();
 		break;
 

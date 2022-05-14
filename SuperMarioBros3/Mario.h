@@ -5,7 +5,8 @@
 #include "Animations.h"
 
 #include "PMeter.h"
-
+#include "FireBall.h"
+#include "Hammer.h"
 #include "debug.h"
 
 class CPlayScene;
@@ -13,11 +14,8 @@ typedef CPlayScene* LPPLAYSCENE;
 
 class CKoopaRedNormal;
 
-class CFireBall;
 // TODO: Change the time of each frame for mario's walking animation to
 // make mario move faster when p-meter is not fully charged
-
-
 
 #pragma region MARIO_SPEED
 
@@ -298,6 +296,7 @@ class CMario : public CGameObject
 
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;
+	vector<CHammer*> hammers;
 
 	float maxVx;
 	float ax;				// acceleration on x 

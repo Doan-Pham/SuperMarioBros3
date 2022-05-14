@@ -151,6 +151,34 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 
+	// Setting this allows the hammer_throwing animation to last a bit longer
+	if (isThrowingHammer && ((now - throw_hammer_start) > MARIO_FIRE_THROW_FIREBALL_ANI_TIMEOUT))
+	{
+		isThrowingHammer = false;
+	}
+	for (unsigned int i = 0; i < hammers.size(); i++)
+	{
+		// Let mario handle the case where fireballs go off screen
+		if (!hammers[i]->IsDestroyed())
+		{
+			float hammer_x, hammer_y, cam_x, cam_y;
+			hammers[i]->GetPosition(hammer_x, hammer_y);
+			CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+
+			if ((hammer_x < cam_x) || (hammer_x > (cam_x + SCREEN_WIDTH)) ||
+				(hammer_y > (cam_y + SCREEN_HEIGHT)))
+			{
+				hammers[i]->Delete();
+				hammers.erase(hammers.begin() + i);
+			}
+		}
+		else
+		{
+			hammers[i]->Delete();
+			hammers.erase(hammers.begin() + i);
+		}
+
+	}
 	isKicking = false; 
 	isOnPlatform = false;
 
@@ -1197,14 +1225,14 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_THROW_HAMMER:
 	{
-		if (fireBalls.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
+		if (hammers.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
 		{
-			throw_fireball_start = GetTickCount64();
+			throw_hammer_start = GetTickCount64();
 			isThrowingHammer = true;
 
-			CFireBall* newFireBall = new CFireBall(x, y, nx);
-			fireBalls.push_back(newFireBall);
-			this->currentScene->AddObject(newFireBall);
+			CHammer* newHammer = new CHammer(x, y, nx);
+			hammers.push_back(newHammer);
+			this->currentScene->AddObject(newHammer);
 		}
 		break;
 	}
