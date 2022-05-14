@@ -6,6 +6,8 @@
 #include "debug.h"
 #include "Sprite.h"
 
+// A tileset is basically a texture with tiles as sprites, difference is tiles are the same size,
+// sprites are not.
 class CTileSet
 {
 protected:

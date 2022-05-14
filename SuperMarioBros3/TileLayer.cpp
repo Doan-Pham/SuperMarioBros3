@@ -19,6 +19,8 @@ void CTileLayer::Render()
 {
 	//int renderCount = 0;
 
+
+	// Only render tiles that will appear inside the camera
 	float camX, camY = 0.0f;
 	CGame::GetInstance()->GetCamPos(camX, camY);
 	int firstVisibleTileIndexX = camX / TILE_WIDTH_STANDARD;
@@ -27,8 +29,8 @@ void CTileLayer::Render()
 	int maxTilesX = SCREEN_WIDTH / TILE_WIDTH_STANDARD;
 	int maxTilesY = SCREEN_HEIGHT / TILE_HEIGHT_STANDARD;
 
-	//Have to calculate i, j against min(...) because (i + maxTilesY)/(j + maxTilesX) 
-	//may go past the total amount of tiles inside a tilelayer
+	// Have to calculate i, j against min(...) because (firstVisibleY + maxTilesY) or 
+	// (firstVisibleX + maxTilesX) may go past the total amount of tiles inside a tilelayer
 	
 	//Also take (firstVisible + maxTiles) plus 1 to avoid cropping at the end of the camera
 	for (int i = firstVisibleTileIndexY; i < min(height, firstVisibleTileIndexY + maxTilesY +1); i++)
@@ -37,7 +39,6 @@ void CTileLayer::Render()
 		{
 			int tileGid = tileMatrix[i][j];
 			int usedTileSetIndex = tileGid / (tileSets[0]->GetLastGid() + 1);
-
 
 			tileSets[usedTileSetIndex]->Draw(
 				j * TILE_WIDTH_STANDARD ,
