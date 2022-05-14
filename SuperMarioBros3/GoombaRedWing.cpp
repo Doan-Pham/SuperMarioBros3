@@ -1,6 +1,7 @@
 #include "GoombaRedWing.h"
 #include "debug.h"
 
+#include "DeadZone.h"
 CGoombaRedWing::CGoombaRedWing(float x, float y) : CGameObject(x, y)
 {
 	this->ay = GOOMBA_GRAVITY;
@@ -106,7 +107,7 @@ void CGoombaRedWing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else SetState(GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING);
 	}
 	//DebugOutTitle(L"land_start: %I64u, now - land_start: %I64u", landing_start, now - landing_start);
-	DebugOutTitle(L"x %0.5f, y %0.5f, vx %0.5f, vy %0.5f", x, y, vx, vy);
+	//DebugOutTitle(L"x %0.5f, y %0.5f, vx %0.5f, vy %0.5f", x, y, vx, vy);
 	vy += ay * dt;
 
 	if ((state == GOOMBA_RED_WING_STATE_DIE) && 
@@ -140,6 +141,9 @@ void CGoombaRedWing::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 		nx = -nx;
 	}
+
+	if (dynamic_cast<CDeadZone*>(e->obj))
+		SetState(GOOMBA_RED_WING_STATE_DIE);
 }
 
 void CGoombaRedWing::Render()
@@ -157,8 +161,9 @@ void CGoombaRedWing::Render()
 
 	else if (state == GOOMBA_RED_WING_STATE_DIE)
 		aniId = ID_ANI_GOOMBA_RED_WING_DIE;
-
+	//aniId = ID_ANI_GOOMBA_RED_WING_WALKING_CLOSED_WING;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	RenderBoundingBox();
 }
 
 

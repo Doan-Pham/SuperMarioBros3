@@ -100,9 +100,6 @@
     <ClCompile Include="PlantRedFire.cpp">
       <Filter>Game Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>Game Object\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="FireShot.cpp">
       <Filter>Game Object\Projectile</Filter>
     </ClCompile>
@@ -117,6 +114,12 @@
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>Game Object\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadZone.cpp">
+      <Filter>Game Object\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Game Object\Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -228,9 +231,6 @@
     <ClInclude Include="PlantRedFire.h">
       <Filter>Game Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Game Object\Platform</Filter>
-    </ClInclude>
     <ClInclude Include="FireShot.h">
       <Filter>Game Object\Projectile</Filter>
     </ClInclude>
@@ -245,6 +245,12 @@
     </ClInclude>
     <ClInclude Include="FireBall.h">
       <Filter>Game Object\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadZone.h">
+      <Filter>Game Object\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Game Object\Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

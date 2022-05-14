@@ -1,6 +1,7 @@
 #include "KoopaRedNormal.h"
 #include "Mario.h"
 #include "PlatformGhost.h"
+#include "DeadZone.h"
 
 CKoopaRedNormal::CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene)
 	:CGameObject(x, y), currentScene(currentScene)
@@ -94,12 +95,14 @@ void CKoopaRedNormal::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CGoomba*>(e->obj) || dynamic_cast<CGoombaRedWing*>(e->obj))
 		OnCollisionWithGoomba(e);
 
-
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))
 		OnCollisionWithPlantRedFire(e);
 
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
+
+	if (dynamic_cast<CDeadZone*>(e->obj))
+		this->Delete();
 }
 
 void CKoopaRedNormal::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)

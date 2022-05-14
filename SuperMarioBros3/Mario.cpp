@@ -13,6 +13,7 @@
 #include "BrickQuestionMark.h"
 #include "PlatformGhost.h"
 #include "Portal.h"
+#include "DeadZone.h"
 
 #include "FireShot.h"
 #include "FireBall.h"
@@ -166,6 +167,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
+
+	else if (dynamic_cast<CDeadZone*>(e->obj))
+		OnCollisionWithDeadZone(e);
 
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
@@ -441,6 +445,12 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 	}
 }
 
+
+void CMario::OnCollisionWithDeadZone(LPCOLLISIONEVENT e)
+{
+	DebugOut(L">>> Mario DIE >>> \n");
+	SetState(MARIO_STATE_DIE);
+}
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;

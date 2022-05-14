@@ -267,7 +267,7 @@ class CMario : public CGameObject
 	BOOLEAN isHoldingShell;
 	BOOLEAN isThrowingFireball;
 
-	// This vector manages how many fireballs mario have left, when and how the fireballs are deleted
+	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;
 
 	float maxVx;
@@ -306,6 +306,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
+	void OnCollisionWithDeadZone(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);

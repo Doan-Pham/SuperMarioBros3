@@ -18,6 +18,7 @@
 #include "PlatformOneLayer.h"
 #include "PlatformGhost.h"
 #include "Pipe.h"
+#include "DeadZone.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -177,7 +178,6 @@ void CPlayScene::_ParseSection_ANIMATION(string line)
 
 	DebugOut(L"[INFO] Done loading animations from %s\n", path.c_str());
 }
-
 
 /*
 	Parse a line in section [MAP]
@@ -554,6 +554,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				break;
 			}
 
+
 			default:
 				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
 				return;
@@ -622,7 +623,6 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-
 		case OBJECT_TYPE_PIPE:
 		{
 
@@ -676,6 +676,23 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				width/cellWidth, height/cellHeight,
 				cellWidth, cellHeight,
 				direction);
+
+			break;
+		}
+
+		case OBJECT_TYPE_DEAD_ZONE:
+		{
+			float height = (float)atof(currentElementObject->Attribute("height"));
+			float width = (float)atof(currentElementObject->Attribute("width"));
+
+			//The Tiled software's coordinate system uses the top-left corner convention, but
+			//our program uses the center-center one, therefore we need to adjust the input
+			//coordinates
+			obj = new CDeadZone(
+				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
+				y + height / 2 - COORDINATE_ADJUST_SYNC_TILED,
+				height,
+				width);
 
 			break;
 		}

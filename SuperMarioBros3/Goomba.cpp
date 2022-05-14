@@ -1,5 +1,6 @@
 #include "Goomba.h"
 #include "Mario.h"
+#include "DeadZone.h"
 
 CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 {
@@ -47,6 +48,9 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+
+	if (dynamic_cast<CDeadZone*>(e->obj))
+		SetState(GOOMBA_STATE_DIE);
 }
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
