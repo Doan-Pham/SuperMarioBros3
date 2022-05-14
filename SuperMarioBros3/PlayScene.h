@@ -1,24 +1,12 @@
 #pragma once
+
+#include "TinyXml/tinyxml.h"
+
 #include "Game.h"
 #include "Textures.h"
 #include "Scene.h"
 #include "Map.h"
-
 #include "GameObject.h"
-#include "Mario.h"
-
-#include "BrickQuestionMark.h"
-
-#include "Leaf.h"
-#include "MushroomBig.h"
-
-#include "Goomba.h"
-#include "GoombaRedWing.h"
-#include "PlantRedFire.h"
-#include "KoopaRedNormal.h"
-
-#include "TinyXml/tinyxml.h"
-//#include "Koopas.h"
 
 
 class CPlayScene: public CScene

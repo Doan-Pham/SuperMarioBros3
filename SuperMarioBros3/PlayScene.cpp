@@ -1,18 +1,29 @@
 #include <iostream>
 #include <fstream>
-#include "AssetIDs.h"
-#include "TinyXml/tinyxml.h"
-
-#include "Map.h"
-
-#include "TileLayer.h"
 
 #include "PlayScene.h"
-#include "Utils.h"
+
+#include "AssetIDs.h"
 #include "Textures.h"
 #include "Sprites.h"
-#include "Portal.h"
+
+#include "Map.h"
+#include "TileLayer.h"
+#include "Utils.h"
+#include "SampleKeyEventHandler.h"
+
+#include "Mario.h"
+
+#include "Leaf.h"
+#include "MushroomBig.h"
 #include "Coin.h"
+
+#include "BrickQuestionMark.h"
+
+#include "Goomba.h"
+#include "GoombaRedWing.h"
+#include "PlantRedFire.h"
+#include "KoopaRedNormal.h"
 
 #include "PlatformTile.h"
 #include "PlatformOneLayer.h"
@@ -20,11 +31,12 @@
 #include "Pipe.h"
 #include "DeadZone.h"
 
-#include "SampleKeyEventHandler.h"
+#include "Portal.h"
 
 using namespace std;
 
-// Definition of static member
+// Have to define this vector since it's static (it has to be static to be used in the static method:
+// AddObjects()
 vector<LPGAMEOBJECT> CPlayScene::objects;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -118,6 +130,7 @@ void CPlayScene::_ParseSection_SPRITE(string line)
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", textureId);
 		return;
 	}
+
 	for (TiXmlElement* currentElement = root->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
@@ -133,7 +146,6 @@ void CPlayScene::_ParseSection_SPRITE(string line)
 
 	DebugOut(L"[INFO] Done loading sprites from : %s \n", path.c_str());
 }
-
 
 void CPlayScene::_ParseSection_ANIMATION(string line)
 {
@@ -153,7 +165,7 @@ void CPlayScene::_ParseSection_ANIMATION(string line)
 	{
 		string line(str);
 
-		if (line[0] == '#' || line[0] == '\0') continue;	// skip comment lines and m
+		if (line[0] == '#' || line[0] == '\0') continue;	// skip comment lines and empty lines
 
 		vector<string> tokens = split(line);
 
@@ -258,20 +270,13 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 {
 	//Parse tileset's general attributes
-	int tilesetId = -999;
-	int firstGid = -999;
-	int tileWidth = -999;
-	int tileHeight = -999;
-	int tileCount = -999;
-	int columnsCount = -999;
+	int firstGid = atoi(xmlElementTileSet->Attribute("firstgid"));
+	int tileWidth = atoi(xmlElementTileSet->Attribute("tilewidth"));
+	int tileHeight = atoi(xmlElementTileSet->Attribute("tileheight"));
+	int tileCount = atoi(xmlElementTileSet->Attribute("tilecount"));
+	int columnsCount = atoi(xmlElementTileSet->Attribute("columns"));
 	LPCWSTR imageSourcePath;
 	int textureId = -999;
-
-	xmlElementTileSet->Attribute("firstgid", &firstGid);
-	xmlElementTileSet->Attribute("tilewidth", &tileWidth);
-	xmlElementTileSet->Attribute("tileheight", &tileHeight);
-	xmlElementTileSet->Attribute("tilecount", &tileCount);
-	xmlElementTileSet->Attribute("columns", &columnsCount);
 
 	if (tileWidth != TILE_WIDTH_STANDARD || tileHeight != TILE_HEIGHT_STANDARD)
 	{
@@ -294,15 +299,6 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
 	{
-		if (currentElement->Attribute("name") == string("id"))
-		{
-			tilesetId = atoi(currentElement->Attribute("value"));
-			if (tilesetId == -999)
-				DebugOut(L"[ERROR] Failed to parse tileset id: %i\n", tilesetId);
-
-			continue;
-		}
-
 		if (currentElement->Attribute("name") == string("textureId"))
 		{
 			textureId = atoi(currentElement->Attribute("value"));
@@ -335,13 +331,9 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	};
 
 	//Parse tilelayer's general attributes
-	int id = -999;
-	int width = -999;
-	int height = -999;
-
-	xmlElementTileLayer->Attribute("id", &id);
-	xmlElementTileLayer->Attribute("width", &width);
-	xmlElementTileLayer->Attribute("height", &height);
+	int id = atoi(xmlElementTileLayer->Attribute("id"));
+	int width = atoi(xmlElementTileLayer->Attribute("width"));
+	int height = atoi(xmlElementTileLayer->Attribute("height"));
 
 	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
 
@@ -651,7 +643,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 				if (currentProprety->Attribute("name") == string("cellWidth"))
 				{
-					cellWidth = atof(currentProprety->Attribute("value"));
+					cellWidth = (float) atof(currentProprety->Attribute("value"));
 					if (cellWidth == -1.0f)
 					{
 						DebugOut(L"[ERROR] Pipe's cell width unknown: %i\n", cellWidth);
@@ -660,7 +652,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				}
 				if (currentProprety->Attribute("name") == string("cellHeight"))
 				{
-					cellHeight = atof(currentProprety->Attribute("value"));
+					cellHeight = (float) atof(currentProprety->Attribute("value"));
 					if (cellHeight == -1.0f)
 					{
 						DebugOut(L"[ERROR] Pipe's cell height unknown: %i\n", cellHeight);
@@ -673,7 +665,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			obj = new CPipe( 
 				x + width/2 - COORDINATE_ADJUST_SYNC_TILED,
 				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
-				width/cellWidth, height/cellHeight,
+				(int) width/cellWidth, (int) height/cellHeight,
 				cellWidth, cellHeight,
 				direction);
 
@@ -708,7 +700,6 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
-
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);
@@ -718,9 +709,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		objects.push_back(obj);
 	}
-
 }
-
 
 void CPlayScene::Update(DWORD dt)
 {
@@ -806,7 +795,7 @@ void CPlayScene::Render()
 	}
 
 	// A lambda expression to sort vector objects according to the object's render priority
-	// 
+	// Objects with higher priority will be rendered first and can be covered by other objects
 	sort(objects.begin(), objects.end(),
 		[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
 		{

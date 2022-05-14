@@ -5,14 +5,12 @@
  </properties>
  <tileset firstgid="1" name="map_1_1_tileset" tilewidth="16" tileheight="16" tilecount="121" columns="11">
   <properties>
-   <property name="id" type="int" value="11"/>
    <property name="textureId" type="int" value="30"/>
   </properties>
   <image source="textures/map_1_1_tileset.png" width="176" height="176"/>
  </tileset>
  <tileset firstgid="122" name="world_1-2_map_bank" tilewidth="16" tileheight="16" tilecount="77" columns="11">
   <properties>
-   <property name="id" type="int" value="12"/>
    <property name="textureId" type="int" value="40"/>
   </properties>
   <image source="textures/world_1-2_map_bank.png" width="176" height="112"/>
