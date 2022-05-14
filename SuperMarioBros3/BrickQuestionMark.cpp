@@ -1,4 +1,5 @@
 #include "BrickQuestionMark.h"
+#include "Mario.h"
 
 CBrickQuestionMark::CBrickQuestionMark(float x, float y, bool isHidingItem) : CBrick(x, y)
 {
@@ -77,7 +78,6 @@ void CBrickQuestionMark::SetState(int state)
 				hiddenItem->SetState(ITEM_STATE_APPEARING);
 			isContentGiven = true;
 		}
-
 		break;
 	}
 }

@@ -1,8 +1,9 @@
 #include "FireBall.h"
+
 #include "Goomba.h"
 #include "GoombaRedWing.h"
 #include "KoopaRedNormal.h"
-
+#include "PlantRedFire.h"
 
 
 CFireBall::CFireBall(float x, float y, int nx): CGameObject(x, y)

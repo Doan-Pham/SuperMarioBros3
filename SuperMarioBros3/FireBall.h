@@ -1,9 +1,7 @@
 #pragma once
 
-
-#pragma once
-
 #include "GameObject.h"
+
 #define FIREBALL_GRAVITY	0.0006f
 
 #define	FIREBALL_SPEED_X	0.15f;

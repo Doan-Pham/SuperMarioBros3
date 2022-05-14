@@ -195,15 +195,6 @@ class CFireBall;
 #define ID_ANI_MARIO_FIRE_THROW_FIREBALL_RIGHT		1812
 #pragma endregion
 
-// Mario has many levels like big, tanooki, raccoon,... which are defined as 1, 2, 3, 4
-// but tanooki or frog or fire is not exactly higher level than raccoon. The above numbers are
-// are just for identification, not the level's actual value. The way this baseline works is to
-// group levels according to their actual values: 
-//	+ Levels lower than baseline: Low level
-//	+ Equal: Mid level
-//	+ Higher: High level
-
-#define MARIO_LEVELS_BASELINE 2
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -265,6 +256,7 @@ class CMario : public CGameObject
 	BOOLEAN isKicking;
 	BOOLEAN isReadyToHoldShell;
 	BOOLEAN isHoldingShell;
+
 	BOOLEAN isThrowingFireball;
 
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
@@ -286,7 +278,6 @@ class CMario : public CGameObject
 	ULONGLONG fly_individual_start;
 
 	ULONGLONG tail_wag_start;
-
 	ULONGLONG tail_whip_start;
 
 	ULONGLONG throw_fireball_start;
@@ -317,42 +308,9 @@ class CMario : public CGameObject
 	int GetAniIdFire();
 
 public:
-	CMario(float x, float y, const LPPLAYSCENE& currentScene)
-		: CGameObject(x, y), currentScene(currentScene)
-	{
-		isSitting = false;
-		isFlying = false;
-		isTrulyFalling = false;
-		isTailWhipping = false;
-		isKicking = false;
-		isReadyToHoldShell = false;
-		isHoldingShell = false;
-
-		maxVx = 0.0f;
-		ax = 0.0f;
-		ay = MARIO_GRAVITY;
-
-		level = MARIO_LEVEL_BIG;
-		untouchable = 0;
-		untouchable_start = -1;
-
-		fly_total_start = -1;
-		fly_individual_start = -1;
-
-		tail_wag_start = -1;
-		tail_whip_start = -1;;
-
-		throw_fireball_start = -1;
-
-		isOnPlatform = false;
-
-		pMeter = new CPMeter();
-		shellBeingHeld = NULL;
-	}
+	CMario(float x, float y, const LPPLAYSCENE& currentScene);
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-
-
 
 	void Render();
 	void SetState(int state);
@@ -367,7 +325,7 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-	float GetBBoxHeight();
+
 	void SetLevel(int l);
 	int GetLevel();
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
@@ -375,6 +333,7 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	float GetBBoxWidth();
+	float GetBBoxHeight();
 
 	// This is so that mario will always be the first object in the vector "objects"
 	virtual int GetRenderPriority() { return 99999999; }
@@ -387,5 +346,6 @@ public:
 	void ReleaseHeldShell() { isHoldingShell = false; ; shellBeingHeld = NULL;};
 
 	void KickHeldShell();
+
 	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

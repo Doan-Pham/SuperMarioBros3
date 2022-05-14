@@ -2,9 +2,10 @@
 #include "debug.h"
 
 #include "DeadZone.h"
+
 CGoombaRedWing::CGoombaRedWing(float x, float y) : CGameObject(x, y)
 {
-	this->ay = GOOMBA_GRAVITY;
+	this->ay = GOOMBA_RED_WING_GRAVITY;
 	this->nx = -1;
 	die_start = -1;
 	landing_start = GetTickCount64();
@@ -12,80 +13,6 @@ CGoombaRedWing::CGoombaRedWing(float x, float y) : CGameObject(x, y)
 	isStillHaveWing = true;
 
 	SetState(GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING);
-}
-
-
-void CGoombaRedWing::SetState(int state)
-{
-	CGameObject::SetState(state);
-	switch (state)
-	{
-	case GOOMBA_RED_WING_STATE_WALKING_NORMAL:
-		vx = nx * GOOMBA_WALKING_SPEED;
-		isStillHaveWing = false;
-		break;
-
-	case GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING:
-		vx = nx * GOOMBA_WALKING_SPEED;
-		break;
-
-	case GOOMBA_RED_WING_STATE_HOPPING:
-		if (isOnPlatform) 
-		{
-			y -= (GOOMBA_OPEN_WING_BBOX_HEIGHT - GOOMBA_CLOSED_WING_BBOX_HEIGHT);
-			vy = -GOOMBA_HOPPING_SPEED;
-		}
-		break;
-
-	case GOOMBA_RED_WING_STATE_JUMPING:
-		if (isOnPlatform)
-		{
-			y -= (GOOMBA_OPEN_WING_BBOX_HEIGHT - GOOMBA_CLOSED_WING_BBOX_HEIGHT);
-			vy = -GOOMBA_JUMPING_SPEED;
-		}
-		break;
-
-	case GOOMBA_RED_WING_STATE_DIE:
-		isStillHaveWing = false;
-		die_start = GetTickCount64();
-		y += (GOOMBA_NORMAL_BBOX_HEIGHT - GOOMBA_DIE_BBOX_HEIGHT) / 2;
-		vx = 0;
-		vy = 0;
-		ay = 0;
-		break;
-	}
-}
-
-void CGoombaRedWing::GetBoundingBox(float& left, float& top, float& right, float& bottom)
-{
-	if (state == GOOMBA_RED_WING_STATE_DIE)
-	{
-		left = x - GOOMBA_NORMAL_BBOX_WIDTH / 2;
-		top = y - GOOMBA_DIE_BBOX_HEIGHT / 2;
-		right = left + GOOMBA_NORMAL_BBOX_WIDTH;
-		bottom = top + GOOMBA_DIE_BBOX_HEIGHT;
-	}
-	else if (state == GOOMBA_RED_WING_STATE_WALKING_NORMAL)
-	{
-		left = x - GOOMBA_NORMAL_BBOX_WIDTH / 2;
-		top = y - GOOMBA_NORMAL_BBOX_HEIGHT / 2;
-		right = left + GOOMBA_NORMAL_BBOX_WIDTH;
-		bottom = top + GOOMBA_NORMAL_BBOX_HEIGHT;
-	}
-	else if (state == GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING)
-	{
-		left = x - GOOMBA_CLOSED_WING_BBOX_WIDTH / 2;
-		top = y - GOOMBA_CLOSED_WING_BBOX_HEIGHT / 2;
-		right = left + GOOMBA_CLOSED_WING_BBOX_WIDTH;
-		bottom = top + GOOMBA_CLOSED_WING_BBOX_HEIGHT;
-	}
-	else if (state == GOOMBA_RED_WING_STATE_HOPPING || state == GOOMBA_RED_WING_STATE_JUMPING)
-	{
-		left = x - GOOMBA_OPEN_WING_BBOX_WIDTH / 2;
-		top = y - GOOMBA_OPEN_WING_BBOX_HEIGHT / 2;
-		right = left + GOOMBA_OPEN_WING_BBOX_WIDTH;
-		bottom = top + GOOMBA_OPEN_WING_BBOX_HEIGHT;
-	}
 }
 
 void CGoombaRedWing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -166,4 +93,75 @@ void CGoombaRedWing::Render()
 	RenderBoundingBox();
 }
 
+void CGoombaRedWing::SetState(int state)
+{
+	CGameObject::SetState(state);
+	switch (state)
+	{
+	case GOOMBA_RED_WING_STATE_WALKING_NORMAL:
+		vx = nx * GOOMBA_WALKING_SPEED;
+		isStillHaveWing = false;
+		break;
 
+	case GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING:
+		vx = nx * GOOMBA_WALKING_SPEED;
+		break;
+
+	case GOOMBA_RED_WING_STATE_HOPPING:
+		if (isOnPlatform)
+		{
+			y -= (GOOMBA_OPEN_WING_BBOX_HEIGHT - GOOMBA_CLOSED_WING_BBOX_HEIGHT);
+			vy = -GOOMBA_HOPPING_SPEED;
+		}
+		break;
+
+	case GOOMBA_RED_WING_STATE_JUMPING:
+		if (isOnPlatform)
+		{
+			y -= (GOOMBA_OPEN_WING_BBOX_HEIGHT - GOOMBA_CLOSED_WING_BBOX_HEIGHT);
+			vy = -GOOMBA_JUMPING_SPEED;
+		}
+		break;
+
+	case GOOMBA_RED_WING_STATE_DIE:
+		isStillHaveWing = false;
+		die_start = GetTickCount64();
+		y += (GOOMBA_NORMAL_BBOX_HEIGHT - GOOMBA_DIE_BBOX_HEIGHT) / 2;
+		vx = 0;
+		vy = 0;
+		ay = 0;
+		break;
+	}
+}
+
+void CGoombaRedWing::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	if (state == GOOMBA_RED_WING_STATE_DIE)
+	{
+		left = x - GOOMBA_NORMAL_BBOX_WIDTH / 2;
+		top = y - GOOMBA_DIE_BBOX_HEIGHT / 2;
+		right = left + GOOMBA_NORMAL_BBOX_WIDTH;
+		bottom = top + GOOMBA_DIE_BBOX_HEIGHT;
+	}
+	else if (state == GOOMBA_RED_WING_STATE_WALKING_NORMAL)
+	{
+		left = x - GOOMBA_NORMAL_BBOX_WIDTH / 2;
+		top = y - GOOMBA_NORMAL_BBOX_HEIGHT / 2;
+		right = left + GOOMBA_NORMAL_BBOX_WIDTH;
+		bottom = top + GOOMBA_NORMAL_BBOX_HEIGHT;
+	}
+	else if (state == GOOMBA_RED_WING_STATE_WALKING_CLOSED_WING)
+	{
+		left = x - GOOMBA_CLOSED_WING_BBOX_WIDTH / 2;
+		top = y - GOOMBA_CLOSED_WING_BBOX_HEIGHT / 2;
+		right = left + GOOMBA_CLOSED_WING_BBOX_WIDTH;
+		bottom = top + GOOMBA_CLOSED_WING_BBOX_HEIGHT;
+	}
+	else if (state == GOOMBA_RED_WING_STATE_HOPPING || state == GOOMBA_RED_WING_STATE_JUMPING)
+	{
+		left = x - GOOMBA_OPEN_WING_BBOX_WIDTH / 2;
+		top = y - GOOMBA_OPEN_WING_BBOX_HEIGHT / 2;
+		right = left + GOOMBA_OPEN_WING_BBOX_WIDTH;
+		bottom = top + GOOMBA_OPEN_WING_BBOX_HEIGHT;
+	}
+}

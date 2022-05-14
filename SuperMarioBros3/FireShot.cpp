@@ -9,7 +9,7 @@ CFireShot::CFireShot(float x, float y, int destination_x, int destination_y)
 	this->ny = (destination_y - y) / abs(destination_y - y);
 
 
-	vx = nx * FIREBALL_SPEED_X ;
+	vx = nx * FIRESHOT_SPEED_X ;
 	vy = ny * abs(vx) * abs((destination_y - y)/(destination_x - x));
 }
 
@@ -26,8 +26,8 @@ void CFireShot::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFireShot::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - FIREBALL_BBOX_WIDTH / 2;
-	t = y - FIREBALL_BBOX_HEIGHT / 2;
-	r = l + FIREBALL_BBOX_WIDTH;
-	b = t + FIREBALL_BBOX_HEIGHT;
+	l = x - FIRESHOT_BBOX_WIDTH / 2;
+	t = y - FIRESHOT_BBOX_HEIGHT / 2;
+	r = l + FIRESHOT_BBOX_WIDTH;
+	b = t + FIRESHOT_BBOX_HEIGHT;
 }

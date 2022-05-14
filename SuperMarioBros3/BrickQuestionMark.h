@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Brick.h"
-#include "Mario.h"
 #include "Item.h"
-
 #include "debug.h"
 
 #define ID_ANI_BRICK_QUESTIONMARK_NORMAL 3111
@@ -25,7 +23,6 @@ protected:
 	float y_original;
 	float ay;
 
-
 	CItem* hiddenItem;
 	bool isHidingItem;
 
@@ -33,13 +30,12 @@ protected:
 	// already given
 	bool isHitByMario;
 
-
 	bool isContentGiven;
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
-	// Lower than items and cover them
+	// Lower than items to cover them
 	virtual int GetRenderPriority() { return 20; }
 
 public:

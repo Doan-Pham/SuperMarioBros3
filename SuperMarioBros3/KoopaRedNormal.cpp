@@ -1,7 +1,17 @@
 #include "KoopaRedNormal.h"
+
 #include "Mario.h"
+
+#include "Goomba.h"
+#include "GoombaRedWing.h"
+#include "PlantRedFire.h"
+
+#include "BrickQuestionMark.h"
 #include "PlatformGhost.h"
 #include "DeadZone.h"
+
+#include "MushroomBig.h"
+#include "Leaf.h"
 
 CKoopaRedNormal::CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene)
 	:CGameObject(x, y), currentScene(currentScene)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Item.h"
+#include "debug.h"
 
 #define ID_SPRITE_LEAF_MOVING_LEFT 41311
 #define ID_SPRITE_LEAF_MOVING_RIGHT 41321

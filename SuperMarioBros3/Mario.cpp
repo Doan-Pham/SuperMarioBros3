@@ -23,6 +23,42 @@
 #include "KoopaRedNormal.h"
 #include "GoombaRedWing.h"
 
+CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
+	: CGameObject(x, y), currentScene(currentScene)
+{
+	isSitting = false;
+	isFlying = false;
+	isTrulyFalling = false;
+	isTailWhipping = false;
+	isKicking = false;
+	isReadyToHoldShell = false;
+	isHoldingShell = false;
+	isThrowingFireball = false;
+
+	maxVx = 0.0f;
+	ax = 0.0f;
+	ay = MARIO_GRAVITY;
+
+	level = MARIO_LEVEL_BIG;
+	untouchable = 0;
+	untouchable_start = -1;
+
+	fly_total_start = -1;
+	fly_individual_start = -1;
+
+	tail_wag_start = -1;
+	tail_whip_start = -1;;
+
+	throw_fireball_start = -1;
+
+	isOnPlatform = false;
+
+	pMeter = new CPMeter();
+	shellBeingHeld = NULL;
+}
+
+
+#pragma region UPDATE_COLLISION_HANDLING
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -88,7 +124,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		isThrowingFireball = false;
 	}
-	for (int i = 0; i < fireBalls.size(); i++)
+	for (unsigned int i = 0; i < fireBalls.size(); i++)
 	{
 		// Let mario handle the case where fireballs get destroyed when going off screen
 		if (!fireBalls[i]->IsDestroyed())
@@ -222,7 +258,6 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		}
 	}
 }
-
 
 void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 {
@@ -445,12 +480,12 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 	}
 }
 
-
 void CMario::OnCollisionWithDeadZone(LPCOLLISIONEVENT e)
 {
 	DebugOut(L">>> Mario DIE >>> \n");
 	SetState(MARIO_STATE_DIE);
 }
+
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
@@ -502,6 +537,12 @@ void CMario::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 		vy = 0;
 	}
 }
+
+#pragma endregion
+
+
+#pragma region RENDER
+
 
 //
 // Get animation ID for small Mario
@@ -855,6 +896,9 @@ void CMario::Render()
 	//DebugOutTitle(L"Coins: %d", coin);
 }
 
+#pragma endregion
+
+
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
@@ -1021,8 +1065,10 @@ void CMario::SetState(int state)
 	}
 
 	case MARIO_STATE_FALLING:
+	{
 		ay = MARIO_GRAVITY;
 		break;
+	}
 
 	case MARIO_STATE_TAIL_WAGGING:
 	{
@@ -1070,6 +1116,16 @@ void CMario::SetState(int state)
 
 	CGameObject::SetState(state);
 	//DebugOutTitle(L"Mario state: %d", this->state);
+}
+
+void CMario::SetLevel(int l)
+{
+	// Adjust position to avoid falling off platform
+	if (this->level == MARIO_LEVEL_SMALL)
+	{
+		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+	}
+	level = l;
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -1136,16 +1192,6 @@ float CMario::GetBBoxHeight()
 	float cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b;
 	GetBoundingBox(cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b);
 	return cur_bbox_b - cur_bbox_t;
-}
-
-void CMario::SetLevel(int l)
-{
-	// Adjust position to avoid falling off platform
-	if (this->level == MARIO_LEVEL_SMALL)
-	{
-		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
-	}
-	level = l;
 }
 
 int CMario::GetLevel()

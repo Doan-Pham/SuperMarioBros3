@@ -60,10 +60,12 @@ public:
 		currentValue = minValue;
 
 		state = P_METER_STATE_DECREASING;
-		//key_A_hit_start = -1;
-		//increase_start = 9999999999;
+
 		increase_start = -1;
 		decrease_start = -1;
+
+		//key_A_hit_start = -1;
+		//increase_start = 9999999999;
 	}
 	void SetState(int state);
 	bool isFullyCharged() { return currentValue == maxValue; }
