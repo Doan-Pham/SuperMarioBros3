@@ -14,6 +14,21 @@ CCollision* CCollision::GetInstance()
 }
 
 /*
+Non-swept AABB to check if 2 objects overlay
+*/
+bool CCollision::RegularAABB(LPGAMEOBJECT firstObj, LPGAMEOBJECT secondObj)
+{
+	float first_l, first_t, first_r, first_b;
+	float second_l, second_t, second_r, second_b;
+	firstObj->GetBoundingBox(first_l, first_t, first_r, first_b);
+	secondObj->GetBoundingBox(second_l, second_t, second_r, second_b);
+
+	return
+		first_r >= second_l && first_l <= second_r &&
+		first_b >= second_t && first_t <= second_b;
+}
+
+/*
 	SweptAABB 
 */
 void CCollision::SweptAABB(
