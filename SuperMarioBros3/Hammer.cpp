@@ -12,18 +12,16 @@ CHammer::CHammer(float x, float y, int nx) : CGameObject(x, y)
 	vx = nx * HAMMER_SPEED_X;
 	vy = -HAMMER_SPEED_Y;
 	ay = HAMMER_GRAVITY;
-	isDestroyed = false;
+	isCollidable = true;
 }
 
 void CHammer::Render()
 {
-	if (isDestroyed) return;
 	CAnimations::GetInstance()->Get(ID_ANI_HAMMER_MOVING)->Render(x, y);
 }
 
 void CHammer::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isDestroyed) return;
 	vy += ay * dt;
 
 	CGameObject::Update(dt, coObjects);
@@ -39,24 +37,18 @@ void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	isCollidable = true;
 
-	
 	if (dynamic_cast<CGoomba*>(e->obj))
-	{
 		e->obj->SetState(GOOMBA_STATE_DIE);
-		isDestroyed = true;
-	}
 
 	if (dynamic_cast<CGoombaRedWing*>(e->obj))
-	{
 		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
-		isDestroyed = true;
-	}
 
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj) || dynamic_cast<CPlantRedFire*>(e->obj))
-	{
+	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+		e->obj->SetState(KOOPA_STATE_DIE);
+
+	if (dynamic_cast<CPlantRedFire*>(e->obj))
 		e->obj->Delete();
-		isDestroyed = true;
-	}
+
 	if (e->obj->IsBlocking()) isCollidable = false;
 }
 void CHammer::GetBoundingBox(float& l, float& t, float& r, float& b)

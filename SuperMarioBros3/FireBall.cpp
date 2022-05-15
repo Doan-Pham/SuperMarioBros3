@@ -60,7 +60,13 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 		isDestroyed = true;
 	}
 
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj) || dynamic_cast<CPlantRedFire*>(e->obj))
+	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+	{
+		e->obj->SetState(KOOPA_STATE_DIE);
+		isDestroyed = true;
+	}
+
+	if (dynamic_cast<CPlantRedFire*>(e->obj))
 	{
 		e->obj->Delete();
 		isDestroyed = true;

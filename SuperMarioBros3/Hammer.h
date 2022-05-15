@@ -20,7 +20,6 @@ protected:
 	int nx; //hammer x direction
 	float ay;
 
-	bool isDestroyed;
 	bool isCollidable;
 
 	void Render();
@@ -33,6 +32,5 @@ protected:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 public:
 	CHammer(float x, float y, int nx);
-	bool IsDestroyed() { return isDestroyed; }
 };
 

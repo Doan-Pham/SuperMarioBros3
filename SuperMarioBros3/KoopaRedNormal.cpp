@@ -286,6 +286,12 @@ void CKoopaRedNormal::SetState(int state)
 			vx = 0;
 			vy = 0;
 			ay = 0;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
 			break;
 		}
 
@@ -295,6 +301,12 @@ void CKoopaRedNormal::SetState(int state)
 			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
 			break;
 		}
 
@@ -318,6 +330,12 @@ void CKoopaRedNormal::SetState(int state)
 			vx = 0;
 			vy = 0;
 			ay = 0;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
 			break;
 		}
 
@@ -327,8 +345,29 @@ void CKoopaRedNormal::SetState(int state)
 			y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
 			vx = nx * KOOPA_SHELL_MOVING_SPEED;
 			ay = KOOPA_GRAVITY;
+
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
 			break;
 		}
+
+		case KOOPA_STATE_DIE:
+		{
+			if (attachedBBox != NULL)
+			{
+				attachedBBox->Delete();
+				attachedBBox = NULL;
+			}
+			vx = 0;
+			vy = 0;
+			ay = 0;
+			isDeleted = true;
+			break;
+		}
+			
 
 	}
 }

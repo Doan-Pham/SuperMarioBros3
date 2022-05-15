@@ -47,7 +47,10 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CGoombaRedWing*>(e->obj))
 		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
 
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj) || dynamic_cast<CPlantRedFire*>(e->obj))
+	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+		e->obj->SetState(KOOPA_STATE_DIE);
+
+	if (dynamic_cast<CPlantRedFire*>(e->obj))
 		e->obj->Delete();
 
 }
