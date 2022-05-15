@@ -3,6 +3,7 @@
 
 #include "Animation.h"
 #include "Animations.h"
+#include "AttackBBox.h"
 
 #include "PMeter.h"
 #include "FireBall.h"
@@ -297,6 +298,7 @@ class CMario : public CGameObject
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;
 	vector<CHammer*> hammers;
+	CAttackBBox* raccoon_tail;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -333,7 +335,7 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
-	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
+	void OnCollisionWithFireShot(LPCOLLISIONEVENT e);
 	void OnCollisionWithDeadZone(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);

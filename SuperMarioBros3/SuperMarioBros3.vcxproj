@@ -148,6 +148,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="AttachedBBox.cpp" />
+    <ClCompile Include="AttackBBox.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickQuestionMark.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="AttachedBBox.h" />
+    <ClInclude Include="AttackBBox.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickQuestionMark.h" />
     <ClInclude Include="Coin.h" />

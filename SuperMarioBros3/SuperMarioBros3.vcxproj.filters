@@ -124,6 +124,9 @@
     <ClCompile Include="Hammer.cpp">
       <Filter>Game Object\Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="AttackBBox.cpp">
+      <Filter>Game Object\Mario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -257,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="Hammer.h">
       <Filter>Game Object\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackBBox.h">
+      <Filter>Game Object\Mario</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
