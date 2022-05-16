@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "debug.h"
 
-#define ATTACHED_BBOX_BBOX_WIDTH		16
+#define ATTACHED_BBOX_BBOX_WIDTH	16
 #define ATTACHED_BBOX_BBOX_HEIGHT	16
 
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f

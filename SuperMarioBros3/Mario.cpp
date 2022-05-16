@@ -56,6 +56,7 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 
 	pMeter = new CPMeter();
 	shellBeingHeld = NULL;
+	raccoon_tail = NULL;
 }
 
 
@@ -88,7 +89,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// If mario's falling and he doesn't hit the "S" key fast enough, make him fall, but he can still
 	// wag tail again to fall slowly
 	if ((isTrulyFalling && ((now - tail_wag_start) > MARIO_WAIT_BEFORE_FALLING_AFTER_TAIL_WAG))
-		|| isOnPlatform )
+		|| isOnPlatform)
 	{
 		SetState(MARIO_STATE_FALLING);
 		//DebugOut(L"Mario's state set to falling after wagging tail \n");
@@ -120,6 +121,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isTailWhipping && ((now - tail_whip_start) > MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT))
 	{
 		isTailWhipping = false;
+
+		if (raccoon_tail != NULL)
+		{
+			raccoon_tail->Delete();
+			raccoon_tail = NULL;
+		}
 	}
 
 	// Setting this allows the fireball_throwing animation to last a bit longer
@@ -158,28 +165,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	for (unsigned int i = 0; i < hammers.size(); i++)
 	{
-		// Let mario handle the case where fireballs go off screen
-		if (!hammers[i]->IsDestroyed())
-		{
-			float hammer_x, hammer_y, cam_x, cam_y;
-			hammers[i]->GetPosition(hammer_x, hammer_y);
-			CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
-			if ((hammer_x < cam_x) || (hammer_x > (cam_x + SCREEN_WIDTH)) ||
-				(hammer_y > (cam_y + SCREEN_HEIGHT)))
-			{
-				hammers[i]->Delete();
-				hammers.erase(hammers.begin() + i);
-			}
-		}
-		else
+		float hammer_x, hammer_y, cam_x, cam_y;
+		hammers[i]->GetPosition(hammer_x, hammer_y);
+		CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+
+		if ((hammer_x < cam_x) || (hammer_x > (cam_x + SCREEN_WIDTH)) ||
+			(hammer_y > (cam_y + SCREEN_HEIGHT)))
 		{
 			hammers[i]->Delete();
 			hammers.erase(hammers.begin() + i);
 		}
-
 	}
-	isKicking = false; 
+
+	isKicking = false;
 	isOnPlatform = false;
 
 
@@ -191,6 +190,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isHoldingShell)
 		shellBeingHeld->SetPosition(x + nx * GetBBoxWidth() / 2, y);
+
+	if (isTailWhipping)
+	{
+		raccoon_tail->SetSpeed(vx, vy);
+		raccoon_tail->SetPosition(x + nx * GetBBoxWidth() / 2, y);
+	}
+		
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
@@ -230,7 +236,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithItem(e);
 
 	else if (dynamic_cast<CFireShot*>(e->obj))
-		OnCollisionWithFireBall(e);
+		OnCollisionWithFireShot(e);
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))
 		OnCollisionWithPlant(e);
@@ -381,8 +387,8 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopa->GetState() == KOOPA_STATE_WALKING || 
-				koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_MOVING || 
+			if (koopa->GetState() == KOOPA_STATE_WALKING ||
+				koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_MOVING ||
 				koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_MOVING)
 			{
 				if (level < MARIO_LEVEL_BIG)
@@ -416,10 +422,10 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 					isHoldingShell = true;
 					shellBeingHeld = koopa;
 					if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
-					koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD);
+						koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD);
 
 					else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
-					koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD);
+						koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD);
 				}
 
 				// Mario collides with shell when player's not pressing "A", mario kicks shell
@@ -492,7 +498,7 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	e->obj->Delete();
 }
 
-void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithFireShot(LPCOLLISIONEVENT e)
 {
 	if (untouchable == 0)
 	{
@@ -505,6 +511,15 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 		{
 			level = MARIO_LEVEL_SMALL;
 			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_HAMMER)
+		{
+			if (isSitting) e->obj->Delete();
+			else
+			{
+				level = MARIO_LEVEL_BIG;
+				StartUntouchable();
+			}
 		}
 		else
 		{
@@ -1205,10 +1220,20 @@ void CMario::SetState(int state)
 		{
 			tail_whip_start = GetTickCount64();
 			isTailWhipping = true;
+			if (raccoon_tail == NULL)
+			{
+				raccoon_tail = new CAttackBBox(
+					x + nx * GetBBoxWidth(), y, 
+					vx, vy, 
+					GetBBoxWidth(), GetBBoxHeight(),
+					currentScene);
+
+				this->currentScene->AddObject(raccoon_tail);
+			}
 		}
 		break;
 	}
-		
+
 	case MARIO_STATE_THROW_FIRE:
 	{
 		if (fireBalls.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
@@ -1289,9 +1314,9 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		}
 		else if (isTailWhipping)
 		{
-			left = x - MARIO_RACCOON_BBOX_WIDTH / 2 - 10;
+			left = x - MARIO_RACCOON_BBOX_WIDTH / 2 ;
 			top = y - MARIO_RACCOON_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACCOON_BBOX_WIDTH + 10;
+			right = left + MARIO_RACCOON_BBOX_WIDTH;
 			bottom = top + MARIO_RACCOON_BBOX_HEIGHT;
 		}
 		else
