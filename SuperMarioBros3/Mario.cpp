@@ -1216,7 +1216,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_TAIL_WHIPPING:
 	{
-		if (!isTailWhipping)
+		if (!isTailWhipping && !isSitting)
 		{
 			tail_whip_start = GetTickCount64();
 			isTailWhipping = true;
@@ -1236,7 +1236,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_THROW_FIRE:
 	{
-		if (fireBalls.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
+		if (fireBalls.size() < MARIO_FIRE_MAX_FIREBALLS_NUM && !isSitting)
 		{
 			throw_fireball_start = GetTickCount64();
 			isThrowingFireball = true;
@@ -1250,7 +1250,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_THROW_HAMMER:
 	{
-		if (hammers.size() < MARIO_FIRE_MAX_FIREBALLS_NUM)
+		if (hammers.size() < MARIO_FIRE_MAX_FIREBALLS_NUM && !isSitting)
 		{
 			throw_hammer_start = GetTickCount64();
 			isThrowingHammer = true;
