@@ -45,6 +45,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	player = NULL;
 	map = NULL;
 	key_handler = new CSampleKeyHandler(this);
+	isCameraYDefaultValue = true;
 }
 
 
@@ -396,8 +397,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		; currentElementObject != nullptr
 		; currentElementObject = currentElementObject->NextSiblingElement())
 	{
-		x = (float) atof(currentElementObject->Attribute("x"));
-		y = (float) atof(currentElementObject->Attribute("y"));
+		x = (float)atof(currentElementObject->Attribute("x"));
+		y = (float)atof(currentElementObject->Attribute("y"));
 
 		switch (objectType)
 		{
@@ -510,8 +511,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			{
 			case OBJECT_TYPE_PLATFORM_TILE:
 			{
-				float height = (float) atof(currentElementObject->Attribute("height"));
-				float width = (float) atof(currentElementObject->Attribute("width"));
+				float height = (float)atof(currentElementObject->Attribute("height"));
+				float width = (float)atof(currentElementObject->Attribute("width"));
 
 				//The Tiled software's coordinate system uses the top-left corner convention, but
 				//our program uses the center-center one, therefore we need to adjust the input
@@ -531,8 +532,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			}
 			case OBJECT_TYPE_PLATFORM_GHOST:
 			{
-				float height = (float) atof(currentElementObject->Attribute("height"));
-				float width = (float) atof(currentElementObject->Attribute("width"));
+				float height = (float)atof(currentElementObject->Attribute("height"));
+				float width = (float)atof(currentElementObject->Attribute("width"));
 
 				//The Tiled software's coordinate system uses the top-left corner convention, but
 				//our program uses the center-center one, therefore we need to adjust the input
@@ -636,14 +637,14 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 					direction = atoi(currentProprety->Attribute("value"));
 					if (direction == -1)
 					{
-						DebugOut(L"[ERROR] Pipe's direction unknown: %i\n",direction);
+						DebugOut(L"[ERROR] Pipe's direction unknown: %i\n", direction);
 						return;
 					}
 				}
 
 				if (currentProprety->Attribute("name") == string("cellWidth"))
 				{
-					cellWidth = (float) atof(currentProprety->Attribute("value"));
+					cellWidth = (float)atof(currentProprety->Attribute("value"));
 					if (cellWidth == -1.0f)
 					{
 						DebugOut(L"[ERROR] Pipe's cell width unknown: %i\n", cellWidth);
@@ -652,7 +653,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				}
 				if (currentProprety->Attribute("name") == string("cellHeight"))
 				{
-					cellHeight = (float) atof(currentProprety->Attribute("value"));
+					cellHeight = (float)atof(currentProprety->Attribute("value"));
 					if (cellHeight == -1.0f)
 					{
 						DebugOut(L"[ERROR] Pipe's cell height unknown: %i\n", cellHeight);
@@ -661,11 +662,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				}
 			}
 
-			
-			obj = new CPipe( 
-				x + width/2 - COORDINATE_ADJUST_SYNC_TILED,
+
+			obj = new CPipe(
+				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
 				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
-				(int) width/cellWidth, (int) height/cellHeight,
+				(int)width / cellWidth, (int)height / cellHeight,
 				cellWidth, cellHeight,
 				direction);
 
@@ -743,46 +744,67 @@ void CPlayScene::Update(DWORD dt)
 
 	// Adjust the right, bottom edges to avoid seeing empty tiles
 	float mapRightEdge = (float)(mapWidth * mapTileWidth - COORDINATE_ADJUST_SYNC_TILED);
-	float mapBottomEdge = (float)( mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED);
+	float mapBottomEdge = (float)(mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED);
 
 
-	float cx, cy;
-	player->GetPosition(cx, cy);
+	float cam_x, cam_y;
+	game->GetCamPos(cam_x, cam_y);
 
-	float player_new_x = cx;
-	float player_new_y = cy;
+	float player_x, player_y;
+	player->GetPosition(player_x, player_y);
 	// Adjust mario's position to prevent him from going beyond the map's edges
 	// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
 	// mario will get split in half when he comes to the edges.
 
-	if (cx < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
-		player_new_x = mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED;
+	if (player_x < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
+		player_x = mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED;
 
-	if (cx > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
-		player_new_x = mapRightEdge - COORDINATE_ADJUST_SYNC_TILED;
+	if (player_x > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player_x = mapRightEdge - COORDINATE_ADJUST_SYNC_TILED;
 
-	if (cy < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
-		player_new_y = mapTopEdge + COORDINATE_ADJUST_SYNC_TILED;
+	if (player_y < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
+		player_y = mapTopEdge + COORDINATE_ADJUST_SYNC_TILED;
 
-	if (cy > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
-		player_new_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
+	if (player_y > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
 
-	player->SetPosition(player_new_x, player_new_y);
+	player->SetPosition(player_x, player_y);
 
 	// Adjust camera's position so it won't go past the map's edge
 	// Update camera to follow mario
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
+	cam_x = player_x - game->GetBackBufferWidth() / 2;
 
-	if (cx < mapLeftEdge) cx = mapLeftEdge;
-	if (cx > mapRightEdge - game->GetBackBufferWidth())
-		cx = mapRightEdge - game->GetBackBufferWidth();
+	// Camera only follows mario if he's flying and he's above a certain point
+	CMario* mario = (CMario*)player;
 
-	if (cy < mapTopEdge) cy = mapTopEdge;
-	if (cy > mapBottomEdge - game->GetBackBufferHeight())
-		cy = mapBottomEdge - game->GetBackBufferHeight();
+	if (isCameraYDefaultValue)
+	{
+		if (mario->IsFlying() && player_y < mapBottomEdge - game->GetBackBufferHeight() * 1.425)
+		{
+			cam_y = player_y - game->GetBackBufferHeight() / 2;
+			isCameraYDefaultValue = false;
+		}
+		else cam_y = mapBottomEdge - game->GetBackBufferHeight() * 1.9;
+	}
+	else
+	{
+		if (mario->IsFlying() || mario->IsTrulyFalling() ||
+			player_y < mapBottomEdge - game->GetBackBufferHeight() * 1.425)
+			cam_y = player_y - game->GetBackBufferHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx,cy);
+		if (cam_y >= mapBottomEdge - game->GetBackBufferHeight() * 1.9)
+			isCameraYDefaultValue = true;
+	}
+
+	if (cam_x < mapLeftEdge) cam_x = mapLeftEdge;
+	if (cam_x > mapRightEdge - game->GetBackBufferWidth())
+		cam_x = mapRightEdge - game->GetBackBufferWidth();
+
+	if (cam_y < mapTopEdge) cam_y = mapTopEdge;
+	if (cam_y > mapBottomEdge - game->GetBackBufferHeight())
+		cam_y = mapBottomEdge - game->GetBackBufferHeight();
+
+	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
 	PurgeDeletedObjects();
 }

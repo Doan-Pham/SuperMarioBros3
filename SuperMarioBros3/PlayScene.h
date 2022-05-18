@@ -9,11 +9,11 @@
 #include "GameObject.h"
 
 
-class CPlayScene: public CScene
+class CPlayScene : public CScene
 {
-protected: 
+protected:
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;					
+	LPGAMEOBJECT player;
 
 	// Make this static so other classes can access and add object
 	// The classes accessing this must have a  ***CONST***  reference to the playscene
@@ -30,8 +30,10 @@ protected:
 	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer);
 	void _ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup);
 
-
-public: 
+	// This flag shows if camera's y coord has been modified (ex: when mario flies past a certain 
+	// point) and adjust the camera accordingly
+	bool isCameraYDefaultValue;
+public:
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
