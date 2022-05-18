@@ -139,8 +139,16 @@ void CPlayScene::_ParseSection_SPRITE(string line)
 		int ID = atoi(currentElement->Attribute("n"));
 		int l = atoi(currentElement->Attribute("x"));
 		int t = atoi(currentElement->Attribute("y"));
-		int r = atoi(currentElement->Attribute("w")) + l - 1;
-		int b = atoi(currentElement->Attribute("h")) + t - 1;
+		int width = atoi(currentElement->Attribute("w"));
+		int height = atoi(currentElement->Attribute("h"));
+
+		// Sprites with odd width/height don't need adjustments
+		int r = l + width;
+		int b = t + height;
+
+		// Sprites with even width/height need to subtract right/bottom by 1
+		if (width % 2 == 0) r = l + width - 1;
+		if (height % 2 == 0) b = t + height - 1;
 
 		CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
 	}
