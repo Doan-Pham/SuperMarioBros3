@@ -56,6 +56,7 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == PLANT_STATE_APPEARING)
 	{
+		// Adjust plant's vy so it never goes past the destination
 		if (y + vy * dt < appearing_destination_y)
 			vy = (appearing_destination_y - y) / dt;
 		else if (y + vy * dt == appearing_destination_y)
@@ -71,6 +72,8 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else
 		{
+			// Aiming timeout! Shoots fireshots if mario is in the firezone or wait for a bit then
+			// disappear
 			if (isMarioInFireZone) SetState(PLANT_STATE_FIRING);
 			else if (now - aim_start > PLANT_AIMING_TIMEOUT + PLANT_FIRING_TIMEOUT) 
 				SetState(PLANT_STATE_DISAPPEARING);
@@ -79,12 +82,14 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == PLANT_STATE_FIRING)
 	{
+		// After plants fires its shot, it waits a bit before disappearing
 		if (now - fire_start > PLANT_FIRING_TIMEOUT)
 			SetState(PLANT_STATE_DISAPPEARING);
 	}
 
 	if (state == PLANT_STATE_DISAPPEARING)
 	{
+		// Adjust plant's vy so it never goes past the destination
 		if (y + vy * dt > disappearing_destination_y)
 			vy = (disappearing_destination_y - y) / dt;
 		else if (y + vy * dt == disappearing_destination_y)
@@ -98,12 +103,12 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CPlantRedFire::Render()
 {
 	if (state == PLANT_STATE_HIDING) return;
-	int aniSpriId;
 
 	if (state == PLANT_STATE_APPEARING || state == PLANT_STATE_DISAPPEARING)
 		CAnimations::GetInstance()->Get(GetPlantAniId())->Render(x, y);
 	else
 		CSprites::GetInstance()->Get(GetPlantSpriteId())->Draw(x, y);
+
 	//RenderBoundingBox();
 	//DebugOut(L"plant_x : %0.5f, plant_y : %0.5f \n", x, y);
 }
@@ -170,7 +175,8 @@ void CPlantRedFire::SetState(int state)
 	case PLANT_STATE_FIRING:
 	{
 		fire_start = GetTickCount64();
-		CFireShot* fireBall = new CFireShot(x, y, fireshot_dest_x, fireshot_dest_y);
+		CFireShot* fireBall = new CFireShot(x, y - PLANT_BBOX_HEIGHT/4, 
+			fireshot_dest_x, fireshot_dest_y);
 
 		((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->AddObject(fireBall);
 		//DebugOutTitle(L"Plant : firing");

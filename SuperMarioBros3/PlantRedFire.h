@@ -41,7 +41,7 @@ class CMario;
 #define PLANT_APPEARING_ZONE_MAX	160
 #define PLANT_APPEARING_ZONE_MIN	30
 
-#define PLANT_FIRING_ZONE_MAX	(PLANT_APPEARING_ZONE_MAX - 20)
+#define PLANT_FIRING_ZONE_MAX	(PLANT_APPEARING_ZONE_MAX - 40)
 
 #define PLANT_TIME_BETWEEN_APPEARANCES	1500
 #define PLANT_AIMING_TIMEOUT			1500
@@ -70,7 +70,6 @@ protected:
 	virtual void Render();
 
 	int GetPlantSpriteId();
-
 	int GetPlantAniId();
 
 	virtual int IsBlocking() { return 0; }
@@ -81,7 +80,7 @@ public:
 	virtual void SetState(int state);
 	virtual int GetScoresGivenWhenHit() { return PLANT_SCORES_GIVEN_WHEN_HIT; }
 
-	// To be hidden by the pipe
+	// So that plant will be hidden by pipe
 	virtual int GetRenderPriority() { return PLANT_RENDER_PRIORITY; }
 };
 
