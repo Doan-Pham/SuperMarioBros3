@@ -90,7 +90,7 @@ void CGoombaRedWing::Render()
 		aniId = ID_ANI_GOOMBA_RED_WING_DIE;
 	//aniId = ID_ANI_GOOMBA_RED_WING_WALKING_CLOSED_WING;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CGoombaRedWing::SetState(int state)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:7287635678e2e6aa0426d27c7d2447d7:ae5f6a9ff30f2b9cc531b57c85cf1b44:b52778b62eb1796616fe9b5a279a3742$ -->
+<!-- $TexturePacker:SmartUpdate:1664e0d238396ae0727b862a49cc30ea:93480fd4e81d9336a9a6fab3e9f6bbcc:b52778b62eb1796616fe9b5a279a3742$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -26,8 +26,8 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="51121" x="57" y="5" w="16" h="8"/>
     <sprite n="51411" x="83" y="5" w="16" h="16"/>
     <sprite n="51412" x="109" y="5" w="16" h="16"/>
-    <sprite n="51421" x="135" y="5" w="20" h="19"/>
-    <sprite n="51422" x="165" y="5" w="20" h="19"/>
+    <sprite n="51421" x="135" y="5" w="20" h="24"/>
+    <sprite n="51422" x="165" y="5" w="20" h="24"/>
     <sprite n="51431" x="195" y="5" w="20" h="24"/>
     <sprite n="51432" x="225" y="5" w="20" h="24"/>
     <sprite n="51441" x="5" y="39" w="16" h="8"/>
