@@ -2,7 +2,8 @@
 
 #include "GameObject.h"
 
-#define	FIRESHOT_SPEED_X	0.06f;
+// The standard amount of time the fireshot takes to reach mario, vx will be adjusted based on this
+#define	FIRESHOT_STANDARD_TIME_X	1000 // unit: milliseconds
 
 #define FIRESHOT_BBOX_WIDTH	8
 #define FIRESHOT_BBOX_HEIGHT	8

@@ -8,8 +8,12 @@ CFireShot::CFireShot(float x, float y, int destination_x, int destination_y)
 	this->nx = (destination_x - x ) / abs(destination_x - x);
 	this->ny = (destination_y - y) / abs(destination_y - y);
 
+	// This vx adjustment keeps the time fireshot takes to reach mario the same
+	// TODO: This is not how it goes in the original game, however it's because in our framework, vx vy
+	// presents both velocity and direction
+	vx = nx * abs(destination_x - x) / FIRESHOT_STANDARD_TIME_X ;
 
-	vx = nx * FIRESHOT_SPEED_X ;
+	// vy is adjusted based on vx to create the desired shooting angle
 	vy = ny * abs(vx) * abs((destination_y - y)/(destination_x - x));
 }
 
