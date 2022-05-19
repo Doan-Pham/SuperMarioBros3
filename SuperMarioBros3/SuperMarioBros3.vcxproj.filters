@@ -133,6 +133,9 @@
     <ClCompile Include="KoopaRedNormal.cpp">
       <Filter>Game Object\Enemy\Koopa</Filter>
     </ClCompile>
+    <ClCompile Include="KoopaGreenNormal.cpp">
+      <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -274,6 +277,9 @@
       <Filter>Game Object\Enemy\Koopa</Filter>
     </ClInclude>
     <ClInclude Include="KoopaRedNormal.h">
+      <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaGreenNormal.h">
       <Filter>Game Object\Enemy\Koopa</Filter>
     </ClInclude>
   </ItemGroup>

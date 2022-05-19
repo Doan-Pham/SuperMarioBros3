@@ -85,10 +85,7 @@ void CAttachedBBox::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 
 void CAttachedBBox::Render()
 {
-
-	RenderBoundingBox();
-
-	//DebugOut(L"[INFO] Koopa's Render() has been called \n");
+	//RenderBoundingBox();
 }
 
 void CAttachedBBox::SetState(int state)

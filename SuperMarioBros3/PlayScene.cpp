@@ -25,6 +25,7 @@
 #include "PlantRedFire.h"
 #include "KoopaRedNormal.h"
 #include "KoopaGreenWing.h"
+#include "KoopaGreenNormal.h"
 
 #include "PlatformTile.h"
 #include "PlatformOneLayer.h"
@@ -615,6 +616,12 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				break;
 			}
 
+			case OBJECT_TYPE_ENEMY_KOOPA_GREEN_NORMAL:
+			{
+				obj = new CKoopaGreenNormal(x, y, this);
+				break;
+			}
+
 			case OBJECT_TYPE_ENEMY_PLANT_RED_FIRE:
 			{
 				obj = new CPlantRedFire(x, y); break;
@@ -732,8 +739,7 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	float cam_test_x, cam_test_y;
-	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
+
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
@@ -745,6 +751,8 @@ void CPlayScene::Update(DWORD dt)
 
 	}
 
+	float cam_test_x, cam_test_y;
+	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 
@@ -856,6 +864,11 @@ void CPlayScene::Render()
 	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
+		// TODO: A very simple implementation to only update objects near camera
+		float object_x, object_y;
+		objects[i]->GetPosition(object_x, object_y);
+		if (object_x >= cam_test_x - 100 && object_x <= cam_test_x + SCREEN_WIDTH + 100 &&
+			object_y >= cam_test_y - 100 && object_y <= cam_test_y + SCREEN_HEIGHT + 100)
 			objects[i]->Render();
 	}
 		
