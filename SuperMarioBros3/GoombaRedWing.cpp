@@ -2,6 +2,7 @@
 #include "debug.h"
 
 #include "DeadZone.h"
+#include "PlatformGhost.h"
 
 CGoombaRedWing::CGoombaRedWing(float x, float y) : CGameObject(x, y)
 {
@@ -71,8 +72,26 @@ void CGoombaRedWing::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CDeadZone*>(e->obj))
 		SetState(GOOMBA_RED_WING_STATE_DIE);
+
+	else if (dynamic_cast<CPlatformGhost*>(e->obj))
+		OnCollisionWithPlatformGhost(e);
 }
 
+void CGoombaRedWing::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0)
+	{
+		isOnPlatform = true;
+
+		CPlatformGhost* platform = dynamic_cast<CPlatformGhost*>(e->obj);
+		float platform_l, platform_t, platform_r, platform_b;
+
+		platform->GetBoundingBox(platform_l, platform_t, platform_r, platform_b);
+		y = platform_t - GetBBoxHeight() / 2 - BLOCK_PUSH_FACTOR_GHOST_PLATFORM;
+
+		vy = 0;
+	}
+}
 void CGoombaRedWing::Render()
 {
 	int aniId = ID_ANI_GOOMBA_RED_WING_WALKING_CLOSED_WING;
@@ -164,4 +183,11 @@ void CGoombaRedWing::GetBoundingBox(float& left, float& top, float& right, float
 		right = left + GOOMBA_OPEN_WING_BBOX_WIDTH;
 		bottom = top + GOOMBA_OPEN_WING_BBOX_HEIGHT;
 	}
+}
+
+float CGoombaRedWing::GetBBoxHeight()
+{
+	float cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b;
+	GetBoundingBox(cur_bbox_l, cur_bbox_t, cur_bbox_r, cur_bbox_b);
+	return cur_bbox_b - cur_bbox_t;
 }

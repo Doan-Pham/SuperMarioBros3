@@ -27,21 +27,23 @@
 #define GOOMBA_DIE_BBOX_HEIGHT 8
 
 
-#define GOOMBA_RED_WING_GRAVITY		0.0006f
+#define GOOMBA_RED_WING_GRAVITY		0.0002f
 #define GOOMBA_WALKING_SPEED	0.05f
-#define GOOMBA_HOPPING_SPEED	0.15f
-#define GOOMBA_JUMPING_SPEED	0.25f
+#define GOOMBA_HOPPING_SPEED	0.02f
+#define GOOMBA_JUMPING_SPEED	0.15f
 
 
 #define GOOMBA_DIE_TIMEOUT 500
 
 // Time from when goomba lands after jumping and walks (closed wing) until it hops
-#define GOOMBA_WALK_CLOSED_WING_TIMEOUT 1500
+#define GOOMBA_WALK_CLOSED_WING_TIMEOUT 2000
 
 // TIme from when goomba starts hopping until it jumps
 #define GOOMBA_HOP_TIMEOUT 1500
 
 #define GOOMBA_RED_WING_SCORES_GIVEN_WHEN_HIT			100
+
+#define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CGoombaRedWing : public CGameObject
 {
@@ -55,7 +57,9 @@ protected:
 	BOOLEAN isStillHaveWing;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	float GetBBoxHeight();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; };
@@ -63,6 +67,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
 public:
 	CGoombaRedWing(float x, float y);
