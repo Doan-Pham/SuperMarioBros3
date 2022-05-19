@@ -9,11 +9,12 @@
 #include "FireBall.h"
 #include "Hammer.h"
 #include "debug.h"
+#include "Koopa.h"
 
 class CPlayScene;
 typedef CPlayScene* LPPLAYSCENE;
 
-class CKoopaRedNormal;
+class CKoopa;
 
 // TODO: Change the time of each frame for mario's walking animation to
 // make mario move faster when p-meter is not fully charged
@@ -325,14 +326,14 @@ class CMario : public CGameObject
 
 	LPPMETER pMeter;
 
-	CKoopaRedNormal* shellBeingHeld;
+	CKoopa* shellBeingHeld;
 
 	// *** CONST *** pointer to the current playscene
 	const LPPLAYSCENE currentScene;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e);
-	void OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireShot(LPCOLLISIONEVENT e);

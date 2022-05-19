@@ -20,7 +20,6 @@
 
 #include "Goomba.h"
 #include "PlantRedFire.h"
-#include "KoopaRedNormal.h"
 #include "GoombaRedWing.h"
 
 CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
@@ -229,8 +228,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CGoombaRedWing*>(e->obj))
 		OnCollisionWithGoombaRedWing(e);
 
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
-		OnCollisionWithKoopaNormal(e);
+	if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 
 	else if (dynamic_cast<CItem*>(e->obj))
 		OnCollisionWithItem(e);
@@ -354,42 +353,47 @@ void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
-	CKoopaRedNormal* koopa = dynamic_cast<CKoopaRedNormal*>(e->obj);
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 
-	// jump on top >> kill koopa and deflect a bit 
+	// jump on top >> turn koopa to shell or to walking (if it has wings)
 	if (e->ny < 0)
 	{
 		switch (koopa->GetState())
 		{
 		case KOOPA_STATE_WALKING:
-		case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
-			koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_STILL);
+		case KOOPA_STATE_SHELL_MOVING_DOWNSIDE:
+			koopa->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
 			break;
 
-		case KOOPA_STATE_SHELL_UPSIDE_MOVING:
-			koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_STILL);
+		case KOOPA_STATE_SHELL_MOVING_UPSIDE:
+			koopa->SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
 			break;
 
-		case KOOPA_STATE_SHELL_DOWNSIDE_STILL:
-			koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
+		case KOOPA_STATE_SHELL_STILL_DOWNSIDE:
+			koopa->SetState(KOOPA_STATE_SHELL_MOVING_DOWNSIDE);
 			break;
 
-		case KOOPA_STATE_SHELL_UPSIDE_STILL:
-			koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+		case KOOPA_STATE_SHELL_STILL_UPSIDE:
+			koopa->SetState(KOOPA_STATE_SHELL_MOVING_UPSIDE);
+			break;
+
+		case KOOPA_STATE_HOPPING:
+			koopa->SetState(KOOPA_STATE_WALKING);
 			break;
 		}
 		CGame::GetInstance()->UpdateScores(koopa->GetScoresGivenWhenHit());
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
-	else // hit by koopa
+	else // Collides with koopa on x-axis
 	{
 		if (untouchable == 0)
 		{
 			if (koopa->GetState() == KOOPA_STATE_WALKING ||
-				koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_MOVING ||
-				koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_MOVING)
+				koopa->GetState() == KOOPA_STATE_SHELL_MOVING_DOWNSIDE ||
+				koopa->GetState() == KOOPA_STATE_SHELL_MOVING_UPSIDE ||
+				koopa->GetState() == KOOPA_STATE_HOPPING)
 			{
 				if (level < MARIO_LEVEL_BIG)
 				{
@@ -405,7 +409,7 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 				{
 					if (isTailWhipping && e->nx != 0 && e->ny == 0)
 					{
-						koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_STILL);
+						koopa->SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
 					}
 					else
 					{
@@ -421,11 +425,11 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 				{
 					isHoldingShell = true;
 					shellBeingHeld = koopa;
-					if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
-						koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD);
+					if (koopa->GetState() == KOOPA_STATE_SHELL_STILL_DOWNSIDE)
+						koopa->SetState(KOOPA_STATE_SHELL_MARIO_HOLD_DOWNSIDE);
 
-					else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
-						koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD);
+					else if (koopa->GetState() == KOOPA_STATE_SHELL_STILL_UPSIDE)
+						koopa->SetState(KOOPA_STATE_SHELL_MARIO_HOLD_UPSIDE);
 				}
 
 				// Mario collides with shell when player's not pressing "A", mario kicks shell
@@ -434,10 +438,10 @@ void CMario::OnCollisionWithKoopaNormal(LPCOLLISIONEVENT e)
 					isHoldingShell = false;
 					isKicking = true;
 					koopa->SetDirection(this->nx);
-					if (koopa->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_STILL)
-						koopa->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
-					else if (koopa->GetState() == KOOPA_STATE_SHELL_UPSIDE_STILL)
-						koopa->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+					if (koopa->GetState() == KOOPA_STATE_SHELL_STILL_DOWNSIDE)
+						koopa->SetState(KOOPA_STATE_SHELL_MOVING_DOWNSIDE);
+					else if (koopa->GetState() == KOOPA_STATE_SHELL_STILL_UPSIDE)
+						koopa->SetState(KOOPA_STATE_SHELL_MOVING_UPSIDE);
 				}
 			}
 		}
@@ -449,10 +453,10 @@ void CMario::KickHeldShell()
 	isHoldingShell = false;
 	isKicking = true;
 	shellBeingHeld->SetDirection(this->nx);
-	if (shellBeingHeld->GetState() == KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD)
-		shellBeingHeld->SetState(KOOPA_STATE_SHELL_DOWNSIDE_MOVING);
-	else if (shellBeingHeld->GetState() == KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD)
-		shellBeingHeld->SetState(KOOPA_STATE_SHELL_UPSIDE_MOVING);
+	if (shellBeingHeld->GetState() == KOOPA_STATE_SHELL_MARIO_HOLD_DOWNSIDE)
+		shellBeingHeld->SetState(KOOPA_STATE_SHELL_MOVING_DOWNSIDE);
+	else if (shellBeingHeld->GetState() == KOOPA_STATE_SHELL_MARIO_HOLD_UPSIDE)
+		shellBeingHeld->SetState(KOOPA_STATE_SHELL_MOVING_UPSIDE);
 	shellBeingHeld = NULL;
 }
 
@@ -1021,7 +1025,7 @@ void CMario::Render()
 	//DebugOutTitle(L"aniId: %d", aniId);
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y : %0.5f, vx: %0.5f, vy: %0.5f", x, y, vx, vy);

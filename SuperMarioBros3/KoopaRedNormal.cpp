@@ -13,12 +13,6 @@
 #include "MushroomBig.h"
 #include "Leaf.h"
 
-CKoopaRedNormal::CKoopaRedNormal(float x, float y, const LPPLAYSCENE& currentScene)
-	:CKoopa(x, y, currentScene)
-{
-}
-
-
 void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == KOOPA_STATE_WALKING &&
@@ -30,24 +24,7 @@ void CKoopaRedNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		attachedBBox->Delete();
 		attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
 		this->currentScene->AddObject(attachedBBox);
-	}
-
-	vy += ay * dt;
-
-
-	if (isShell && GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT &&
-		state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING &&
-		state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
-	{
-		if (isBeingHeld)
-		{
-			CMario* mario = (CMario*)this->currentScene->GetPlayer();
-			mario->ReleaseHeldShell();
-			isBeingHeld = false;
-		}
-		SetState(KOOPA_STATE_WALKING);
-	}
-			
+	}		
 	CKoopa::Update(dt, coObjects);
 
 	//if (isBeingHeld)
@@ -62,25 +39,19 @@ int CKoopaRedNormal::GetAniId()
 		else return ID_ANI_KOOPA_RED_NORMAL_WALKING_RIGHT;
 	}
 
-	if (state == KOOPA_STATE_SHELL_DOWNSIDE_STILL ||
-		state == KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD)
-		return ID_ANI_KOOPA_RED_NORMAL_SHELL_DOWNSIDE_STILL;
+	if (state == KOOPA_STATE_SHELL_STILL_DOWNSIDE ||
+		state == KOOPA_STATE_SHELL_MARIO_HOLD_DOWNSIDE)
+		return ID_ANI_KOOPA_RED_NORMAL_SHELL_STILL_DOWNSIDE;
 
-	if (state == KOOPA_STATE_SHELL_UPSIDE_STILL ||
-		state == KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD)
-		return ID_ANI_KOOPA_RED_NORMAL_SHELL_UPSIDE_STILL;
+	if (state == KOOPA_STATE_SHELL_STILL_UPSIDE ||
+		state == KOOPA_STATE_SHELL_MARIO_HOLD_UPSIDE)
+		return ID_ANI_KOOPA_RED_NORMAL_SHELL_STILL_UPSIDE;
 
-	if (state == KOOPA_STATE_SHELL_DOWNSIDE_MOVING)
-	{
-		if (vx <= 0) return ID_ANI_KOOPA_RED_NORMAL_SHELL_DOWNSIDE_MOVING_LEFT;
-		else return ID_ANI_KOOPA_RED_NORMAL_SHELL_DOWNSIDE_MOVING_RIGHT;
-	}
+	if (state == KOOPA_STATE_SHELL_MOVING_DOWNSIDE)
+		return ID_ANI_KOOPA_RED_NORMAL_SHELL_MOVING_DOWNSIDE;
 
-	if (state == KOOPA_STATE_SHELL_UPSIDE_MOVING)
-	{
-		if (vx <= 0) return ID_ANI_KOOPA_RED_NORMAL_SHELL_UPSIDE_MOVING_LEFT;
-		else return ID_ANI_KOOPA_RED_NORMAL_SHELL_UPSIDE_MOVING_RIGHT;
-	}
+	if (state == KOOPA_STATE_SHELL_MOVING_UPSIDE)
+		return ID_ANI_KOOPA_RED_NORMAL_SHELL_MOVING_UPSIDE;
 
 	return -1;
 }

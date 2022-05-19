@@ -57,8 +57,8 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	if (isShell && GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT &&
-		state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING &&
-		state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+		state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE &&
+		state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
 	{
 		if (isBeingHeld)
 		{
@@ -138,7 +138,7 @@ void CKoopa::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithPlantRedFire(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
 		return;
 	CPlantRedFire* plant = dynamic_cast<CPlantRedFire*>(e->obj);
 	CGame::GetInstance()->UpdateScores(plant->GetScoresGivenWhenHit());
@@ -147,7 +147,7 @@ void CKoopa::OnCollisionWithPlantRedFire(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
 		return;
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
@@ -173,7 +173,7 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPA_STATE_SHELL_DOWNSIDE_MOVING && state != KOOPA_STATE_SHELL_UPSIDE_MOVING)
+	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
 		return;
 	CBrickQuestionMark* brick = dynamic_cast<CBrickQuestionMark*>(e->obj);
 	if (brick->IsHidingItem())
@@ -219,7 +219,7 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
-	case KOOPA_STATE_SHELL_DOWNSIDE_STILL:
+	case KOOPA_STATE_SHELL_STILL_DOWNSIDE:
 	{
 		isShell = true;
 		shell_start = GetTickCount64();
@@ -233,7 +233,7 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
-	case KOOPA_STATE_SHELL_DOWNSIDE_MARIO_HOLD:
+	case KOOPA_STATE_SHELL_MARIO_HOLD_DOWNSIDE:
 	{
 		isBeingHeld = true;
 		vx = 0;
@@ -248,7 +248,7 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
-	case KOOPA_STATE_SHELL_DOWNSIDE_MOVING:
+	case KOOPA_STATE_SHELL_MOVING_DOWNSIDE:
 	{
 		isBeingHeld = false;
 		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
@@ -263,7 +263,7 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
-	case KOOPA_STATE_SHELL_UPSIDE_STILL:
+	case KOOPA_STATE_SHELL_STILL_UPSIDE:
 	{
 		isShell = true;
 		shell_start = GetTickCount64();
@@ -277,7 +277,7 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
-	case KOOPA_STATE_SHELL_UPSIDE_MARIO_HOLD:
+	case KOOPA_STATE_SHELL_MARIO_HOLD_UPSIDE:
 	{
 		isBeingHeld = true;
 		vx = 0;
@@ -292,7 +292,7 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
-	case KOOPA_STATE_SHELL_UPSIDE_MOVING:
+	case KOOPA_STATE_SHELL_MOVING_UPSIDE:
 	{
 		isBeingHeld = false;
 		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
