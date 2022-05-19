@@ -732,16 +732,29 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
+	float cam_test_x, cam_test_y;
+	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
+
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 0; i < objects.size(); i++)
+	for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (!objects[i]->IsHidden())
+		{
 			coObjects.push_back(objects[i]);
+		}
+
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+
+		// TODO: A very simple implementation to only update objects near camera
+		float object_x, object_y;
+		objects[i]->GetPosition(object_x, object_y);
+		if (object_x >= cam_test_x - 100 && object_x <= cam_test_x + SCREEN_WIDTH + 100 &&
+			object_y >= cam_test_y - 100 && object_y <= cam_test_y + SCREEN_HEIGHT + 100)
+
+			objects[i]->Update(dt, &coObjects);
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -820,7 +833,7 @@ void CPlayScene::Update(DWORD dt)
 		cam_y = mapBottomEdge - game->GetBackBufferHeight();
 
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
-
+	
 	PurgeDeletedObjects();
 }
 
@@ -839,8 +852,13 @@ void CPlayScene::Render()
 			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
 		});
 
+	float cam_test_x, cam_test_y;
+	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
 	for (unsigned int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	{
+			objects[i]->Render();
+	}
+		
 }
 
 /*
