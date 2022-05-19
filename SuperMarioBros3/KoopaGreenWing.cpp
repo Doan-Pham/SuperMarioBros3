@@ -1,5 +1,10 @@
 #include "KoopaGreenWing.h"
 
+void CKoopaGreenWing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CKoopa::Update(dt, coObjects);
+}
+
 int CKoopaGreenWing::GetAniId()
 {
 	if (state == KOOPA_STATE_WALKING)
@@ -22,6 +27,11 @@ int CKoopaGreenWing::GetAniId()
 	if (state == KOOPA_STATE_SHELL_MOVING_UPSIDE)
 		return ID_ANI_KOOPA_GREEN_WING_SHELL_MOVING_UPSIDE;
 
+	if (state == KOOPA_STATE_HOPPING)
+	{
+		if (vx <= 0) return ID_ANI_KOOPA_GREEN_WING_HOPPING_LEFT;
+		else return ID_ANI_KOOPA_GREEN_WING_HOPPING_RIGHT;
+	}
 	return -1;
 }
 
@@ -34,7 +44,7 @@ void CKoopaGreenWing::Render()
 		return;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	//DebugOutTitle(L"koopa's state: %d", state);
 	//DebugOut(L"[INFO] Koopa's Render() has been called \n");

@@ -2,7 +2,7 @@
 
 #include "Goomba.h"
 #include "GoombaRedWing.h"
-#include "KoopaRedNormal.h"
+#include "Koopa.h"
 #include "PlantRedFire.h"
 
 
@@ -43,7 +43,7 @@ void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CGoombaRedWing*>(e->obj))
 		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
 
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+	if (dynamic_cast<CKoopa*>(e->obj))
 		e->obj->SetState(KOOPA_STATE_DIE);
 
 	if (dynamic_cast<CPlantRedFire*>(e->obj))

@@ -15,9 +15,10 @@
 #define KOOPA_SCORES_GIVEN_WHEN_HIT 100
 
 
-#define KOOPA_GRAVITY 0.002f
-#define KOOPA_WALKING_SPEED 0.05f
+#define KOOPA_GRAVITY				0.0004f
+#define KOOPA_WALKING_SPEED			0.05f
 #define KOOPA_SHELL_MOVING_SPEED	0.15f
+#define KOOPA_HOPPING_SPEED			0.15f
 
 #define KOOPA_STATE_WALKING								100
 
@@ -29,7 +30,8 @@
 #define KOOPA_STATE_SHELL_MARIO_HOLD_UPSIDE				600
 #define KOOPA_STATE_SHELL_MOVING_UPSIDE					700
 
-#define KOOPA_STATE_DIE									800
+#define KOOPA_STATE_HOPPING								800
+#define KOOPA_STATE_DIE									900
 
 #define KOOPA_SHELL_TIMEOUT	9000
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
@@ -47,6 +49,7 @@ protected:
 
 	BOOLEAN isShell;
 	BOOLEAN isBeingHeld;
+	BOOLEAN isOnPlatform;
 
 	ULONGLONG shell_start;
 	// *** CONST *** pointer to the current playscene

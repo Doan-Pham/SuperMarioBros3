@@ -17,6 +17,8 @@ CKoopa::CKoopa(float x, float y, const LPPLAYSCENE& currentScene)
 {
 	isShell = false;
 	isBeingHeld = false;
+	isOnPlatform = false;
+
 	shell_start = -1;
 	nx = -1;
 	this->ay = KOOPA_GRAVITY;
@@ -25,7 +27,7 @@ CKoopa::CKoopa(float x, float y, const LPPLAYSCENE& currentScene)
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPA_STATE_WALKING)
+	if (state == KOOPA_STATE_WALKING || state == KOOPA_STATE_HOPPING)
 	{
 		left = x - KOOPA_NORMAL_BBOX_WIDTH / 2;
 		top = y - KOOPA_NORMAL_BBOX_HEIGHT / 2;
@@ -45,16 +47,7 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	if (state == KOOPA_STATE_WALKING &&
-		attachedBBox != NULL &&
-		attachedBBox->GetState() == ATTACHED_BBOX_STATE_FALL)
-	{
-		vx = -vx;
-		nx = -nx;
-		attachedBBox->Delete();
-		attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
-		this->currentScene->AddObject(attachedBBox);
-	}
+	if (isOnPlatform && state == KOOPA_STATE_HOPPING) SetState(KOOPA_STATE_HOPPING);
 
 	if (isShell && GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT &&
 		state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE &&
@@ -69,7 +62,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPA_STATE_WALKING);
 	}
 
-
+	isOnPlatform = false;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 	//if (isBeingHeld)
@@ -91,6 +84,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
+		isOnPlatform = true;
 
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking())
@@ -118,6 +112,7 @@ void CKoopa::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0)
 	{
+		isOnPlatform = true;
 
 		CPlatformGhost* platform = dynamic_cast<CPlatformGhost*>(e->obj);
 		float platform_l, platform_t, platform_r, platform_b;
@@ -297,6 +292,20 @@ void CKoopa::SetState(int state)
 		isBeingHeld = false;
 		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
 		vx = nx * KOOPA_SHELL_MOVING_SPEED;
+		ay = KOOPA_GRAVITY;
+
+		if (attachedBBox != NULL)
+		{
+			attachedBBox->Delete();
+			attachedBBox = NULL;
+		}
+		break;
+	}
+
+	case KOOPA_STATE_HOPPING:
+	{
+		isBeingHeld = false;
+		vy = -KOOPA_HOPPING_SPEED;
 		ay = KOOPA_GRAVITY;
 
 		if (attachedBBox != NULL)

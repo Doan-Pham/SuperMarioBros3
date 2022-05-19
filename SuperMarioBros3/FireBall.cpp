@@ -2,7 +2,7 @@
 
 #include "Goomba.h"
 #include "GoombaRedWing.h"
-#include "KoopaRedNormal.h"
+#include "Koopa.h"
 #include "PlantRedFire.h"
 
 
@@ -60,7 +60,7 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 		isDestroyed = true;
 	}
 
-	if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+	if (dynamic_cast<CKoopa*>(e->obj))
 	{
 		e->obj->SetState(KOOPA_STATE_DIE);
 		isDestroyed = true;

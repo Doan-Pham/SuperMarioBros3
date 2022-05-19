@@ -5,7 +5,7 @@
 #include "Goomba.h"
 #include "GoombaRedWing.h"
 #include "PlantRedFire.h"
-#include "KoopaRedNormal.h"
+#include "Koopa.h"
 #include "PlayScene.h"
 #include "BrickQuestionMark.h"
 #include "Leaf.h"
@@ -51,7 +51,7 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CGoombaRedWing*>(e->obj))
 		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
 
-	else if (dynamic_cast<CKoopaRedNormal*>(e->obj))
+	else if (dynamic_cast<CKoopa*>(e->obj))
 		e->obj->SetState(KOOPA_STATE_DIE);
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))
