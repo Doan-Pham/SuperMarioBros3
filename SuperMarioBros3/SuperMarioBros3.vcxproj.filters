@@ -103,9 +103,6 @@
     <ClCompile Include="FireShot.cpp">
       <Filter>Game Object\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="KoopaRedNormal.cpp">
-      <Filter>Game Object\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="AttachedBBox.cpp">
       <Filter>Game Object\Other</Filter>
     </ClCompile>
@@ -127,8 +124,14 @@
     <ClCompile Include="AttackBBox.cpp">
       <Filter>Game Object\Mario</Filter>
     </ClCompile>
+    <ClCompile Include="Koopa.cpp">
+      <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClCompile>
     <ClCompile Include="KoopaGreenWing.cpp">
-      <Filter>Game Object\Enemy</Filter>
+      <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClCompile>
+    <ClCompile Include="KoopaRedNormal.cpp">
+      <Filter>Game Object\Enemy\Koopa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +246,6 @@
     <ClInclude Include="FireShot.h">
       <Filter>Game Object\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="KoopaRedNormal.h">
-      <Filter>Game Object\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="AttachedBBox.h">
       <Filter>Game Object\Other</Filter>
     </ClInclude>
@@ -267,8 +267,14 @@
     <ClInclude Include="AttackBBox.h">
       <Filter>Game Object\Mario</Filter>
     </ClInclude>
+    <ClInclude Include="Koopa.h">
+      <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClInclude>
     <ClInclude Include="KoopaGreenWing.h">
-      <Filter>Game Object\Enemy</Filter>
+      <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaRedNormal.h">
+      <Filter>Game Object\Enemy\Koopa</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +361,9 @@
     </Filter>
     <Filter Include="Game Object\Projectile">
       <UniqueIdentifier>{a5a7964c-3d40-4eba-826e-af43d0699dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Enemy\Koopa">
+      <UniqueIdentifier>{a06496ce-9bf6-49b3-9573-7e498341be85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
