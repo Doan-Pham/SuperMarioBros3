@@ -64,7 +64,7 @@ protected:
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	int GetAniId();
+	virtual int GetAniId();
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; };

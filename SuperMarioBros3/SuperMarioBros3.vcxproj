@@ -162,6 +162,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GoombaRedWing.cpp" />
     <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="KoopaGreenWing.cpp" />
     <ClCompile Include="KoopaRedNormal.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="KoopaGreenWing.h" />
     <ClInclude Include="KoopaRedNormal.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Map.h" />

@@ -24,6 +24,7 @@
 #include "GoombaRedWing.h"
 #include "PlantRedFire.h"
 #include "KoopaRedNormal.h"
+#include "KoopaGreenWing.h"
 
 #include "PlatformTile.h"
 #include "PlatformOneLayer.h"
@@ -605,6 +606,12 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			case OBJECT_TYPE_ENEMY_KOOPA_RED_NORMAL:
 			{
 				obj = new CKoopaRedNormal(x, y, this);
+				break;
+			}
+
+			case OBJECT_TYPE_ENEMY_KOOPA_GREEN_WING:
+			{
+				obj = new CKoopaGreenWing(x, y, this);
 				break;
 			}
 
