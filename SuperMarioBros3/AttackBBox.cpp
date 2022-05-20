@@ -11,6 +11,7 @@
 #include "BrickQuestionMark.h"
 #include "Leaf.h"
 #include "MushroomUp.h"
+#include "BrickGlass.h"
 
 CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, int width, int height, 
 	const LPPLAYSCENE currentScene) : CGameObject(x, y), currentScene(currentScene)
@@ -77,6 +78,25 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 	}
+
+	else if (dynamic_cast<CBrickGlass*>(e->obj))
+	{
+		CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
+		if (brick->IsHidingItem())
+		{
+			float brick_x, brick_y;
+			brick->GetPosition(brick_x, brick_y);
+
+			CItem* hiddenItem = new CMushroomUp(brick_x, brick_y);
+
+			if (brick->IsHidingUpMushroom())
+				hiddenItem = new CMushroomUp(brick_x, brick_y);
+			brick->AddHiddenItem(hiddenItem);
+			this->currentScene->AddObject(hiddenItem);
+		}
+		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+	}
+
 }
 
 

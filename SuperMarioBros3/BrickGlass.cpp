@@ -1,0 +1,93 @@
+#include "BrickGlass.h"
+#include "Mario.h"
+
+CBrickGlass::CBrickGlass(float x, float y, bool isHidingItem, bool isHidingUpMushroom)
+	: CBrick(x, y)
+{
+	y_original = this->y;
+	this->isHidingItem = isHidingItem;
+	this->isHidingUpMushroom = isHidingUpMushroom;
+
+	isHitByMario = false;
+	isContentGiven = false;
+	SetState(BRICK_STATE_NORMAL);
+}
+
+void CBrickGlass::Render()
+{
+	CAnimations* animations = CAnimations::GetInstance();
+	if (state == BRICK_STATE_NORMAL)
+		animations->Get(ID_ANI_BRICK_GLASS_NORMAL)->Render(x, y);
+	else
+		animations->Get(ID_ANI_BRICK_GLASS_HIT)->Render(x, y);
+	//RenderBoundingBox();
+	//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
+	//	y, vy, ay);
+}
+
+void CBrickGlass::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	if (isHidingItem && state == BRICK_STATE_HIT_BY_MARIO)
+	{
+		vy += ay * dt;
+
+		//Adjust vy so that the brick won't go past the original postion when falling down after
+		//bouncing up
+		if (y + vy * dt > y_original)
+		{
+			vy = (y_original - y) / dt;
+		}
+		y += vy * dt;
+
+		//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
+		//	y, vy, ay);
+
+		if (y == y_original)
+		{
+			SetState(BRICK_STATE_GIVE_CONTENT);
+		}
+	}
+}
+
+void CBrickGlass::SetState(int state)
+{
+	CGameObject::SetState(state);
+	switch (state)
+	{
+	case BRICK_STATE_NORMAL:
+		ay = 0;
+		break;
+
+	case BRICK_STATE_HIT_BY_MARIO:
+		if (isHidingItem)
+		{
+			if (!isHitByMario)
+			{
+				vy = -BRICK_GLASS_BOUNCE_SPEED;
+				ay = BRICK_GLASS_GRAVITY;
+				isHitByMario = true;
+			}
+		}
+		else
+			Delete();
+		break;
+
+	case BRICK_STATE_GIVE_CONTENT:
+		vy = 0;
+		ay = 0;
+		if (!isContentGiven)
+		{
+			if (hiddenItem == nullptr)
+			{
+				CGame::GetInstance()->UpdateCoins(this->GetCoinsGivenWhenHit());
+				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
+			}
+			else
+				hiddenItem->SetState(ITEM_STATE_APPEARING);
+			isContentGiven = true;
+		}
+		break;
+	}
+}
+
+

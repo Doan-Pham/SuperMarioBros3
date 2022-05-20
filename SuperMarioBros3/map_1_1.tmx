@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="177">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="222">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -43,9 +43,9 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,45,46,46,47,20,1,1,1,1,1,1,1,1,28,29,29,29,30,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,48,49,49,49,49,49,50,16,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,34,35,36,20,1,1,1,1,1,1,1,1,1,1,43,51,52,1,1,3,4,4,4,4,4,4,53,54,4,4,4,55,56,57,4,4,4,4,4,4,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,48,49,50,16,1,1,1,1,1,1,1,1,13,14,14,15,58,46,47,20,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,37,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,59,60,60,60,60,60,61,20,1,1,1,42,42,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,34,35,36,20,1,1,1,1,1,1,1,1,1,37,62,51,52,1,1,3,4,4,4,4,4,4,63,64,4,4,4,65,4,66,4,4,4,4,4,4,
 1,1,37,38,1,1,1,1,1,1,1,1,1,1,1,1,1,59,60,61,20,1,1,1,1,1,1,1,1,67,68,68,69,70,46,47,20,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,37,38,37,62,52,37,38,1,37,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,14,14,14,14,15,71,61,20,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,34,35,36,20,1,1,1,1,1,1,1,1,37,62,51,51,52,1,1,3,4,4,4,4,4,4,63,53,54,4,4,72,73,74,4,4,4,4,4,4,
-1,37,62,52,37,38,37,38,1,1,1,1,1,1,1,13,14,15,71,61,20,1,8,9,1,31,32,32,32,33,75,68,69,70,46,47,20,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,43,44,62,44,62,51,52,1,43,44,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,67,68,68,68,68,68,69,76,61,20,1,1,1,1,1,1,1,1,1,42,1,1,1,42,1,1,1,1,1,1,1,1,1,1,1,8,9,1,37,38,1,1,1,77,77,77,77,1,1,1,1,1,1,13,14,15,78,36,20,1,42,42,1,1,1,1,1,43,51,51,51,52,1,1,3,4,4,4,4,4,4,63,4,64,4,4,4,4,4,4,4,4,53,54,4,
-1,43,44,62,51,52,43,44,38,1,1,1,1,1,1,67,68,69,76,61,20,1,11,12,1,34,35,35,35,36,79,68,31,32,32,32,32,33,16,1,1,1,80,80,80,80,80,80,1,1,1,37,62,51,51,51,51,51,52,81,62,51,52,1,1,80,80,1,1,1,1,1,1,1,1,1,1,1,1,31,32,32,32,32,32,33,75,69,76,61,20,1,1,1,1,1,1,1,1,42,42,1,1,1,42,42,1,1,1,1,1,1,8,9,1,1,11,12,1,43,44,38,1,77,77,77,77,77,1,1,1,77,1,1,67,68,69,82,36,20,1,11,12,1,1,8,9,1,43,51,51,51,44,38,1,3,4,4,4,4,4,4,63,4,53,54,4,4,4,4,4,4,4,63,64,4,
-1,43,51,51,51,44,62,51,52,1,80,80,80,1,1,17,18,19,83,84,20,1,11,12,1,85,86,86,86,87,88,18,85,86,86,86,86,87,20,89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,1,1,1,1,1,1,80,80,80,1,1,85,86,86,86,86,86,87,88,19,83,84,20,1,1,1,1,1,1,1,42,42,42,1,1,1,42,42,42,1,80,80,80,1,11,12,1,1,11,12,37,62,51,52,77,77,77,77,77,77,77,1,1,77,77,1,17,18,19,92,87,20,1,11,12,1,1,11,12,1,43,51,51,51,51,52,1,3,4,4,4,4,4,53,54,4,4,64,4,4,4,4,4,4,53,54,64,4,
+1,37,62,52,37,38,37,38,1,1,1,1,1,1,1,13,14,15,71,61,20,1,8,9,1,31,32,32,32,33,75,68,69,70,46,47,20,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,43,44,62,44,62,51,52,1,43,44,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,67,68,68,68,68,68,69,76,61,20,1,1,1,1,1,1,1,1,1,42,1,1,1,42,1,1,1,1,1,1,1,1,1,1,1,8,9,1,37,38,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,15,78,36,20,1,42,42,1,1,1,1,1,43,51,51,51,52,1,1,3,4,4,4,4,4,4,63,4,64,4,4,4,4,4,4,4,4,53,54,4,
+1,43,44,62,51,52,43,44,38,1,1,1,1,1,1,67,68,69,76,61,20,1,11,12,1,34,35,35,35,36,79,68,31,32,32,32,32,33,16,1,1,1,80,80,80,80,80,80,1,1,1,37,62,51,51,51,51,51,52,81,62,51,52,1,1,80,80,1,1,1,1,1,1,1,1,1,1,1,1,31,32,32,32,32,32,33,75,69,76,61,20,1,1,1,1,1,1,1,1,42,42,1,1,1,42,42,1,1,1,1,1,1,8,9,1,1,11,12,1,43,44,38,1,1,1,1,1,1,1,1,1,1,1,1,67,68,69,82,36,20,1,11,12,1,1,8,9,1,43,51,51,51,44,38,1,3,4,4,4,4,4,4,63,4,53,54,4,4,4,4,4,4,4,63,64,4,
+1,43,51,51,51,44,62,51,52,1,80,80,80,1,1,17,18,19,83,84,20,1,11,12,1,85,86,86,86,87,88,18,85,86,86,86,86,87,20,89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,1,1,1,1,1,1,80,80,80,1,1,85,86,86,86,86,86,87,88,19,83,84,20,1,1,1,1,1,1,1,42,42,42,1,1,1,42,42,42,1,80,80,80,1,11,12,1,1,11,12,37,62,51,52,1,1,1,1,1,1,1,1,1,1,1,1,17,18,19,92,87,20,1,11,12,1,1,11,12,1,43,51,51,51,51,52,1,3,4,4,4,4,4,53,54,4,4,64,4,4,4,4,4,4,53,54,64,4,
 89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,93,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,94,95,1,1,1,1,89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,1,1,89,90,90,90,91,1,1,1,89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,1,89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,96,97,97,97,97,97,97,97,98,99,100,97,97,97,97,97,97,97,97,97,97,97,98,99,100,97,97,97,97,97,97,97,98,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,101,102,102,102,102,102,102,102,103,104,105,106,106,106,106,106,106,106,106,106,106,106,107,104,108,102,102,102,102,102,102,102,109,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -256,8 +256,18 @@
     <property name="objectSubTypeId" type="int" value="53"/>
    </properties>
   </object>
+  <object id="202" type="Platform" x="2144" y="368" width="48" height="48">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="53"/>
+   </properties>
+  </object>
+  <object id="203" type="Platform" x="2176" y="272" width="48" height="144">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="53"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="7" name="Enemies">
+ <objectgroup id="7" name="Enemies" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="60"/>
   </properties>
@@ -336,6 +346,12 @@
   <object id="176" type="Enemy" x="1864" y="378">
    <properties>
     <property name="objectSubTypeId" type="int" value="72"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="204" type="Enemy" x="2096" y="352">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="67"/>
    </properties>
    <point/>
   </object>
@@ -532,15 +548,148 @@
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="94" type="Brick_QuestionMark" x="1440" y="128" width="16" height="16">
+  <object id="177" type="Brick_QuestionMark" x="1440" y="128" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
     <property name="isHidingUpMushroom" type="int" value="1"/>
-    <property name="objectSubTypeId" type="int" value="21"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="179" type="Brick_QuestionMark" x="1984" y="368" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="180" type="Brick_QuestionMark" x="2000" y="368" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="205" type="Brick_QuestionMark" x="2016" y="368" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="206" type="Brick_QuestionMark" x="2032" y="368" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="207" type="Brick_QuestionMark" x="1968" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="208" type="Brick_QuestionMark" x="1984" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="209" type="Brick_QuestionMark" x="2000" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="210" type="Brick_QuestionMark" x="2016" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="211" type="Brick_QuestionMark" x="2032" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="212" type="Brick_QuestionMark" x="1952" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="213" type="Brick_QuestionMark" x="1968" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="214" type="Brick_QuestionMark" x="1984" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="215" type="Brick_QuestionMark" x="2000" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="216" type="Brick_QuestionMark" x="2016" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="217" type="Brick_QuestionMark" x="2032" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="218" type="Brick_QuestionMark" x="2048" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="219" type="Brick_QuestionMark" x="2096" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="220" type="Brick_QuestionMark" x="2112" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="221" type="Brick_QuestionMark" x="2096" y="400" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Pipes">
+ <objectgroup id="13" name="Pipes" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>
@@ -566,7 +715,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="14" name="DeadZones">
+ <objectgroup id="14" name="DeadZones" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="100"/>
   </properties>

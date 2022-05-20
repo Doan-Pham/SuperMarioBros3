@@ -12,6 +12,8 @@
 #include "Leaf.h"
 
 #include "BrickQuestionMark.h"
+#include "BrickGlass.h"
+
 #include "PlatformGhost.h"
 #include "Portal.h"
 #include "DeadZone.h"
@@ -243,6 +245,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
+
+	else if (dynamic_cast<CBrickGlass*>(e->obj))
+		OnCollisionWithBrickGlass(e);
 
 	else if (dynamic_cast<CDeadZone*>(e->obj))
 		OnCollisionWithDeadZone(e);
@@ -575,6 +580,26 @@ void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithBrickGlass(LPCOLLISIONEVENT e)
+{
+	if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
+	{
+		CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
+		if (brick->IsHidingItem())
+		{
+			float brick_x, brick_y;
+			brick->GetPosition(brick_x, brick_y);
+
+			CItem* hiddenItem = new CMushroomUp(brick_x, brick_y);
+
+			if (brick->IsHidingUpMushroom())
+				hiddenItem = new CMushroomUp(brick_x, brick_y);
+			brick->AddHiddenItem(hiddenItem);
+			this->currentScene->AddObject(hiddenItem);
+		}
+		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+	}
+}
 void CMario::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0)

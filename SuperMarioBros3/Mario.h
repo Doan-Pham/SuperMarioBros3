@@ -340,6 +340,7 @@ class CMario : public CGameObject
 	void OnCollisionWithDeadZone(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrickGlass(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
