@@ -25,6 +25,7 @@
 #include "Goomba.h"
 #include "PlantRedFire.h"
 #include "GoombaRedWing.h"
+#include "Coin.h"
 
 CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	: CGameObject(x, y), currentScene(currentScene)
@@ -507,7 +508,15 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_RACCOON);
 	else if (dynamic_cast<CMushroomBig*>(e->obj) && !dynamic_cast<CMushroomUp*>(e->obj))
 		SetLevel(MARIO_LEVEL_BIG);
-
+	else if (dynamic_cast<CCoin*>(e->obj))
+	{
+		CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+		if (coin->GetState() == COIN_STATE_BECOME_BRICK && (e->ny <= 0 || e->nx == 0))
+			return;
+		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
+		CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
+		e->obj->Delete();
+	}
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
 	CGame::GetInstance()->UpdateLives(e->obj->GetLivesGivenWhenHit());

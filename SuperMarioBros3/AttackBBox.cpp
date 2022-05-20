@@ -13,6 +13,7 @@
 #include "MushroomUp.h"
 #include "BrickGlass.h"
 #include "PBlock.h"
+#include "Coin.h"
 
 CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, int width, int height, 
 	const LPPLAYSCENE currentScene) : CGameObject(x, y), currentScene(currentScene)
@@ -97,6 +98,12 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 	}
 
+	else if (dynamic_cast<CCoin*>(e->obj) && e->obj->GetState() == COIN_STATE_BECOME_BRICK) 
+	{
+		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
+		CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
+		e->obj->Delete();
+	}
 }
 
 

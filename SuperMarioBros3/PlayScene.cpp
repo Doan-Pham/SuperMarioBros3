@@ -787,6 +787,10 @@ void CPlayScene::Update(DWORD dt)
 			{
 				objects[i]->SetState(BRICK_STATE_BECOME_COIN);
 			}
+			if (dynamic_cast<CCoin*>(objects[i]))
+			{
+				objects[i]->SetState(COIN_STATE_BECOME_BRICK);
+			}
 		}
 		isPBlockTurnedOn = false;
 	}
