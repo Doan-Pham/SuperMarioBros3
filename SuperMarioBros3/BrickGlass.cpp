@@ -1,12 +1,12 @@
 #include "BrickGlass.h"
 #include "Mario.h"
 
-CBrickGlass::CBrickGlass(float x, float y, bool isHidingItem, bool isHidingUpMushroom)
+CBrickGlass::CBrickGlass(float x, float y, bool isHidingUpMushroom, bool isHidingPBlock)
 	: CBrick(x, y)
 {
 	y_original = this->y;
-	this->isHidingItem = isHidingItem;
 	this->isHidingUpMushroom = isHidingUpMushroom;
+	this->isHidingPBlock = isHidingPBlock;
 
 	isHitByMario = false;
 	isContentGiven = false;
@@ -27,7 +27,7 @@ void CBrickGlass::Render()
 
 void CBrickGlass::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isHidingItem && state == BRICK_STATE_HIT_BY_MARIO)
+	if ((isHidingUpMushroom || isHidingPBlock) && state == BRICK_STATE_HIT_BY_MARIO)
 	{
 		vy += ay * dt;
 
@@ -59,7 +59,7 @@ void CBrickGlass::SetState(int state)
 		break;
 
 	case BRICK_STATE_HIT_BY_MARIO:
-		if (isHidingItem)
+		if ((isHidingUpMushroom || isHidingPBlock))
 		{
 			if (!isHitByMario)
 			{

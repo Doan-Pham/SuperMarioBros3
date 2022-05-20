@@ -505,183 +505,184 @@
   <properties>
    <property name="objectTypeId" type="int" value="20"/>
   </properties>
-  <object id="85" type="Brick_QuestionMark" x="240" y="304" width="16" height="16">
+  <object id="85" type="Brick" x="240" y="304" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="87" type="Brick_QuestionMark" x="176" y="352" width="16" height="16">
+  <object id="87" type="Brick" x="176" y="352" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="88" type="Brick_QuestionMark" x="192" y="352" width="16" height="16">
+  <object id="88" type="Brick" x="192" y="352" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="89" type="Brick_QuestionMark" x="224" y="304" width="16" height="16">
+  <object id="89" type="Brick" x="224" y="304" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="90" type="Brick_QuestionMark" x="416" y="320" width="16" height="16">
+  <object id="90" type="Brick" x="416" y="320" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="91" type="Brick_QuestionMark" x="704" y="352" width="16" height="16">
+  <object id="91" type="Brick" x="704" y="352" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="92" type="Brick_QuestionMark" x="656" y="384" width="16" height="16">
-   <properties>
-    <property name="isHidingItem" type="int" value="1"/>
-    <property name="objectSubTypeId" type="int" value="21"/>
-   </properties>
-  </object>
-  <object id="93" type="Brick_QuestionMark" x="1472" y="368" width="16" height="16">
+  <object id="92" type="Brick" x="656" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>
-  <object id="177" type="Brick_QuestionMark" x="1440" y="128" width="16" height="16">
+  <object id="93" type="Brick" x="1472" y="368" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="1"/>
+    <property name="objectSubTypeId" type="int" value="21"/>
+   </properties>
+  </object>
+  <object id="177" type="Brick" x="1440" y="128" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
     <property name="isHidingUpMushroom" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="179" type="Brick_QuestionMark" x="1984" y="368" width="16" height="16">
+  <object id="179" type="Brick" x="1984" y="368" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="180" type="Brick_QuestionMark" x="2000" y="368" width="16" height="16">
+  <object id="180" type="Brick" x="2000" y="368" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="205" type="Brick_QuestionMark" x="2016" y="368" width="16" height="16">
+  <object id="205" type="Brick" x="2016" y="368" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="206" type="Brick_QuestionMark" x="2032" y="368" width="16" height="16">
+  <object id="206" type="Brick" x="2032" y="368" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="207" type="Brick_QuestionMark" x="1968" y="384" width="16" height="16">
+  <object id="207" type="Brick" x="1968" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="208" type="Brick_QuestionMark" x="1984" y="384" width="16" height="16">
+  <object id="208" type="Brick" x="1984" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="209" type="Brick_QuestionMark" x="2000" y="384" width="16" height="16">
+  <object id="209" type="Brick" x="2000" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="210" type="Brick_QuestionMark" x="2016" y="384" width="16" height="16">
+  <object id="210" type="Brick" x="2016" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="211" type="Brick_QuestionMark" x="2032" y="384" width="16" height="16">
+  <object id="211" type="Brick" x="2032" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="212" type="Brick_QuestionMark" x="1952" y="400" width="16" height="16">
+  <object id="212" type="Brick" x="1952" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="213" type="Brick_QuestionMark" x="1968" y="400" width="16" height="16">
+  <object id="213" type="Brick" x="1968" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="214" type="Brick_QuestionMark" x="1984" y="400" width="16" height="16">
+  <object id="214" type="Brick" x="1984" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="215" type="Brick_QuestionMark" x="2000" y="400" width="16" height="16">
+  <object id="215" type="Brick" x="2000" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="216" type="Brick_QuestionMark" x="2016" y="400" width="16" height="16">
+  <object id="216" type="Brick" x="2016" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="217" type="Brick_QuestionMark" x="2032" y="400" width="16" height="16">
+  <object id="217" type="Brick" x="2032" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="218" type="Brick_QuestionMark" x="2048" y="400" width="16" height="16">
+  <object id="218" type="Brick" x="2048" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="219" type="Brick_QuestionMark" x="2096" y="384" width="16" height="16">
+  <object id="219" type="Brick" x="2096" y="384" width="16" height="16">
+   <properties>
+    <property name="isHidingItem" type="int" value="1"/>
+    <property name="isHidingPBlock" type="int" value="1"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
+    <property name="objectSubTypeId" type="int" value="22"/>
+   </properties>
+  </object>
+  <object id="220" type="Brick" x="2112" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
-  <object id="220" type="Brick_QuestionMark" x="2112" y="400" width="16" height="16">
-   <properties>
-    <property name="isHidingItem" type="int" value="0"/>
-    <property name="isHidingUpMushroom" type="int" value="0"/>
-    <property name="objectSubTypeId" type="int" value="22"/>
-   </properties>
-  </object>
-  <object id="221" type="Brick_QuestionMark" x="2096" y="400" width="16" height="16">
+  <object id="221" type="Brick" x="2096" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>

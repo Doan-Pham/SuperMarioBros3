@@ -198,7 +198,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		raccoon_tail->SetSpeed(vx, vy);
 		raccoon_tail->SetPosition(x + nx * GetBBoxWidth() / 2, y);
 	}
-		
+
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
@@ -566,9 +566,7 @@ void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 
 			CItem* hiddenItem;
 
-			if (brick->IsHidingUpMushroom())
-				hiddenItem = new CMushroomUp(brick_x, brick_y);
-			else if (level == MARIO_LEVEL_SMALL)
+			if (level == MARIO_LEVEL_SMALL)
 				hiddenItem = new CMushroomBig(brick_x, brick_y);
 			else
 				hiddenItem = new CLeaf(brick_x, brick_y);
@@ -1257,8 +1255,8 @@ void CMario::SetState(int state)
 			if (raccoon_tail == NULL)
 			{
 				raccoon_tail = new CAttackBBox(
-					x + nx * GetBBoxWidth(), y, 
-					vx, vy, 
+					x + nx * GetBBoxWidth(), y,
+					vx, vy,
 					GetBBoxWidth(), GetBBoxHeight(),
 					currentScene);
 
@@ -1348,7 +1346,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		}
 		else if (isTailWhipping)
 		{
-			left = x - MARIO_RACCOON_BBOX_WIDTH / 2 ;
+			left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
 			top = y - MARIO_RACCOON_BBOX_HEIGHT / 2;
 			right = left + MARIO_RACCOON_BBOX_WIDTH;
 			bottom = top + MARIO_RACCOON_BBOX_HEIGHT;

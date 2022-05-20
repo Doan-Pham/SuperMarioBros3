@@ -1,12 +1,11 @@
 #include "BrickQuestionMark.h"
 #include "Mario.h"
 
-CBrickQuestionMark::CBrickQuestionMark(float x, float y, bool isHidingItem, bool isHidingUpMushroom) 
+CBrickQuestionMark::CBrickQuestionMark(float x, float y, bool isHidingItem) 
 	: CBrick(x, y)
 {
 	y_original = this->y;
 	this->isHidingItem = isHidingItem;
-	this->isHidingUpMushroom = isHidingUpMushroom;
 
 	isHitByMario = false;
 	isContentGiven = false;
