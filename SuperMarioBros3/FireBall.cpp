@@ -4,7 +4,7 @@
 #include "GoombaRedWing.h"
 #include "Koopa.h"
 #include "PlantRedFire.h"
-
+#include "PlantGreenNormal.h"
 
 CFireBall::CFireBall(float x, float y, int nx): CGameObject(x, y)
 {
@@ -66,7 +66,7 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 		isDestroyed = true;
 	}
 
-	if (dynamic_cast<CPlantRedFire*>(e->obj))
+	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
 		e->obj->Delete();
 		isDestroyed = true;

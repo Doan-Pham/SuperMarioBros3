@@ -4,7 +4,7 @@
 #include "GoombaRedWing.h"
 #include "Koopa.h"
 #include "PlantRedFire.h"
-
+#include "PlantGreenNormal.h"
 
 CHammer::CHammer(float x, float y, int nx) : CGameObject(x, y)
 {
@@ -46,7 +46,7 @@ void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CKoopa*>(e->obj))
 		e->obj->SetState(KOOPA_STATE_DIE);
 
-	if (dynamic_cast<CPlantRedFire*>(e->obj))
+	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 		e->obj->Delete();
 
 	if (e->obj->IsBlocking()) isCollidable = false;
