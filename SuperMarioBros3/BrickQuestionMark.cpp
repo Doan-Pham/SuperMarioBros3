@@ -2,7 +2,7 @@
 #include "Mario.h"
 
 CBrickQuestionMark::CBrickQuestionMark(float x, float y, bool isHidingItem) 
-	: CBrick(x, y)
+	: CBlock(x, y)
 {
 	y_original = this->y;
 	this->isHidingItem = isHidingItem;

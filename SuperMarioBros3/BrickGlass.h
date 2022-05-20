@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Brick.h"
+#include "Block.h"
 #include "Item.h"
 #include "debug.h"
 
@@ -16,7 +16,7 @@
 
 #define BRICK_GLASS_SCORES_GIVEN_WHEN_HIT 10
 
-class CBrickGlass : public CBrick
+class CBrickGlass : public CBlock
 {
 protected:
 	float y_original;

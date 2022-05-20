@@ -2,7 +2,7 @@
 #include "Mario.h"
 
 CBrickGlass::CBrickGlass(float x, float y, bool isHidingUpMushroom, bool isHidingPBlock)
-	: CBrick(x, y)
+	: CBlock(x, y)
 {
 	y_original = this->y;
 	this->isHidingUpMushroom = isHidingUpMushroom;

@@ -73,11 +73,11 @@
     <ClCompile Include="PlatformTile.cpp">
       <Filter>Game Object\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Game Object\Brick</Filter>
+    <ClCompile Include="Block.cpp">
+      <Filter>Game Object\Block</Filter>
     </ClCompile>
     <ClCompile Include="BrickQuestionMark.cpp">
-      <Filter>Game Object\Brick</Filter>
+      <Filter>Game Object\Block</Filter>
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>Game Object\Other</Filter>
@@ -146,7 +146,10 @@
       <Filter>Game Object\Enemy\Plant</Filter>
     </ClCompile>
     <ClCompile Include="BrickGlass.cpp">
-      <Filter>Game Object\Brick</Filter>
+      <Filter>Game Object\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="PBlock.cpp">
+      <Filter>Game Object\Block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,11 +234,11 @@
     <ClInclude Include="PlatformTile.h">
       <Filter>Game Object\Platform</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Game Object\Brick</Filter>
+    <ClInclude Include="Block.h">
+      <Filter>Game Object\Block</Filter>
     </ClInclude>
     <ClInclude Include="BrickQuestionMark.h">
-      <Filter>Game Object\Brick</Filter>
+      <Filter>Game Object\Block</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Game Object\Other</Filter>
@@ -304,7 +307,10 @@
       <Filter>Game Object\Enemy\Plant</Filter>
     </ClInclude>
     <ClInclude Include="BrickGlass.h">
-      <Filter>Game Object\Brick</Filter>
+      <Filter>Game Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="PBlock.h">
+      <Filter>Game Object\Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -377,9 +383,6 @@
     <Filter Include="Game Object\Platform">
       <UniqueIdentifier>{ce51d486-e865-472d-b67f-3c0684d2d94e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Object\Brick">
-      <UniqueIdentifier>{830277f7-87be-4888-b74c-45d5a3c4991b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game Object\Other">
       <UniqueIdentifier>{f40e9030-4501-40ab-a759-a6c69f59d656}</UniqueIdentifier>
     </Filter>
@@ -397,6 +400,9 @@
     </Filter>
     <Filter Include="Game Object\Enemy\Plant">
       <UniqueIdentifier>{d0cd5c94-1fb2-4734-a7d3-c238dce634c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Block">
+      <UniqueIdentifier>{830277f7-87be-4888-b74c-45d5a3c4991b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -149,7 +149,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="AttachedBBox.cpp" />
     <ClCompile Include="AttackBBox.cpp" />
-    <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="BrickGlass.cpp" />
     <ClCompile Include="BrickQuestionMark.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -173,6 +173,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
     <ClCompile Include="MushroomUp.cpp" />
+    <ClCompile Include="PBlock.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlantGreenFire.cpp" />
     <ClCompile Include="PlantGreenNormal.cpp" />
@@ -202,7 +203,7 @@
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="AttachedBBox.h" />
     <ClInclude Include="AttackBBox.h" />
-    <ClInclude Include="Brick.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="BrickGlass.h" />
     <ClInclude Include="BrickQuestionMark.h" />
     <ClInclude Include="Coin.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
     <ClInclude Include="MushroomUp.h" />
+    <ClInclude Include="PBlock.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlantGreenFire.h" />
     <ClInclude Include="PlantGreenNormal.h" />

@@ -34,7 +34,7 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 #include "Animations.h"
 
 #include "Mario.h"
-#include "Brick.h"
+#include "Block.h"
 #include "Goomba.h"
 #include "Coin.h"
 #include "PlatformOneLayer.h"
@@ -70,9 +70,9 @@ void Update(DWORD dt)
 {
 	CGame::GetInstance()->GetCurrentScene()->Update(dt);
 
-	int score, coin;
-	CGame::GetInstance()->GetScoreCoin(score, coin);
-	//DebugOutTitle(L"scores: %i, coins: %i", score, coin);
+	//int score, coin, lives;
+	//CGame::GetInstance()->GetScoreCoinLives(score, coin, lives);
+	//DebugOutTitle(L"scores: %i, coins: %i, lives: %i", score, coin, lives);
 }
 
 /*
