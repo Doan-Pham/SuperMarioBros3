@@ -69,8 +69,8 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	int GetPlantSpriteId();
-	int GetPlantAniId();
+	virtual int GetPlantSpriteId();
+	virtual int GetPlantAniId();
 
 	virtual int IsBlocking() { return 0; }
 	virtual bool IsHidden() { return (state == PLANT_STATE_HIDING); }

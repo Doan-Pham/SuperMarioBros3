@@ -101,7 +101,7 @@ void CPlantRedFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(PLANT_STATE_HIDING);
 		y += vy * dt;
 	}
-	DebugOutTitle(L"mario_x : %0.5f, x: %0.5f, |mario_x - x|: %0.5f", mario_x, x, abs(mario_x - x));
+	//DebugOutTitle(L"mario_x : %0.5f, x: %0.5f, |mario_x - x|: %0.5f", mario_x, x, abs(mario_x - x));
 
 }
 

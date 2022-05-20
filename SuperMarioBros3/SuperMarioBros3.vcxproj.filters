@@ -142,6 +142,9 @@
     <ClCompile Include="PlantRedFire.cpp">
       <Filter>Game Object\Enemy\Plant</Filter>
     </ClCompile>
+    <ClCompile Include="PlantGreenFire.cpp">
+      <Filter>Game Object\Enemy\Plant</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -292,6 +295,9 @@
       <Filter>Game Object\Enemy\Plant</Filter>
     </ClInclude>
     <ClInclude Include="PlantRedFire.h">
+      <Filter>Game Object\Enemy\Plant</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantGreenFire.h">
       <Filter>Game Object\Enemy\Plant</Filter>
     </ClInclude>
   </ItemGroup>

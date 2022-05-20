@@ -24,6 +24,7 @@
 #include "GoombaRedWing.h"
 #include "PlantRedFire.h"
 #include "PlantGreenNormal.h"
+#include "PlantGreenFire.h"
 #include "KoopaRedNormal.h"
 #include "KoopaGreenWing.h"
 #include "KoopaGreenNormal.h"
@@ -637,6 +638,12 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			case OBJECT_TYPE_ENEMY_PLANT_GREEN_NORMAL:
 			{
 				obj = new CPlantGreenNormal(x, y); break;
+				break;
+			}
+
+			case OBJECT_TYPE_ENEMY_PLANT_GREEN_FIRE:
+			{
+				obj = new CPlantGreenFire(x, y); break;
 				break;
 			}
 			default:
