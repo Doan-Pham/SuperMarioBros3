@@ -12,6 +12,7 @@
 #include "Leaf.h"
 #include "MushroomUp.h"
 #include "BrickGlass.h"
+#include "PBlock.h"
 
 CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, int width, int height, 
 	const LPPLAYSCENE currentScene) : CGameObject(x, y), currentScene(currentScene)
@@ -68,10 +69,7 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 			float brick_x, brick_y;
 			brick->GetPosition(brick_x, brick_y);
 
-			CItem* hiddenItem;
-
-			if (brick->IsHidingUpMushroom()) hiddenItem = new CMushroomUp(brick_x, brick_y);
-			else hiddenItem = new CLeaf(brick_x, brick_y);
+			CItem* hiddenItem = new CLeaf(brick_x, brick_y);
 
 			brick->AddHiddenItem(hiddenItem);
 			currentScene->AddObject(hiddenItem);
@@ -82,17 +80,19 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CBrickGlass*>(e->obj))
 	{
 		CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
-		if (brick->IsHidingItem())
+
+		float brick_x, brick_y;
+		brick->GetPosition(brick_x, brick_y);
+		if (brick->IsHidingUpMushroom())
 		{
-			float brick_x, brick_y;
-			brick->GetPosition(brick_x, brick_y);
-
 			CItem* hiddenItem = new CMushroomUp(brick_x, brick_y);
-
-			if (brick->IsHidingUpMushroom())
-				hiddenItem = new CMushroomUp(brick_x, brick_y);
 			brick->AddHiddenItem(hiddenItem);
 			this->currentScene->AddObject(hiddenItem);
+		}
+		else if (brick->IsHidingPBlock() && !brick->IsHitByMario())
+		{
+			CPBlock* newPBlock = new CPBlock(brick_x, brick_y - BLOCK_BBOX_HEIGHT);
+			this->currentScene->AddObject(newPBlock);
 		}
 		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 	}

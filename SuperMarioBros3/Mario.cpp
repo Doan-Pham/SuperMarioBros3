@@ -24,6 +24,7 @@
 #include "Goomba.h"
 #include "PlantRedFire.h"
 #include "GoombaRedWing.h"
+#include "PBlock.h"
 
 CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	: CGameObject(x, y), currentScene(currentScene)
@@ -583,17 +584,19 @@ void CMario::OnCollisionWithBrickGlass(LPCOLLISIONEVENT e)
 	if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
 	{
 		CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
-		if (brick->IsHidingItem())
+
+		float brick_x, brick_y;
+		brick->GetPosition(brick_x, brick_y);
+		if (brick->IsHidingUpMushroom())
 		{
-			float brick_x, brick_y;
-			brick->GetPosition(brick_x, brick_y);
-
 			CItem* hiddenItem = new CMushroomUp(brick_x, brick_y);
-
-			if (brick->IsHidingUpMushroom())
-				hiddenItem = new CMushroomUp(brick_x, brick_y);
 			brick->AddHiddenItem(hiddenItem);
 			this->currentScene->AddObject(hiddenItem);
+		}
+		else if (brick->IsHidingPBlock() && !brick->IsHitByMario())
+		{
+			CPBlock* newPBlock = new CPBlock(brick_x, brick_y - BLOCK_BBOX_HEIGHT);
+			this->currentScene->AddObject(newPBlock);
 		}
 		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 	}

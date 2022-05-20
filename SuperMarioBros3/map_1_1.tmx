@@ -565,7 +565,7 @@
   <object id="180" type="Brick" x="2000" y="368" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
-    <property name="isHidingUpMushroom" type="int" value="1"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
@@ -579,6 +579,7 @@
   <object id="206" type="Brick" x="2032" y="368" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
+    <property name="isHidingPBlock" type="int" value="1"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
@@ -593,7 +594,7 @@
   <object id="208" type="Brick" x="1984" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
-    <property name="isHidingUpMushroom" type="int" value="1"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
@@ -628,7 +629,7 @@
   <object id="213" type="Brick" x="1968" y="400" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="0"/>
-    <property name="isHidingUpMushroom" type="int" value="1"/>
+    <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>
   </object>
@@ -670,7 +671,7 @@
   <object id="219" type="Brick" x="2096" y="384" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
-    <property name="isHidingPBlock" type="int" value="1"/>
+    <property name="isHidingPBlock" type="int" value="0"/>
     <property name="isHidingUpMushroom" type="int" value="0"/>
     <property name="objectSubTypeId" type="int" value="22"/>
    </properties>

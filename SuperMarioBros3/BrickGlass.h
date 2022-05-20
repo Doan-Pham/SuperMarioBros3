@@ -50,7 +50,7 @@ public:
 	virtual void SetState(int state);
 	virtual bool IsHidingUpMushroom() { return isHidingUpMushroom; }
 	bool IsHidingPBlock() { return isHidingPBlock; }
-
+	bool IsHitByMario() { return isHitByMario; }
 	virtual void AddHiddenItem(CItem* item) { this->hiddenItem = item; }
 };
 
