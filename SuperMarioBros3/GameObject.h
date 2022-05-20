@@ -70,9 +70,10 @@ public:
 	//make that object appear, only then mario can collide with that hidden object
 	virtual bool IsHidden() { return 0; }
 
-	//The amount of scores and coins an object gives when hit/destroyed
+	//The amount of scores, coins, and lives an object gives when hit/destroyed
 	virtual int GetScoresGivenWhenHit() { return 0; }
 	virtual int GetCoinsGivenWhenHit() { return 0; }
+	virtual int GetLivesGivenWhenHit() { return 0; }
 
 	// Objects with higher priority are rendered first and can be covered by others
 	virtual int GetRenderPriority() { return 0; }

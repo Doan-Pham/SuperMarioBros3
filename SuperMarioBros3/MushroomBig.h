@@ -18,7 +18,7 @@
 #define MUSHROOM_STATE_APPEARING 200
 #define MUSHROOM_STATE_MOVING 300
 
-#define MUSHROOM_SCORES_GIVEN_WHEN_HIT 1000
+#define MUSHROOM__BIG_SCORES_GIVEN_WHEN_HIT 1000
 
 class CMushroomBig : public CItem
 {
@@ -41,6 +41,6 @@ protected:
 public:
 	CMushroomBig(float x, float y);
 	virtual void SetState(int state);
-	virtual int GetScoresGivenWhenHit() { return MUSHROOM_SCORES_GIVEN_WHEN_HIT; }
+	virtual int GetScoresGivenWhenHit() { return MUSHROOM__BIG_SCORES_GIVEN_WHEN_HIT; }
 };
 

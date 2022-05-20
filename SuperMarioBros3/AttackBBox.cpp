@@ -9,6 +9,7 @@
 #include "PlayScene.h"
 #include "BrickQuestionMark.h"
 #include "Leaf.h"
+#include "MushroomUp.h"
 
 CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, int width, int height, 
 	const LPPLAYSCENE currentScene) : CGameObject(x, y), currentScene(currentScene)
@@ -65,7 +66,10 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 			float brick_x, brick_y;
 			brick->GetPosition(brick_x, brick_y);
 
-			CItem* hiddenItem = new CLeaf(brick_x, brick_y);
+			CItem* hiddenItem;
+
+			if (brick->IsHidingUpMushroom()) hiddenItem = new CMushroomUp(brick_x, brick_y);
+			else hiddenItem = new CLeaf(brick_x, brick_y);
 
 			brick->AddHiddenItem(hiddenItem);
 			currentScene->AddObject(hiddenItem);

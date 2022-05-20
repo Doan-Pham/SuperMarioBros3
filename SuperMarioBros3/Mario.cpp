@@ -8,6 +8,7 @@
 
 #include "Item.h"
 #include "MushroomBig.h"
+#include "MushroomUp.h"
 #include "Leaf.h"
 
 #include "BrickQuestionMark.h"
@@ -495,10 +496,12 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_RACCOON);
-	else if (dynamic_cast<CMushroomBig*>(e->obj)) SetLevel(MARIO_LEVEL_BIG);
+	else if (dynamic_cast<CMushroomBig*>(e->obj) && !dynamic_cast<CMushroomUp*>(e->obj))
+		SetLevel(MARIO_LEVEL_BIG);
 
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
+	CGame::GetInstance()->UpdateLives(e->obj->GetLivesGivenWhenHit());
 	e->obj->Delete();
 }
 
@@ -558,7 +561,9 @@ void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 
 			CItem* hiddenItem;
 
-			if (level == MARIO_LEVEL_SMALL)
+			if (brick->IsHidingUpMushroom())
+				hiddenItem = new CMushroomUp(brick_x, brick_y);
+			else if (level == MARIO_LEVEL_SMALL)
 				hiddenItem = new CMushroomBig(brick_x, brick_y);
 			else
 				hiddenItem = new CLeaf(brick_x, brick_y);
