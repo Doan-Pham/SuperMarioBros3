@@ -136,6 +136,9 @@
     <ClCompile Include="KoopaGreenNormal.cpp">
       <Filter>Game Object\Enemy\Koopa</Filter>
     </ClCompile>
+    <ClCompile Include="MushroomUp.cpp">
+      <Filter>Game Object\Item\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -281,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="KoopaGreenNormal.h">
       <Filter>Game Object\Enemy\Koopa</Filter>
+    </ClInclude>
+    <ClInclude Include="MushroomUp.h">
+      <Filter>Game Object\Item\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

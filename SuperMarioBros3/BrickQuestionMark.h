@@ -25,6 +25,7 @@ protected:
 
 	CItem* hiddenItem;
 	bool isHidingItem;
+	bool isHidingUpMushroom;
 
 	// This variable is to stop mario from making the brick bounce after its content is
 	// already given
@@ -39,7 +40,7 @@ protected:
 	virtual int GetRenderPriority() { return 20; }
 
 public:
-	CBrickQuestionMark(float x, float y, bool isHidingItem);
+	CBrickQuestionMark(float x, float y, bool isHidingItem, bool isHidingUpMushroom);
 
 	virtual int GetScoresGivenWhenHit()
 	{
@@ -54,6 +55,7 @@ public:
 
 	virtual void SetState(int state);
 	virtual bool IsHidingItem() { return isHidingItem; }
+	bool IsHidingUpMushroom() { return isHidingUpMushroom; }
 
 	virtual void AddHiddenItem(CItem* item) { this->hiddenItem = item; }
 };

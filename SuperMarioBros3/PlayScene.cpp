@@ -430,7 +430,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		case OBJECT_TYPE_BLOCK:
 		{
 
-			bool isHidingItem = 0;
+			bool isHidingItem = false;
+			bool isHidingUpMushroom = false;
 			int objectSubTypeId = -999;
 			TiXmlElement* xmlBlockProperties =
 				currentElementObject->FirstChildElement("properties");
@@ -442,6 +443,10 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				if (currentBlockProperty->Attribute("name") == string("isHidingItem"))
 				{
 					isHidingItem = atoi(currentBlockProperty->Attribute("value"));
+				}
+				if (currentBlockProperty->Attribute("name") == string("isHidingUpMushroom"))
+				{
+					isHidingUpMushroom = atoi(currentBlockProperty->Attribute("value"));
 				}
 				if (currentBlockProperty->Attribute("name") == string("objectSubTypeId"))
 				{
@@ -459,7 +464,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			{
 			case OBJECT_TYPE_BLOCK_BRICK_QUESTIONMARK:
 			{
-				obj = new CBrickQuestionMark(x, y, isHidingItem);
+				obj = new CBrickQuestionMark(x, y, isHidingItem, isHidingUpMushroom);
 				break;
 			}
 

@@ -171,6 +171,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
+    <ClCompile Include="MushroomUp.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlantRedFire.cpp" />
     <ClCompile Include="PlatformGhost.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
+    <ClInclude Include="MushroomUp.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlantRedFire.h" />
     <ClInclude Include="PlatformGhost.h" />

@@ -11,7 +11,7 @@ CMushroomBig::CMushroomBig(float x, float y) : CItem(x, y)
 void CMushroomBig::Render()
 {
 	if (state != MUSHROOM_STATE_HIDING)
-		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_MOVING)->Render(x, y);
+		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_BIG_MOVING)->Render(x, y);
 }
 
 void CMushroomBig::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

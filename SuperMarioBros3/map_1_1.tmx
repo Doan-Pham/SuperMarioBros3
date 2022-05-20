@@ -533,6 +533,7 @@
   <object id="94" type="Brick_QuestionMark" x="1440" y="128" width="16" height="16">
    <properties>
     <property name="isHidingItem" type="int" value="1"/>
+    <property name="isHidingUpMushroom" type="int" value="1"/>
     <property name="objectSubTypeId" type="int" value="21"/>
    </properties>
   </object>

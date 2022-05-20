@@ -5,7 +5,7 @@
 #include "Goomba.h"
 #include "Mario.h"
 
-#define ID_ANI_MUSHROOM_MOVING 4110
+#define ID_ANI_MUSHROOM_BIG_MOVING 4110
 
 #define MUSHROOM_GRAVITY 0.002f
 #define MUSHROOM_MOVING_SPEED 0.06f
