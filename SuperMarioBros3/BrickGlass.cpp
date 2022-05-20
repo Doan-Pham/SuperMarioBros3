@@ -7,7 +7,7 @@ CBrickGlass::CBrickGlass(float x, float y, bool isHidingUpMushroom, bool isHidin
 	y_original = this->y;
 	this->isHidingUpMushroom = isHidingUpMushroom;
 	this->isHidingPBlock = isHidingPBlock;
-
+	become_coin_start = -1;
 	isHitByMario = false;
 	isContentGiven = false;
 	SetState(BRICK_STATE_NORMAL);
@@ -18,15 +18,22 @@ void CBrickGlass::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	if (state == BRICK_STATE_NORMAL)
 		animations->Get(ID_ANI_BRICK_GLASS_NORMAL)->Render(x, y);
+	else if (state == BRICK_STATE_BECOME_COIN)
+		animations->Get(ID_ANI_COIN)->Render(x, y);
 	else
 		animations->Get(ID_ANI_BRICK_GLASS_HIT)->Render(x, y);
 	//RenderBoundingBox();
-	//DebugOutTitle(L"Brick Question Mark y: %0.5f, vy: %0.5f, ay: %0.5f  \n",
+	//DebugOut(L"Brick glass x : %d state: %d , ani : %d  \n", x, state, aniId);
 	//	y, vy, ay);
 }
 
 void CBrickGlass::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state == BRICK_STATE_BECOME_COIN &&
+		GetTickCount64() - become_coin_start > BECOME_COIN_TIMEOUT)
+	{
+		SetState(BRICK_STATE_NORMAL);
+	}
 	if ((isHidingUpMushroom || isHidingPBlock) && state == BRICK_STATE_HIT_BY_MARIO)
 	{
 		vy += ay * dt;
@@ -51,6 +58,7 @@ void CBrickGlass::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CBrickGlass::SetState(int state)
 {
+
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -86,6 +94,13 @@ void CBrickGlass::SetState(int state)
 				hiddenItem->SetState(ITEM_STATE_APPEARING);
 			isContentGiven = true;
 		}
+		break;
+
+	case BRICK_STATE_BECOME_COIN:
+		// Brick_glass that contains items still remains normal so the p-block can stand on it
+		if (isHidingUpMushroom || isHidingPBlock) 
+			CGameObject::SetState(BRICK_STATE_HIT_BY_MARIO);
+		else become_coin_start = GetTickCount64();
 		break;
 	}
 }

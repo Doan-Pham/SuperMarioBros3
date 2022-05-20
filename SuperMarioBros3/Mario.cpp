@@ -13,6 +13,7 @@
 
 #include "BrickQuestionMark.h"
 #include "BrickGlass.h"
+#include "PBlock.h"
 
 #include "PlatformGhost.h"
 #include "Portal.h"
@@ -24,7 +25,6 @@
 #include "Goomba.h"
 #include "PlantRedFire.h"
 #include "GoombaRedWing.h"
-#include "PBlock.h"
 
 CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	: CGameObject(x, y), currentScene(currentScene)
@@ -249,6 +249,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	else if (dynamic_cast<CBrickGlass*>(e->obj))
 		OnCollisionWithBrickGlass(e);
+
+	else if (dynamic_cast<CPBlock*>(e->obj))
+		OnCollisionWithPBlock(e);
 
 	else if (dynamic_cast<CDeadZone*>(e->obj))
 		OnCollisionWithDeadZone(e);
@@ -581,10 +584,15 @@ void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBrickGlass(LPCOLLISIONEVENT e)
 {
-	if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
+	CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
+	if (brick->GetState() == BRICK_STATE_BECOME_COIN)
 	{
-		CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
-
+		CGame::GetInstance()->UpdateScores(brick->GetScoresGivenWhenHit());
+		CGame::GetInstance()->UpdateCoins(brick->GetCoinsGivenWhenHit());
+		brick->Delete();
+	}
+	else if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
+	{
 		float brick_x, brick_y;
 		brick->GetPosition(brick_x, brick_y);
 		if (brick->IsHidingUpMushroom())
@@ -598,8 +606,19 @@ void CMario::OnCollisionWithBrickGlass(LPCOLLISIONEVENT e)
 			CPBlock* newPBlock = new CPBlock(brick_x, brick_y - BLOCK_BBOX_HEIGHT);
 			this->currentScene->AddObject(newPBlock);
 		}
-		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+		brick->SetState(BRICK_STATE_HIT_BY_MARIO);
 	}
+}
+
+void CMario::OnCollisionWithPBlock(LPCOLLISIONEVENT e)
+{
+	CPBlock* pBlock = dynamic_cast<CPBlock*>(e->obj);
+	if ((e->ny < 0 && e->nx == 0) && pBlock->GetState() != P_BLOCK_STATE_HIT_BY_MARIO)
+	{
+		pBlock->SetState(P_BLOCK_STATE_HIT_BY_MARIO);
+		currentScene->TurnPBlockOn();
+	}
+		
 }
 void CMario::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 {

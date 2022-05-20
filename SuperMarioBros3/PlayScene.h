@@ -33,6 +33,8 @@ protected:
 	// This flag shows if camera's y coord has been modified (ex: when mario flies past a certain 
 	// point) and adjust the camera accordingly
 	bool isCameraYDefaultValue;
+	bool static isPBlockTurnedOn;
+
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 
@@ -42,12 +44,12 @@ public:
 	virtual void Unload();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
-
+	LPMAP GetMap() { return map; }
 	void static AddObject(LPGAMEOBJECT object) { objects.push_back(object); }
 
 	void Clear();
 	void PurgeDeletedObjects();
-
+	void static TurnPBlockOn() { isPBlockTurnedOn = true; }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 

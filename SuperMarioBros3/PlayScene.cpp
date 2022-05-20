@@ -43,6 +43,7 @@ using namespace std;
 // Have to define this vector since it's static (it has to be static to be used in the static method:
 // AddObjects()
 vector<LPGAMEOBJECT> CPlayScene::objects;
+bool CPlayScene::isPBlockTurnedOn;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
@@ -51,6 +52,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	map = NULL;
 	key_handler = new CSampleKeyHandler(this);
 	isCameraYDefaultValue = true;
+	isPBlockTurnedOn = false;
 }
 
 
@@ -777,11 +779,22 @@ void CPlayScene::Update(DWORD dt)
 
 	}
 
+	if (isPBlockTurnedOn)
+	{
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CBrickGlass*>(objects[i]))
+			{
+				objects[i]->SetState(BRICK_STATE_BECOME_COIN);
+			}
+		}
+		isPBlockTurnedOn = false;
+	}
+
 	float cam_test_x, cam_test_y;
 	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-
 		// TODO: A very simple implementation to only update objects near camera
 		float object_x, object_y;
 		objects[i]->GetPosition(object_x, object_y);
