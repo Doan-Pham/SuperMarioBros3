@@ -173,6 +173,7 @@
     <ClCompile Include="MushroomBig.cpp" />
     <ClCompile Include="MushroomUp.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PlantGreenNormal.cpp" />
     <ClCompile Include="PlantRedFire.cpp" />
     <ClCompile Include="PlatformGhost.cpp" />
     <ClCompile Include="PlatformOneLayer.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="MushroomBig.h" />
     <ClInclude Include="MushroomUp.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PlantGreenNormal.h" />
     <ClInclude Include="PlantRedFire.h" />
     <ClInclude Include="PlatformGhost.h" />
     <ClInclude Include="PlatformOneLayer.h" />

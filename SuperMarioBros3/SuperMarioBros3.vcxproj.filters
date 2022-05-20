@@ -97,9 +97,6 @@
     <ClCompile Include="PMeter.cpp">
       <Filter>Game Object\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="PlantRedFire.cpp">
-      <Filter>Game Object\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="FireShot.cpp">
       <Filter>Game Object\Projectile</Filter>
     </ClCompile>
@@ -138,6 +135,12 @@
     </ClCompile>
     <ClCompile Include="MushroomUp.cpp">
       <Filter>Game Object\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlantGreenNormal.cpp">
+      <Filter>Game Object\Enemy\Plant</Filter>
+    </ClCompile>
+    <ClCompile Include="PlantRedFire.cpp">
+      <Filter>Game Object\Enemy\Plant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +249,6 @@
     <ClInclude Include="PMeter.h">
       <Filter>Game Object\Mario</Filter>
     </ClInclude>
-    <ClInclude Include="PlantRedFire.h">
-      <Filter>Game Object\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="FireShot.h">
       <Filter>Game Object\Projectile</Filter>
     </ClInclude>
@@ -287,6 +287,12 @@
     </ClInclude>
     <ClInclude Include="MushroomUp.h">
       <Filter>Game Object\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantGreenNormal.h">
+      <Filter>Game Object\Enemy\Plant</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantRedFire.h">
+      <Filter>Game Object\Enemy\Plant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +382,9 @@
     </Filter>
     <Filter Include="Game Object\Enemy\Koopa">
       <UniqueIdentifier>{a06496ce-9bf6-49b3-9573-7e498341be85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\Enemy\Plant">
+      <UniqueIdentifier>{d0cd5c94-1fb2-4734-a7d3-c238dce634c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

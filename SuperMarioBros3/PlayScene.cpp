@@ -23,6 +23,7 @@
 #include "Goomba.h"
 #include "GoombaRedWing.h"
 #include "PlantRedFire.h"
+#include "PlantGreenNormal.h"
 #include "KoopaRedNormal.h"
 #include "KoopaGreenWing.h"
 #include "KoopaGreenNormal.h"
@@ -633,6 +634,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 				break;
 			}
 
+			case OBJECT_TYPE_ENEMY_PLANT_GREEN_NORMAL:
+			{
+				obj = new CPlantGreenNormal(x, y); break;
+				break;
+			}
 			default:
 			{
 				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
@@ -743,9 +749,6 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
-
-
-
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
@@ -772,7 +775,6 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
-
 
 	CGame* game = CGame::GetInstance();
 

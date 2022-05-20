@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="173">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="176">
  <properties>
   <property name="id" type="int" value="11"/>
  </properties>
@@ -181,16 +181,6 @@
     <property name="objectSubTypeId" type="int" value="51"/>
    </properties>
   </object>
-  <object id="27" type="Platform" x="1792" y="384" width="32" height="32">
-   <properties>
-    <property name="objectSubTypeId" type="int" value="51"/>
-   </properties>
-  </object>
-  <object id="28" type="Platform" x="1856" y="368" width="32" height="48">
-   <properties>
-    <property name="objectSubTypeId" type="int" value="51"/>
-   </properties>
-  </object>
   <object id="29" type="Platform" x="1600" y="368" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="51"/>
@@ -297,7 +287,7 @@
   </object>
   <object id="146" type="Enemy" x="360" y="378">
    <properties>
-    <property name="objectSubTypeId" type="int" value="69"/>
+    <property name="objectSubTypeId" type="int" value="70"/>
    </properties>
    <point/>
   </object>
@@ -334,6 +324,12 @@
   <object id="172" type="Enemy" x="1472" y="384">
    <properties>
     <property name="objectSubTypeId" type="int" value="65"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="173" type="Enemy" x="1800" y="388">
+   <properties>
+    <property name="objectSubTypeId" type="int" value="71"/>
    </properties>
    <point/>
   </object>
@@ -538,11 +534,25 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Pipes" visible="0">
+ <objectgroup id="13" name="Pipes">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>
   <object id="151" type="Pipe" x="352" y="368" width="32" height="48">
+   <properties>
+    <property name="cellHeight" type="float" value="16"/>
+    <property name="cellWidth" type="float" value="16"/>
+    <property name="direction" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="174" type="Pipe" x="1792" y="384" width="32" height="32">
+   <properties>
+    <property name="cellHeight" type="float" value="16"/>
+    <property name="cellWidth" type="float" value="16"/>
+    <property name="direction" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="175" type="Pipe" x="1856" y="368" width="32" height="48">
    <properties>
     <property name="cellHeight" type="float" value="16"/>
     <property name="cellWidth" type="float" value="16"/>
