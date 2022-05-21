@@ -6,11 +6,17 @@
 #include "PlantRedFire.h"
 
 #include "BrickQuestionMark.h"
+#include "PBlock.h"
+#include "BrickGlass.h"
+
 #include "PlatformGhost.h"
 #include "DeadZone.h"
 
 #include "MushroomBig.h"
 #include "Leaf.h"
+#include "MushroomUp.h"
+#include "Coin.h"
+
 
 CKoopa::CKoopa(float x, float y, const LPPLAYSCENE& currentScene)
 	:CGameObject(x, y), currentScene(currentScene)
@@ -95,11 +101,18 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
 
+
 	else if (dynamic_cast<CGoomba*>(e->obj) || dynamic_cast<CGoombaRedWing*>(e->obj))
 		OnCollisionWithGoomba(e);
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj))
 		OnCollisionWithPlantRedFire(e);
+
+	else if (dynamic_cast<CBrickGlass*>(e->obj))
+		OnCollisionWithBrickGlass(e);
+
+	if (dynamic_cast<CCoin*>(e->obj))
+		OnCollisionWithCoin(e);
 
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
@@ -189,6 +202,40 @@ void CKoopa::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 		this->currentScene->AddObject(hiddenItem);
 	}
 	e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+}
+
+void CKoopa::OnCollisionWithBrickGlass(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
+		return;
+
+	CBrickGlass* brick = dynamic_cast<CBrickGlass*>(e->obj);
+	if (brick->GetState() == BRICK_STATE_BECOME_COIN) return;
+
+	float brick_x, brick_y;
+	brick->GetPosition(brick_x, brick_y);
+	if (brick->IsHidingUpMushroom())
+	{
+		CItem* hiddenItem = new CMushroomUp(brick_x, brick_y);
+		brick->AddHiddenItem(hiddenItem);
+		this->currentScene->AddObject(hiddenItem);
+	}
+	else if (brick->IsHidingPBlock() && !brick->IsHitByMario())
+	{
+		CPBlock* newPBlock = new CPBlock(brick_x, brick_y - BLOCK_BBOX_HEIGHT);
+		this->currentScene->AddObject(newPBlock);
+	}
+	brick->SetState(BRICK_STATE_HIT_BY_MARIO);
+}
+
+void CKoopa::OnCollisionWithCoin(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
+		return;
+
+	CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+	if (coin->GetState() == COIN_STATE_BECOME_BRICK)
+		coin->Delete();
 }
 
 void CKoopa::SetState(int state)

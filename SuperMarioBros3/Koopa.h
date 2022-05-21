@@ -73,6 +73,10 @@ protected:
 
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
 
+	void OnCollisionWithBrickGlass(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
+
 
 public:
 	CKoopa(float x, float y, const LPPLAYSCENE& currentScene);
