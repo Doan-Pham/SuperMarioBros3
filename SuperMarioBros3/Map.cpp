@@ -1,4 +1,7 @@
 #include "Map.h"
+#include "BrickGlass.h"
+#include "Coin.h"
+#include "Mario.h"
 
 CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, int tileHeight)
 {
@@ -8,6 +11,9 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, in
 	this->height = height;
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
+	isPBlockTurnedOn = false;
+	isCameraYDefaultValue = true;
+	player = NULL;
 }
 
 void CMap::Add(LPTILELAYER layer)
@@ -17,10 +23,157 @@ void CMap::Add(LPTILELAYER layer)
 	tileLayers.push_back(layer);
 };
 
+void CMap::Update(DWORD dt)
+{
+	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
+	// TO-DO: This is a "dirty" way, need a more organized way 
+	vector<LPGAMEOBJECT> coObjects;
+	for (size_t i = 1; i < objects.size(); i++)
+	{
+		if (!objects[i]->IsHidden())
+		{
+			coObjects.push_back(objects[i]);
+		}
+
+	}
+
+	if (isPBlockTurnedOn)
+	{
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CBrickGlass*>(objects[i]))
+			{
+				objects[i]->SetState(BRICK_STATE_BECOME_COIN);
+			}
+			if (dynamic_cast<CCoin*>(objects[i]))
+			{
+				objects[i]->SetState(COIN_STATE_BECOME_BRICK);
+			}
+		}
+		isPBlockTurnedOn = false;
+	}
+
+	float cam_test_x, cam_test_y;
+	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		// TODO: A very simple implementation to only update objects near camera
+		float object_x, object_y;
+		objects[i]->GetPosition(object_x, object_y);
+		if (object_x >= cam_test_x - 100 && object_x <= cam_test_x + SCREEN_WIDTH + 100 &&
+			object_y >= cam_test_y - 100 && object_y <= cam_test_y + SCREEN_HEIGHT + 100)
+
+			objects[i]->Update(dt, &coObjects);
+	}
+
+	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
+	CGame* game = CGame::GetInstance();
+
+	int mapWidth, mapHeight, mapTileWidth, mapTileHeight;
+	//map->GetSize(mapWidth, mapHeight);
+	//map->GetTileSize(mapTileWidth, mapTileHeight);
+	GetSize(mapWidth, mapHeight);
+	GetTileSize(mapTileWidth, mapTileHeight);
+	float mapLeftEdge = 0;
+	float mapTopEdge = 0;
+
+	// Adjust the right, bottom edges to avoid seeing empty tiles
+	float mapRightEdge = (float)(mapWidth * mapTileWidth - COORDINATE_ADJUST_SYNC_TILED);
+	float mapBottomEdge = (float)(mapHeight * mapTileHeight - COORDINATE_ADJUST_SYNC_TILED);
+
+
+	float cam_x, cam_y;
+	game->GetCamPos(cam_x, cam_y);
+
+	float player_x, player_y;
+	player->GetPosition(player_x, player_y);
+	// Adjust mario's position to prevent him from going beyond the map's edges
+	// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
+	// mario will get split in half when he comes to the edges.
+
+	if (player_x < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
+		player_x = mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED;
+
+	if (player_x > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player_x = mapRightEdge - COORDINATE_ADJUST_SYNC_TILED;
+
+	if (player_y < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
+		player_y = mapTopEdge + COORDINATE_ADJUST_SYNC_TILED;
+
+	if (player_y > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
+		player_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
+
+	player->SetPosition(player_x, player_y);
+
+	// Adjust camera's position so it won't go past the map's edge
+	// Update camera to follow mario
+	cam_x = player_x - game->GetBackBufferWidth() / 2;
+
+	// Camera only follows mario if he's flying and he's above a certain point
+	CMario* mario = (CMario*)player;
+
+	if (isCameraYDefaultValue)
+	{
+		if (mario->IsFlying() && player_y < mapBottomEdge - game->GetBackBufferHeight() * 1.425)
+		{
+			cam_y = player_y - game->GetBackBufferHeight() / 2;
+			isCameraYDefaultValue = false;
+		}
+		else cam_y = mapBottomEdge - game->GetBackBufferHeight() * 1.9;
+	}
+	else
+	{
+		if (mario->IsFlying() || mario->IsTrulyFalling() ||
+			player_y < mapBottomEdge - game->GetBackBufferHeight() * 1.425)
+			cam_y = player_y - game->GetBackBufferHeight() / 2;
+
+		if (cam_y >= mapBottomEdge - game->GetBackBufferHeight() * 1.9)
+			isCameraYDefaultValue = true;
+	}
+
+
+	if (cam_x > mapRightEdge - game->GetBackBufferWidth())
+		cam_x = mapRightEdge - game->GetBackBufferWidth();
+	if (cam_x < mapLeftEdge) cam_x = mapLeftEdge;
+
+	// Need to adjust bottom edge before top edge because sometimes BackBufferHeight is higher than
+	// map's bottom edge (like in map_1_1_bonus causing error, but topEdge is always
+	// guaranteed to be smaller than  BackBufferHeight (because it's usually 0)
+	if (cam_y > mapBottomEdge - game->GetBackBufferHeight())
+		cam_y = mapBottomEdge - game->GetBackBufferHeight();
+	if (cam_y < mapTopEdge) cam_y = mapTopEdge;
+
+
+	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
+
+	PurgeDeletedObjects();
+}
+
 void CMap::Render()
 {
 	for (unsigned int i = 0; i < tileLayers.size(); i++)
 		tileLayers[i]->Render();
+	// A lambda expression to sort vector objects according to the object's render priority
+// Objects with higher priority will be rendered first and can be covered by other objects
+	sort(objects.begin(), objects.end(),
+		[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
+		{
+			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
+		});
+
+	float cam_test_x, cam_test_y;
+	CGame::GetInstance()->GetCamPos(cam_test_x, cam_test_y);
+	for (unsigned int i = 0; i < objects.size(); i++)
+	{
+		// TODO: A very simple implementation to only update objects near camera
+		float object_x, object_y;
+		objects[i]->GetPosition(object_x, object_y);
+		if (object_x >= cam_test_x - 100 && object_x <= cam_test_x + SCREEN_WIDTH + 100 &&
+			object_y >= cam_test_y - 100 && object_y <= cam_test_y + SCREEN_HEIGHT + 100)
+			objects[i]->Render();
+	}
 };
 
 void CMap::Clear()
@@ -41,6 +194,11 @@ void CMap::Clear()
 	{
 		mapFilePath = NULL;
 	}
+	for (unsigned int i = 0; i < objects.size(); i++)
+		delete objects[i];
+
+	objects.clear();
+	player = NULL;
 }
 
 bool CMap::IsGameObjectDeleted(const LPGAMEOBJECT& o)
@@ -48,20 +206,20 @@ bool CMap::IsGameObjectDeleted(const LPGAMEOBJECT& o)
 	return o == NULL;
 }
 
-void CMap::EraseDeletedObjects()
+void CMap::PurgeDeletedObjects()
 {
-	//vector<LPGAMEOBJECT>::iterator it;
-	//for (it = objects.begin(); it != objects.end(); it++)
-	//{
-	//	LPGAMEOBJECT o = *it;
-	//	if (o->IsDeleted())
-	//	{
-	//		delete o;
-	//		*it = NULL;
-	//	}
-	//}
+	vector<LPGAMEOBJECT>::iterator it;
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
 		objects.end());
-	DebugOut(L"CMap::EraseDeletedObjects() was called\n");
+	//DebugOut(L"CMap::EraseDeletedObjects() was called\n");
 }

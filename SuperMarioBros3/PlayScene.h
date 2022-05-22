@@ -19,8 +19,8 @@ protected:
 	// The classes accessing this must have a  ***CONST***  reference to the playscene
 	static vector<LPGAMEOBJECT> objects;
 
-	unordered_map<int, LPMAP> maps;
-	int current_map = -1;
+	static unordered_map<int, LPMAP> maps;
+	static int current_map;
 	int next_map = -1;
 	LPMAP map;
 
@@ -49,16 +49,24 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	LPGAMEOBJECT GetPlayer() { return player; }
+	LPGAMEOBJECT GetPlayer() 
+	{
+		//return player; 
+		return maps[current_map]->GetPlayer();
+	}
 	LPMAP GetMap() { return map; }
 
 	void InitiateSwitchMap(int map_id);
 	LPMAP GetCurrentMap() { return maps[current_map]; }
-	void static AddObject(LPGAMEOBJECT object) { objects.push_back(object); }
+	void static AddObject(LPGAMEOBJECT object) 
+	{ 
+		maps[current_map]->Add(object);
+		//objects.push_back(object); 
+	}
 
 	void Clear();
 	void PurgeDeletedObjects();
-	void static TurnPBlockOn() { isPBlockTurnedOn = true; }
+	void static TurnPBlockOn() { isPBlockTurnedOn = true; maps[current_map]->TurnPBlockOn(); }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 
