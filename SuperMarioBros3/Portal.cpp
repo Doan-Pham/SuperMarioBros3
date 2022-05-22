@@ -2,9 +2,10 @@
 #include "Game.h"
 #include "Textures.h"
 
-CPortal::CPortal(float l, float t, float r, float b, int scene_id )
+CPortal::CPortal(float l, float t, float r, float b, int scene_id, int map_id )
 {
 	this->scene_id = scene_id;
+	this->map_id = map_id;
 	x = l; 
 	y = t;
 	width = r - l;

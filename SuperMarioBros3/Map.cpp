@@ -42,3 +42,26 @@ void CMap::Clear()
 		mapFilePath = NULL;
 	}
 }
+
+bool CMap::IsGameObjectDeleted(const LPGAMEOBJECT& o)
+{
+	return o == NULL;
+}
+
+void CMap::EraseDeletedObjects()
+{
+	//vector<LPGAMEOBJECT>::iterator it;
+	//for (it = objects.begin(); it != objects.end(); it++)
+	//{
+	//	LPGAMEOBJECT o = *it;
+	//	if (o->IsDeleted())
+	//	{
+	//		delete o;
+	//		*it = NULL;
+	//	}
+	//}
+	objects.erase(
+		std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
+		objects.end());
+	DebugOut(L"CMap::EraseDeletedObjects() was called\n");
+}

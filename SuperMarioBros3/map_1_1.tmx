@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="223">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="226">
  <properties>
   <property name="id" type="int" value="111"/>
  </properties>
@@ -356,10 +356,15 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Portals" visible="0">
+ <objectgroup id="8" name="Portals">
   <properties>
-   <property name="objectTypeId" type="int" value="0"/>
+   <property name="objectTypeId" type="int" value="110"/>
   </properties>
+  <object id="225" type="Portal" x="2256" y="96" width="32" height="16">
+   <properties>
+    <property name="mapId" type="int" value="112"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="Items" visible="0">
   <properties>
@@ -706,7 +711,11 @@
     <property name="direction" type="int" value="0"/>
    </properties>
   </object>
-  <object id="222" x="2256" y="112" width="32" height="192"/>
+  <object id="222" type="Pipe" x="2256" y="112" width="32" height="192">
+   <properties>
+    <property name="direction" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="14" name="DeadZones" visible="0">
   <properties>

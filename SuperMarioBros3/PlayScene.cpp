@@ -119,6 +119,7 @@ void CPlayScene::SwitchMap()
 
 	DebugOut(L"[INFO] Switching to map %d\n", next_map);
 	current_map = next_map;
+	PurgeDeletedObjects();
 	objects.clear();
 	objects = maps[current_map]->GetObjectsVector();
 	for (size_t i = 0; i < objects.size(); i++)
@@ -135,7 +136,7 @@ void CPlayScene::SwitchMap()
 void CPlayScene::InitiateSwitchMap(int map_id)
 {
 	next_map = map_id;
-	player = NULL;
+	//player = NULL;
 }
 
 void CPlayScene::_ParseSection_SETTINGS(string line)
@@ -813,10 +814,25 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 		{
 			float r = x + (float)atof(currentElementObject->Attribute("width"));
 			float b = y + (float)atof(currentElementObject->Attribute("height"));
-			int scene_id = atoi(currentElementObject->FirstChildElement("properties")
-				->FirstChildElement("property")->Attribute("value"));
+			int map_id = -1;
+			int scene_id = -1;
 
-			obj = new CPortal(x, y, r, b, scene_id);
+			TiXmlElement* xmlElementProperties = currentElementObject->FirstChildElement("properties");
+
+			for (TiXmlElement* currentProprety = xmlElementProperties->FirstChildElement()
+				; currentProprety != nullptr
+				; currentProprety = currentProprety->NextSiblingElement())
+			{
+				if (currentProprety->Attribute("name") == string("mapId"))
+				{
+					map_id = atoi(currentProprety->Attribute("value"));
+				}
+				if (currentProprety->Attribute("name") == string("sceneId"))
+				{
+					scene_id = atoi(currentProprety->Attribute("value"));
+				}
+			}
+			obj = new CPortal(x, y, r, b, scene_id, map_id);
 			break;
 		}
 
@@ -835,6 +851,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 void CPlayScene::Update(DWORD dt)
 {
 	SwitchMap();
+
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	vector<LPGAMEOBJECT> coObjects;
@@ -1056,4 +1073,7 @@ void CPlayScene::PurgeDeletedObjects()
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
+
+	maps[current_map]->EraseDeletedObjects();
+
 }

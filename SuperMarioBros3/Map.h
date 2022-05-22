@@ -32,7 +32,9 @@ public:
 	void GetSize(int& width, int& height) { width = this->width, height = this->height; };
 	void GetTileSize(int& tileWidth, int& tileHeight) 
 	{tileWidth = this->tileWidth, tileHeight = this->tileHeight; };
-	std::vector<LPGAMEOBJECT> GetObjectsVector() { return objects; };
+	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	const std::vector<LPGAMEOBJECT>& GetObjectsVector() { return objects; };
+	void EraseDeletedObjects();
 };
 
 typedef CMap* LPMAP;

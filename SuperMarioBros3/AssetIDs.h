@@ -54,8 +54,8 @@
 #define OBJECT_TYPE_PIPE 90
 
 #define OBJECT_TYPE_DEAD_ZONE 100
-#define OBJECT_TYPE_PORTAL	0
 
+#define OBJECT_TYPE_PORTAL	110
 
 #pragma region MARIO 
 

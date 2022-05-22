@@ -25,7 +25,6 @@ protected:
 	LPMAP map;
 
 	void SwitchMap();
-	void InitiateSwitchMap(int map_id);
 	
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SPRITE(string line);
@@ -52,6 +51,8 @@ public:
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	LPMAP GetMap() { return map; }
+
+	void InitiateSwitchMap(int map_id);
 	LPMAP GetCurrentMap() { return maps[current_map]; }
 	void static AddObject(LPGAMEOBJECT object) { objects.push_back(object); }
 
