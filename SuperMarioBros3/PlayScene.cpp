@@ -311,7 +311,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 	//Parse tileset's id and textureId
 	TiXmlElement* xmlProperties = xmlElementTileSet->FirstChildElement("properties");
 
-	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
+ 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
 	{
@@ -874,13 +874,18 @@ void CPlayScene::Update(DWORD dt)
 			isCameraYDefaultValue = true;
 	}
 
-	if (cam_x < mapLeftEdge) cam_x = mapLeftEdge;
+	
 	if (cam_x > mapRightEdge - game->GetBackBufferWidth())
 		cam_x = mapRightEdge - game->GetBackBufferWidth();
+	if (cam_x < mapLeftEdge) cam_x = mapLeftEdge;
 
-	if (cam_y < mapTopEdge) cam_y = mapTopEdge;
+	// Need to adjust bottom edge before top edge because sometimes BackBufferHeight is higher than
+	// map's bottom edge (like in map_1_1_bonus causing error, but topEdge is always
+	// guaranteed to be smaller than  BackBufferHeight (because it's usually 0)
 	if (cam_y > mapBottomEdge - game->GetBackBufferHeight())
 		cam_y = mapBottomEdge - game->GetBackBufferHeight();
+	if (cam_y < mapTopEdge) cam_y = mapTopEdge;
+
 
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 	

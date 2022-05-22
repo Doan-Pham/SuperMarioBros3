@@ -9,8 +9,8 @@
 #define ID_TEX_ITEM 4
 #define ID_TEX_ENEMY 5
 #define ID_TEX_MISC	8
-#define ID_TEX_TILESET_1_1 11
-
+#define ID_TEX_TILESET_1_1			111
+#define ID_TEX_TILESET_1_1_BONUS	112
 //#define ID_TEX_MISC 20
 
 #define ID_MAP_1_1			11
