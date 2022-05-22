@@ -1,5 +1,7 @@
-# list of objects' srpites to load in this scene
+[SETTINGS]
+start	111
 
+# list of objects' srpites to load in this scene
 [SPRITE]
 spritesheet_mario.xml
 spritesheet_block.xml
@@ -18,5 +20,5 @@ animation_misc.txt
 # map file to load for this scene, this includes all the tiles and pre-loaded objects
 # (objects that are not created run-time like fireballs)
 [MAP]
-#map_1_1.tmx
+map_1_1.tmx
 map_1_1_bonus.tmx

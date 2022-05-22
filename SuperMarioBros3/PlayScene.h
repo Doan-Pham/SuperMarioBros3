@@ -19,16 +19,23 @@ protected:
 	// The classes accessing this must have a  ***CONST***  reference to the playscene
 	static vector<LPGAMEOBJECT> objects;
 
+	unordered_map<int, LPMAP> maps;
+	int current_map = -1;
+	int next_map = -1;
 	LPMAP map;
 
+	void SwitchMap();
+	void InitiateSwitchMap(int map_id);
+	
+	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SPRITE(string line);
 	void _ParseSection_ANIMATION(string line);
 
 	void _ParseSection_MAP(string line);
 	void LoadMap(LPCWSTR mapFile);
-	void _ParseSection_TILESET(TiXmlElement* xmlElementTileSet);
-	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer);
-	void _ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup);
+	void _ParseSection_TILESET(TiXmlElement* xmlElementTileSet, int mapId);
+	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer, int mapId);
+	void _ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, int mapId);
 
 	// This flag shows if camera's y coord has been modified (ex: when mario flies past a certain 
 	// point) and adjust the camera accordingly
@@ -45,6 +52,7 @@ public:
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	LPMAP GetMap() { return map; }
+	LPMAP GetCurrentMap() { return maps[current_map]; }
 	void static AddObject(LPGAMEOBJECT object) { objects.push_back(object); }
 
 	void Clear();

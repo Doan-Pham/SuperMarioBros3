@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="222">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="223">
  <properties>
-  <property name="id" type="int" value="11"/>
+  <property name="id" type="int" value="111"/>
  </properties>
  <tileset firstgid="1" name="map_1_1_tileset" tilewidth="16" tileheight="16" tilecount="121" columns="11">
   <properties>
-   <property name="textureId" type="int" value="30"/>
+   <property name="textureId" type="int" value="111"/>
   </properties>
   <image source="textures/map_1_1_tileset.png" width="176" height="176"/>
  </tileset>
@@ -112,7 +112,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform" visible="0">
+ <objectgroup id="3" name="Platform">
   <properties>
    <property name="objectTypeId" value="50"/>
   </properties>
@@ -201,7 +201,7 @@
     <property name="objectSubTypeId" type="int" value="51"/>
    </properties>
   </object>
-  <object id="33" type="Platform" x="2256" y="112" width="32" height="208">
+  <object id="33" type="Platform" x="2256" y="304" width="32" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="51"/>
    </properties>
@@ -365,16 +365,6 @@
   <properties>
    <property name="objectTypeId" type="int" value="30"/>
   </properties>
-  <object id="84" type="Item" x="240" y="304" width="16" height="16">
-   <properties>
-    <property name="objectSubTypeId" type="int" value="33"/>
-   </properties>
-  </object>
-  <object id="78" type="Item" x="240" y="304" width="16" height="16">
-   <properties>
-    <property name="objectSubTypeId" type="int" value="31"/>
-   </properties>
-  </object>
   <object id="95" type="Item" x="656" y="384" width="16" height="16">
    <properties>
     <property name="objectSubTypeId" type="int" value="33"/>
@@ -501,7 +491,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Blocks">
+ <objectgroup id="5" name="Blocks" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="20"/>
   </properties>
@@ -691,7 +681,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Pipes" visible="0">
+ <objectgroup id="13" name="Pipes">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>
@@ -716,6 +706,7 @@
     <property name="direction" type="int" value="0"/>
    </properties>
   </object>
+  <object id="222" x="2256" y="112" width="32" height="192"/>
  </objectgroup>
  <objectgroup id="14" name="DeadZones" visible="0">
   <properties>

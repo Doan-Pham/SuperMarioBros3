@@ -57,9 +57,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 
 #define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_SPRITE 1
-#define SCENE_SECTION_ANIMATION	2
-#define SCENE_SECTION_MAP 3
+#define SCENE_SECTION_SETTINGS 1
+#define SCENE_SECTION_SPRITE 2
+#define SCENE_SECTION_ANIMATION	3
+#define SCENE_SECTION_MAP 4
 
 
 #define MAP_SECTION_UNKNOWN "unknown"
@@ -89,6 +90,7 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
+		if (line == "[SETTINGS]") { section = SCENE_SECTION_SETTINGS; continue; }
 		if (line == "[SPRITE]") { section = SCENE_SECTION_SPRITE; continue; }
 		if (line == "[ANIMATION]") { section = SCENE_SECTION_ANIMATION; continue; };
 		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
@@ -99,6 +101,7 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
+		case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		case SCENE_SECTION_SPRITE: _ParseSection_SPRITE(line); break;
 		case SCENE_SECTION_ANIMATION: _ParseSection_ANIMATION(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
@@ -108,6 +111,42 @@ void CPlayScene::Load()
 	f.close();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+}
+
+void CPlayScene::SwitchMap()
+{
+	if (next_map < 0 || next_map == current_map) return;
+
+	DebugOut(L"[INFO] Switching to map %d\n", next_map);
+	current_map = next_map;
+	objects.clear();
+	objects = maps[current_map]->GetObjectsVector();
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CMario*>(objects[i]))
+		{
+			player = objects[0];
+			break;
+		}
+	}
+	
+}
+
+void CPlayScene::InitiateSwitchMap(int map_id)
+{
+	next_map = map_id;
+	player = NULL;
+}
+
+void CPlayScene::_ParseSection_SETTINGS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	if (tokens[0] == "start")
+		next_map = atoi(tokens[1].c_str());
+	else
+		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
 }
 
 void CPlayScene::_ParseSection_SPRITE(string line)
@@ -255,27 +294,37 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 			currentElement->FirstChildElement()->Attribute("name") == string("id"))
 		{
 			mapId = atoi(currentElement->FirstChildElement()->Attribute("value"));
-			if (mapId == -999) DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+			if (mapId == -999)
+			{
+				DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+				return;
+			}
 
+			if (maps[mapId] != nullptr) 
+			{
+				DebugOut(L"[INFO] Map has already been loaded: %i\n", mapId);
+				return;
+			}
+			maps[mapId] = new CMap(mapId, mapFile, width, height, tileWidth, tileHeight);
 			map = new CMap(mapId, mapFile, width, height, tileWidth, tileHeight);
 			continue;
 		}
 
 		if (currentElement->Value() == string("tileset"))
 		{
-			_ParseSection_TILESET(currentElement);
+			_ParseSection_TILESET(currentElement, mapId);
 			continue;
 		}
 
 		if (currentElement->Value() == string("layer"))
 		{
-			_ParseSection_TILELAYER(currentElement);
+			_ParseSection_TILELAYER(currentElement, mapId);
 			continue;
 		}
 
 		if (currentElement->Value() == string("objectgroup"))
 		{
-			_ParseSection_OBJECTGROUP(currentElement);
+			_ParseSection_OBJECTGROUP(currentElement, mapId);
 			continue;
 		}
 	}
@@ -283,8 +332,14 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 	DebugOut(L"[INFO] Done loading map from %s\n", mapFile);
 }
 
-void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
+void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet, int mapId)
 {
+	if (mapId == -999)
+	{
+		DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+		return;
+	}
+
 	//Parse tileset's general attributes
 	int firstGid = atoi(xmlElementTileSet->Attribute("firstgid"));
 	int tileWidth = atoi(xmlElementTileSet->Attribute("tilewidth"));
@@ -333,12 +388,17 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 		tileCount, columnsCount, tileSetTexture);
 
 	map->Add(tileSet);
-
+	maps[mapId]->Add(tileSet);
 	DebugOut(L"[INFO] Done loading tileset from: %s \n", imageSourcePath);
 }
 
-void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
+void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer, int mapId)
 {
+	if (mapId == -999)
+	{
+		DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+		return;
+	}
 
 	if (xmlElementTileLayer->Attribute("visible") != NULL)
 	{
@@ -375,14 +435,20 @@ void CPlayScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 	}
 
 	map->Add(tileLayer);
-
+	maps[mapId]->Add(tileLayer);
 	DebugOut(L"[INFO] Done loading tilelayer with id: %i \n", id);
 }
 
 // TODO: Find some way to make this smaller, probably by moving some of the case
 // to their separate methods and group them inside another utility class
-void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
+void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, int mapId)
 {
+	if (mapId == -999)
+	{
+		DebugOut(L"[ERROR] Map id not found: %i\n", mapId);
+		return;
+	}
+
 	CGameObject* obj = NULL;
 	int objectType = -999;
 	float x = -999;
@@ -420,11 +486,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		case OBJECT_TYPE_MARIO:
 		{
 
-			if (player != NULL)
-			{
-				DebugOut(L"[ERROR] MARIO object was created before!\n");
-				return;
-			}
+			//if (player != NULL)
+			//{
+			//	DebugOut(L"[ERROR] MARIO object was created before!\n");
+			//	return;
+			//}
 			obj = new CMario(x, y, this);
 			player = (CMario*)obj;
 
@@ -761,12 +827,14 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		}
 		}
 
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		maps[mapId]->Add(obj);
 	}
 }
 
 void CPlayScene::Update(DWORD dt)
 {
+	SwitchMap();
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	vector<LPGAMEOBJECT> coObjects;
@@ -814,9 +882,10 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 
 	int mapWidth, mapHeight, mapTileWidth, mapTileHeight;
-	map->GetSize(mapWidth, mapHeight);
-	map->GetTileSize(mapTileWidth, mapTileHeight);
-
+	//map->GetSize(mapWidth, mapHeight);
+	//map->GetTileSize(mapTileWidth, mapTileHeight);
+	maps[current_map]->GetSize(mapWidth, mapHeight);
+	maps[current_map]->GetTileSize(mapTileWidth, mapTileHeight);
 	float mapLeftEdge = 0;
 	float mapTopEdge = 0;
 
@@ -894,11 +963,14 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	if (map != nullptr)
+	//if (map != nullptr)
+	//{
+	//	map->Render();
+	//}
+	if (maps[current_map] != nullptr)
 	{
-		map->Render();
+		maps[current_map]->Render();
 	}
-
 	// A lambda expression to sort vector objects according to the object's render priority
 	// Objects with higher priority will be rendered first and can be covered by other objects
 	sort(objects.begin(), objects.end(),
@@ -948,12 +1020,16 @@ void CPlayScene::Unload()
 	objects.clear();
 	player = NULL;
 
-	if (map != NULL)
+	//if (map != NULL)
+	//{
+	//	map->Clear();
+	//	map = NULL;
+	//}
+	if (maps[current_map] != NULL)
 	{
-		map->Clear();
-		map = NULL;
+		maps[current_map]->Clear();
+		maps[current_map] = NULL;
 	}
-
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	//CTextures::GetInstance()->Clear();
