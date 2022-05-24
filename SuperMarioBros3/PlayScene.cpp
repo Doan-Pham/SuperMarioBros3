@@ -805,8 +805,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 		case OBJECT_TYPE_PORTAL:
 		{
-			float r = x + (float)atof(currentElementObject->Attribute("width"));
-			float b = y + (float)atof(currentElementObject->Attribute("height"));
+			float width =(float)atof(currentElementObject->Attribute("width"));
+			float height = (float)atof(currentElementObject->Attribute("height"));
 			int map_id = -1;
 			int scene_id = -1;
 
@@ -825,7 +825,10 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 					scene_id = atoi(currentProprety->Attribute("value"));
 				}
 			}
-			obj = new CPortal(x, y, r, b, scene_id, map_id);
+			obj = new CPortal(
+				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
+				y + height / 2 - COORDINATE_ADJUST_SYNC_TILED, 
+				width, height, scene_id, map_id);
 			break;
 		}
 
