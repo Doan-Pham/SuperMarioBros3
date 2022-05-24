@@ -26,6 +26,7 @@
 #include "PlantRedFire.h"
 #include "GoombaRedWing.h"
 #include "Coin.h"
+#include "Card.h"
 
 CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	: CGameObject(x, y), currentScene(currentScene)
@@ -517,6 +518,12 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 		CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
 		coin->Delete();
+	}
+	else if (dynamic_cast<CCard*>(e->obj))
+	{
+		CCard* card = dynamic_cast<CCard*>(e->obj);
+		card->SetState(CARD_STATE_SPINNING);
+		return;
 	}
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
