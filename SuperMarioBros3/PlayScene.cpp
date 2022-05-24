@@ -737,8 +737,10 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 			float cellWidth = -1.0f;
 			float cellHeight = -1.0f;
-			int direction = -1;
 
+			// -1: vertical upside, 1: vertical downside, 2: horizontal
+			int direction = -999;
+			bool isMarioSpawnLocation = 0;
 			TiXmlElement* xmlElementProperties = currentElementObject->FirstChildElement("properties");
 
 			for (TiXmlElement* currentProprety = xmlElementProperties->FirstChildElement()
@@ -748,7 +750,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				if (currentProprety->Attribute("name") == string("direction"))
 				{
 					direction = atoi(currentProprety->Attribute("value"));
-					if (direction == -1)
+					if (direction == -999)
 					{
 						DebugOut(L"[ERROR] Pipe's direction unknown: %i\n", direction);
 						return;
@@ -764,6 +766,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 						return;
 					}
 				}
+
 				if (currentProprety->Attribute("name") == string("cellHeight"))
 				{
 					cellHeight = (float)atof(currentProprety->Attribute("value"));
@@ -773,16 +776,25 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 						return;
 					}
 				}
-			}
 
+				if (currentProprety->Attribute("name") == string("isMarioSpawnLocation"))
+				{
+					isMarioSpawnLocation = (float)atof(currentProprety->Attribute("value"));
+				}
+			}
 
 			obj = new CPipe(
 				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
 				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
 				(int)width / cellWidth, (int)height / cellHeight,
 				cellWidth, cellHeight,
-				direction);
-
+				direction, isMarioSpawnLocation);
+			if (isMarioSpawnLocation)
+			{
+				CMario* mario = (CMario*)maps[mapId]->GetPlayer();
+				mario->SetSpawnPipeLocation((CPipe*)obj);
+			}
+			
 			break;
 		}
 

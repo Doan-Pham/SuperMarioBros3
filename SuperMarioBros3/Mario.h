@@ -10,6 +10,7 @@
 #include "Hammer.h"
 #include "debug.h"
 #include "Koopa.h"
+#include "Pipe.h"
 
 class CPlayScene;
 typedef CPlayScene* LPPLAYSCENE;
@@ -301,6 +302,7 @@ class CMario : public CGameObject
 	vector<CHammer*> hammers;
 	CAttackBBox* raccoon_tail;
 
+	CPipe* spawnPipeLocation;
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -390,5 +392,6 @@ public:
 
 	void KickHeldShell();
 
+	void SetSpawnPipeLocation(CPipe* pipe) { this->spawnPipeLocation = pipe; }
 	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

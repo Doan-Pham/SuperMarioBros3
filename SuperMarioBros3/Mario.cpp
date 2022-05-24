@@ -61,6 +61,7 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	pMeter = new CPMeter();
 	shellBeingHeld = NULL;
 	raccoon_tail = NULL;
+	spawnPipeLocation = NULL;
 }
 
 
@@ -202,7 +203,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
-	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
+	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -515,7 +516,7 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 			return;
 		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 		CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
-		e->obj->Delete();
+		coin->Delete();
 	}
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
@@ -563,8 +564,16 @@ void CMario::OnCollisionWithDeadZone(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	if (p->GetMapId() != -1)
+	{
+		currentScene->InitiateSwitchMap(p->GetMapId());
+		float pipe_l, pipe_t, pipe_r, pipe_b;
+		spawnPipeLocation->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
+		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t - GetBBoxHeight());
+	}
+	else if (p->GetSceneId() != -1) CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
+	
 
 void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 {
@@ -629,6 +638,7 @@ void CMario::OnCollisionWithPBlock(LPCOLLISIONEVENT e)
 	}
 		
 }
+
 void CMario::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0)
