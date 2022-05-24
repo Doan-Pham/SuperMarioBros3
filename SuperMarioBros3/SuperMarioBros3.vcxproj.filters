@@ -151,6 +151,9 @@
     <ClCompile Include="PBlock.cpp">
       <Filter>Game Object\Block</Filter>
     </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Game Object\Item\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="PBlock.h">
       <Filter>Game Object\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
+      <Filter>Game Object\Item\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

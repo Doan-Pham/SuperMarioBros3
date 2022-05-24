@@ -17,6 +17,7 @@
 #include "Leaf.h"
 #include "MushroomBig.h"
 #include "Coin.h"
+#include "Card.h"
 
 #include "BrickQuestionMark.h"
 #include "BrickGlass.h"
@@ -577,6 +578,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				break;
 			}
 
+			case OBJECT_TYPE_ITEM_CARD:
+			{
+				obj = new CCard(x, y);
+				break;
+			}
 			default:
 			{
 				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
