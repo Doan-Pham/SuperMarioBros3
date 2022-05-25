@@ -38,6 +38,7 @@
 #include "DeadZone.h"
 
 #include "Portal.h"
+#include "Text.h"
 
 using namespace std;
 
@@ -850,6 +851,24 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 			break;
 		}
 
+		case OBJECT_TYPE_TEXT:
+		{
+			string textContent;
+			TiXmlElement* xmlElementProperties = currentElementObject->FirstChildElement("properties");
+
+			for (TiXmlElement* currentProprety = xmlElementProperties->FirstChildElement()
+				; currentProprety != nullptr
+				; currentProprety = currentProprety->NextSiblingElement())
+			{
+				if (currentProprety->Attribute("name") == string("textContent"))
+				{
+					textContent = string(currentProprety->Attribute("value"));
+				}
+
+			}
+			obj = new CText(x, y, vector<char>(textContent.begin(), textContent.end()));
+			break;
+		}
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="231">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="233">
  <properties>
   <property name="id" type="int" value="111"/>
  </properties>
@@ -112,7 +112,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Platform">
+ <objectgroup id="3" name="Platform" visible="0">
   <properties>
    <property name="objectTypeId" value="50"/>
   </properties>
@@ -267,7 +267,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Enemies">
+ <objectgroup id="7" name="Enemies" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="60"/>
   </properties>
@@ -356,7 +356,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Portals">
+ <objectgroup id="8" name="Portals" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="110"/>
   </properties>
@@ -366,7 +366,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="9" name="Items">
+ <objectgroup id="9" name="Items" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="30"/>
   </properties>
@@ -501,7 +501,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Blocks">
+ <objectgroup id="5" name="Blocks" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="20"/>
   </properties>
@@ -691,7 +691,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Pipes">
+ <objectgroup id="13" name="Pipes" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>
@@ -733,7 +733,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="14" name="DeadZones">
+ <objectgroup id="14" name="DeadZones" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="100"/>
   </properties>
@@ -741,5 +741,16 @@
   <object id="161" x="1504" y="496" width="32" height="57.5"/>
   <object id="162" x="1616" y="496" width="48" height="57.5"/>
   <object id="163" x="2240" y="432" width="16" height="57.5"/>
+ </objectgroup>
+ <objectgroup id="15" name="Text">
+  <properties>
+   <property name="objectTypeId" value="120"/>
+  </properties>
+  <object id="232" type="Text" x="2664.67" y="284.667">
+   <properties>
+    <property name="textContent" value="COURSE CLEAR"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
 </map>
