@@ -67,6 +67,7 @@ class CKoopa;
 #define MARIO_STATE_THROW_FIRE		1100
 #define MARIO_STATE_THROW_HAMMER	1200
 
+#define MARIO_STATE_COURSE_CLEAR		1300
 #pragma endregion
 
 

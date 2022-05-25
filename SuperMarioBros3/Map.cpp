@@ -82,21 +82,26 @@ void CMap::Update(DWORD dt)
 
 	float player_x, player_y;
 	player->GetPosition(player_x, player_y);
+	
+	// When mario clears map by taking the card, he can goes past the map edges
+	if (player->GetState() != MARIO_STATE_COURSE_CLEAR)
+	{
+		// Adjust mario's position to prevent him from going beyond the map's edges
+		// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
+		// mario will get split in half when he comes to the edges.
+		if (player_x < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
+			player_x = mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED;
 
-	// Adjust mario's position to prevent him from going beyond the map's edges
-	// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
-	// mario will get split in half when he comes to the edges.
-	if (player_x < mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED)
-		player_x = mapLeftEdge + COORDINATE_ADJUST_SYNC_TILED;
+		if (player_x > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
+			player_x = mapRightEdge - COORDINATE_ADJUST_SYNC_TILED;
 
-	if (player_x > mapRightEdge - COORDINATE_ADJUST_SYNC_TILED)
-		player_x = mapRightEdge - COORDINATE_ADJUST_SYNC_TILED;
+		if (player_y < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
+			player_y = mapTopEdge + COORDINATE_ADJUST_SYNC_TILED;
 
-	if (player_y < mapTopEdge + COORDINATE_ADJUST_SYNC_TILED)
-		player_y = mapTopEdge + COORDINATE_ADJUST_SYNC_TILED;
+		if (player_y > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
+			player_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
+	}
 
-	if (player_y > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
-		player_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
 
 	player->SetPosition(player_x, player_y);
 

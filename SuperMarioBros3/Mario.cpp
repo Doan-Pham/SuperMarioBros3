@@ -117,6 +117,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// If we don't set this, mario can't start flying because he will fail the isTrulyFalling()
 		// check in KeyEventHandler
 		isTrulyFalling = false;
+
+		// When mario takes the card at the map's end, his vx becomes 0 then becomes positive when
+		// he reaches the ground
+		if (state == MARIO_STATE_COURSE_CLEAR) vx = MARIO_WALKING_SPEED;
 	}
 
 	// If we don't check for isFlying, mario won't be able to hit "S" to fly again after falling
@@ -261,6 +265,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -523,6 +528,7 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	{
 		CCard* card = dynamic_cast<CCard*>(e->obj);
 		card->SetState(CARD_STATE_SPINNING);
+		this->SetState(MARIO_STATE_COURSE_CLEAR);
 		return;
 	}
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
@@ -581,7 +587,6 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	else if (p->GetSceneId() != -1) CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 	
-
 void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 {
 
@@ -1115,7 +1120,7 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE) return;
+	if (this->state == MARIO_STATE_DIE || this->state == MARIO_STATE_COURSE_CLEAR) return;
 
 	switch (state)
 	{
@@ -1341,6 +1346,12 @@ void CMario::SetState(int state)
 		}
 		break;
 	}
+
+	case MARIO_STATE_COURSE_CLEAR:
+	{
+		vx = 0;
+		break;
+	}
 	case MARIO_STATE_DIE:
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -1351,7 +1362,7 @@ void CMario::SetState(int state)
 	}
 
 	CGameObject::SetState(state);
-	//DebugOutTitle(L"Mario state: %d", this->state);
+	DebugOut(L"Mario state: %d \n", this->state);
 }
 
 void CMario::SetLevel(int l)
