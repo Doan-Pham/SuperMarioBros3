@@ -11,6 +11,18 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
+	CMap* map = (CMap*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetCurrentMap();
+	int mapWidth, mapHeight, mapTileWidth, mapTileHeight;
+	map->GetSize(mapWidth, mapHeight);
+	map->GetTileSize(mapTileWidth, mapTileHeight);
+
+	float mapLeftEdge = 0;
+	float mapTopEdge = 0;
+
+	// Adjust the right, bottom edges to avoid seeing empty tiles
+	float mapRightEdge = (float)(mapWidth * mapTileWidth - 8);
+	float mapBottomEdge = (float)(mapHeight * mapTileHeight - 8);
+
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
@@ -71,10 +83,22 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_5:
 		mario->SetLevel(MARIO_LEVEL_HAMMER);
 		break;
+	case DIK_G:
+	{
+		float mario_x, mario_y;
+		mario->GetPosition(mario_x, mario_y);
+		mario->SetPosition(mario_x + min(500, mapRightEdge - mario_x), mario_y - 20);
+	}
 
-	case DIK_0:
-		mario->SetState(MARIO_STATE_DIE);
 		break;
+	case DIK_F:
+	{
+		float mario_x, mario_y;
+		mario->GetPosition(mario_x, mario_y);
+		mario->SetPosition(mario_x + max(-500, mapLeftEdge - mario_x), mario_y - 20);
+		break;
+	}
+
 	case DIK_R: // reset
 		//Reload();
 		break;
@@ -84,7 +108,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 void CSampleKeyHandler::OnKeyUp(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
-
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
