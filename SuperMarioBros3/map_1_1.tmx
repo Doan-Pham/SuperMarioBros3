@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="233">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="176" height="39" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="234">
  <properties>
   <property name="id" type="int" value="111"/>
  </properties>
@@ -746,9 +746,15 @@
   <properties>
    <property name="objectTypeId" value="120"/>
   </properties>
-  <object id="232" type="Text" x="2664.67" y="284.667">
+  <object id="232" type="Text" x="2640" y="280">
    <properties>
     <property name="textContent" value="COURSE CLEAR"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="233" type="Text" x="2624" y="304">
+   <properties>
+    <property name="textContent" value="YOU GOT A CARD"/>
    </properties>
    <point/>
   </object>
