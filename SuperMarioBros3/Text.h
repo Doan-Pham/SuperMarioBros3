@@ -36,6 +36,17 @@ public:
 		isHidden = true;
 		this->characters = characters;
 	}
+	CText(float x, float y, string characters) : CGameObject(x, y)
+	{
+		isHidden = true;
+		this->characters = vector<char>(characters.begin(), characters.end());
+	}
+	CText(float x, float y, char* characters) : CGameObject(x, y)
+	{
+		isHidden = true;
+		string string_characters = string(characters);
+		this->characters = vector<char>(string_characters.begin(), string_characters.end());
+	}
 
 	bool IsHidden() { return isHidden; }
 	int IsBlocking() { return 0; }

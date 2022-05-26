@@ -146,10 +146,10 @@ void CMap::Update(DWORD dt)
 	else
 	{
 		if (mario->IsFlying() || mario->IsTrulyFalling() ||
-			player_y < mapBottomEdge - game->GetBackBufferHeight() * 1.425)
+			player_y < mapBottomEdge - game->GetBackBufferHeight() /2)
 			cam_y = player_y - game->GetBackBufferHeight() / 2;
 
-		if (cam_y >= mapBottomEdge - game->GetBackBufferHeight() * 1.9)
+		if (cam_y >= mapBottomEdge - game->GetBackBufferHeight() )
 			isCameraYDefaultValue = true;
 	}
 
