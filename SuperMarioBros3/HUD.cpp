@@ -17,24 +17,33 @@ void CHUD::Update(DWORD dt)
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
-	string scores_textContent(HUD_SCORES_DEFAULT_VALUE);
 
 	int scores, coins, lives;
 	CGame::GetInstance()->GetScoreCoinLives(scores, coins, lives);
 
+	string scores_placeholder(HUD_SCORES_TEXT_DEFAULT_VALUE);
 	string scores_string = to_string(scores);
 
-	scores_textContent.erase(scores_textContent.size() - scores_string.size(), scores_string.size());
-	scores_textContent += scores_string;
-	scores_text->SetTextContent(scores_textContent);
-
+	// Remove the unnecessary "0" in the scores_text default value
+	scores_placeholder.erase(scores_placeholder.size() - scores_string.size(),scores_string.size());
+	scores_text->SetTextContent(scores_placeholder + scores_string);
 	scores_text->SetPosition(
-		x + HUD_SCORES_POSITION_X_OFFSET_CENTER + cam_x,
-		y + HUD_SCORES_POSITION_Y_OFFSET_CENTER + cam_y);
+		x + HUD_SCORES_TEXT_POSITION_X_OFFSET + cam_x,
+		y + HUD_SCORES_TEXT_POSITION_Y_OFFSET + cam_y);
+
+	string coins_placeholder(HUD_COINS_TEXT_DEFAULT_VALUE);
+	string coins_string = to_string(coins);
+
+	// Remove the unnecessary "0" in the coins_text default value
+	coins_placeholder.erase(coins_placeholder.size() - coins_string.size(), coins_string.size());
+	coins_text->SetTextContent(coins_placeholder + coins_string);
+	coins_text->SetPosition(
+		x + HUD_COINS_TEXT_POSITION_X_OFFSET + cam_x,
+		y + HUD_COINS_TEXT_POSITION_Y_OFFSET + cam_y);
 
 	time_text->SetPosition(
-		x + HUD_TIME_POSITION_X_OFFSET_CENTER + cam_x,
-		y + HUD_TIME_POSITION_Y_OFFSET_CENTER + cam_y);
+		x + HUD_TIME_TEXT_POSITION_X_OFFSET + cam_x,
+		y + HUD_TIME_TEXT_POSITION_Y_OFFSET + cam_y);
 }
 
 void CHUD::Render()
@@ -54,6 +63,7 @@ void CHUD::Render()
 
 	scores_text->Render();
 	time_text->Render();
+	coins_text->Render();
 
 	DebugOut(L"hud_x : %0.5f; hud_y : %0.5f, cam_x : %0.5f, cam_y : %0.5f \n", x, y, cam_x, cam_y);
 }
