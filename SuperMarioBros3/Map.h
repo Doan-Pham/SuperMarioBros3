@@ -10,6 +10,16 @@
 #define COORDINATE_ADJUST_SYNC_TILED 8
 #define TEXT_COURSE_CLEAR	"COURSE CLEAR"
 #define TEXT_YOU_GOT_A_CARD	"YOU GOT A CARD"
+
+// Mario has to move past this distance before showing the next text
+// This has to be smaller than CAMEARA_SURROUNDING_OFFSET, or else when mario goes past the map's
+// right edge, he won't be updated anymore and the next text won't be shown
+#define MARIO_DISTANCE_BEFORE_SHOW_NEXT_TEXT	75
+
+// This offset expands the area around the camera so a certain amount of objects outside the camera
+// can be updated and rendered before mario even reaches them, allowing for a smoother gameplay
+#define CAMERA_SURROUNDING_OFFSET	100
+
 class CMap
 {
 protected:

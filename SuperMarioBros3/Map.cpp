@@ -67,8 +67,10 @@ void CMap::Update(DWORD dt)
 		// TODO: A very simple implementation to only update objects near camera
 		float object_x, object_y;
 		objects[i]->GetPosition(object_x, object_y);
-		if (object_x >= cam_x - 100 && object_x <= cam_x + SCREEN_WIDTH + 100 &&
-			object_y >= cam_y - 100 && object_y <= cam_y + SCREEN_HEIGHT + 100)
+		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET && 
+			object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
+			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET && 
+			object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET)
 
 			objects[i]->Update(dt, &coObjects);
 	}
@@ -89,7 +91,8 @@ void CMap::Update(DWORD dt)
 	{
 		if (player_x > mapRightEdge)
 			texts[TEXT_COURSE_CLEAR]->UnHide();
-		if (player_x > (mapRightEdge + 50))
+
+		if (player_x > (mapRightEdge + MARIO_DISTANCE_BEFORE_SHOW_NEXT_TEXT))
 			texts[TEXT_YOU_GOT_A_CARD]->UnHide();
 	}
 	else
@@ -178,8 +181,10 @@ void CMap::Render()
 		float object_x, object_y;
 		objects[i]->GetPosition(object_x, object_y);
 
-		if (object_x >= cam_x - 100 && object_x <= cam_x + SCREEN_WIDTH + 100 &&
-			object_y >= cam_y - 100 && object_y <= cam_y + SCREEN_HEIGHT + 100 &&
+		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET && 
+			object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
+			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET && 
+			object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET &&
 			!objects[i]->IsHidden())
 			objects[i]->Render();
 	}
