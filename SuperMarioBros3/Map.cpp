@@ -70,9 +70,9 @@ void CMap::Update(DWORD dt)
 		// TODO: A very simple implementation to only update objects near camera
 		float object_x, object_y;
 		objects[i]->GetPosition(object_x, object_y);
-		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET && 
+		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
 			object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
-			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET && 
+			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
 			object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET)
 
 			objects[i]->Update(dt, &coObjects);
@@ -83,12 +83,12 @@ void CMap::Update(DWORD dt)
 
 	// Adjust the right, bottom edges to avoid seeing empty tiles
 	float mapRightEdge = (float)(width * tileWidth - COORDINATE_ADJUST_SYNC_TILED);
-	float mapBottomEdge = (float)(height * tileHeight - COORDINATE_ADJUST_SYNC_TILED);
+	float mapBottomEdge = (float)(height * tileHeight - COORDINATE_ADJUST_SYNC_TILED) + BOTTOM_HUD_HEIGHT;
 
 
 	float player_x, player_y;
 	player->GetPosition(player_x, player_y);
-	
+
 	// When mario clears map by taking the card, he can goes past the map edges
 	if (isCourseCleared)
 	{
@@ -105,7 +105,7 @@ void CMap::Update(DWORD dt)
 			clearCourseCard->SetState(CARD_STATE_TAKEN);
 			clearCourseCard->SetPosition(text_r + 3 * CHARACTER_STANDARD_WIDTH, (text_t + text_b) / 2);
 		}
-			
+
 	}
 	else
 	{
@@ -136,12 +136,12 @@ void CMap::Update(DWORD dt)
 	// Camera only follows mario on y-axis if he's flying and he's above a certain point
 	if (isCameraYDefaultValue)
 	{
-		if (mario->IsFlying() && player_y < mapBottomEdge - game->GetBackBufferHeight() * 1.425)
+		if (mario->IsFlying() && player_y < mapBottomEdge - game->GetBackBufferHeight() / 2)
 		{
 			cam_y = player_y - game->GetBackBufferHeight() / 2;
 			isCameraYDefaultValue = false;
 		}
-		else cam_y = mapBottomEdge - game->GetBackBufferHeight() * 1.9;
+		else cam_y = mapBottomEdge - game->GetBackBufferHeight();
 	}
 	else
 	{
@@ -193,9 +193,9 @@ void CMap::Render()
 		float object_x, object_y;
 		objects[i]->GetPosition(object_x, object_y);
 
-		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET && 
+		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
 			object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
-			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET && 
+			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
 			object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET &&
 			!objects[i]->IsHidden())
 			objects[i]->Render();

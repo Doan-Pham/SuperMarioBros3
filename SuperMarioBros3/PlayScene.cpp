@@ -41,9 +41,7 @@
 #include "Text.h"
 
 using namespace std;
-
-// Have to define this vector since it's static (it has to be static to be used in the static method:
-// AddObjects()
+#define BOTTOM_HUD_HEIGHT 50
 
 int CPlayScene::current_map;
 unordered_map<int, LPMAP> CPlayScene::maps;
@@ -53,8 +51,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CSampleKeyHandler(this);
+	float back_buffer_width = CGame::GetInstance()->GetBackBufferWidth();
+	float back_buffer_height = CGame::GetInstance()->GetBackBufferHeight();
 
-	bottomHUD = new CHUD(SCREEN_HEIGHT - 100, SCREEN_WIDTH/2, 152, 28);
+	bottomHUD = new CHUD(back_buffer_width /2, back_buffer_height - BOTTOM_HUD_HEIGHT / 2,
+		back_buffer_width, BOTTOM_HUD_HEIGHT);
 }
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:9af9b5317a753e605a91d5264e48e571:4ba9f184a2f74d2183c7a4c70ecb479b:01277b35e6d1d51017dcf7e825362e9c$ -->
+<!-- $TexturePacker:SmartUpdate:b2b416d4bcf9f9bea85f1d5077032d67:882f819f018810b12a2fc8da97a69e19:01277b35e6d1d51017dcf7e825362e9c$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -19,7 +19,7 @@ vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
 verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
-<TextureAtlas imagePath="spritesheet_misc.png" width="256" height="128"
+<TextureAtlas imagePath="spritesheet_misc.png" width="512" height="128"
 			  textureId ="8">
     <sprite n="81101" x="5" y="5" w="7" h="8"/>
     <sprite n="81102" x="17" y="5" w="7" h="8"/>
@@ -40,29 +40,29 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="82010" x="209" y="5" w="8" h="7"/>
     <sprite n="82011" x="222" y="5" w="8" h="8"/>
     <sprite n="82012" x="235" y="5" w="8" h="8"/>
-    <sprite n="82013" x="5" y="24" w="8" h="8"/>
-    <sprite n="82014" x="18" y="24" w="8" h="8"/>
-    <sprite n="82015" x="31" y="24" w="8" h="8"/>
-    <sprite n="82016" x="44" y="24" w="8" h="8"/>
-    <sprite n="82017" x="57" y="24" w="8" h="8"/>
-    <sprite n="82018" x="70" y="24" w="8" h="8"/>
-    <sprite n="82019" x="83" y="24" w="4" h="8"/>
-    <sprite n="82020" x="92" y="24" w="8" h="8"/>
-    <sprite n="82021" x="105" y="24" w="8" h="8"/>
-    <sprite n="82022" x="118" y="24" w="8" h="8"/>
-    <sprite n="82023" x="131" y="24" w="8" h="8"/>
-    <sprite n="82024" x="144" y="24" w="8" h="8"/>
-    <sprite n="82025" x="157" y="24" w="8" h="8"/>
-    <sprite n="82026" x="170" y="24" w="8" h="8"/>
-    <sprite n="82027" x="183" y="24" w="8" h="8"/>
-    <sprite n="82028" x="196" y="24" w="8" h="8"/>
-    <sprite n="82029" x="209" y="24" w="8" h="8"/>
-    <sprite n="82030" x="222" y="24" w="8" h="8"/>
-    <sprite n="82031" x="235" y="24" w="8" h="8"/>
-    <sprite n="82032" x="5" y="37" w="8" h="8"/>
-    <sprite n="82033" x="18" y="37" w="8" h="8"/>
-    <sprite n="82034" x="31" y="37" w="8" h="8"/>
-    <sprite n="82035" x="44" y="37" w="8" h="8"/>
-    <sprite n="82036" x="57" y="37" w="8" h="8"/>
-    <sprite n="83111" x="70" y="37" w="152" h="28"/>
+    <sprite n="82013" x="248" y="5" w="8" h="8"/>
+    <sprite n="82014" x="261" y="5" w="8" h="8"/>
+    <sprite n="82015" x="274" y="5" w="8" h="8"/>
+    <sprite n="82016" x="287" y="5" w="8" h="8"/>
+    <sprite n="82017" x="300" y="5" w="8" h="8"/>
+    <sprite n="82018" x="313" y="5" w="8" h="8"/>
+    <sprite n="82019" x="326" y="5" w="4" h="8"/>
+    <sprite n="82020" x="335" y="5" w="8" h="8"/>
+    <sprite n="82021" x="348" y="5" w="8" h="8"/>
+    <sprite n="82022" x="361" y="5" w="8" h="8"/>
+    <sprite n="82023" x="374" y="5" w="8" h="8"/>
+    <sprite n="82024" x="387" y="5" w="8" h="8"/>
+    <sprite n="82025" x="400" y="5" w="8" h="8"/>
+    <sprite n="82026" x="413" y="5" w="8" h="8"/>
+    <sprite n="82027" x="426" y="5" w="8" h="8"/>
+    <sprite n="82028" x="439" y="5" w="8" h="8"/>
+    <sprite n="82029" x="452" y="5" w="8" h="8"/>
+    <sprite n="82030" x="465" y="5" w="8" h="8"/>
+    <sprite n="82031" x="478" y="5" w="8" h="8"/>
+    <sprite n="82032" x="491" y="5" w="8" h="8"/>
+    <sprite n="82033" x="5" y="24" w="8" h="8"/>
+    <sprite n="82034" x="18" y="24" w="8" h="8"/>
+    <sprite n="82035" x="31" y="24" w="8" h="8"/>
+    <sprite n="82036" x="44" y="24" w="8" h="8"/>
+    <sprite n="83111" x="57" y="24" w="320" h="50"/>
 </TextureAtlas>
