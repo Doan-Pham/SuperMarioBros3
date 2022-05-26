@@ -590,7 +590,6 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	
 void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 {
-
 	if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
 	{
 		CBrickQuestionMark* brick = dynamic_cast<CBrickQuestionMark*>(e->obj);
@@ -609,7 +608,13 @@ void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 			brick->AddHiddenItem(hiddenItem);
 			this->currentScene->AddObject(hiddenItem);
 		}
-		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+		if (!brick->IsContentGiven())
+		{
+			CGame::GetInstance()->UpdateScores(brick->GetScoresGivenWhenHit());
+			CGame::GetInstance()->UpdateCoins(brick->GetCoinsGivenWhenHit());
+		}
+		brick->SetState(BRICK_STATE_HIT_BY_MARIO);
+
 	}
 }
 

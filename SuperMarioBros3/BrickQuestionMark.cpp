@@ -71,12 +71,7 @@ void CBrickQuestionMark::SetState(int state)
 		ay = 0;
 		if (!isContentGiven)
 		{
-			if (hiddenItem == nullptr)
-			{
-				CGame::GetInstance()->UpdateCoins(this->GetCoinsGivenWhenHit());
-				CGame::GetInstance()->UpdateScores(this->GetScoresGivenWhenHit());
-			}
-			else
+			if (hiddenItem != nullptr)
 				hiddenItem->SetState(ITEM_STATE_APPEARING);
 			isContentGiven = true;
 		}

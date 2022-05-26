@@ -201,6 +201,11 @@ void CKoopa::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 		brick->AddHiddenItem(hiddenItem);
 		this->currentScene->AddObject(hiddenItem);
 	}
+	if (!brick->IsContentGiven())
+	{
+		CGame::GetInstance()->UpdateScores(brick->GetScoresGivenWhenHit());
+		CGame::GetInstance()->UpdateCoins(brick->GetCoinsGivenWhenHit());
+	}
 	e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
 }
 

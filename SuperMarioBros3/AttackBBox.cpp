@@ -75,7 +75,13 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 			brick->AddHiddenItem(hiddenItem);
 			currentScene->AddObject(hiddenItem);
 		}
-		e->obj->SetState(BRICK_STATE_HIT_BY_MARIO);
+		if (!brick->IsContentGiven())
+		{
+			CGame::GetInstance()->UpdateScores(brick->GetScoresGivenWhenHit());
+			CGame::GetInstance()->UpdateCoins(brick->GetCoinsGivenWhenHit());
+		}
+		brick->SetState(BRICK_STATE_HIT_BY_MARIO);
+
 	}
 
 	else if (dynamic_cast<CBrickGlass*>(e->obj))

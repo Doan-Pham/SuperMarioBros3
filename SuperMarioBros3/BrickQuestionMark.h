@@ -26,35 +26,35 @@ protected:
 	CItem* hiddenItem;
 	bool isHidingItem;
 
-	// This variable is to stop mario from making the brick bounce after its content is
-	// already given
+	// This variable is to stop mario from making the brick bounces again after it's already hit by
+	// mario
 	bool isHitByMario;
 
 	bool isContentGiven;
 
-	virtual void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Render();
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
 	// Lower than items to cover them
-	virtual int GetRenderPriority() { return 20; }
+	int GetRenderPriority() { return 20; }
 
 public:
 	CBrickQuestionMark(float x, float y, bool isHidingItem);
 
-	virtual int GetScoresGivenWhenHit()
+	int GetScoresGivenWhenHit()
 	{
-		if (hiddenItem == nullptr) return 0;
+		if (isHidingItem) return 0;
 		return BRICK_SCORES_GIVEN_WHEN_HIT;
 	}
-	virtual int GetCoinsGivenWhenHit()
+	int GetCoinsGivenWhenHit()
 	{
-		if (hiddenItem == nullptr) return 0;
+		if (isHidingItem) return 0;
 		return BRICK_COINS_GIVEN_WHEN_HIT;
 	}
 
-	virtual void SetState(int state);
-	virtual bool IsHidingItem() { return isHidingItem; }
-
-	virtual void AddHiddenItem(CItem* item) { this->hiddenItem = item; }
+	void SetState(int state);
+	bool IsHidingItem() { return isHidingItem; }
+	bool IsContentGiven() { return isContentGiven; }
+	void AddHiddenItem(CItem* item) { this->hiddenItem = item; }
 };
 
