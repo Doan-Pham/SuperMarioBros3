@@ -47,6 +47,10 @@ public:
 		string string_characters = string(characters);
 		this->characters = vector<char>(string_characters.begin(), string_characters.end());
 	}
+	void SetTextContent(string characters)
+	{
+		this->characters = vector<char>(characters.begin(), characters.end());
+	}
 
 	bool IsHidden() { return isHidden; }
 	int IsBlocking() { return 0; }

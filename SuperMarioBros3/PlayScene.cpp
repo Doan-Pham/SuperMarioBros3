@@ -891,6 +891,7 @@ void CPlayScene::Update(DWORD dt)
 {
 	SwitchMap();
 	maps[current_map]->Update(dt);
+	bottomHUD->Update(dt);
 }
 
 void CPlayScene::Render()

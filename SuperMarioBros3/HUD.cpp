@@ -17,6 +17,17 @@ void CHUD::Update(DWORD dt)
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
+	string scores_textContent(HUD_SCORES_DEFAULT_VALUE);
+
+	int scores, coins, lives;
+	CGame::GetInstance()->GetScoreCoinLives(scores, coins, lives);
+
+	string scores_string = to_string(scores);
+
+	scores_textContent.erase(scores_textContent.size() - scores_string.size(), scores_string.size());
+	scores_textContent += scores_string;
+	scores_text->SetTextContent(scores_textContent);
+
 	scores_text->SetPosition(
 		x + HUD_SCORES_POSITION_X_OFFSET_CENTER + cam_x,
 		y + HUD_SCORES_POSITION_Y_OFFSET_CENTER + cam_y);
