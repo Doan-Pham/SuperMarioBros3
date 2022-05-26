@@ -208,7 +208,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
-	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
+	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -529,6 +529,7 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 		CCard* card = dynamic_cast<CCard*>(e->obj);
 		card->SetState(CARD_STATE_SPINNING);
 		this->SetState(MARIO_STATE_COURSE_CLEAR);
+		currentScene->ClearCourse();
 		return;
 	}
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
@@ -751,6 +752,8 @@ int CMario::GetAniIdSmall()
 	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
+	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+
 	return aniId;
 }
 
@@ -827,6 +830,8 @@ int CMario::GetAniIdBig()
 		else aniId = ID_ANI_MARIO_HOLD_LEFT;
 	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
+
+	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_WALKING_RIGHT;
 
 	return aniId;
 }
@@ -917,8 +922,9 @@ int CMario::GetAniIdRaccoon()
 		if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_HOLD_RIGHT;
 		else aniId = ID_ANI_MARIO_RACCOON_HOLD_LEFT;
 	}
+	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
-
+	
 	return aniId;
 }
 
@@ -1000,6 +1006,8 @@ int CMario::GetAniIdFire()
 		else aniId = ID_ANI_MARIO_FIRE_THROW_FIREBALL_LEFT;
 	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_FIRE_IDLE_RIGHT;
+
+	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_FIRE_WALKING_RIGHT;
 
 	return aniId;
 }
@@ -1083,8 +1091,11 @@ int CMario::GetAniIdHammer()
 	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_HAMMER_IDLE_RIGHT;
 
+	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_HAMMER_WALKING_RIGHT;
+
 	return aniId;
 }
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -1349,9 +1360,11 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_COURSE_CLEAR:
 	{
+		ax = 0;
 		vx = 0;
 		break;
 	}
+
 	case MARIO_STATE_DIE:
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -1362,7 +1375,7 @@ void CMario::SetState(int state)
 	}
 
 	CGameObject::SetState(state);
-	DebugOut(L"Mario state: %d \n", this->state);
+	//DebugOut(L"Mario state: %d \n", this->state);
 }
 
 void CMario::SetLevel(int l)
