@@ -44,17 +44,15 @@ using namespace std;
 
 // Have to define this vector since it's static (it has to be static to be used in the static method:
 // AddObjects()
-vector<LPGAMEOBJECT> CPlayScene::objects;
-bool CPlayScene::isPBlockTurnedOn;
-unordered_map<int, LPMAP> CPlayScene::maps;
+
 int CPlayScene::current_map;
+unordered_map<int, LPMAP> CPlayScene::maps;
+
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CSampleKeyHandler(this);
-	isCameraYDefaultValue = true;
-	isPBlockTurnedOn = false;
 }
 
 
@@ -867,8 +865,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 			}
 			obj = new CText(x, y, vector<char>(textContent.begin(), textContent.end()));
+
+			maps[mapId]->AddText(textContent, (CText*)obj);
 			break;
 		}
+
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

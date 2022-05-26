@@ -13,6 +13,7 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, in
 	this->tileHeight = tileHeight;
 	isPBlockTurnedOn = false;
 	isCameraYDefaultValue = true;
+	isCourseCleared = false;
 	player = NULL;
 }
 
@@ -84,7 +85,14 @@ void CMap::Update(DWORD dt)
 	player->GetPosition(player_x, player_y);
 	
 	// When mario clears map by taking the card, he can goes past the map edges
-	if (player->GetState() != MARIO_STATE_COURSE_CLEAR)
+	if (isCourseCleared)
+	{
+		if (player_x > mapRightEdge)
+			texts[TEXT_COURSE_CLEAR]->UnHide();
+		if (player_x > (mapRightEdge + 50))
+			texts[TEXT_YOU_GOT_A_CARD]->UnHide();
+	}
+	else
 	{
 		// Adjust mario's position to prevent him from going beyond the map's edges
 		// If we don't add/substract COORDINATE_ADJUST_SYNC_TILED and simply use the map's edges,
@@ -101,7 +109,6 @@ void CMap::Update(DWORD dt)
 		if (player_y > mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED)
 			player_y = mapBottomEdge - COORDINATE_ADJUST_SYNC_TILED;
 	}
-
 
 	player->SetPosition(player_x, player_y);
 
@@ -172,7 +179,8 @@ void CMap::Render()
 		objects[i]->GetPosition(object_x, object_y);
 
 		if (object_x >= cam_x - 100 && object_x <= cam_x + SCREEN_WIDTH + 100 &&
-			object_y >= cam_y - 100 && object_y <= cam_y + SCREEN_HEIGHT + 100)
+			object_y >= cam_y - 100 && object_y <= cam_y + SCREEN_HEIGHT + 100 &&
+			!objects[i]->IsHidden())
 			objects[i]->Render();
 	}
 };

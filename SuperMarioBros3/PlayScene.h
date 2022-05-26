@@ -20,7 +20,7 @@ protected:
 	int next_map = -1;
 
 	void SwitchMap();
-	
+
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SPRITE(string line);
 	void _ParseSection_ANIMATION(string line);
@@ -30,11 +30,6 @@ protected:
 	void _ParseSection_TILESET(TiXmlElement* xmlElementTileSet, int mapId);
 	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer, int mapId);
 	void _ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, int mapId);
-
-	// This flag shows if camera's y coord has been modified (ex: when mario flies past a certain 
-	// point) and adjust the camera accordingly
-	bool isCameraYDefaultValue;
-	bool static isPBlockTurnedOn;
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);
@@ -55,6 +50,8 @@ public:
 
 	// This method still exists because a some objects rely on it
 	void static TurnPBlockOn() { maps[current_map]->TurnPBlockOn(); }
+	void static ClearCourse() { maps[current_map]->ClearCourse(); }
+
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 

@@ -28,11 +28,15 @@ class CText : public CGameObject
 {
 protected:
 	vector<char> characters;
+	bool isHidden;
 public:
 	CText(float x, float y, vector<char> characters) : CGameObject(x, y)
 	{
+		isHidden = true;
 		this->characters = characters;
 	}
+	bool IsHidden() { return isHidden; }
+	void UnHide() { isHidden = false; }
 	int IsBlocking() { return 0; }
 	int getSpriteId(char character);
 	void Render();
