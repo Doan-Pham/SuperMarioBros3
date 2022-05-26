@@ -11,10 +11,13 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, in
 	this->height = height;
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
+
 	isPBlockTurnedOn = false;
 	isCameraYDefaultValue = true;
 	isCourseCleared = false;
+
 	player = NULL;
+	clearCourseCard = NULL;
 }
 
 void CMap::Add(LPTILELAYER layer)
@@ -93,7 +96,16 @@ void CMap::Update(DWORD dt)
 			texts[TEXT_COURSE_CLEAR]->UnHide();
 
 		if (player_x > (mapRightEdge + MARIO_DISTANCE_BEFORE_SHOW_NEXT_TEXT))
+		{
 			texts[TEXT_YOU_GOT_A_CARD]->UnHide();
+
+			float text_l, text_t, text_r, text_b;
+			texts[TEXT_YOU_GOT_A_CARD]->GetBoundingBox(text_l, text_t, text_r, text_b);
+
+			clearCourseCard->SetState(CARD_STATE_TAKEN);
+			clearCourseCard->SetPosition(text_r + 3 * CHARACTER_STANDARD_WIDTH, (text_t + text_b) / 2);
+		}
+			
 	}
 	else
 	{

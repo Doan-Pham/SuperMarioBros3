@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:a3f98dd6a7d9d30c918ac3faa8750c04:e96c688b4d12cbd7f7cd425983964412:6ccaae03054aca6a350851b2ffe968bd$ -->
+<!-- $TexturePacker:SmartUpdate:9180e73e5b29c8fdb8a5212321aea6a8:28c1cafba10876093d00fef616357b63:6ccaae03054aca6a350851b2ffe968bd$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -19,7 +19,7 @@ vertices   => points in sprite coordinate system (x0,y0,x1,y1,x2,y2, ...)
 verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
-<TextureAtlas imagePath="spritesheet_item.png" width="80" height="98"
+<TextureAtlas imagePath="spritesheet_item.png" width="80" height="130"
 			  textureId ="4">
     <sprite n="41101" x="0" y="0" w="16" h="16"/>
     <sprite n="41201" x="21" y="0" w="16" h="16"/>
@@ -34,10 +34,13 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="44211" x="0" y="42" w="16" h="16"/>
     <sprite n="44212" x="21" y="42" w="16" h="16"/>
     <sprite n="44213" x="42" y="42" w="10" h="15"/>
-    <sprite n="44221" x="57" y="42" w="16" h="16"/>
-    <sprite n="44222" x="0" y="63" w="16" h="16"/>
-    <sprite n="44223" x="21" y="63" w="10" h="16"/>
-    <sprite n="44231" x="36" y="63" w="16" h="16"/>
-    <sprite n="44232" x="57" y="63" w="16" h="14"/>
-    <sprite n="44233" x="0" y="84" w="10" h="14"/>
+    <sprite n="44214" x="57" y="42" w="22" h="26"/>
+    <sprite n="44221" x="0" y="73" w="16" h="16"/>
+    <sprite n="44222" x="21" y="73" w="16" h="16"/>
+    <sprite n="44223" x="42" y="73" w="10" h="16"/>
+    <sprite n="44224" x="57" y="73" w="22" h="26"/>
+    <sprite n="44231" x="0" y="104" w="16" h="16"/>
+    <sprite n="44232" x="21" y="104" w="16" h="14"/>
+    <sprite n="44233" x="42" y="104" w="10" h="14"/>
+    <sprite n="44234" x="57" y="104" w="22" h="26"/>
 </TextureAtlas>

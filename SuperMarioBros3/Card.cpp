@@ -34,21 +34,29 @@ void CCard::Render()
 	case CARD_TYPE_MUSHROOM:
 		if (state == CARD_STATE_NOT_TAKEN)
 			CSprites::GetInstance()->Get(ID_SPRITE_CARD_MUSHROOM_NOT_TAKEN)->Draw(x, y);
-		else
+		else if (state == CARD_STATE_SPINNING)
 			CAnimations::GetInstance()->Get(ID_ANI_CARD_MUSHROOM_SPINNING)->Render(x, y);
+		else 
+			CSprites::GetInstance()->Get(ID_SPRITE_CARD_MUSHROOM_TAKEN)->Draw(x, y);
+
 		break;
+
 	case CARD_TYPE_STAR:
 		if (state == CARD_STATE_NOT_TAKEN)
 			CSprites::GetInstance()->Get(ID_SPRITE_CARD_STAR_NOT_TAKEN)->Draw(x, y);
-		else
+		else if (state == CARD_STATE_SPINNING)
 			CAnimations::GetInstance()->Get(ID_ANI_CARD_STAR_SPINNING)->Render(x, y);
+		else
+			CSprites::GetInstance()->Get(ID_SPRITE_CARD_STAR_TAKEN)->Draw(x, y);
 
 		break;
 	case CARD_TYPE_FLOWER:
 		if (state == CARD_STATE_NOT_TAKEN)
 			CSprites::GetInstance()->Get(ID_SPRITE_CARD_FLOWER_NOT_TAKEN)->Draw(x, y);
-		else
+		else if (state == CARD_STATE_SPINNING)
 			CAnimations::GetInstance()->Get(ID_ANI_CARD_FLOWER_SPINNING)->Render(x, y);
+		else 
+			CSprites::GetInstance()->Get(ID_SPRITE_CARD_FLOWER_TAKEN)->Draw(x, y);
 
 		break;
 	}

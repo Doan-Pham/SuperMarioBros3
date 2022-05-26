@@ -580,8 +580,10 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 			case OBJECT_TYPE_ITEM_CARD:
 			{
 				obj = new CCard(x, y);
+				maps[mapId]->AddClearCourseCard((CCard*)obj);
 				break;
 			}
+
 			default:
 			{
 				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);

@@ -25,6 +25,14 @@ void CText::Render()
 	}
 }
 
+void CText::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	left = x - CHARACTER_STANDARD_WIDTH / 2;
+	top = y - CHARACTER_STANDARD_HEIGHT / 2;
+	right = left + characters.size() * CHARACTER_STANDARD_WIDTH;
+	bottom = top + CHARACTER_STANDARD_HEIGHT;
+}
+
 int CText::getSpriteId(char character) 
 {
 	int spriteId = -1;

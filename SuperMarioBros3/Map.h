@@ -6,6 +6,7 @@
 #include "TileSet.h"
 #include "GameObject.h"
 #include "Text.h"
+#include "Card.h"
 
 #define COORDINATE_ADJUST_SYNC_TILED 8
 #define TEXT_COURSE_CLEAR	"COURSE CLEAR"
@@ -38,6 +39,7 @@ protected:
 	std::vector<LPGAMEOBJECT> objects;
 
 	unordered_map<string, CText*> texts;
+	CCard* clearCourseCard;
 
 	bool isPBlockTurnedOn;
 
@@ -54,6 +56,7 @@ public:
 	void Add(LPTILESET tileSet) { tileSets.push_back(tileSet); };
 	void Add(LPGAMEOBJECT object) { objects.push_back(object); };
 	void AddText(string textContent, CText* text) { texts[textContent] = text; }
+	void AddClearCourseCard(CCard* card) { this->clearCourseCard = card; }
 
 	virtual void Update(DWORD dt);
 	void Render();
