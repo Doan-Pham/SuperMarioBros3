@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "GameObject.h"
+#include "HUD.h"
 
 
 class CPlayScene : public CScene
@@ -18,6 +19,8 @@ protected:
 	static unordered_map<int, LPMAP> maps;
 	static int current_map;
 	int next_map = -1;
+
+	CHUD* bottomHUD;
 
 	void SwitchMap();
 

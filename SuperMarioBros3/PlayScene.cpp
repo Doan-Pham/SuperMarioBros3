@@ -53,6 +53,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CSampleKeyHandler(this);
+
+	bottomHUD = new CHUD(SCREEN_HEIGHT - 100, SCREEN_WIDTH/2, 152, 28);
 }
 
 
@@ -893,7 +895,8 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	if (maps[current_map] != nullptr)
-		maps[current_map]->Render();		
+		maps[current_map]->Render();	
+	bottomHUD->Render();
 }
 
 /*

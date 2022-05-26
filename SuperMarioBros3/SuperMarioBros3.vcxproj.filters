@@ -157,6 +157,9 @@
     <ClCompile Include="Text.cpp">
       <Filter>Game Object\Other</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Game Object\Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -322,6 +325,9 @@
       <Filter>Game Object\Item\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
+      <Filter>Game Object\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
       <Filter>Game Object\Other</Filter>
     </ClInclude>
   </ItemGroup>
