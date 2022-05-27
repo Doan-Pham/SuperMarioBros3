@@ -1,5 +1,32 @@
 #include "PMeter.h"
 
+void CPMeter::Render()
+{
+	CSprites* sprites = CSprites::GetInstance();
+	CAnimations* animations = CAnimations::GetInstance();
+
+	float current_charge_level_x = x;
+	float current_charge_level_value = P_METER_CHARGE_LEVEL_VALUE;
+	while (current_charge_level_value <= P_METER_MAX_VALUE)
+	{
+		if (currentValue >= current_charge_level_value)
+			sprites->Get(ID_SPRITE_P_METER_ARROW_CHARGED)->Draw(current_charge_level_x, y);
+		else 
+			sprites->Get(ID_SPRITE_P_METER_ARROW_NOT_CHARGED)->Draw(current_charge_level_x, y);
+
+		if (current_charge_level_value == P_METER_MAX_VALUE)
+			current_charge_level_x += P_METER_P_BUTTON_WIDTH;
+		else
+			current_charge_level_x += P_METER_ARROW_WIDTH;
+
+		current_charge_level_value += P_METER_CHARGE_LEVEL_VALUE;
+	}
+	if (currentValue == maxValue)
+		animations->Get(ID_ANI_P_METER_P_BUTTON_FULL_CHARGED)->Render(current_charge_level_x, y);
+	else 
+		sprites->Get(ID_SPRITE_P_METER_P_BUTTON_NOT_CHARGED)->Draw(current_charge_level_x, y);
+}
+
 void CPMeter::SetState(int state)
 {
 

@@ -2,10 +2,24 @@
 
 #include <windows.h>
 #include "debug.h"
+#include "GameObject.h"
 
+
+#define ID_SPRITE_P_METER_ARROW_NOT_CHARGED		83211
+#define ID_SPRITE_P_METER_P_BUTTON_NOT_CHARGED	83212
+
+#define ID_SPRITE_P_METER_ARROW_CHARGED			83221
+#define ID_SPRITE_P_METER_P_BUTTON_CHARGED		83222
+
+#define ID_ANI_P_METER_P_BUTTON_FULL_CHARGED	8321
+
+#define P_METER_ARROW_WIDTH		8
+#define P_METER_P_BUTTON_WIDTH	15
+
+// The value p-meter needs to reach to fill one charge level
+#define P_METER_CHARGE_LEVEL_VALUE		20
 #define P_METER_MIN_VALUE				0
 #define P_METER_MAX_VALUE				120
-
 
 // In the original game, after the player click "A", the game waits for a second before increasing 
 // the p-meter
@@ -24,7 +38,7 @@
 #define P_METER_STATE_INCREASING		200
 #define P_METER_STATE_DECREASING		300
 
-class CPMeter
+class CPMeter : public CGameObject
 {
 	int state;
 	int currentValue;
@@ -67,8 +81,11 @@ public:
 		//key_A_hit_start = -1;
 		//increase_start = 9999999999;
 	}
+	void Render();
 	void SetState(int state);
-	bool isFullyCharged() { return currentValue == maxValue; }
+	bool IsFullyCharged() { return currentValue == maxValue; }
+	int GetChargeLevel() { return currentValue / P_METER_CHARGE_LEVEL_VALUE; }
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom) {};
 };
 
 typedef CPMeter* LPPMETER;

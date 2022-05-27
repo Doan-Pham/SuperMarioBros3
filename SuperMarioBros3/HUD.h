@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Text.h"
+#include "PMeter.h"
 
 #define ID_SPRITE_HUD_BOTTOM_FRAME	83111
 
@@ -21,6 +22,9 @@
 #define HUD_TIME_TEXT_POSITION_X_OFFSET			-10
 #define HUD_TIME_TEXT_POSITION_Y_OFFSET			-1
 
+#define HUD_P_METER_POSITION_X_OFFSET			-90
+#define HUD_P_METER_POSITION_Y_OFFSET			-10
+
 class CHUD : public CGameObject
 {
 protected:
@@ -31,6 +35,7 @@ protected:
 	CText* time_text;
 	CText* coins_text;
 
+	CPMeter* p_meter;
 public:
 	CHUD(float x, float y, float width, float height) : CGameObject(x, y)
 	{
@@ -57,6 +62,8 @@ public:
 			HUD_COINS_TEXT_DEFAULT_VALUE);
 		coins_text->UnHide();
 	};
+
+	void SetPMeter(CPMeter* p_meter) { this->p_meter = p_meter; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt);
 	void Render();
