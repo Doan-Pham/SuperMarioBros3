@@ -15,6 +15,7 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, in
 	isPBlockTurnedOn = false;
 	isCameraYDefaultValue = true;
 	isCourseCleared = false;
+	isAddedAcquiredCard = false;
 
 	player = NULL;
 	clearCourseCard = NULL;
@@ -96,7 +97,7 @@ void CMap::Update(DWORD dt)
 		if (player_x > mapRightEdge)
 			texts[TEXT_COURSE_CLEAR]->UnHide();
 
-		if (player_x > (mapRightEdge + MARIO_DISTANCE_BEFORE_SHOW_NEXT_TEXT))
+		if (player_x > mapRightEdge + MARIO_DISTANCE_BEFORE_SHOW_NEXT_TEXT && !isAddedAcquiredCard)
 		{
 			texts[TEXT_YOU_GOT_A_CARD]->UnHide();
 
@@ -105,6 +106,9 @@ void CMap::Update(DWORD dt)
 
 			clearCourseCard->SetState(CARD_STATE_TAKEN);
 			clearCourseCard->SetPosition(text_r + 3 * CHARACTER_STANDARD_WIDTH, (text_t + text_b) / 2);
+
+			CGame::GetInstance()->AddCardAcquired(clearCourseCard->GetCurrentType());
+			isAddedAcquiredCard = true;
 		}
 
 	}

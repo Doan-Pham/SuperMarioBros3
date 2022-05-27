@@ -13,6 +13,7 @@ using namespace std;
 #include "KeyEventHandler.h"
 #include "Scene.h"
 
+
 // Have to limit FPS because the game was running too fast and rendering even the frames
 // where mario was falling through platform and being pushed back
 #define MAX_FRAME_RATE 30 // 100
@@ -52,7 +53,7 @@ class CGame
 	float cam_y = 0.0f;
 	int coins, scores;
 	int lives = 3;
-
+	vector<int> cardsAcquired;
 	HINSTANCE hInstance;
 
 	ID3D10SamplerState* pPointSamplerState;
@@ -114,11 +115,13 @@ public:
 	void UpdateScores(int score) { scores += score; }
 	void UpdateCoins(int coin) { coins += coin; }
 	void UpdateLives(int life) { lives += life; }
+	void AddCardAcquired(int card_type) { this->cardsAcquired.push_back(card_type); }
 
 	void GetScoreCoinLives(int& score, int& coin, int& life) 
 	{
 		score = this->scores; coin = this->coins; life = this->lives;
 	}
+	vector<int> GetCardsAcquired() { return this->cardsAcquired; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);

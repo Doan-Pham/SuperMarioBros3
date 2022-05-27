@@ -1,6 +1,7 @@
 #include "Card.h"
 #include "Sprites.h"
 #include "Animations.h"
+#include "debug.h"
 
 void CCard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -68,6 +69,20 @@ void CCard::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	top = y - CARD_BBOX_HEIGHT / 2;
 	right = left + CARD_BBOX_WIDTH;
 	bottom = top + CARD_BBOX_HEIGHT;
+}
+
+void CCard::SetCurrentType(int set_card_type)
+{
+	for (int i = 0; i < card_types.size(); i++)
+	{
+		if (card_types[i] == set_card_type)
+		{
+			current_type_index = i;
+			return;
+		}
+	}
+	DebugOut(L"[ERROR] Card type %i does not exist", set_card_type);
+
 }
 
 void CCard::SetState(int state)

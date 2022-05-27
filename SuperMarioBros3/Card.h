@@ -3,9 +3,9 @@
 
 #define CARD_SPEED_Y	0.08f
 
-#define CARD_TYPE_MUSHROOM	1
-#define CARD_TYPE_STAR		2
-#define CARD_TYPE_FLOWER	3
+#define CARD_TYPE_MUSHROOM	0
+#define CARD_TYPE_STAR		1
+#define CARD_TYPE_FLOWER	2
 
 #define CARD_BBOX_WIDTH		16
 #define CARD_BBOX_HEIGHT	16
@@ -35,7 +35,7 @@ protected:
 	int current_type_index;
 	ULONGLONG switch_type_start;
 public:
-	CCard(float x, float y) : CItem(x, y)
+	CCard(float x = -999.0f, float y = -999.0f) : CItem(x, y)
 	{
 		current_type_index = -1;
 
@@ -53,6 +53,7 @@ public:
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int GetCurrentType() { return card_types[current_type_index]; }
+	void SetCurrentType(int set_card_type);
 
 	void SetState(int state);
 };

@@ -51,6 +51,8 @@ protected:
 
 	bool isCourseCleared;
 
+	bool isAddedAcquiredCard;
+
 public:
 	CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, int tileHeight);
 
