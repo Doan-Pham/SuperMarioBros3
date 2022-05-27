@@ -15,7 +15,7 @@
 #include "PBlock.h"
 #include "Coin.h"
 
-CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, int width, int height, 
+CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, float width, float height, 
 	const LPPLAYSCENE currentScene) : CGameObject(x, y), currentScene(currentScene)
 {
 	this->vx = vx;

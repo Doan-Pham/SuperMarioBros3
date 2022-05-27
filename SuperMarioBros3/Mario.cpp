@@ -203,7 +203,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isTailWhipping)
 	{
 		raccoon_tail->SetSpeed(vx, vy);
-		raccoon_tail->SetPosition(x + nx * GetBBoxWidth() / 2, y);
+		raccoon_tail->SetPosition(x + nx * GetBBoxWidth() / 2, y + GetBBoxHeight() / 4);
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
@@ -589,7 +589,7 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
 {
-	if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
+	if ((e->ny > 0 && e->nx == 0))
 	{
 		CBrickQuestionMark* brick = dynamic_cast<CBrickQuestionMark*>(e->obj);
 		if (brick->IsHidingItem())
@@ -626,7 +626,7 @@ void CMario::OnCollisionWithBrickGlass(LPCOLLISIONEVENT e)
 		CGame::GetInstance()->UpdateCoins(brick->GetCoinsGivenWhenHit());
 		brick->Delete();
 	}
-	else if ((e->ny > 0 && e->nx == 0) || (e->nx != 0 && e->ny == 0 && isTailWhipping))
+	else if ((e->ny > 0 && e->nx == 0))
 	{
 		float brick_x, brick_y;
 		brick->GetPosition(brick_x, brick_y);
@@ -1323,11 +1323,14 @@ void CMario::SetState(int state)
 			if (raccoon_tail == NULL)
 			{
 				raccoon_tail = new CAttackBBox(
-					x + nx * GetBBoxWidth(), y,
+					x + nx * GetBBoxWidth(), y + GetBBoxHeight() / 4,
 					vx, vy,
-					GetBBoxWidth(), GetBBoxHeight(),
+					GetBBoxWidth(), GetBBoxHeight() / 2,
 					currentScene);
 
+				float tail_l, tail_t, tail_r, tail_b;
+				raccoon_tail->GetBoundingBox(tail_l, tail_t, tail_r, tail_b);
+				DebugOutTitle(L"tail_y : %0.5f, mario_y : %0.5f", tail_t, y);
 				this->currentScene->AddObject(raccoon_tail);
 			}
 		}

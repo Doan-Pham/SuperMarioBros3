@@ -10,23 +10,23 @@ typedef CPlayScene* LPPLAYSCENE;
 class CAttackBBox : public CGameObject
 {
 protected:
-	int width, height;
+	float width, height;
 
 	// TODO: Need a better way than this to interact with brick_question_mark
 	const LPPLAYSCENE currentScene;
 
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& botto);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render() { RenderBoundingBox(); };
-
-	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt) {};
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 
 public:
-	CAttackBBox(float x, float y, float vx, float vy, int width, int height,
+	CAttackBBox(float x, float y, float vx, float vy, float width, float height,
 		const LPPLAYSCENE currentScene);
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	int IsCollidable() { return 1; };
+	int IsBlocking() { return 0; }
+
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Render() { RenderBoundingBox(); };
 };
 
