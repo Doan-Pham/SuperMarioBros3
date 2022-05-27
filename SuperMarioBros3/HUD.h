@@ -3,27 +3,33 @@
 #include "GameObject.h"
 #include "Text.h"
 #include "PMeter.h"
+#include "Card.h"
 
 #define ID_SPRITE_HUD_BOTTOM_FRAME	83111
 
 #define HUD_SCORES_TEXT_DEFAULT_VALUE			"0000000"
 
 // The offset of scores_text based on the center coordinates the whole HUD
-#define HUD_SCORES_TEXT_POSITION_X_OFFSET		-90
-#define HUD_SCORES_TEXT_POSITION_Y_OFFSET		-1
+#define HUD_SCORES_TEXT_POSITION_X_OFFSET		-60
+#define HUD_SCORES_TEXT_POSITION_Y_OFFSET		-4
 
 // There is a blank space in this value because in original game, the value for coins doesn't have
 // a "0" character before single-digit values (from 1-9)
 #define HUD_COINS_TEXT_DEFAULT_VALUE			" 0"
-#define HUD_COINS_TEXT_POSITION_X_OFFSET		-2
-#define HUD_COINS_TEXT_POSITION_Y_OFFSET		-9
+#define HUD_COINS_TEXT_POSITION_X_OFFSET		18
+#define HUD_COINS_TEXT_POSITION_Y_OFFSET		-12
 
 #define HUD_TIME_TEXT_DEFAULT_VALUE				"000"
-#define HUD_TIME_TEXT_POSITION_X_OFFSET			-10
-#define HUD_TIME_TEXT_POSITION_Y_OFFSET			-1
+#define HUD_TIME_TEXT_POSITION_X_OFFSET			10
+#define HUD_TIME_TEXT_POSITION_Y_OFFSET			-4
 
-#define HUD_P_METER_POSITION_X_OFFSET			-90
-#define HUD_P_METER_POSITION_Y_OFFSET			-10
+#define HUD_P_METER_POSITION_X_OFFSET			-60
+#define HUD_P_METER_POSITION_Y_OFFSET			-12
+
+#define HUD_CARDS_POSITION_X_OFFSET				55
+#define HUD_CARDS_POSITION_Y_OFFSET				-9
+
+#define MAX_ACQUIRED_CARDS_COUNT	3
 
 class CHUD : public CGameObject
 {
@@ -36,6 +42,8 @@ protected:
 	CText* coins_text;
 
 	CPMeter* p_meter;
+	vector<CCard*> cardsAcquired;
+
 public:
 	CHUD(float x, float y, float width, float height) : CGameObject(x, y)
 	{
@@ -61,9 +69,18 @@ public:
 			y - HUD_COINS_TEXT_POSITION_Y_OFFSET,
 			HUD_COINS_TEXT_DEFAULT_VALUE);
 		coins_text->UnHide();
+
+		for (int i = 0; i < MAX_ACQUIRED_CARDS_COUNT; i++)
+		{
+			CCard* card = new CCard();
+			card->SetState(CARD_STATE_TAKEN);
+			cardsAcquired.push_back(card);
+		}
+
 	};
 
 	void SetPMeter(CPMeter* p_meter) { this->p_meter = p_meter; }
+
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt);
 	void Render();

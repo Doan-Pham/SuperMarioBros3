@@ -17,7 +17,6 @@ void CHUD::Update(DWORD dt)
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 
-
 	int scores, coins, lives;
 	CGame::GetInstance()->GetScoreCoinLives(scores, coins, lives);
 
@@ -41,10 +40,15 @@ void CHUD::Update(DWORD dt)
 		x + HUD_COINS_TEXT_POSITION_X_OFFSET + cam_x,
 		y + HUD_COINS_TEXT_POSITION_Y_OFFSET + cam_y);
 
-
 	p_meter->SetPosition(
 		x + HUD_P_METER_POSITION_X_OFFSET + cam_x,
 		y + HUD_P_METER_POSITION_Y_OFFSET + cam_y);
+
+	vector<int> card_types = CGame::GetInstance()->GetCardsAcquired();
+	for (int i = 0; i < card_types.size();i++)
+	{
+		cardsAcquired[i]->SetCurrentType(card_types[i]);
+	};
 
 	time_text->SetPosition(
 		x + HUD_TIME_TEXT_POSITION_X_OFFSET + cam_x,
@@ -70,5 +74,15 @@ void CHUD::Render()
 	time_text->Render();
 	coins_text->Render();
 	p_meter->Render();
+
+	float current_card_x = x + HUD_CARDS_POSITION_X_OFFSET + cam_x;
+	float card_y = y + HUD_CARDS_POSITION_Y_OFFSET + cam_y;
+
+	for (CCard* card : cardsAcquired)
+	{
+		card->SetPosition(current_card_x, card_y);
+		card->Render();
+		current_card_x += CARD_BBOX_WIDTH + 2;
+	}
 	//DebugOut(L"hud_x : %0.5f; hud_y : %0.5f, cam_x : %0.5f, cam_y : %0.5f \n", x, y, cam_x, cam_y);
 }
