@@ -299,16 +299,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 				}
 				else
 				{
-					if (isTailWhipping && e->nx != 0 && e->ny == 0)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
-					}
-					else
-					{
-						level = MARIO_LEVEL_BIG;
-						StartUntouchable();
-					}
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
 				}
 			}
 		}
@@ -354,16 +346,8 @@ void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 				}
 				else
 				{
-					if (isTailWhipping && e->nx != 0 && e->ny == 0)
-					{
-						goomba->SetState(GOOMBA_RED_WING_STATE_DIE);
-						CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
-					}
-					else
-					{
-						level = MARIO_LEVEL_BIG;
-						StartUntouchable();
-					}
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
 				}
 			}
 		}
@@ -424,15 +408,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				}
 				else
 				{
-					if (isTailWhipping && e->nx != 0 && e->ny == 0)
-					{
-						koopa->SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
-					}
-					else
-					{
-						level = MARIO_LEVEL_BIG;
-						StartUntouchable();
-					}
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
 				}
 			}
 			else
@@ -1327,10 +1304,7 @@ void CMario::SetState(int state)
 					vx, vy,
 					GetBBoxWidth(), GetBBoxHeight() / 2,
 					currentScene);
-
-				float tail_l, tail_t, tail_r, tail_b;
-				raccoon_tail->GetBoundingBox(tail_l, tail_t, tail_r, tail_b);
-				DebugOutTitle(L"tail_y : %0.5f, mario_y : %0.5f", tail_t, y);
+				raccoon_tail->SetDirection(nx);
 				this->currentScene->AddObject(raccoon_tail);
 			}
 		}

@@ -54,6 +54,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	if (isOnPlatform && state == KOOPA_STATE_HOPPING) SetState(KOOPA_STATE_HOPPING);
+	if (isOnPlatform && state == KOOPA_STATE_SHELL_STILL_UPSIDE)
+	{
+		vx = 0;
+		vy = 0;
+	}
 
 	if (isShell && GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT &&
 		state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE &&
@@ -314,7 +319,9 @@ void CKoopa::SetState(int state)
 	{
 		isShell = true;
 		shell_start = GetTickCount64();
-		vx = 0;
+		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
+		vx = nx * KOOPA_SHELL_BOUNCE_SPPED_X;
+		vy = -KOOPA_SHELL_BOUNCE_SPEED_Y;
 
 		if (attachedBBox != NULL)
 		{

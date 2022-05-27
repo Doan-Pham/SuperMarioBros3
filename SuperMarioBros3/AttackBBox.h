@@ -25,7 +25,7 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
-
+	void SetDirection(int nx) { this->nx = nx; }
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render() { RenderBoundingBox(); };
 };
