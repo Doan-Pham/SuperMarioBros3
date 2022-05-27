@@ -1,5 +1,4 @@
 #pragma once
-
 #include "TinyXml/tinyxml.h"
 
 #include "Game.h"
@@ -8,7 +7,7 @@
 #include "Map.h"
 #include "GameObject.h"
 #include "HUD.h"
-
+#include "PMeter.h"
 
 class CPlayScene : public CScene
 {
@@ -21,6 +20,7 @@ protected:
 	int next_map = -1;
 
 	CHUD* bottomHUD;
+	CPMeter* pMeter;
 
 	void SwitchMap();
 
@@ -44,6 +44,8 @@ public:
 
 	// This method still exists because some objects rely on it
 	LPGAMEOBJECT GetPlayer() { return maps[current_map]->GetPlayer(); }
+
+	CPMeter* GetPMeter() { return pMeter; }
 
 	void InitiateSwitchMap(int map_id);
 	LPMAP GetCurrentMap() { return maps[current_map]; }

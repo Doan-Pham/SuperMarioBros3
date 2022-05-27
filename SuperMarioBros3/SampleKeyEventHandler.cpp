@@ -9,7 +9,9 @@
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)(currentScene)->GetPlayer();
+
 	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR) return;
 
 	CMap* map = (CMap*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetCurrentMap();
@@ -37,7 +39,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 			// P-meter is full in 2 cases: mario's flying, and mario's has finished flying and falling
 			// but has not touched the ground
-			if (mario->IsPMeterFullyCharged())
+			if (currentScene->GetPMeter()->IsFullyCharged())
 			{
 				if (!mario->IsTrulyFalling()) mario->SetState(MARIO_STATE_FLY);
 				else mario->SetState(MARIO_STATE_TAIL_WAGGING);

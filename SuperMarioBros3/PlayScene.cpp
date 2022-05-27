@@ -54,8 +54,12 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	float back_buffer_width = CGame::GetInstance()->GetBackBufferWidth();
 	float back_buffer_height = CGame::GetInstance()->GetBackBufferHeight();
 
-	bottomHUD = new CHUD(back_buffer_width /2, back_buffer_height - BOTTOM_HUD_HEIGHT / 2,
+	pMeter = new CPMeter();
+
+	bottomHUD = new CHUD(back_buffer_width / 2, back_buffer_height - BOTTOM_HUD_HEIGHT / 2,
 		back_buffer_width, BOTTOM_HUD_HEIGHT);
+
+	bottomHUD->SetPMeter(pMeter);
 }
 
 
@@ -124,7 +128,7 @@ void CPlayScene::SwitchMap()
 	CMario* mario_cur = (CMario*)maps[current_map]->GetPlayer();
 	CMario* mario_next = (CMario*)maps[next_map]->GetPlayer();
 	mario_next->SetLevel(mario_cur->GetLevel());
-	current_map = next_map;	
+	current_map = next_map;
 }
 
 void CPlayScene::InitiateSwitchMap(int map_id)
@@ -143,7 +147,7 @@ void CPlayScene::_ParseSection_SETTINGS(string line)
 
 		current_map = next_map;
 	}
-		
+
 	else
 		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
 }
@@ -299,7 +303,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 				return;
 			}
 
-			if (maps[mapId] != nullptr) 
+			if (maps[mapId] != nullptr)
 			{
 				DebugOut(L"[INFO] Map has already been loaded: %i\n", mapId);
 				return;
@@ -364,7 +368,7 @@ void CPlayScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet, int mapI
 	//Parse tileset's id and textureId
 	TiXmlElement* xmlProperties = xmlElementTileSet->FirstChildElement("properties");
 
- 	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
+	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
 		; currentElement != nullptr
 		; currentElement = currentElement->NextSiblingElement())
 	{
@@ -488,7 +492,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				DebugOut(L"[INFO] MARIO object was created before for this map: %i!\n", mapId);
 				return;
 			}
-			
+
 			maps[mapId]->SetPlayer(obj);
 
 			DebugOut(L"[INFO] Player object has been created for map : %i!\n", mapId);
@@ -804,7 +808,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				CMario* mario = (CMario*)maps[mapId]->GetPlayer();
 				mario->SetSpawnPipeLocation((CPipe*)obj);
 			}
-			
+
 			break;
 		}
 
@@ -827,7 +831,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 		case OBJECT_TYPE_PORTAL:
 		{
-			float width =(float)atof(currentElementObject->Attribute("width"));
+			float width = (float)atof(currentElementObject->Attribute("width"));
 			float height = (float)atof(currentElementObject->Attribute("height"));
 			int map_id = -1;
 			int scene_id = -1;
@@ -849,7 +853,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 			}
 			obj = new CPortal(
 				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
-				y + height / 2 - COORDINATE_ADJUST_SYNC_TILED, 
+				y + height / 2 - COORDINATE_ADJUST_SYNC_TILED,
 				width, height, scene_id, map_id);
 			break;
 		}
@@ -897,7 +901,7 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	if (maps[current_map] != nullptr)
-		maps[current_map]->Render();	
+		maps[current_map]->Render();
 	bottomHUD->Render();
 }
 

@@ -327,8 +327,6 @@ class CMario : public CGameObject
 
 	BOOLEAN isOnPlatform;
 
-	LPPMETER pMeter;
-
 	CKoopa* shellBeingHeld;
 
 	// *** CONST *** pointer to the current playscene
@@ -384,12 +382,10 @@ public:
 	// This is so that mario will always be the first object in the vector "objects"
 	virtual int GetRenderPriority() { return 99999999; }
 
-	bool IsPMeterFullyCharged() { return pMeter->isFullyCharged(); }
-
 	bool IsHoldingShell() { return isHoldingShell; }
 
 	// This if for when koopa turns back to shell and mario no longer holds the shell
-	void ReleaseHeldShell() { isHoldingShell = false; ; shellBeingHeld = NULL;};
+	void ReleaseHeldShell() { isHoldingShell = false; ; shellBeingHeld = NULL; };
 
 	void KickHeldShell();
 
