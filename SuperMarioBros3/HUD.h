@@ -8,7 +8,6 @@
 #define ID_SPRITE_HUD_BOTTOM_FRAME	83111
 
 #define HUD_SCORES_TEXT_DEFAULT_VALUE			"0000000"
-
 // The offset of scores_text based on the center coordinates the whole HUD
 #define HUD_SCORES_TEXT_POSITION_X_OFFSET		-60
 #define HUD_SCORES_TEXT_POSITION_Y_OFFSET		-4
@@ -16,17 +15,25 @@
 // There is a blank space in this value because in original game, the value for coins doesn't have
 // a "0" character before single-digit values (from 1-9)
 #define HUD_COINS_TEXT_DEFAULT_VALUE			" 0"
-#define HUD_COINS_TEXT_POSITION_X_OFFSET		18
+#define HUD_COINS_TEXT_POSITION_X_OFFSET		22
 #define HUD_COINS_TEXT_POSITION_Y_OFFSET		-12
 
 #define HUD_TIME_TEXT_DEFAULT_VALUE				"000"
-#define HUD_TIME_TEXT_POSITION_X_OFFSET			10
+#define HUD_TIME_TEXT_POSITION_X_OFFSET			14
 #define HUD_TIME_TEXT_POSITION_Y_OFFSET			-4
+
+#define HUD_WORLD_TEXT_DEFAULT_VALUE			"1"
+#define HUD_WORLD_TEXT_POSITION_X_OFFSET		-75
+#define HUD_WORLD_TEXT_POSITION_Y_OFFSET		-12
+
+#define HUD_LIVES_TEXT_DEFAULT_VALUE			" 3"
+#define HUD_LIVES_TEXT_POSITION_X_OFFSET		-83
+#define HUD_LIVES_TEXT_POSITION_Y_OFFSET		-4
 
 #define HUD_P_METER_POSITION_X_OFFSET			-60
 #define HUD_P_METER_POSITION_Y_OFFSET			-12
 
-#define HUD_CARDS_POSITION_X_OFFSET				55
+#define HUD_CARDS_POSITION_X_OFFSET				58
 #define HUD_CARDS_POSITION_Y_OFFSET				-9
 
 #define MAX_ACQUIRED_CARDS_COUNT	3
@@ -40,6 +47,8 @@ protected:
 	CText* scores_text;
 	CText* time_text;
 	CText* coins_text;
+	CText* lives_text;
+	CText* current_world_text;
 
 	CPMeter* p_meter;
 	vector<CCard*> cardsAcquired;
@@ -69,6 +78,18 @@ public:
 			y - HUD_COINS_TEXT_POSITION_Y_OFFSET,
 			HUD_COINS_TEXT_DEFAULT_VALUE);
 		coins_text->UnHide();
+
+		current_world_text = new CText(
+			x - HUD_WORLD_TEXT_POSITION_X_OFFSET,
+			y - HUD_WORLD_TEXT_POSITION_Y_OFFSET,
+			HUD_WORLD_TEXT_DEFAULT_VALUE);
+		current_world_text->UnHide();
+
+		lives_text = new CText(
+			x - HUD_LIVES_TEXT_POSITION_X_OFFSET,
+			y - HUD_LIVES_TEXT_POSITION_Y_OFFSET,
+			HUD_LIVES_TEXT_DEFAULT_VALUE);
+		lives_text->UnHide();
 
 		for (int i = 0; i < MAX_ACQUIRED_CARDS_COUNT; i++)
 		{

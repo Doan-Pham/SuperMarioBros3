@@ -36,7 +36,7 @@ public:
 		isHidden = true;
 		this->characters = characters;
 	}
-	CText(float x, float y, string characters) : CGameObject(x, y)
+	CText(float x = -999.0f, float y = -999.0f, string characters = "") : CGameObject(x, y)
 	{
 		isHidden = true;
 		this->characters = vector<char>(characters.begin(), characters.end());
