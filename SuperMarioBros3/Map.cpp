@@ -78,8 +78,9 @@ void CMap::Update(DWORD dt)
 			objects[i]->Update(dt, &coObjects);
 	}
 
-	float mapLeftEdge = 0;
-	float mapTopEdge = 0;
+	// Adjust the left, top edges to see the cropped tiles
+	float mapLeftEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+	float mapTopEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
 
 	// Adjust the right, bottom edges to avoid seeing empty tiles
 	float mapRightEdge = (float)(width * tileWidth - COORDINATE_ADJUST_SYNC_TILED);
@@ -166,6 +167,11 @@ void CMap::Update(DWORD dt)
 		cam_y = mapBottomEdge - game->GetBackBufferHeight();
 	if (cam_y < mapTopEdge) cam_y = mapTopEdge;
 
+	//DebugOutTitle(L"cam_x: %0.2f cam_y : %0.2f, top_edge : %0.2f, bot_edge : %0.2f, back_buff_w : %0.2f, back_buff_h : %0.2f",
+	//	cam_x, cam_y, mapTopEdge, mapBottomEdge, game->GetBackBufferWidth(),game->GetBackBufferHeight());
+	
+	//DebugOutTitle(L"mario_x: %0.2f mario_y : %0.2f, top_edge : %0.2f, bot_edge : %0.2f, back_buff_w : %0.2f, back_buff_h : %0.2f",
+	//	player_x, player_y, mapTopEdge, mapBottomEdge, game->GetBackBufferWidth(), game->GetBackBufferHeight());
 
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
