@@ -166,6 +166,12 @@
     <ClCompile Include="TileMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
+    <ClCompile Include="OverworldNode.cpp">
+      <Filter>Game Object\OverworldScene</Filter>
+    </ClCompile>
+    <ClCompile Include="OverworldMario.cpp">
+      <Filter>Game Object\OverworldScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -342,6 +348,12 @@
     <ClInclude Include="TileMap.h">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="OverworldNode.h">
+      <Filter>Game Object\OverworldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldMario.h">
+      <Filter>Game Object\OverworldScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -433,6 +445,9 @@
     </Filter>
     <Filter Include="Game Object\Block">
       <UniqueIdentifier>{830277f7-87be-4888-b74c-45d5a3c4991b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\OverworldScene">
+      <UniqueIdentifier>{b5d19eb7-ffb1-4083-a995-859a4d291218}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

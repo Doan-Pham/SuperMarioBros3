@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
  <tileset firstgid="1" name="overworld_map_1_test_6_bank.png" tilewidth="16" tileheight="16" tilecount="55" columns="11">
   <properties>
    <property name="textureId" type="int" value="110"/>
@@ -27,7 +27,7 @@
   <properties>
    <property name="objectTypeId" type="int" value="10"/>
   </properties>
-  <object id="2" x="70.3333" y="69.3333">
+  <object id="2" x="64" y="64">
    <point/>
   </object>
  </objectgroup>
