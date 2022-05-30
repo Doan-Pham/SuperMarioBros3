@@ -1,7 +1,7 @@
 #include "OverworldNode.h"
 
 COverworldNode::COverworldNode(int id, int nodeType, float x, float y,
-	int nodeLeft, int nodeTop, int nodeRight, int nodeBottom) : CGameObject(x, y)
+	int nodeLeft, int nodeTop, int nodeRight, int nodeBottom, int playSceneId) : CGameObject(x, y)
 {
 	this->id = id;
 	this->nodeType = nodeType;
@@ -9,6 +9,7 @@ COverworldNode::COverworldNode(int id, int nodeType, float x, float y,
 	this->connectedNodeTop = nodeTop;
 	this->connectedNodeRight = nodeRight;
 	this->connectedNodeBottom = nodeBottom;
+	this->playscene_id = playSceneId;
 }
 
 void COverworldNode::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

@@ -14,6 +14,7 @@ COverworldMario::COverworldMario(float x, float y) : CGameObject(x, y)
 void COverworldMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (destination_node == NULL || current_node->GetId() == destination_node->GetId()) return;
+
 	if (state == OVERWORLD_MARIO_STATE_MOVING)
 	{
 		float dest_node_x, dest_node_y;
@@ -122,6 +123,14 @@ void COverworldMario::SetState(int state)
 	{
 		vx = nx * OVERWORLD_MARIO_SPEED_X;
 		vy = ny * OVERWORLD_MARIO_SPEED_Y;
+		break;
+	}
+
+	case OVERWORLD_MARIO_STATE_SWITCH_SCENE:
+	{
+		if (current_node->IsLeadingToPlayScene())
+			CGame::GetInstance()->InitiateSwitchScene(current_node->GetPlaySceneId());
+		else return;
 		break;
 	}
 	default:

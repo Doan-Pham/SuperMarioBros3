@@ -20,6 +20,7 @@ protected:
 	CHUD* bottomHUD;
 	CPMeter* pMeter;
 
+
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SPRITE(string line);
 	void _ParseSection_ANIMATION(string line);

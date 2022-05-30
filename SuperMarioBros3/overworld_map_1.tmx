@@ -45,7 +45,8 @@
   <object id="14" type="Overworld_Node" x="96" y="32">
    <properties>
     <property name="connectedNodeBottom" type="object" value="13"/>
-    <property name="connectedNodeLeft" type="object" value="26"/>
+    <property name="connectedNodeRight" type="object" value="26"/>
+    <property name="playSceneId" type="int" value="11"/>
    </properties>
    <point/>
   </object>
@@ -58,13 +59,14 @@
   </object>
   <object id="26" type="Overworld_Node" x="128" y="32">
    <properties>
-    <property name="connectedNodeRight" type="object" value="14"/>
+    <property name="connectedNodeLeft" type="object" value="14"/>
+    <property name="connectedNodeRight" type="object" value="27"/>
    </properties>
    <point/>
   </object>
   <object id="27" type="Overworld_Node" x="160" y="32">
    <properties>
-    <property name="connectedNodeRight" type="object" value="14"/>
+    <property name="connectedNodeLeft" type="object" value="26"/>
    </properties>
    <point/>
   </object>

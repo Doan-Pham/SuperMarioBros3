@@ -17,6 +17,8 @@
 
 #define OVERWORLD_MARIO_STATE_MOVING					600
 
+#define OVERWORLD_MARIO_STATE_SWITCH_SCENE				700
+
 class COverworldMario : public CGameObject
 {
 protected:

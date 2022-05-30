@@ -80,6 +80,8 @@ void COverworldScene::Load()
 
 void COverworldScene::Update(DWORD dt)
 {
+	if (player == NULL) return;
+
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 // TO-DO: This is a "dirty" way, need a more organized way 
 	vector<LPGAMEOBJECT> coObjects;
@@ -116,6 +118,7 @@ void COverworldScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+
 	player = NULL;
 
 	if (map != NULL)
@@ -126,6 +129,7 @@ void COverworldScene::Unload()
 
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
+	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
 void COverworldScene::_ParseSection_SETTINGS(string line)
@@ -458,7 +462,7 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 			int connectedNodeTop = -1;
 			int connectedNodeRight = -1;
 			int connectedNodeBottom = -1;
-
+			int playSceneId = -1;
 			bool isStartingNode = false;
 			int objectSubTypeId = -999;
 
@@ -496,6 +500,11 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 					isStartingNode = atoi(currentNodeProperty->Attribute("value"));
 				}
 
+				if (currentNodeProperty->Attribute("name") == string("playSceneId"))
+				{
+					playSceneId = atoi(currentNodeProperty->Attribute("value"));
+				}
+
 				if (currentNodeProperty->Attribute("name") == string("objectSubTypeId"))
 				{
 					objectSubTypeId = atoi(currentNodeProperty->Attribute("value"));
@@ -507,8 +516,11 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 					}
 				}
 
-				obj = new COverworldNode(id, 0, x, y,
-					connectedNodeLeft, connectedNodeTop, connectedNodeRight, connectedNodeBottom);
+				obj = new COverworldNode(
+					id, objectSubTypeId, x, y,
+					connectedNodeLeft, connectedNodeTop, connectedNodeRight, connectedNodeBottom,
+					playSceneId);
+
 				this->nodes[id] = (COverworldNode*)obj;
 
 				if (isStartingNode)
@@ -519,6 +531,7 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 			}
 			break;
 		}
+
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

@@ -34,6 +34,7 @@ void COverworldKeyEventHandler::OnKeyDown(int KeyCode)
 		break;
 
 	case DIK_S:
+		mario->SetState(OVERWORLD_MARIO_STATE_SWITCH_SCENE);
 		break;
 	}
 }
