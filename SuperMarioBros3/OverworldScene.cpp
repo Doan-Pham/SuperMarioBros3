@@ -10,7 +10,7 @@
 #include "Sprites.h"
 #include "Animations.h"
 
-#include "Mario.h"
+#include "OverworldMario.h"
 
 #define MAX_SCENE_LINE 1024
 
@@ -246,14 +246,14 @@ void COverworldScene::LoadMap(LPCWSTR mapFile)
 	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
 	const char* charMapFile = stringMapFile.c_str();
 
-	DebugOut(L"[INFO] Start loading map from : %s \n", charMapFile);
+	DebugOut(L"[INFO] Start loading map from : %s \n", wideStringMapFile.c_str());
 
 	TiXmlDocument doc(charMapFile);
 	bool result = doc.LoadFile();
 
 	if (!result)
 	{
-		DebugOut(L"[ERROR] Failed to load map from %s\n", mapFile);
+		DebugOut(L"[ERROR] Failed to load map from %s\n", wideStringMapFile.c_str());
 		return;
 	}
 
@@ -436,17 +436,73 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 
 		switch (objectType)
 		{
-		case OBJECT_TYPE_MARIO:
+		case OBJECT_TYPE_OVERWORLD_MARIO:
 		{
 			if (player != NULL)
 			{
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
 				return;
 			}
-			obj = new CMario(x, y);
-			player = (CMario*)obj;
+			obj = new COverworldMario(x, y);
+			player = (COverworldMario*)obj;
 
 			DebugOut(L"[INFO] Player object has been created!\n");
+			break;
+		}
+
+		case OBJECT_TYPE_OVERWORLD_NODE:
+		{
+			int id = atoi(currentElementObject->Attribute("id"));
+			int connectedNodeLeft = -1;
+			int connectedNodeTop = -1;
+			int connectedNodeRight = -1;
+			int connectedNodeBottom = -1;
+			int objectSubTypeId = -999;
+
+			if (currentElementObject->FirstChildElement("properties") == NULL)
+			{
+				DebugOut(L"[ERROR] This overworld node doesn't have objectSubTypeId or connected nodes id");
+				break;
+			}
+
+			TiXmlElement* xmlNodeProperties =
+				currentElementObject->FirstChildElement("properties");
+
+			for (TiXmlElement* currentNodeProperty = xmlNodeProperties->FirstChildElement()
+				; currentNodeProperty != nullptr
+				; currentNodeProperty = currentNodeProperty->NextSiblingElement())
+			{
+				if (currentNodeProperty->Attribute("name") == string("connectedNodeLeft"))
+				{
+					connectedNodeLeft = atoi(currentNodeProperty->Attribute("value"));
+				}
+				if (currentNodeProperty->Attribute("name") == string("connectedNodeTop"))
+				{
+					connectedNodeTop = atoi(currentNodeProperty->Attribute("value"));
+				}
+				if (currentNodeProperty->Attribute("name") == string("connectedNodeRight"))
+				{
+					connectedNodeBottom = atoi(currentNodeProperty->Attribute("value"));
+				}
+				if (currentNodeProperty->Attribute("name") == string("connectedNodeBottom"))
+				{
+					connectedNodeBottom = atoi(currentNodeProperty->Attribute("value"));
+				}
+				if (currentNodeProperty->Attribute("name") == string("objectSubTypeId"))
+				{
+					objectSubTypeId = atoi(currentNodeProperty->Attribute("value"));
+					if (objectType == -999)
+					{
+						DebugOut(L"[ERROR] Failed to parse block's sub type id: %i\n",
+							objectType);
+						return;
+					}
+				}
+
+				obj = new COverworldNode(id, 0, x, y,
+					connectedNodeLeft, connectedNodeTop, connectedNodeRight, connectedNodeBottom);
+				this->nodes[id] = (COverworldNode*)obj;
+			}
 			break;
 		}
 		default:

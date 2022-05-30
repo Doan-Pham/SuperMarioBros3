@@ -7,12 +7,13 @@
 #include "HUD.h"
 #include "PMeter.h"
 #include "TileMap.h"
+#include "OverworldNode.h"
 
 class COverworldScene : public CScene
 {
 protected:
 	vector<LPGAMEOBJECT> objects;
-
+	unordered_map<int, COverworldNode*> nodes;
 	LPGAMEOBJECT player;
 
 	LPTILEMAP map;

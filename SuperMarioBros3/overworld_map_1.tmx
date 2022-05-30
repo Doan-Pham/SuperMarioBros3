@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="28">
  <tileset firstgid="1" name="overworld_map_1_test_6_bank.png" tilewidth="16" tileheight="16" tilecount="55" columns="11">
   <properties>
    <property name="textureId" type="int" value="110"/>
@@ -25,9 +25,43 @@
  </layer>
  <objectgroup id="3" name="Player">
   <properties>
-   <property name="objectTypeId" type="int" value="10"/>
+   <property name="objectTypeId" type="int" value="130"/>
   </properties>
   <object id="2" x="64" y="64">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Nodes">
+  <properties>
+   <property name="objectTypeId" type="int" value="140"/>
+  </properties>
+  <object id="13" type="Overworld_Node" x="96" y="64">
+   <properties>
+    <property name="connectedNodeLeft" type="object" value="25"/>
+    <property name="connectedNodeTop" type="object" value="14"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" type="Overworld_Node" x="96" y="32">
+   <properties>
+    <property name="connectedNodeBottom" type="object" value="13"/>
+    <property name="connectedNodeLeft" type="object" value="26"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="25" type="Overworld_Node" x="64" y="64">
+   <properties>
+    <property name="connectedNodeLeft" type="object" value="13"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="26" type="Overworld_Node" x="128" y="32">
+   <properties>
+    <property name="connectedNodeRight" type="object" value="14"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" type="Overworld_Node" x="160" y="32">
    <point/>
   </object>
  </objectgroup>
