@@ -1,15 +1,14 @@
 [SETTINGS]
-start	1
+start	11
 width	320
 height	240
 
-#id	type	file
-# type: 0: intro, 1: play scene 
+# type	id	file
+# type: 0: intro, 1: overworld scene, 2: playscene
 [SCENES]
-0	intro.txt
-1	scene01.txt
-2	scene02.txt
-5	scene0005.txt
+0	0	intro.txt
+1	10	scene_overworld_1.txt
+2	11	scene_world_1_1.txt
 
 # id	file 
 [TEXTURES]

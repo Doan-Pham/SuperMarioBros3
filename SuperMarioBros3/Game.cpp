@@ -437,6 +437,9 @@ void CGame::ProcessKeyboard()
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_TEXTURES 3
 
+#define SCENE_TYPE_INTRO_SCENE		0
+#define SCENE_TYPE_OVERWORLD_SCENE	1
+#define SCENE_TYPE_PLAY_SCENE		2
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -453,11 +456,26 @@ void CGame::_ParseSection_SCENES(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 2) return;
-	int id = atoi(tokens[0].c_str());
-	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
+	if (tokens.size() < 3) return;
+	int scene_type = atoi(tokens[0].c_str());
+	int id = atoi(tokens[1].c_str());
+	LPCWSTR path = ToLPCWSTR(tokens[2]);   // file: ASCII format (single-byte char) => Wide Char
 
-	LPSCENE scene = new CPlayScene(id, path);
+	LPSCENE scene = NULL;
+	switch (scene_type)
+	{
+	case SCENE_TYPE_INTRO_SCENE:
+		scene = new CPlayScene(id, path);
+		break;
+
+	case SCENE_TYPE_OVERWORLD_SCENE:
+		scene = new CPlayScene(id, path);
+		break;
+
+	case SCENE_TYPE_PLAY_SCENE:
+		scene = new CPlayScene(id, path);
+		break;
+	}
 	scenes[id] = scene;
 }
 
@@ -479,7 +497,7 @@ void CGame::Load(LPCWSTR gameFile)
 	{
 		string line(str);
 
-		if (line[0] == '#') continue;	// skip comment lines	
+		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
 
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[TEXTURES]") { section = GAME_FILE_SECTION_TEXTURES; continue; }
