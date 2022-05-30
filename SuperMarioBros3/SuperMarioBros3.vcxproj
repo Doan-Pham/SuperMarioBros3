@@ -175,6 +175,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
     <ClCompile Include="MushroomUp.cpp" />
+    <ClCompile Include="OverworldKeyEventHandler.cpp" />
     <ClCompile Include="OverworldMario.cpp" />
     <ClCompile Include="OverworldNode.cpp" />
     <ClCompile Include="OverworldScene.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
     <ClInclude Include="MushroomUp.h" />
+    <ClInclude Include="OverworldKeyEventHandler.h" />
     <ClInclude Include="OverworldMario.h" />
     <ClInclude Include="OverworldNode.h" />
     <ClInclude Include="OverworldScene.h" />

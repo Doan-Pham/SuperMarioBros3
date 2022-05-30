@@ -172,6 +172,9 @@
     <ClCompile Include="OverworldMario.cpp">
       <Filter>Game Object\OverworldScene</Filter>
     </ClCompile>
+    <ClCompile Include="OverworldKeyEventHandler.cpp">
+      <Filter>Gameplay\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -353,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="OverworldMario.h">
       <Filter>Game Object\OverworldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldKeyEventHandler.h">
+      <Filter>Gameplay\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
