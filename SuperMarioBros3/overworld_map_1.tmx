@@ -52,6 +52,7 @@
   <object id="25" type="Overworld_Node" x="64" y="64">
    <properties>
     <property name="connectedNodeLeft" type="object" value="13"/>
+    <property name="isStartingNode" type="int" value="1"/>
    </properties>
    <point/>
   </object>
@@ -62,6 +63,9 @@
    <point/>
   </object>
   <object id="27" type="Overworld_Node" x="160" y="32">
+   <properties>
+    <property name="connectedNodeRight" type="object" value="14"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

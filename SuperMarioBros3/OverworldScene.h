@@ -13,7 +13,7 @@ class COverworldScene : public CScene
 {
 protected:
 	vector<LPGAMEOBJECT> objects;
-	unordered_map<int, COverworldNode*> nodes;
+	static unordered_map<int, COverworldNode*> nodes;
 	LPGAMEOBJECT player;
 
 	LPTILEMAP map;
@@ -36,6 +36,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-
+	LPGAMEOBJECT GetPlayer() { return this->player; }
+	static COverworldNode* GetNode(int id) { return nodes[id]; }
 };
 

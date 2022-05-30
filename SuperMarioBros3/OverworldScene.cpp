@@ -2,7 +2,7 @@
 #include <fstream>
 
 #include "OverworldScene.h"
-#include "SampleKeyEventHandler.h"
+#include "OverworldKeyEventHandler.h"
 #include "Utils.h"
 
 #include "AssetIDs.h"
@@ -22,12 +22,13 @@
 
 #define BOTTOM_HUD_HEIGHT 50
 
+unordered_map<int, COverworldNode*> COverworldScene::nodes;
 
 COverworldScene::COverworldScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	player = NULL;
 	map = NULL;
-	key_handler = NULL;
+	key_handler = new COverworldKeyEventHandler(this);
 	float back_buffer_width = CGame::GetInstance()->GetBackBufferWidth();
 	float back_buffer_height = CGame::GetInstance()->GetBackBufferHeight();
 
@@ -457,6 +458,8 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 			int connectedNodeTop = -1;
 			int connectedNodeRight = -1;
 			int connectedNodeBottom = -1;
+
+			bool isStartingNode = false;
 			int objectSubTypeId = -999;
 
 			if (currentElementObject->FirstChildElement("properties") == NULL)
@@ -488,6 +491,11 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 				{
 					connectedNodeBottom = atoi(currentNodeProperty->Attribute("value"));
 				}
+				if (currentNodeProperty->Attribute("name") == string("isStartingNode"))
+				{
+					isStartingNode = atoi(currentNodeProperty->Attribute("value"));
+				}
+
 				if (currentNodeProperty->Attribute("name") == string("objectSubTypeId"))
 				{
 					objectSubTypeId = atoi(currentNodeProperty->Attribute("value"));
@@ -502,6 +510,12 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 				obj = new COverworldNode(id, 0, x, y,
 					connectedNodeLeft, connectedNodeTop, connectedNodeRight, connectedNodeBottom);
 				this->nodes[id] = (COverworldNode*)obj;
+
+				if (isStartingNode)
+				{
+					COverworldMario* mario = (COverworldMario*)player;
+					mario->SetCurrentNode((COverworldNode*)obj);
+				}
 			}
 			break;
 		}
