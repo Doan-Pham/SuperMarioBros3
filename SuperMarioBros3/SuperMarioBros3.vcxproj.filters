@@ -160,6 +160,12 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Game Object\Other</Filter>
     </ClCompile>
+    <ClCompile Include="OverworldScene.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -329,6 +335,12 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Game Object\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldScene.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

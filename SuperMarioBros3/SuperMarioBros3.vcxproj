@@ -175,6 +175,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MushroomBig.cpp" />
     <ClCompile Include="MushroomUp.cpp" />
+    <ClCompile Include="OverworldScene.cpp" />
     <ClCompile Include="PBlock.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlantGreenFire.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="TileLayer.cpp" />
+    <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileSet.cpp" />
     <ClCompile Include="TinyXml\tinystr.cpp" />
     <ClCompile Include="TinyXml\tinyxml.cpp" />
@@ -233,6 +235,7 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MushroomBig.h" />
     <ClInclude Include="MushroomUp.h" />
+    <ClInclude Include="OverworldScene.h" />
     <ClInclude Include="PBlock.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlantGreenFire.h" />
@@ -252,6 +255,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="TileLayer.h" />
+    <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileSet.h" />
     <ClInclude Include="TinyXml\tinystr.h" />
     <ClInclude Include="TinyXml\tinyxml.h" />
