@@ -485,7 +485,7 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 				}
 				if (currentNodeProperty->Attribute("name") == string("connectedNodeRight"))
 				{
-					connectedNodeBottom = atoi(currentNodeProperty->Attribute("value"));
+					connectedNodeRight = atoi(currentNodeProperty->Attribute("value"));
 				}
 				if (currentNodeProperty->Attribute("name") == string("connectedNodeBottom"))
 				{
