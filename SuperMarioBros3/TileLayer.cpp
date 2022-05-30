@@ -38,12 +38,13 @@ void CTileLayer::Render()
 		for (int j = firstVisibleTileIndexX; j < min(width, firstVisibleTileIndexX + maxTilesX + 1); j++)
 		{
 			int tileGid = tileMatrix[i][j];
+			if (tileGid == 0) continue;
 			int usedTileSetIndex = tileGid / (tileSets[0]->GetLastGid() + 1);
 
 			tileSets[usedTileSetIndex]->Draw(
 				j * TILE_WIDTH_STANDARD ,
 				i * TILE_HEIGHT_STANDARD ,
-				tileMatrix[i][j]);
+				tileGid);
 
 			//renderCount++;
 			//DebugOut(L"i = %i, j = %i, tileMatrix[i][j] = %i\n"
