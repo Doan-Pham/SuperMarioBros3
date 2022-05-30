@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Animations.h"
 #include "PlayScene.h"
+#include "OverworldScene.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -406,6 +407,7 @@ void CGame::ProcessKeyboard()
 		}
 	}
 
+	if (keyHandler == NULL) return;
 	keyHandler->KeyState((BYTE*)&keyStates);
 
 	// Collect all buffered events
@@ -469,7 +471,7 @@ void CGame::_ParseSection_SCENES(string line)
 		break;
 
 	case SCENE_TYPE_OVERWORLD_SCENE:
-		scene = new CPlayScene(id, path);
+		scene = new COverworldScene(id, path);
 		break;
 
 	case SCENE_TYPE_PLAY_SCENE:

@@ -352,7 +352,7 @@ class CMario : public CGameObject
 	int GetAniIdHammer();
 
 public:
-	CMario(float x, float y, const LPPLAYSCENE& currentScene);
+	CMario(float x, float y, const LPPLAYSCENE& currentScene = NULL);
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
