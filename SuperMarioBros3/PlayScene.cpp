@@ -51,6 +51,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CSampleKeyHandler(this);
+
+	reduce_time_start = -1;
+
 	float back_buffer_width = CGame::GetInstance()->GetBackBufferWidth();
 	float back_buffer_height = CGame::GetInstance()->GetBackBufferHeight();
 
@@ -893,6 +896,16 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 void CPlayScene::Update(DWORD dt)
 {
+	if (GetTickCount64() - reduce_time_start > REDUCE_TIME_TIMEOUT)
+	{
+		CGame::GetInstance()->UpdatePlaysceneTimeLeft(-TIME_REDUCE_AMOUNT_DEFAULT);
+		reduce_time_start = GetTickCount64();
+	}
+	if (CGame::GetInstance()->GetPlaysceneTimeLeft() == 0)
+	{
+		CMario* mario = (CMario*)GetPlayer();
+		mario->SetState(MARIO_STATE_DIE);
+	}
 	SwitchMap();
 	maps[current_map]->Update(dt);
 	bottomHUD->Update(dt);

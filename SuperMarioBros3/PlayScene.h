@@ -9,6 +9,10 @@
 #include "HUD.h"
 #include "PMeter.h"
 
+// The time it takes to reduce one second from the game's playscene time (which is 1 second by default)
+#define REDUCE_TIME_TIMEOUT 1000
+#define TIME_REDUCE_AMOUNT_DEFAULT 1
+
 class CPlayScene : public CScene
 {
 protected:
@@ -18,6 +22,8 @@ protected:
 	static unordered_map<int, LPMAP> maps;
 	static int current_map;
 	int next_map = -1;
+
+	ULONGLONG reduce_time_start;
 
 	CHUD* bottomHUD;
 	CPMeter* pMeter;

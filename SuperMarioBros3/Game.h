@@ -23,8 +23,8 @@ using namespace std;
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 280
 
-#define MARIO_DEFAULT_LIVES_COUNT	3
-#define SCENE_DEFAULT_TIME			300
+#define MARIO_DEFAULT_LIVES_COUNT		3
+#define PLAY_SCENE_DEFAULT_TIME			300
 /*
 	Our simple game framework
 */
@@ -57,7 +57,7 @@ class CGame
 	int coins = 0;
 	int scores = 0;
 	int lives = MARIO_DEFAULT_LIVES_COUNT;
-	int playSceneTimeLeft = SCENE_DEFAULT_TIME;
+	int playSceneTimeLeft = PLAY_SCENE_DEFAULT_TIME;
 	int currentWorld = 1;
 
 	vector<int> cardsAcquired;
@@ -123,6 +123,14 @@ public:
 	void UpdateCoins(int coin) { coins += coin; }
 	void UpdateLives(int life) { lives += life; }
 	void AddCardAcquired(int card_type) { this->cardsAcquired.push_back(card_type); }
+
+	void ResetPlaysceneTimeLeft() { this->playSceneTimeLeft = PLAY_SCENE_DEFAULT_TIME; }
+	void UpdatePlaysceneTimeLeft(int time) 
+	{ 
+		if (playSceneTimeLeft + time < 0) playSceneTimeLeft = 0;
+		else this->playSceneTimeLeft += time;
+	}
+	int GetPlaysceneTimeLeft() { return playSceneTimeLeft; }
 
 	void GetDataForBottomHUD(int& score, int& coin, int& lives, int& currentWorld, int& time) 
 	{
