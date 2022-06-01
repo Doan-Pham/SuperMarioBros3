@@ -14,7 +14,6 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, in
 
 	isPBlockTurnedOn = false;
 	isCameraYDefaultValue = true;
-	isCourseCleared = false;
 	isAddedAcquiredCard = false;
 
 	player = NULL;
@@ -39,7 +38,6 @@ void CMap::Update(DWORD dt)
 		{
 			coObjects.push_back(objects[i]);
 		}
-
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -63,8 +61,10 @@ void CMap::Update(DWORD dt)
 	}
 
 	CGame* game = CGame::GetInstance();
+	CPlayScene* currentScene = (CPlayScene*)game->GetCurrentScene();
+
 	float cam_x, cam_y;
-	game->GetCamPos(cam_x, cam_y);
+;	game->GetCamPos(cam_x, cam_y);
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -92,7 +92,7 @@ void CMap::Update(DWORD dt)
 	player->GetPosition(player_x, player_y);
 
 	// When mario clears map by taking the card, he can goes past the map edges
-	if (isCourseCleared)
+	if (currentScene->IsCourseClear())
 	{
 		if (player_x > mapRightEdge)
 			texts[TEXT_COURSE_CLEAR]->UnHide();

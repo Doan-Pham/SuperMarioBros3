@@ -45,7 +45,7 @@ using namespace std;
 
 int CPlayScene::current_map;
 unordered_map<int, LPMAP> CPlayScene::maps;
-
+bool CPlayScene::isCourseClear;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
@@ -63,6 +63,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 		back_buffer_width, BOTTOM_HUD_HEIGHT);
 
 	bottomHUD->SetPMeter(pMeter);
+
+	isCourseClear = false;
 }
 
 
@@ -906,6 +908,16 @@ void CPlayScene::Update(DWORD dt)
 		CMario* mario = (CMario*)GetPlayer();
 		mario->SetState(MARIO_STATE_DIE);
 	}
+	if (isCourseClear)
+	{
+		int timeLeftBefore = CGame::GetInstance()->GetPlaysceneTimeLeft();
+		CGame::GetInstance()->UpdatePlaysceneTimeLeft(-TIME_REDUCE_AMOUNT_COURSE_CLEAR);
+		int timeLeftAfter = CGame::GetInstance()->GetPlaysceneTimeLeft();
+
+		CGame::GetInstance()->UpdateScores
+		((timeLeftBefore - timeLeftAfter) * SCORE_PER_SECOND_AFTER_COURSE_CLEAR);
+	}
+
 	SwitchMap();
 	maps[current_map]->Update(dt);
 	bottomHUD->Update(dt);
@@ -931,6 +943,7 @@ void CPlayScene::Unload()
 		maps[current_map]->Clear();
 		maps[current_map] = NULL;
 	}
+	isCourseClear = false;
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	//CTextures::GetInstance()->Clear();

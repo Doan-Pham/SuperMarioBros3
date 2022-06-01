@@ -49,8 +49,6 @@ protected:
 	// point) and then the game adjusts the camera accordingly
 	bool isCameraYDefaultValue;
 
-	bool isCourseCleared;
-
 	bool isAddedAcquiredCard;
 
 public:
@@ -82,7 +80,6 @@ public:
 	void PurgeDeletedObjects();
 	
 	void TurnPBlockOn() { isPBlockTurnedOn = true; }
-	void ClearCourse() { isCourseCleared = true; }
 };
 
 typedef CMap* LPMAP;

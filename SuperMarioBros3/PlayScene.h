@@ -13,6 +13,9 @@
 #define REDUCE_TIME_TIMEOUT 1000
 #define TIME_REDUCE_AMOUNT_DEFAULT 1
 
+#define TIME_REDUCE_AMOUNT_COURSE_CLEAR		20
+#define SCORE_PER_SECOND_AFTER_COURSE_CLEAR	50
+
 class CPlayScene : public CScene
 {
 protected:
@@ -22,6 +25,9 @@ protected:
 	static unordered_map<int, LPMAP> maps;
 	static int current_map;
 	int next_map = -1;
+
+	bool isGameOver;
+	bool static isCourseClear;
 
 	ULONGLONG reduce_time_start;
 
@@ -61,8 +67,11 @@ public:
 
 	// This method still exists because a some objects rely on it
 	void static TurnPBlockOn() { maps[current_map]->TurnPBlockOn(); }
-	void static ClearCourse() { maps[current_map]->ClearCourse(); }
 
+	bool static IsCourseClear() { return isCourseClear; }
+	void static ClearCourse() { isCourseClear = true; }
+
+	void SetGameOver() { isGameOver = true;}
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 
