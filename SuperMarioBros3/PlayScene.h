@@ -16,12 +16,18 @@
 #define TIME_REDUCE_AMOUNT_COURSE_CLEAR		20
 #define SCORE_PER_SECOND_AFTER_COURSE_CLEAR	50
 
+// After player clears course, switch back to overworld scene after timeout
+#define CLEAR_COURSE_SWITCH_SCENE_TIMEOUT	3000
+
 class CPlayScene : public CScene
 {
 protected:
+
+	// The id of the overworld_scene associated with this playscene;
+	int overworld_scene_id;
+
 	// A play scene has to have player, right? - well now playscene has maps and maps have their own
 	// player
-	static vector<LPGAMEOBJECT> objects;
 	static unordered_map<int, LPMAP> maps;
 	static int current_map;
 	int next_map = -1;
@@ -30,6 +36,7 @@ protected:
 	bool static isCourseClear;
 
 	ULONGLONG reduce_time_start;
+	static ULONGLONG clear_course_start;
 
 	CHUD* bottomHUD;
 	CPMeter* pMeter;
@@ -69,7 +76,7 @@ public:
 	void static TurnPBlockOn() { maps[current_map]->TurnPBlockOn(); }
 
 	bool static IsCourseClear() { return isCourseClear; }
-	void static ClearCourse() { isCourseClear = true; }
+	void static ClearCourse() { isCourseClear = true; clear_course_start = GetTickCount64(); }
 
 	void SetGameOver() { isGameOver = true;}
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);

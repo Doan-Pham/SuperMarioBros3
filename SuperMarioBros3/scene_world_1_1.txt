@@ -2,6 +2,9 @@
 #Starting map
 start	111
 
+#Associated overworld_scene
+overworld_scene	10
+
 # list of objects' srpites to load in this scene
 [SPRITE]
 spritesheet_mario.xml

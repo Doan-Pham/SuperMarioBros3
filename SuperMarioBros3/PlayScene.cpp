@@ -46,10 +46,13 @@ using namespace std;
 int CPlayScene::current_map;
 unordered_map<int, LPMAP> CPlayScene::maps;
 bool CPlayScene::isCourseClear;
+ULONGLONG  CPlayScene::clear_course_start;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
+	overworld_scene_id = -1;
+
 	key_handler = new CSampleKeyHandler(this);
 
 	reduce_time_start = -1;
@@ -65,6 +68,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	bottomHUD->SetPMeter(pMeter);
 
 	isCourseClear = false;
+	clear_course_start = -1;
 }
 
 
@@ -152,7 +156,10 @@ void CPlayScene::_ParseSection_SETTINGS(string line)
 
 		current_map = next_map;
 	}
-
+	if (tokens[0] == "overworld_scene")
+	{
+		overworld_scene_id = atoi(tokens[1].c_str());
+	}
 	else
 		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
 }
@@ -898,16 +905,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 void CPlayScene::Update(DWORD dt)
 {
-	if (GetTickCount64() - reduce_time_start > REDUCE_TIME_TIMEOUT)
-	{
-		CGame::GetInstance()->UpdatePlaysceneTimeLeft(-TIME_REDUCE_AMOUNT_DEFAULT);
-		reduce_time_start = GetTickCount64();
-	}
-	if (CGame::GetInstance()->GetPlaysceneTimeLeft() == 0)
-	{
-		CMario* mario = (CMario*)GetPlayer();
-		mario->SetState(MARIO_STATE_DIE);
-	}
+
 	if (isCourseClear)
 	{
 		int timeLeftBefore = CGame::GetInstance()->GetPlaysceneTimeLeft();
@@ -916,8 +914,22 @@ void CPlayScene::Update(DWORD dt)
 
 		CGame::GetInstance()->UpdateScores
 		((timeLeftBefore - timeLeftAfter) * SCORE_PER_SECOND_AFTER_COURSE_CLEAR);
+		if (GetTickCount64() - clear_course_start > CLEAR_COURSE_SWITCH_SCENE_TIMEOUT)
+			CGame::GetInstance()->InitiateSwitchScene(overworld_scene_id);
 	}
-
+	else
+	{
+		if (GetTickCount64() - reduce_time_start > REDUCE_TIME_TIMEOUT)
+		{
+			CGame::GetInstance()->UpdatePlaysceneTimeLeft(-TIME_REDUCE_AMOUNT_DEFAULT);
+			reduce_time_start = GetTickCount64();
+		}
+		if (CGame::GetInstance()->GetPlaysceneTimeLeft() == 0)
+		{
+			CMario* mario = (CMario*)GetPlayer();
+			mario->SetState(MARIO_STATE_DIE);
+		}
+	}
 	SwitchMap();
 	maps[current_map]->Update(dt);
 	bottomHUD->Update(dt);
