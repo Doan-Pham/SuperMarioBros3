@@ -533,7 +533,7 @@ void CGame::SwitchScene()
 	if (next_scene < 0 || next_scene == current_scene) return; 
 
 	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
-
+	SetCamPos(0.0f, 0.0f);
 	ResetPlaysceneTimeLeft();
 
 	scenes[current_scene]->Unload();	
