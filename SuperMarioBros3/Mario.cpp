@@ -1348,6 +1348,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_DIE:
 	{
+		currentScene->SetGameOver();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;

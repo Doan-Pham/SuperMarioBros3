@@ -45,8 +45,11 @@ using namespace std;
 
 int CPlayScene::current_map;
 unordered_map<int, LPMAP> CPlayScene::maps;
+
 bool CPlayScene::isCourseClear;
 ULONGLONG  CPlayScene::clear_course_start;
+bool CPlayScene::isGameOver;
+ULONGLONG  CPlayScene::game_over_start;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
@@ -69,6 +72,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 	isCourseClear = false;
 	clear_course_start = -1;
+
+	isGameOver = false;
+	game_over_start = -1;
 }
 
 
@@ -905,15 +911,21 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 void CPlayScene::Update(DWORD dt)
 {
-
-	if (isCourseClear)
+	if (isGameOver)
 	{
+		if (GetTickCount64() - game_over_start > GAME_OVER_SWITCH_SCENE_TIMEOUT)
+			CGame::GetInstance()->InitiateSwitchScene(overworld_scene_id);
+	}
+	else if (isCourseClear)
+	{
+		// Update scores based on the time player has left after clearing course
 		int timeLeftBefore = CGame::GetInstance()->GetPlaysceneTimeLeft();
 		CGame::GetInstance()->UpdatePlaysceneTimeLeft(-TIME_REDUCE_AMOUNT_COURSE_CLEAR);
 		int timeLeftAfter = CGame::GetInstance()->GetPlaysceneTimeLeft();
 
 		CGame::GetInstance()->UpdateScores
 		((timeLeftBefore - timeLeftAfter) * SCORE_PER_SECOND_AFTER_COURSE_CLEAR);
+
 		if (GetTickCount64() - clear_course_start > CLEAR_COURSE_SWITCH_SCENE_TIMEOUT)
 			CGame::GetInstance()->InitiateSwitchScene(overworld_scene_id);
 	}
@@ -930,6 +942,7 @@ void CPlayScene::Update(DWORD dt)
 			mario->SetState(MARIO_STATE_DIE);
 		}
 	}
+
 	SwitchMap();
 	maps[current_map]->Update(dt);
 	bottomHUD->Update(dt);
@@ -955,7 +968,7 @@ void CPlayScene::Unload()
 		maps[current_map]->Clear();
 		maps[current_map] = NULL;
 	}
-	isCourseClear = false;
+	isGameOver = false;
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	//CTextures::GetInstance()->Clear();

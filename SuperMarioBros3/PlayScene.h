@@ -19,6 +19,9 @@
 // After player clears course, switch back to overworld scene after timeout
 #define CLEAR_COURSE_SWITCH_SCENE_TIMEOUT	3000
 
+// After gameover, switch back to overworld scene after timeout
+#define GAME_OVER_SWITCH_SCENE_TIMEOUT	3000
+
 class CPlayScene : public CScene
 {
 protected:
@@ -32,11 +35,12 @@ protected:
 	static int current_map;
 	int next_map = -1;
 
-	bool isGameOver;
+	bool static isGameOver;
 	bool static isCourseClear;
 
 	ULONGLONG reduce_time_start;
 	static ULONGLONG clear_course_start;
+	static ULONGLONG game_over_start;
 
 	CHUD* bottomHUD;
 	CPMeter* pMeter;
@@ -78,7 +82,9 @@ public:
 	bool static IsCourseClear() { return isCourseClear; }
 	void static ClearCourse() { isCourseClear = true; clear_course_start = GetTickCount64(); }
 
-	void SetGameOver() { isGameOver = true;}
+	bool static IsGameOver() { return isGameOver; }
+	void static SetGameOver() { isGameOver = true; game_over_start = GetTickCount64(); }
+
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 
