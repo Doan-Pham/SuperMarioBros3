@@ -193,7 +193,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-
+	// This fixes a bug where mario's collisions with items like mushroom and leaf are not detected
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CItem*>(coObjects->at(i)) && 
+			CCollision::GetInstance()->RegularAABB(this, coObjects->at(i)))
+			OnCollisionWith(new CCollisionEvent(-1, -1, -1, -1, -1, coObjects->at(i), this));
+		//DebugOut(L"Regular AABB happened \n");
+	}
 	//DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
 	//DebugOutTitle(L"Current state %d", this->state);
 
