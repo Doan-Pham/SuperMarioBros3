@@ -19,6 +19,7 @@
 #define MUSHROOM_STATE_MOVING 300
 
 #define MUSHROOM__BIG_SCORES_GIVEN_WHEN_HIT 1000
+#define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CMushroomBig : public CItem
 {
@@ -35,6 +36,8 @@ protected:
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
 	virtual bool IsHidden() { return (state == MUSHROOM_STATE_HIDING); }
 

@@ -1,4 +1,5 @@
 #include "MushroomBig.h"
+#include "PlatformGhost.h"
 
 CMushroomBig::CMushroomBig(float x, float y) : CItem(x, y)
 {
@@ -49,8 +50,6 @@ void CMushroomBig::OnNoCollision(DWORD dt)
 
 void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
-
 	//TODO: Need a more general cast than this, because there will many more enemies
 	if (dynamic_cast<CGoomba*>(e->obj)) return;
 	if (dynamic_cast<CMario*>(e->obj)) return;
@@ -62,6 +61,38 @@ void CMushroomBig::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+	if (e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = 0;
+
+	}
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		vx = -vx;
+	}
+
+	if (dynamic_cast<CPlatformGhost*>(e->obj))
+		OnCollisionWithPlatformGhost(e);
+}
+void CMushroomBig::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0)
+	{
+		CPlatformGhost* platform = dynamic_cast<CPlatformGhost*>(e->obj);
+		float platform_l, platform_t, platform_r, platform_b;
+		platform->GetBoundingBox(platform_l, platform_t, platform_r, platform_b);
+
+		float mushroom_l, mushroom_t, mushroom_r, mushroom_b;
+		this->GetBoundingBox(mushroom_l, mushroom_t, mushroom_r, mushroom_b);
+
+		// Have to directly change mushroom's y because ghost platform is non-blocking, so the 
+		// collisions with it are not handled by the framework (inside that, the coordinates
+		// of the src_obj that collided with blocking things are automatically adjusted
+		// to be the correct numbers using some calculations with BLOCK_PUSH_FACTOR)
+		y = platform_t - (mushroom_b - mushroom_t) / 2 - BLOCK_PUSH_FACTOR_GHOST_PLATFORM;
+
+		vy = 0;
 	}
 }
 
