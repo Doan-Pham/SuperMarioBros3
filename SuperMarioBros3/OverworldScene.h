@@ -15,11 +15,12 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	static unordered_map<int, COverworldNode*> nodes;
 	LPGAMEOBJECT player;
-
 	LPTILEMAP map;
 	CHUD* bottomHUD;
 	CPMeter* pMeter;
 
+	int current_node;
+	int destination_node;
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SPRITE(string line);
@@ -39,5 +40,11 @@ public:
 	virtual void Unload();
 	LPGAMEOBJECT GetPlayer() { return this->player; }
 	static COverworldNode* GetNode(int id) { return nodes[id]; }
+
+	COverworldNode* GetCurrentNode() { return nodes[current_node]; }
+	COverworldNode* GetDestinationNode() { return nodes[destination_node]; }
+
+	void SetDestinationNode(int destination_node) { this->destination_node = destination_node; }
+	void SetCurrentNode(int current_node) { this->current_node = current_node; }
 };
 

@@ -38,6 +38,9 @@ COverworldScene::COverworldScene(int id, LPCWSTR filePath) : CScene(id, filePath
 		back_buffer_width, BOTTOM_HUD_HEIGHT);
 
 	bottomHUD->SetPMeter(pMeter);
+
+	current_node = -1;
+	destination_node = -1;
 }
 
 void COverworldScene::Load()
@@ -99,6 +102,7 @@ void COverworldScene::Update(DWORD dt)
 			objects[i]->Update(dt, &coObjects);
 	}
 	bottomHUD->Update(dt);
+	DebugOutTitle(L"Current node: %i, destination node: %i", current_node, destination_node);
 }
 
 void COverworldScene::Render()
@@ -523,11 +527,8 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 
 				this->nodes[id] = (COverworldNode*)obj;
 
-				if (isStartingNode)
-				{
-					COverworldMario* mario = (COverworldMario*)player;
-					mario->SetCurrentNode((COverworldNode*)obj);
-				}
+				if (isStartingNode && current_node == -1)
+					current_node = id;
 			}
 			break;
 		}

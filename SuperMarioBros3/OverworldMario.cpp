@@ -6,16 +6,27 @@
 
 COverworldMario::COverworldMario(float x, float y) : CGameObject(x, y)
 {
-	current_node = NULL;
-	destination_node = NULL;
 	SetState(OVERWORLD_MARIO_STATE_STILL);
 }
 
 void COverworldMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	COverworldScene* current_scene = (COverworldScene*)CGame::GetInstance()->GetCurrentScene();
+	COverworldNode* current_node = current_scene->GetCurrentNode();
+	COverworldNode* destination_node = current_scene->GetDestinationNode();
+
+	// This moves mario to current node's position after switching back from playscene
+	if (state == OVERWORLD_MARIO_STATE_STILL)
+	{
+		float cur_node_x, cur_node_y;
+		current_node->GetPosition(cur_node_x, cur_node_y);
+		x = cur_node_x;
+		y = cur_node_y;
+	}
+
 	if (destination_node == NULL || current_node->GetId() == destination_node->GetId()) return;
 
-	if (state == OVERWORLD_MARIO_STATE_MOVING)
+	else if (state == OVERWORLD_MARIO_STATE_MOVING)
 	{
 		float dest_node_x, dest_node_y;
 		destination_node->GetPosition(dest_node_x, dest_node_y);
@@ -25,11 +36,11 @@ void COverworldMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			x = dest_node_x;
 			y = dest_node_y;
-			current_node = destination_node;
+			current_scene->SetCurrentNode(destination_node->GetId());
 			SetState(OVERWORLD_MARIO_STATE_STILL);
 		}
-		DebugOutTitle(L"mario_x : %0.5f, mario-y : %0.5f, dest-x : %0.5f, dest-y : %0.5f",
-			x, y, dest_node_x, dest_node_y);
+		//DebugOutTitle(L"mario_x : %0.5f, mario-y : %0.5f, dest-x : %0.5f, dest-y : %0.5f",
+		//	x, y, dest_node_x, dest_node_y);
 	}
 	x += vx * dt;
 	y += vy * dt;
@@ -49,6 +60,10 @@ void COverworldMario::GetBoundingBox(float& left, float& top, float& right, floa
 
 void COverworldMario::SetState(int state)
 {
+	COverworldScene* current_scene = (COverworldScene*)CGame::GetInstance()->GetCurrentScene();
+	COverworldNode* current_node = current_scene->GetCurrentNode();
+	COverworldNode* destination_node = current_scene->GetDestinationNode();
+
 	switch (state)
 	{
 	case OVERWORLD_MARIO_STATE_STILL:
@@ -62,11 +77,13 @@ void COverworldMario::SetState(int state)
 
 	case OVERWORLD_MARIO_STATE_READY_TO_MOVE_LEFT:
 	{
+		// This check prevents player from clicking quickly 2 keys and cause errors
 		if (this->state == OVERWORLD_MARIO_STATE_MOVING) return;
 		
 		if (COverworldScene::GetNode(current_node->GetConnectedNodeLeft()) != NULL)
 		{
-			this->destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeLeft());
+			destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeLeft());
+			current_scene->SetDestinationNode(destination_node->GetId());
 			nx = -1;
 			SetState(OVERWORLD_MARIO_STATE_MOVING);
 			return;
@@ -81,7 +98,8 @@ void COverworldMario::SetState(int state)
 
 		if (COverworldScene::GetNode(current_node->GetConnectedNodeTop()) != NULL)
 		{
-			this->destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeTop());
+			destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeTop());
+			current_scene->SetDestinationNode(destination_node->GetId());
 			ny = -1;
 			SetState(OVERWORLD_MARIO_STATE_MOVING);
 			return;
@@ -96,7 +114,8 @@ void COverworldMario::SetState(int state)
 
 		if (COverworldScene::GetNode(current_node->GetConnectedNodeRight()) != NULL)
 		{
-			this->destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeRight());
+			destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeRight());
+			current_scene->SetDestinationNode(destination_node->GetId());
 			nx = 1;
 			SetState(OVERWORLD_MARIO_STATE_MOVING);
 			return;
@@ -111,7 +130,8 @@ void COverworldMario::SetState(int state)
 
 		if (COverworldScene::GetNode(current_node->GetConnectedNodeBottom()) != NULL)
 		{
-			this->destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeBottom());
+			destination_node = COverworldScene::GetNode(current_node->GetConnectedNodeBottom());
+			current_scene->SetDestinationNode(destination_node->GetId());
 			ny = 1;
 			SetState(OVERWORLD_MARIO_STATE_MOVING);
 			return;

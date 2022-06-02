@@ -23,9 +23,6 @@ class COverworldMario : public CGameObject
 {
 protected:
 	int ny;
-	// These 2 will be used to decide where mario is and will be!
-	COverworldNode* current_node;
-	COverworldNode* destination_node;
 
 public:
 	COverworldMario(float x, float y);
@@ -33,6 +30,5 @@ public:
 	void Render();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void SetState(int state);
-	void SetCurrentNode(COverworldNode* current_node) { this->current_node = current_node; }
 };
 
