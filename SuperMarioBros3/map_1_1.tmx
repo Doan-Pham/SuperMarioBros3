@@ -697,7 +697,7 @@
     <property name="cellHeight" type="int" value="16"/>
     <property name="cellWidth" type="int" value="16"/>
     <property name="direction" type="int" value="-1"/>
-    <property name="isMarioSpawnLocation" type="int" value="1"/>
+    <property name="isContainingPortal" type="int" value="1"/>
    </properties>
   </object>
   <object id="229" type="Pipe" x="2320" y="384" width="32" height="32">

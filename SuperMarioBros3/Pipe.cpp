@@ -5,7 +5,7 @@ void CPipe::Render()
 	if (this->width <= 0 || this->height <= 0) return;
 	switch (direction)
 	{
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	case PIPE_DIRECTION_VERTICAL_UPSIDE:
 	{
 		float current_part_y = y;
@@ -32,6 +32,8 @@ void CPipe::Render()
 	}
 	
 	}
+
+	//DebugOutTitle(L"isBlocking %i ", isBlocking);
 }
 
 void CPipe::GetBoundingBox(float& l, float& t, float& r, float& b)

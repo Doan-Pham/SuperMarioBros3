@@ -20,12 +20,12 @@ protected:
 	float cellHeight;
 	int direction; // -1: vertical + upside, 1: vertical + downside, 2: horizontal
 	bool isMarioSpawnLocation; // Decides if mario can spawn from here
-
+	bool isContainingPortal;
 	bool isBlocking;
 
 public:
 	CPipe(float x, float y, int width, int height, float cellWidth, float cellHeight,
-		int direction,bool isMarioSpawnLocation) :CGameObject(x, y)
+		int direction,bool isMarioSpawnLocation, bool isContainingPortal) :CGameObject(x, y)
 	{
 		this->width = width;
 		this->height = height;
@@ -33,11 +33,14 @@ public:
 		this->cellHeight = cellHeight;
 		this->direction = direction;
 		this->isMarioSpawnLocation = isMarioSpawnLocation;
+		this->isContainingPortal = isContainingPortal;
 		isBlocking = true;
 	}
 	virtual void Render();
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	bool IsMarioSpawnLocation() { return isMarioSpawnLocation; }
+	bool IsContainingPortal() { return isContainingPortal; }
+
 	int GetDirection() { return direction; }
 	int IsBlocking() { return isBlocking; }
 	void SetBlocking(bool isBlocking) { this->isBlocking = isBlocking; }

@@ -108,7 +108,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Pipes" visible="0">
+ <objectgroup id="3" name="Pipes">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>
@@ -125,6 +125,7 @@
     <property name="cellHeight" type="float" value="16"/>
     <property name="cellWidth" type="float" value="16"/>
     <property name="direction" type="int" value="1"/>
+    <property name="isContainingPortal" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
