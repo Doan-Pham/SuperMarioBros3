@@ -38,6 +38,8 @@ class CKoopa;
 #define MARIO_GRAVITY_SLOW_FALL		0.0004f
 #define MARIO_JUMP_DEFLECT_SPEED	0.25f
 
+#define MARIO_SPEED_THROUGH_PIPE	0.05f
+
 #pragma endregion 
 
 
@@ -67,7 +69,8 @@ class CKoopa;
 #define MARIO_STATE_THROW_FIRE		1100
 #define MARIO_STATE_THROW_HAMMER	1200
 
-#define MARIO_STATE_COURSE_CLEAR		1300
+#define MARIO_STATE_GO_THROUGH_PIPE		1300
+#define MARIO_STATE_COURSE_CLEAR		1400
 #pragma endregion
 
 
@@ -100,7 +103,7 @@ class CKoopa;
 #define ID_ANI_MARIO_JUMP_RUN_LEFT				1191
 #define ID_ANI_MARIO_JUMP_RUN_RIGHT				1192
 
-
+#define ID_ANI_MARIO_GO_THROUGH_PIPE			1292
 
 #define ID_ANI_MARIO_DIE 999
 
@@ -286,6 +289,8 @@ class CKoopa;
 
 class CMario : public CGameObject
 {
+	int ny;
+
 	BOOLEAN isSitting;
 	BOOLEAN isFlying;
 	BOOLEAN isTrulyFalling;
@@ -297,6 +302,8 @@ class CMario : public CGameObject
 
 	BOOLEAN isThrowingFireball;
 	BOOLEAN isThrowingHammer;
+
+	BOOLEAN isReadyToGoPipe;
 
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;
@@ -340,6 +347,7 @@ class CMario : public CGameObject
 	void OnCollisionWithFireShot(LPCOLLISIONEVENT e);
 	void OnCollisionWithDeadZone(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickGlass(LPCOLLISIONEVENT e);
 	void OnCollisionWithPBlock(LPCOLLISIONEVENT e);
@@ -390,5 +398,7 @@ public:
 	void KickHeldShell();
 
 	void SetSpawnPipeLocation(CPipe* pipe) { this->spawnPipeLocation = pipe; }
+
+	void SetReadyToGoPipe(bool isReady, int ny = 0) { isReadyToGoPipe = isReady; this->ny = ny; }
 	//void NotifyPMeterAKeyHit() { pMeter->SetState(P_METER_STATE_KEY_A_HIT); }
 };

@@ -18,6 +18,7 @@
 #include "PlatformGhost.h"
 #include "Portal.h"
 #include "DeadZone.h"
+#include "Pipe.h"
 
 #include "FireShot.h"
 #include "FireBall.h"
@@ -40,6 +41,8 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	isHoldingShell = false;
 	isThrowingFireball = false;
 	isThrowingHammer = false;
+	isReadyToGoPipe = false;
+	ny = 0;
 
 	maxVx = 0.0f;
 	ax = 0.0f;
@@ -225,13 +228,13 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (e->ny != 0 && e->obj->IsBlocking() && state != MARIO_STATE_GO_THROUGH_PIPE)
 	{
 		if (e->ny < 0) isOnPlatform = true;
 		vy = 0;
 
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking())
+	else if (e->nx != 0 && e->obj->IsBlocking() && state != MARIO_STATE_GO_THROUGH_PIPE)
 	{
 		vx = 0;
 	}
@@ -272,6 +275,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 
+	else if (dynamic_cast<CPipe*>(e->obj))
+		OnCollisionWithPipe(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -563,12 +568,31 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CPortal* p = (CPortal*)e->obj;
 	if (p->GetMapId() != -1)
 	{
+		SetState(MARIO_STATE_IDLE);
 		currentScene->InitiateSwitchMap(p->GetMapId());
 		float pipe_l, pipe_t, pipe_r, pipe_b;
 		spawnPipeLocation->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
-		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t - GetBBoxHeight());
+		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t - 3*GetBBoxHeight());
 	}
 	else if (p->GetSceneId() != -1) CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+}
+
+void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
+{
+	CPipe* pipe = (CPipe*)e->obj;
+
+	float pipe_l, pipe_t, pipe_r, pipe_b;
+	pipe->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
+	float mario_l, mario_t, mario_r, mario_b;
+	this->GetBoundingBox(mario_l, mario_t, mario_r, mario_b);
+
+	if (mario_l <= pipe_l || mario_r >= pipe_r ) return;
+	if ((pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_UPSIDE && ny > 0 && e->ny < 0 && e->nx == 0) || 
+		(pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_DOWNSIDE && ny < 0 && e->ny > 0 && e->nx == 0))
+	{
+		SetState(MARIO_STATE_GO_THROUGH_PIPE);
+		pipe->SetBlocking(false);
+	}
 }
 
 void CMario::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)
@@ -911,6 +935,7 @@ int CMario::GetAniIdRaccoon()
 		else aniId = ID_ANI_MARIO_RACCOON_HOLD_LEFT;
 	}
 	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
+	if (state == MARIO_STATE_GO_THROUGH_PIPE) aniId = ID_ANI_MARIO_GO_THROUGH_PIPE;
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 
 	return aniId;
@@ -1119,7 +1144,7 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE || this->state == MARIO_STATE_COURSE_CLEAR) return;
+	if (this->state == MARIO_STATE_DIE || this->state == MARIO_STATE_COURSE_CLEAR ) return;
 
 	switch (state)
 	{
@@ -1350,6 +1375,15 @@ void CMario::SetState(int state)
 	{
 		ax = 0;
 		vx = 0;
+		break;
+	}
+
+	case MARIO_STATE_GO_THROUGH_PIPE:
+	{
+		ax = 0;
+		vx = 0;
+		vy = ny * MARIO_SPEED_THROUGH_PIPE;
+		ay = 0;
 		break;
 	}
 

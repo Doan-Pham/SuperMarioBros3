@@ -80,7 +80,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Player" visible="0">
+ <objectgroup id="4" name="Player">
   <properties>
    <property name="objectTypeId" type="int" value="10"/>
   </properties>
@@ -332,11 +332,11 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Portals" visible="0">
+ <objectgroup id="8" name="Portals">
   <properties>
    <property name="objectTypeId" type="int" value="110"/>
   </properties>
-  <object id="225" type="Portal" x="2256" y="96" width="32" height="16">
+  <object id="225" type="Portal" x="2264" y="144" width="16" height="16">
    <properties>
     <property name="mapId" type="int" value="112"/>
    </properties>

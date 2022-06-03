@@ -12,7 +12,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)(currentScene)->GetPlayer();
 
-	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR) return;
+	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR ||
+		mario->GetState() == MARIO_STATE_GO_THROUGH_PIPE) return;
 
 	CMap* map = (CMap*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetCurrentMap();
 	int mapWidth, mapHeight, mapTileWidth, mapTileHeight;
@@ -28,9 +29,18 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
+	case DIK_UP:
+	{
+		mario->SetReadyToGoPipe(true, -1);
+		break;
+	}
 	case DIK_DOWN:
+	{
+		mario->SetReadyToGoPipe(true, 1);
 		mario->SetState(MARIO_STATE_SIT);
 		break;
+	}
+
 	case DIK_S:
 		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
 		{
@@ -112,7 +122,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR) return;
+	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR ||
+		mario->GetState() == MARIO_STATE_GO_THROUGH_PIPE) return;
 
 	switch (KeyCode)
 	{
@@ -128,8 +139,16 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		break;
 
 	case DIK_DOWN:
+	{
+		mario->SetReadyToGoPipe(false);
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
+	}
+	case DIK_UP:
+	{
+		mario->SetReadyToGoPipe(false);
+		break;
+	}
 
 	case DIK_A:
 		if (mario->IsHoldingShell()) mario->KickHeldShell();
@@ -142,7 +161,8 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR) return;
+	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR ||
+		mario->GetState() == MARIO_STATE_GO_THROUGH_PIPE) return;
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
