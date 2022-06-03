@@ -38,7 +38,7 @@ class CKoopa;
 #define MARIO_GRAVITY_SLOW_FALL		0.0004f
 #define MARIO_JUMP_DEFLECT_SPEED	0.25f
 
-#define MARIO_SPEED_THROUGH_PIPE	0.05f
+#define MARIO_SPEED_THROUGH_PIPE	0.08f
 
 #pragma endregion 
 
@@ -304,6 +304,7 @@ class CMario : public CGameObject
 	BOOLEAN isThrowingHammer;
 
 	BOOLEAN isReadyToGoPipe;
+	BOOLEAN isGoingThroughPipe;
 
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;

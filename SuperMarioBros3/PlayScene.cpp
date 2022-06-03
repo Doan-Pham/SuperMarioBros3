@@ -773,6 +773,8 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 			// -1: vertical upside, 1: vertical downside, 2: horizontal
 			int direction = -999;
 			bool isMarioSpawnLocation = 0;
+			bool isContainingPortal = 0;
+
 			TiXmlElement* xmlElementProperties = currentElementObject->FirstChildElement("properties");
 
 			for (TiXmlElement* currentProprety = xmlElementProperties->FirstChildElement()
@@ -813,6 +815,11 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				{
 					isMarioSpawnLocation = (float)atof(currentProprety->Attribute("value"));
 				}
+
+				if (currentProprety->Attribute("name") == string("isContainingPortal"))
+				{
+					isContainingPortal = (float)atof(currentProprety->Attribute("value"));
+				}
 			}
 
 			obj = new CPipe(
@@ -820,7 +827,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
 				(int)width / cellWidth, (int)height / cellHeight,
 				cellWidth, cellHeight,
-				direction, isMarioSpawnLocation);
+				direction, isMarioSpawnLocation, isContainingPortal);
 			if (isMarioSpawnLocation)
 			{
 				CMario* mario = (CMario*)maps[mapId]->GetPlayer();

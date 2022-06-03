@@ -42,6 +42,8 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	isThrowingFireball = false;
 	isThrowingHammer = false;
 	isReadyToGoPipe = false;
+	isGoingThroughPipe = false;
+
 	ny = 0;
 
 	maxVx = 0.0f;
@@ -217,7 +219,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
-	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
+	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -568,11 +570,17 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CPortal* p = (CPortal*)e->obj;
 	if (p->GetMapId() != -1)
 	{
-		SetState(MARIO_STATE_IDLE);
+		// Reset this after mario goes through pipe, collides with portal and be teleported
+		isGoingThroughPipe = false;
+
+		// Because when player hits down arrow key to go through pipes, mario's isSitting is set
+		// to true and not reset
+		SetState(MARIO_STATE_SIT_RELEASE);
+
 		currentScene->InitiateSwitchMap(p->GetMapId());
 		float pipe_l, pipe_t, pipe_r, pipe_b;
 		spawnPipeLocation->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
-		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t - 3*GetBBoxHeight());
+		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t - GetBBoxHeight());
 	}
 	else if (p->GetSceneId() != -1) CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
@@ -580,13 +588,26 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 {
 	CPipe* pipe = (CPipe*)e->obj;
+	if (pipe->IsMarioSpawnLocation() || !pipe->IsContainingPortal()) return;
+
 
 	float pipe_l, pipe_t, pipe_r, pipe_b;
 	pipe->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
 	float mario_l, mario_t, mario_r, mario_b;
 	this->GetBoundingBox(mario_l, mario_t, mario_r, mario_b);
 
+
+	// This prevens the case where mario stands near the edge and go through pipe
 	if (mario_l <= pipe_l || mario_r >= pipe_r ) return;
+
+	if (isGoingThroughPipe)
+	{
+		if ((ny > 0 && e->ny < 0 && mario_b > pipe_t) ||
+			(ny < 0 && e->ny > 0 && mario_t < pipe_b))
+			pipe->SetBlocking(true);
+		return;
+	}
+
 	if ((pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_UPSIDE && ny > 0 && e->ny < 0 && e->nx == 0) || 
 		(pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_DOWNSIDE && ny < 0 && e->ny > 0 && e->nx == 0))
 	{
@@ -935,7 +956,7 @@ int CMario::GetAniIdRaccoon()
 		else aniId = ID_ANI_MARIO_RACCOON_HOLD_LEFT;
 	}
 	if (state == MARIO_STATE_COURSE_CLEAR) aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
-	if (state == MARIO_STATE_GO_THROUGH_PIPE) aniId = ID_ANI_MARIO_GO_THROUGH_PIPE;
+	if (isGoingThroughPipe) aniId = ID_ANI_MARIO_GO_THROUGH_PIPE;
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 
 	return aniId;
@@ -1308,7 +1329,10 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_FALLING:
 	{
-		ay = MARIO_GRAVITY;
+		// Because mario's default state is MARIO_STATE_FALLING which could overwrite 
+		// MARIO_STATE_GO_THROUGH_PIPE and mess up his speed
+		if (!isGoingThroughPipe)
+			ay = MARIO_GRAVITY;
 		break;
 	}
 
@@ -1380,6 +1404,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_GO_THROUGH_PIPE:
 	{
+		isGoingThroughPipe = true;
 		ax = 0;
 		vx = 0;
 		vy = ny * MARIO_SPEED_THROUGH_PIPE;
