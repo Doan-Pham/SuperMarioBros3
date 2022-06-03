@@ -219,7 +219,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
-	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f ", state, vy, ay);
+	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -572,11 +572,14 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	{
 		// Reset this after mario goes through pipe, collides with portal and be teleported
 		isGoingThroughPipe = false;
+		isReadyToGoPipe = false;
 
 		// Because when player hits down arrow key to go through pipes, mario's isSitting is set
 		// to true and not reset
 		SetState(MARIO_STATE_SIT_RELEASE);
 
+		// Setting this fixes the bug where mario is stuck to a pipe that is mario spawn spot
+		SetState(MARIO_STATE_FALLING);
 		currentScene->InitiateSwitchMap(p->GetMapId());
 		float pipe_l, pipe_t, pipe_r, pipe_b;
 		spawnPipeLocation->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
@@ -588,7 +591,7 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 {
 	CPipe* pipe = (CPipe*)e->obj;
-	if (pipe->IsMarioSpawnLocation() || !pipe->IsContainingPortal()) return;
+	if (pipe->IsMarioSpawnLocation() || !pipe->IsContainingPortal() || !isReadyToGoPipe) return;
 
 
 	float pipe_l, pipe_t, pipe_r, pipe_b;
@@ -600,6 +603,7 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 	// This prevens the case where mario stands near the edge and go through pipe
 	if (mario_l <= pipe_l || mario_r >= pipe_r ) return;
 
+	// Reset pipe's isBlocking flag
 	if (isGoingThroughPipe)
 	{
 		if ((ny > 0 && e->ny < 0 && mario_b > pipe_t) ||
@@ -613,6 +617,7 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 	{
 		SetState(MARIO_STATE_GO_THROUGH_PIPE);
 		pipe->SetBlocking(false);
+		isOnPlatform = false;
 	}
 }
 
@@ -1331,7 +1336,7 @@ void CMario::SetState(int state)
 	{
 		// Because mario's default state is MARIO_STATE_FALLING which could overwrite 
 		// MARIO_STATE_GO_THROUGH_PIPE and mess up his speed
-		if (!isGoingThroughPipe)
+		if (isGoingThroughPipe) return;
 			ay = MARIO_GRAVITY;
 		break;
 	}
