@@ -336,7 +336,7 @@
   <properties>
    <property name="objectTypeId" type="int" value="110"/>
   </properties>
-  <object id="225" type="Portal" x="2264" y="144" width="16" height="16">
+  <object id="225" type="Portal" x="2264" y="160" width="16" height="16">
    <properties>
     <property name="mapId" type="int" value="112"/>
    </properties>
@@ -667,7 +667,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Pipes">
+ <objectgroup id="13" name="Pipes" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="90"/>
   </properties>
