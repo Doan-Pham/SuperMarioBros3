@@ -175,6 +175,9 @@
     <ClCompile Include="OverworldKeyEventHandler.cpp">
       <Filter>Gameplay\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="OverworldKeyEventHandler.h">
       <Filter>Gameplay\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -454,6 +460,9 @@
     </Filter>
     <Filter Include="Game Object\OverworldScene">
       <UniqueIdentifier>{b5d19eb7-ffb1-4083-a995-859a4d291218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Object\IntroScene">
+      <UniqueIdentifier>{d15e8b54-332b-471f-968c-fb00381f2d88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -165,6 +165,7 @@
     <ClCompile Include="GoombaRedWing.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="KoopaGreenNormal.cpp" />
     <ClCompile Include="KoopaGreenWing.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="GoombaRedWing.h" />
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa.h" />

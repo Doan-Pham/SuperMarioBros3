@@ -6,8 +6,10 @@
 
 #include "Texture.h"
 #include "Animations.h"
+
 #include "PlayScene.h"
 #include "OverworldScene.h"
+#include "IntroScene.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -467,7 +469,7 @@ void CGame::_ParseSection_SCENES(string line)
 	switch (scene_type)
 	{
 	case SCENE_TYPE_INTRO_SCENE:
-		scene = new CPlayScene(id, path);
+		scene = new CIntroScene(id, path);
 		break;
 
 	case SCENE_TYPE_OVERWORLD_SCENE:
@@ -530,7 +532,8 @@ void CGame::Load(LPCWSTR gameFile)
 
 void CGame::SwitchScene()
 {
-	if (next_scene < 0 || next_scene == current_scene) return; 
+	// Only intro scene (id - 0) can bypass this check automatically, therefore "next_scene != 0"
+	if (next_scene < 0 || (next_scene == current_scene && next_scene != 0)) return; 
 
 	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
 	SetCamPos(0.0f, 0.0f);
