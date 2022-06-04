@@ -25,10 +25,6 @@
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	this->map = NULL;
-	objects.push_back(new CCurtain(
-		CGame::GetInstance()->GetBackBufferWidth() / 2, 
-		CGame::GetInstance()->GetBackBufferHeight() - 48, 
-		(int)(CGame::GetInstance()->GetBackBufferHeight() - 48)/16));
 }
 
 void CIntroScene::Load()
@@ -415,6 +411,13 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 
 		}
+
+		case OBJECT_TYPE_INTRO_CURTAIN:
+		{
+			obj = new CCurtain(x, y, (int)(y / CURTAIN_PART_HEIGHT));
+			break;
+		}
+
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

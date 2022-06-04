@@ -40,6 +40,9 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="Curtain">
+  <properties>
+   <property name="objectTypeId" type="int" value="200"/>
+  </properties>
   <object id="2" x="160" y="208">
    <point/>
   </object>
