@@ -1,12 +1,12 @@
 [SETTINGS]
-start	0
+start	1
 width	320
 height	240
 
 # type	id	file
 # type: 0: intro, 1: overworld scene, 2: playscene
 [SCENES]
-0	0	scene_intro.txt
+0	1	scene_intro.txt
 1	10	scene_overworld_1.txt
 2	11	scene_world_1_1.txt
 

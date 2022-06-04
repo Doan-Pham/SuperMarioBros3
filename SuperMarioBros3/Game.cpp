@@ -532,14 +532,13 @@ void CGame::Load(LPCWSTR gameFile)
 
 void CGame::SwitchScene()
 {
-	// Only intro scene (id - 0) can bypass this check automatically, therefore "next_scene != 0"
-	if (next_scene < 0 || (next_scene == current_scene && next_scene != 0)) return; 
+	if (next_scene < 0 || next_scene == current_scene) return; 
 
 	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
 	SetCamPos(0.0f, 0.0f);
 	ResetPlaysceneTimeLeft();
-
-	scenes[current_scene]->Unload();	
+	if (scenes[current_scene] != NULL)
+		scenes[current_scene]->Unload();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 
