@@ -3,6 +3,9 @@
 
 #include "IntroScene.h"
 
+#include "PlatformTile.h"
+#include "Curtain.h"
+
 #include "AssetIDs.h"
 #include "Textures.h"
 #include "Sprites.h"
@@ -22,6 +25,10 @@
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	this->map = NULL;
+	objects.push_back(new CCurtain(
+		CGame::GetInstance()->GetBackBufferWidth() / 2, 
+		CGame::GetInstance()->GetBackBufferHeight() - 48, 
+		(int)(CGame::GetInstance()->GetBackBufferHeight() - 48)/16));
 }
 
 void CIntroScene::Load()
@@ -371,7 +378,43 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		switch (objectType)
 		{
+		case OBJECT_TYPE_PLATFORM:
+		{
+			if (currentElementObject->FirstChildElement("properties") == NULL)
+			{
+				DebugOut(L"[ERROR] This object doesn't have subtype id \n");
+				return;
+			}
 
+			int objectSubTypeId = atoi(currentElementObject->FirstChildElement("properties")
+				->FirstChildElement("property")->Attribute("value"));
+			switch (objectSubTypeId)
+			{
+			case OBJECT_TYPE_PLATFORM_TILE:
+			{
+				float height = (float)atof(currentElementObject->Attribute("height"));
+				float width = (float)atof(currentElementObject->Attribute("width"));
+
+				//The Tiled software's coordinate system uses the top-left corner convention, but
+				//our program uses the center-center one, therefore we need to adjust the input
+				//coordinates
+				obj = new CPlatformTile(
+					x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
+					y + height / 2 - COORDINATE_ADJUST_SYNC_TILED,
+					height,
+					width);
+
+				break;
+			}
+
+			default:
+				DebugOut(L"[ERROR] Object sub type id does not exist: %i\n", objectSubTypeId);
+				return;
+				break;
+			}
+			break;
+
+		}
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

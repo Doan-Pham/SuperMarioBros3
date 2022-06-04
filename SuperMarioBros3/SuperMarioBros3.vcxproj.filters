@@ -178,6 +178,7 @@
     <ClCompile Include="IntroScene.cpp">
       <Filter>Core\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Curtain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -366,6 +367,7 @@
     <ClInclude Include="IntroScene.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Curtain.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
