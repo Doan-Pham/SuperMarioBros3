@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "TileMap.h"
-
+#include "Mario.h"
 
 class CIntroScene : public CScene
 {
@@ -21,6 +21,10 @@ protected:
 	void _ParseSection_TILESET(TiXmlElement* xmlElementTileSet);
 	void _ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer);
 	void _ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup);
+
+	CMario* mario_1;
+	CMario* mario_2;
+
 public:
 	CIntroScene(int id, LPCWSTR filePath);
 	void Load();

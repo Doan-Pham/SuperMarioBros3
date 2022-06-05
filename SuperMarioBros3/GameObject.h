@@ -29,6 +29,7 @@ protected:
 	int state;
 
 	bool isDeleted; 
+	bool isHidden;
 
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
@@ -68,7 +69,9 @@ public:
 
 	//If an object is hidden, player has to hit the container for that hidden object first to
 	//make that object appear, only then mario can collide with that hidden object
-	virtual bool IsHidden() { return 0; }
+	virtual bool IsHidden() { return isHidden; }
+	virtual void Hide() { isHidden = true; }
+	virtual void UnHide() { isHidden = false; }
 
 	//The amount of scores, coins, and lives an object gives when hit/destroyed
 	virtual int GetScoresGivenWhenHit() { return 0; }

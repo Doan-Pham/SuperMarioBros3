@@ -6,6 +6,11 @@
 #include "PlatformTile.h"
 #include "Curtain.h"
 
+#include "Goomba.h"
+#include "MushroomBig.h"
+#include "Leaf.h"
+#include "KoopaGreenNormal.h"
+
 #include "AssetIDs.h"
 #include "Textures.h"
 #include "Sprites.h"
@@ -25,6 +30,8 @@
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	this->map = NULL;
+	mario_1 = NULL;
+	mario_2 = NULL;
 }
 
 void CIntroScene::Load()
@@ -374,6 +381,14 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		switch (objectType)
 		{
+		case OBJECT_TYPE_MARIO:
+		{
+			obj = new CMario(x, y, NULL);
+			if (mario_1 == NULL) mario_1 = (CMario*)obj;
+			else mario_2 == (CMario*)obj;
+			break;
+		}
+
 		case OBJECT_TYPE_PLATFORM:
 		{
 			if (currentElementObject->FirstChildElement("properties") == NULL)
@@ -418,6 +433,35 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
+		case OBJECT_TYPE_ENEMY_GOOMBA_BROWN_NORMAL:
+		{
+			obj = new CGoomba(x, y);
+			obj->Hide();
+			break;
+		}
+
+		case OBJECT_TYPE_ITEM_MUSHROOM_BIG:
+		{
+			obj = new CMushroomBig(x, y);
+			obj->SetState(MUSHROOM_STATE_HIDING);
+			break;
+		}
+
+		case OBJECT_TYPE_ITEM_LEAF:
+		{
+			obj = new CLeaf(x, y);
+			obj->SetState(LEAF_STATE_HIDING);
+			break;
+		}
+
+
+		case OBJECT_TYPE_ENEMY_KOOPA_GREEN_NORMAL:
+		{
+			obj = new CKoopaGreenNormal(x, y, NULL); 
+			obj->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
+			obj->Hide();
+			break;
+		}
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);
@@ -443,7 +487,10 @@ void CIntroScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (!objects[i]->IsHidden())
+		{
+			objects[i]->Update(dt, &coObjects);
+		}
 	}
 }
 
@@ -453,7 +500,10 @@ void CIntroScene::Render()
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Render();
+		if (!objects[i]->IsHidden())
+		{
+			objects[i]->Render();
+		}
 	}
 }
 

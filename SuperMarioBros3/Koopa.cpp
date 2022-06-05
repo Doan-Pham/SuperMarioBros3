@@ -263,7 +263,7 @@ void CKoopa::SetState(int state)
 		// mario_big to mario_small)
 		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
 
-		if (attachedBBox == NULL)
+		if (attachedBBox == NULL && currentScene != NULL)
 		{
 			attachedBBox = new CAttachedBBox(x + nx * KOOPA_NORMAL_BBOX_WIDTH, y, vx, vy);
 			this->currentScene->AddObject(attachedBBox);
