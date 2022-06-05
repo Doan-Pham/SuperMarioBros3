@@ -32,6 +32,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	this->map = NULL;
 	mario_1 = NULL;
 	mario_2 = NULL;
+	title = NULL;
 
 	mario_1_last_action_time = -1;
 	mario_1_current_action = -1;
@@ -452,6 +453,13 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
+		case OBJECT_TYPE_INTRO_TITLE:
+		{
+			obj = new CGameTitle(x, y);
+			obj->Hide();
+			title = (CGameTitle*)obj;
+			break;
+		}
 		case OBJECT_TYPE_ENEMY_GOOMBA_BROWN_NORMAL:
 		{
 			obj = new CGoomba(x, y);
@@ -582,14 +590,17 @@ void CIntroScene::ProcessMario()
 	case 3:
 	{
 		mario_2->SetState(MARIO_STATE_SIT_RELEASE);
+		title->UnHide();
 		break;
 	}
 	default:
 		break;
 	}
+
 	//DebugOutTitle(L"now - sequence_start: %d", now - mario_1_last_action_time);
 	DebugOutTitle(L"mario_2_cur_action %i, mario_2_state: %i", mario_2_current_action, mario_2->GetState());
 }
+
 void CIntroScene::Update(DWORD dt)
 {
 	ProcessMario();

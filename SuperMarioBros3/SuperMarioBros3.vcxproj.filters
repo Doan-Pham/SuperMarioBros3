@@ -178,7 +178,12 @@
     <ClCompile Include="IntroScene.cpp">
       <Filter>Core\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Curtain.cpp" />
+    <ClCompile Include="Curtain.cpp">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTitle.cpp">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -367,7 +372,12 @@
     <ClInclude Include="IntroScene.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Curtain.h" />
+    <ClInclude Include="Curtain.h">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTitle.h">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

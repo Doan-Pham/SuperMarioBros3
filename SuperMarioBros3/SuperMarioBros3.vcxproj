@@ -162,6 +162,7 @@
     <ClCompile Include="FireShot.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameTitle.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GoombaRedWing.cpp" />
     <ClCompile Include="Hammer.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="FireShot.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameTitle.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GoombaRedWing.h" />
     <ClInclude Include="Hammer.h" />

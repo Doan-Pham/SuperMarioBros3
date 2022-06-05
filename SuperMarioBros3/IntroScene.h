@@ -7,6 +7,8 @@
 #include "TileMap.h"
 #include "Mario.h"
 
+#include "GameTitle.h"
+
 // These numbers mean that action "x" will last for "y"time
 #define MARIO_1_ACTION_0_TIME	1000
 #define MARIO_1_ACTION_1_TIME	1000
@@ -23,6 +25,7 @@ class CIntroScene : public CScene
 protected:
 	vector<LPGAMEOBJECT> objects;
 	LPTILEMAP map;
+	CGameTitle* title;
 
 	CMario* mario_1;
 	vector<ULONGLONG> mario_1_actions_time;
