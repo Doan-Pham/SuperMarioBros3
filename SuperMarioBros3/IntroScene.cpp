@@ -27,6 +27,8 @@
 #define SCENE_SECTION_ANIMATION	3
 #define SCENE_SECTION_MAP 4
 
+#define ID_TILE_LAYER_BACKGROUND_2 2
+
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	this->map = NULL;
@@ -47,7 +49,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	mario_2_actions_time.push_back(MARIO_2_ACTION_1_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_2_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_3_TIME);
-
+	mario_2_actions_time.push_back(MARIO_2_ACTION_4_TIME);
 }
 
 void CIntroScene::Load()
@@ -318,18 +320,41 @@ void CIntroScene::_ParseSection_TILESET(TiXmlElement* xmlElementTileSet)
 
 void CIntroScene::_ParseSection_TILELAYER(TiXmlElement* xmlElementTileLayer)
 {
+	bool isVisible = true;
 	if (xmlElementTileLayer->Attribute("visible") != NULL)
 	{
-		int visible = atoi(xmlElementTileLayer->Attribute("visible"));
-		if (!visible) return;
+		isVisible = atoi(xmlElementTileLayer->Attribute("visible"));
 	};
 
 	//Parse tilelayer's general attributes
-	int id = atoi(xmlElementTileLayer->Attribute("id"));
+	int id = -999;
 	int width = atoi(xmlElementTileLayer->Attribute("width"));
 	int height = atoi(xmlElementTileLayer->Attribute("height"));
 
-	LPTILELAYER tileLayer = new CTileLayer(id, width, height);
+	//Parse tile layer id
+	TiXmlElement* xmlProperties = xmlElementTileLayer->FirstChildElement("properties");
+	if (xmlProperties == nullptr)
+	{
+		DebugOut(L"[ERROR] This tile layer doesn't have id: \n");
+		return;
+	}
+	for (TiXmlElement* currentElement = xmlProperties->FirstChildElement()
+		; currentElement != nullptr
+		; currentElement = currentElement->NextSiblingElement())
+	{
+		if (currentElement->Attribute("name") == string("id"))
+		{
+			id = atoi(currentElement->Attribute("value"));
+			if (id == -999)
+			{
+				DebugOut(L"[ERROR] Failed to parse tile layer id: %i\n",
+					id);
+				return;
+			}
+		}
+	}
+
+	LPTILELAYER tileLayer = new CTileLayer(id, width, height, isVisible);
 
 	//Parse tilelayer's tile matrix
 	vector<string> tokens;
@@ -591,6 +616,11 @@ void CIntroScene::ProcessMario()
 	{
 		mario_2->SetState(MARIO_STATE_SIT_RELEASE);
 		title->UnHide();
+		break;
+	}
+	case 4:
+	{
+		map->GetTileLayer(ID_TILE_LAYER_BACKGROUND_2)->UnHide();
 		break;
 	}
 	default:

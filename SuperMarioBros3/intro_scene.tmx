@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="11">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="12">
  <tileset firstgid="1" name="intro_scene_tileset.png" tilewidth="16" tileheight="16" tilecount="11" columns="11">
   <properties>
    <property name="textureId" type="int" value="0"/>
   </properties>
   <image source="textures/intro_scene_tileset.png" width="176" height="16"/>
  </tileset>
+ <tileset firstgid="12" name="intro_scene_tileset_2" tilewidth="16" tileheight="16" tilecount="121" columns="11">
+  <properties>
+   <property name="textureId" type="int" value="999"/>
+  </properties>
+  <image source="textures/intro_scene_tileset_2.png" width="176" height="176"/>
+ </tileset>
  <layer id="1" name="Ground" width="20" height="16">
   <properties>
-   <property name="id" type="int" value="0"/>
+   <property name="id" type="int" value="1"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -29,7 +35,30 @@
 6,7,6,7,6,7,6,7,6,7,6,7,6,7,6,7,6,7,6,7
 </data>
  </layer>
- <objectgroup id="4" name="Mario" visible="0">
+ <layer id="11" name="Background_2" width="20" height="16" visible="0">
+  <properties>
+   <property name="id" type="int" value="2"/>
+  </properties>
+  <data encoding="csv">
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,65,66,
+12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,79,80,
+65,66,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,65,84,85,
+79,86,87,12,12,12,12,12,12,12,12,12,12,12,12,12,12,79,91,85,
+92,93,94,12,12,12,12,12,12,12,12,12,12,12,12,12,12,92,102,85,
+92,103,104,87,12,12,12,12,12,12,12,12,12,12,12,12,65,84,102,85,
+106,107,108,109,12,12,12,12,12,12,12,12,12,12,12,12,118,119,120,121,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="Mario">
   <properties>
    <property name="objectTypeId" type="int" value="10"/>
   </properties>
@@ -40,7 +69,15 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Goomba">
+ <objectgroup id="10" name="Title">
+  <properties>
+   <property name="objectTypeId" type="int" value="210"/>
+  </properties>
+  <object id="11" x="152" y="0">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Goomba" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="61"/>
   </properties>
@@ -48,7 +85,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="2" name="Platform">
+ <objectgroup id="2" name="Platform" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="50"/>
   </properties>
@@ -66,6 +103,17 @@
    <point/>
   </object>
  </objectgroup>
+ <objectgroup id="8" name="Koopa_Shell" visible="0">
+  <properties>
+   <property name="objectTypeId" type="int" value="65"/>
+  </properties>
+  <object id="8" x="160" y="0">
+   <point/>
+  </object>
+  <object id="9" x="224" y="0">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="6" name="Mushroom" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="31"/>
@@ -79,17 +127,6 @@
    <property name="objectTypeId" type="int" value="33"/>
   </properties>
   <object id="10" x="176" y="0">
-   <point/>
-  </object>
- </objectgroup>
- <objectgroup id="8" name="Koopa_Shell" visible="0">
-  <properties>
-   <property name="objectTypeId" type="int" value="65"/>
-  </properties>
-  <object id="8" x="160" y="0">
-   <point/>
-  </object>
-  <object id="9" x="224" y="0">
    <point/>
   </object>
  </objectgroup>
