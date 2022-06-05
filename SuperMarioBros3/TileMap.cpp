@@ -2,7 +2,6 @@
 
 CTileMap::CTileMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, int tileHeight)
 {
-	this->id = id;
 	this->mapFilePath = mapFilePath;
 	this->width = width;
 	this->height = height;

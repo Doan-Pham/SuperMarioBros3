@@ -34,8 +34,9 @@ public:
 		tileHeight = this->tileHeight;
 	};
 
+	int GetFirstGid() { return firstGid; }
 	int GetLastGid() { return lastGid; }
-
+	
 	void Draw(float x, float y, int tileGid);
 };
 

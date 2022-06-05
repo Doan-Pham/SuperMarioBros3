@@ -1,11 +1,12 @@
 #include "TileLayer.h"
 
-CTileLayer::CTileLayer(int id, int width, int height)
+CTileLayer::CTileLayer(int id, int width, int height, bool isVisible)
 {
-	this->width = id;
+	this->id = id;
 	this->width = width;
 	this->height = height;
 	this->tileSets = tileSets;
+	this->isVisible = isVisible;
 	tileMatrix = new int* [height];
 	for (int i = 0; i < height; i++) tileMatrix[i] = new int[width];
 }
@@ -18,7 +19,7 @@ void CTileLayer::AddTileSet(LPTILESET tileSet)
 void CTileLayer::Render()
 {
 	//int renderCount = 0;
-
+	if (!isVisible) return;
 
 	// Only render tiles that will appear inside the camera
 	float camX, camY = 0.0f;
@@ -39,7 +40,16 @@ void CTileLayer::Render()
 		{
 			int tileGid = tileMatrix[i][j];
 			if (tileGid == 0) continue;
-			int usedTileSetIndex = tileGid / (tileSets[0]->GetLastGid() + 1);
+			int usedTileSetIndex = 0;
+
+			// Somehow we have to put the "k" var initialization outside the loop or else the
+			// vector won't take it as element index
+			int k = 0;
+			for (; k < tileSets.size()-1; k++);
+			{
+				if (tileGid <= tileSets[k]->GetLastGid() && tileGid >= tileSets[k]->GetFirstGid())
+					usedTileSetIndex = k;
+			}
 
 			tileSets[usedTileSetIndex]->Draw(
 				j * TILE_WIDTH_STANDARD ,

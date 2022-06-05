@@ -9,7 +9,6 @@
 class CTileMap
 {
 protected:
-	int id;
 	int width; //Unit: tile
 	int height; //Unit: tile
 	int tileWidth;
@@ -33,6 +32,13 @@ public:
 	{
 		tileWidth = this->tileWidth, tileHeight = this->tileHeight;
 	};
+	LPTILELAYER GetTileLayer(int id){
+		for (LPTILELAYER layer : tileLayers)
+		{
+			if (layer->GetId() == id) return layer;
+		}
+		return NULL;
+	}
 };
 
 typedef CTileMap* LPTILEMAP;
