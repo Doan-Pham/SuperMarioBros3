@@ -507,7 +507,8 @@ void CIntroScene::ProcessMario()
 		{
 			mario_1_current_action++;
 			mario_1_last_action_time = now;
-			if (mario_1_current_action >= mario_1_actions_time.size()) return;
+			if (mario_1_current_action == mario_1_actions_time.size())
+				mario_1_current_action = mario_1_actions_time.size() - 1;
 		}
 
 	}
@@ -552,7 +553,8 @@ void CIntroScene::ProcessMario()
 		{
 			mario_2_current_action++;
 			mario_2_last_action_time = now;
-			if (mario_2_current_action >= mario_2_actions_time.size()) return;
+			if (mario_2_current_action == mario_2_actions_time.size())
+				mario_2_current_action = mario_2_actions_time.size() - 1;
 		}
 
 	}
@@ -574,18 +576,19 @@ void CIntroScene::ProcessMario()
 
 	case 2:
 	{
-		mario_2->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
 	}
 
 	case 3:
 	{
+		mario_2->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
 	}
 	default:
 		break;
 	}
 	//DebugOutTitle(L"now - sequence_start: %d", now - mario_1_last_action_time);
+	DebugOutTitle(L"mario_2_cur_action %i, mario_2_state: %i", mario_2_current_action, mario_2->GetState());
 }
 void CIntroScene::Update(DWORD dt)
 {

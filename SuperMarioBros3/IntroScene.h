@@ -7,14 +7,15 @@
 #include "TileMap.h"
 #include "Mario.h"
 
+// These numbers mean that action "x" will last for "y"time
 #define MARIO_1_ACTION_0_TIME	1000
 #define MARIO_1_ACTION_1_TIME	1000
 #define MARIO_1_ACTION_2_TIME	200
 #define MARIO_1_ACTION_3_TIME	3000
 
 #define MARIO_2_ACTION_0_TIME	1000
-#define MARIO_2_ACTION_1_TIME	2000
-#define MARIO_2_ACTION_2_TIME	200
+#define MARIO_2_ACTION_1_TIME	10
+#define MARIO_2_ACTION_2_TIME	2000
 #define MARIO_2_ACTION_3_TIME	3000
 
 class CIntroScene : public CScene
