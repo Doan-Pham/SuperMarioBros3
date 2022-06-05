@@ -367,6 +367,7 @@ public:
 
 	void Render();
 	void SetState(int state);
+	void SetDirectionX(int nx) { this->nx = nx; }
 
 	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 

@@ -32,6 +32,21 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	this->map = NULL;
 	mario_1 = NULL;
 	mario_2 = NULL;
+
+	mario_1_last_action_time = -1;
+	mario_1_current_action = -1;
+	mario_1_actions_time.push_back(MARIO_1_ACTION_0_TIME);
+	mario_1_actions_time.push_back(MARIO_1_ACTION_1_TIME);
+	mario_1_actions_time.push_back(MARIO_1_ACTION_2_TIME);
+	mario_1_actions_time.push_back(MARIO_1_ACTION_3_TIME);
+
+	mario_2_last_action_time = -1;
+	mario_2_current_action = -1;
+	mario_2_actions_time.push_back(MARIO_2_ACTION_0_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_1_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_2_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_3_TIME);
+
 }
 
 void CIntroScene::Load()
@@ -385,7 +400,11 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		{
 			obj = new CMario(x, y, NULL);
 			if (mario_1 == NULL) mario_1 = (CMario*)obj;
-			else mario_2 == (CMario*)obj;
+			else
+			{
+				mario_2 = (CMario*)obj;
+				mario_2->SetDirectionX(-1);
+			}
 			break;
 		}
 
@@ -473,8 +492,104 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 	}
 }
 
+void CIntroScene::ProcessMario()
+{
+	ULONGLONG now = GetTickCount64();
+	if (mario_1_current_action == -1)
+	{
+		mario_1_current_action = 0;
+		mario_1_last_action_time = now;
+	}
+	else
+	{
+		DWORD t = mario_1_actions_time[mario_1_current_action];
+		if (now - mario_1_last_action_time > t)
+		{
+			mario_1_current_action++;
+			mario_1_last_action_time = now;
+			if (mario_1_current_action >= mario_1_actions_time.size()) return;
+		}
+
+	}
+
+	switch (mario_1_current_action)
+	{
+	case 0:
+	{
+		mario_1->SetState(MARIO_STATE_WALKING_RIGHT);
+		break;
+	}
+
+	case 1:
+	{
+		mario_1->SetState(MARIO_STATE_JUMP);
+		break;
+	}
+
+	case 2:
+	{
+		mario_1->SetState(MARIO_STATE_JUMP);
+		break;
+	}
+
+	case 3:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+
+	if (mario_2_current_action == -1)
+	{
+		mario_2_current_action = 0;
+		mario_2_last_action_time = now;
+	}
+	else
+	{
+		DWORD t = mario_2_actions_time[mario_2_current_action];
+		if (now - mario_2_last_action_time > t)
+		{
+			mario_2_current_action++;
+			mario_2_last_action_time = now;
+			if (mario_2_current_action >= mario_2_actions_time.size()) return;
+		}
+
+	}
+
+	switch (mario_2_current_action)
+	{
+	case 0:
+	{
+		mario_2->SetState(MARIO_STATE_WALKING_LEFT);
+		break;
+	}
+
+	case 1:
+	{
+		mario_2->SetState(MARIO_STATE_SIT);
+		mario_2->SetState(MARIO_STATE_IDLE);
+		break;
+	}
+
+	case 2:
+	{
+		mario_2->SetState(MARIO_STATE_SIT_RELEASE);
+		break;
+	}
+
+	case 3:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+	//DebugOutTitle(L"now - sequence_start: %d", now - mario_1_last_action_time);
+}
 void CIntroScene::Update(DWORD dt)
 {
+	ProcessMario();
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
