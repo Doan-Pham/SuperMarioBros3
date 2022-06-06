@@ -6,11 +6,6 @@
 #include "PlatformTile.h"
 #include "Curtain.h"
 
-#include "Goomba.h"
-#include "MushroomBig.h"
-#include "Leaf.h"
-#include "KoopaGreenNormal.h"
-
 #include "AssetIDs.h"
 #include "Textures.h"
 #include "Sprites.h"
@@ -34,7 +29,13 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	this->map = NULL;
 	mario_1 = NULL;
 	mario_2 = NULL;
+
 	title = NULL;
+	leaf = NULL;
+	mushroom = NULL;
+	koopa_1 = NULL;
+	koopa_2 = NULL;
+	goomba = NULL;
 
 	mario_1_last_action_time = -1;
 	mario_1_current_action = -1;
@@ -50,6 +51,9 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	mario_2_actions_time.push_back(MARIO_2_ACTION_2_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_3_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_4_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_5_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_6_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_7_TIME);
 }
 
 void CIntroScene::Load()
@@ -485,10 +489,13 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			title = (CGameTitle*)obj;
 			break;
 		}
+
 		case OBJECT_TYPE_ENEMY_GOOMBA_BROWN_NORMAL:
 		{
 			obj = new CGoomba(x, y);
+			obj->SetSpeed(0.0f, 0.0f);
 			obj->Hide();
+			goomba = (CGoomba*)obj;
 			break;
 		}
 
@@ -496,6 +503,7 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		{
 			obj = new CMushroomBig(x, y);
 			obj->SetState(MUSHROOM_STATE_HIDING);
+			mushroom = (CMushroomBig*)obj;
 			break;
 		}
 
@@ -503,6 +511,7 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 		{
 			obj = new CLeaf(x, y);
 			obj->SetState(LEAF_STATE_HIDING);
+			leaf = (CLeaf*)obj;
 			break;
 		}
 
@@ -512,8 +521,12 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			obj = new CKoopaGreenNormal(x, y, NULL); 
 			obj->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
 			obj->Hide();
+
+			if (koopa_1 == NULL) koopa_1 = (CKoopaGreenNormal*)obj;
+			else koopa_2 = (CKoopaGreenNormal*)obj;
 			break;
 		}
+
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);
@@ -618,9 +631,38 @@ void CIntroScene::ProcessMario()
 		title->UnHide();
 		break;
 	}
+
 	case 4:
 	{
 		map->GetTileLayer(ID_TILE_LAYER_BACKGROUND_2)->UnHide();
+		title->SetFlashing();
+
+		mushroom->SetState(MUSHROOM_STATE_MOVING);
+		leaf->SetState(LEAF_STATE_MOVING);
+		goomba->UnHide();
+
+		koopa_1->UnHide();
+		koopa_2->UnHide();
+
+		break;
+	}
+	case 5:
+	{
+		koopa_1->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
+		koopa_2->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
+		break;
+	}
+	case 6:
+	{
+		mario_2->SetState(MARIO_STATE_WALKING_LEFT);
+		mario_2->SetState(MARIO_STATE_JUMP);
+		koopa_1->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
+		koopa_2->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
+		break;
+	}
+	case 7:
+	{
+		mario_2->SetState(MARIO_STATE_IDLE);
 		break;
 	}
 	default:
@@ -635,7 +677,7 @@ void CIntroScene::Update(DWORD dt)
 {
 	ProcessMario();
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (!objects[i]->IsHidden())
 		{

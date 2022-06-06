@@ -58,7 +58,7 @@
 127,128,127,128,127,128,127,128,127,128,127,128,127,128,127,128,127,128,127,128
 </data>
  </layer>
- <objectgroup id="4" name="Mario">
+ <objectgroup id="4" name="Mario" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="10"/>
   </properties>
@@ -69,7 +69,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Title">
+ <objectgroup id="10" name="Title" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="210"/>
   </properties>
@@ -77,15 +77,15 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Goomba" visible="0">
+ <objectgroup id="5" name="Goomba">
   <properties>
    <property name="objectTypeId" type="int" value="61"/>
   </properties>
-  <object id="6" x="160" y="112">
+  <object id="6" x="112" y="112">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="2" name="Platform">
+ <objectgroup id="2" name="Platform" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="50"/>
   </properties>
@@ -122,11 +122,11 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Leaf" visible="0">
+ <objectgroup id="7" name="Leaf">
   <properties>
    <property name="objectTypeId" type="int" value="33"/>
   </properties>
-  <object id="10" x="176" y="0">
+  <object id="10" x="112" y="48">
    <point/>
   </object>
  </objectgroup>

@@ -7,6 +7,11 @@
 #include "TileMap.h"
 #include "Mario.h"
 
+#include "MushroomBig.h"
+#include "Leaf.h"
+#include "KoopaGreenNormal.h"
+#include "Goomba.h"
+
 #include "GameTitle.h"
 
 // These numbers mean that action "x" will last for "y"time
@@ -19,8 +24,10 @@
 #define MARIO_2_ACTION_1_TIME	10
 #define MARIO_2_ACTION_2_TIME	2000
 #define MARIO_2_ACTION_3_TIME	2000
-#define MARIO_2_ACTION_4_TIME	1000
-
+#define MARIO_2_ACTION_4_TIME	0
+#define MARIO_2_ACTION_5_TIME	3000
+#define MARIO_2_ACTION_6_TIME	1000
+#define MARIO_2_ACTION_7_TIME	3000
 
 class CIntroScene : public CScene
 {
@@ -28,6 +35,11 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	LPTILEMAP map;
 	CGameTitle* title;
+	CLeaf* leaf;
+	CMushroomBig* mushroom;
+	CKoopaGreenNormal* koopa_1;
+	CKoopaGreenNormal* koopa_2;
+	CGoomba* goomba;
 
 	CMario* mario_1;
 	vector<ULONGLONG> mario_1_actions_time;
