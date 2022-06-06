@@ -23,6 +23,7 @@
 #define SCENE_SECTION_MAP 4
 
 #define ID_TILE_LAYER_BACKGROUND_2 2
+#define ID_TILE_LAYER_BACKGROUND_3 3
 
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
@@ -36,6 +37,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	koopa_1 = NULL;
 	koopa_2 = NULL;
 	goomba = NULL;
+	tree = NULL;
 
 	mario_1_last_action_time = -1;
 	mario_1_current_action = -1;
@@ -54,6 +56,11 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	mario_2_actions_time.push_back(MARIO_2_ACTION_5_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_6_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_7_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_8_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_9_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_10_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_11_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_12_TIME);
 }
 
 void CIntroScene::Load()
@@ -490,6 +497,14 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
+		case OBJECT_TYPE_INTRO_TREE:
+		{
+			obj = new CTree(x, y);
+			obj->Hide();
+			tree = (CTree*)obj;
+			break;
+		}
+
 		case OBJECT_TYPE_ENEMY_GOOMBA_BROWN_NORMAL:
 		{
 			obj = new CGoomba(x, y);
@@ -665,12 +680,39 @@ void CIntroScene::ProcessMario()
 		mario_2->SetState(MARIO_STATE_IDLE);
 		break;
 	}
+	case 8:
+	{
+		mario_2->SetState(MARIO_STATE_WALKING_RIGHT);
+		break;
+	}
+	case 9:
+	{
+		mario_2->SetState(MARIO_STATE_WALKING_LEFT);
+		break;
+	}
+	case 10:
+	{
+		mario_2->SetState(MARIO_STATE_IDLE);
+		tree->UnHide();
+		break;
+	}
+	case 11:
+	{
+		mario_2->SetState(MARIO_STATE_WALKING_RIGHT);
+		break;
+	}
+	case 12:
+	{
+		mario_2->SetState(MARIO_STATE_IDLE);
+		map->GetTileLayer(ID_TILE_LAYER_BACKGROUND_3)->UnHide();
+		break;
+	}
 	default:
 		break;
 	}
 
 	//DebugOutTitle(L"now - sequence_start: %d", now - mario_1_last_action_time);
-	DebugOutTitle(L"mario_2_cur_action %i, mario_2_state: %i", mario_2_current_action, mario_2->GetState());
+	//DebugOutTitle(L"mario_2_cur_action %i, mario_2_state: %i", mario_2_current_action, mario_2->GetState());
 }
 
 void CIntroScene::Update(DWORD dt)
@@ -693,6 +735,8 @@ void CIntroScene::Update(DWORD dt)
 			objects[i]->Update(dt, &coObjects);
 		}
 	}
+
+	PurgeDeletedObjects();
 }
 
 void CIntroScene::Render()
@@ -724,4 +768,28 @@ void CIntroScene::Unload()
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
+}
+
+bool CIntroScene::IsGameObjectDeleted(const LPGAMEOBJECT& o)
+{
+	return o == NULL;
+}
+
+void CIntroScene::PurgeDeletedObjects()
+{
+	vector<LPGAMEOBJECT>::iterator it;
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+
+	// Swap all the deleted objects to the end then erase them automatically
+	objects.erase(
+		std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
+		objects.end());
 }

@@ -13,6 +13,7 @@
 #include "Goomba.h"
 
 #include "GameTitle.h"
+#include "Tree.h"
 
 // These numbers mean that action "x" will last for "y"time
 #define MARIO_1_ACTION_0_TIME	1000
@@ -27,7 +28,12 @@
 #define MARIO_2_ACTION_4_TIME	0
 #define MARIO_2_ACTION_5_TIME	3000
 #define MARIO_2_ACTION_6_TIME	1000
-#define MARIO_2_ACTION_7_TIME	3000
+#define MARIO_2_ACTION_7_TIME	1000
+#define MARIO_2_ACTION_8_TIME	1500
+#define MARIO_2_ACTION_9_TIME	1000
+#define MARIO_2_ACTION_10_TIME	1000
+#define MARIO_2_ACTION_11_TIME	2000
+#define MARIO_2_ACTION_12_TIME	2000
 
 class CIntroScene : public CScene
 {
@@ -40,6 +46,7 @@ protected:
 	CKoopaGreenNormal* koopa_1;
 	CKoopaGreenNormal* koopa_2;
 	CGoomba* goomba;
+	CTree* tree;
 
 	CMario* mario_1;
 	vector<ULONGLONG> mario_1_actions_time;
@@ -67,5 +74,7 @@ public:
 	void Update(DWORD dt);
 	void Render();
 	void Unload();
+	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	void PurgeDeletedObjects();
 };
 

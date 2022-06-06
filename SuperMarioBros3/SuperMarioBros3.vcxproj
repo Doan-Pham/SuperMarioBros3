@@ -205,6 +205,7 @@
     <ClCompile Include="TinyXml\tinyxml.cpp" />
     <ClCompile Include="TinyXml\tinyxmlerror.cpp" />
     <ClCompile Include="TinyXml\tinyxmlparser.cpp" />
+    <ClCompile Include="Tree.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +272,7 @@
     <ClInclude Include="TileSet.h" />
     <ClInclude Include="TinyXml\tinystr.h" />
     <ClInclude Include="TinyXml\tinyxml.h" />
+    <ClInclude Include="Tree.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

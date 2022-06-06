@@ -184,6 +184,9 @@
     <ClCompile Include="GameTitle.cpp">
       <Filter>Game Object\IntroScene</Filter>
     </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -376,6 +379,9 @@
       <Filter>Game Object\IntroScene</Filter>
     </ClInclude>
     <ClInclude Include="GameTitle.h">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
       <Filter>Game Object\IntroScene</Filter>
     </ClInclude>
   </ItemGroup>
