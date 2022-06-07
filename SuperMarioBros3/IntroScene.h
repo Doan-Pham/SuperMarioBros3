@@ -34,7 +34,10 @@
 #define MARIO_2_ACTION_9_TIME	1000
 #define MARIO_2_ACTION_10_TIME	1000
 #define MARIO_2_ACTION_11_TIME	2000
-#define MARIO_2_ACTION_12_TIME	2000
+#define MARIO_2_ACTION_12_TIME	500
+#define MARIO_2_ACTION_13_TIME	500
+#define MARIO_2_ACTION_14_TIME	500
+
 
 class CIntroScene : public CScene
 {
@@ -46,6 +49,10 @@ protected:
 	CMushroomBig* mushroom;
 	CKoopaGreenNormal* koopa_1;
 	CKoopaGreenNormal* koopa_2;
+	CKoopaGreenNormal* koopa_3;
+	CKoopaGreenNormal* koopa_4;
+	CKoopaGreenNormal* koopa_5;
+
 	CGoomba* goomba;
 	CTree* tree;
 	CIntroArrow* arrow;

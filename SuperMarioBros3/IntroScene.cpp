@@ -31,13 +31,17 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	map = NULL;
 	mario_1 = NULL;
 	mario_2 = NULL;
-	key_handler = new CIntroKeyEventHandler(this);
+	key_handler = NULL;
 
 	title = NULL;
 	leaf = NULL;
 	mushroom = NULL;
 	koopa_1 = NULL;
 	koopa_2 = NULL;
+	koopa_3 = NULL;
+	koopa_4 = NULL;
+	koopa_5 = NULL;
+
 	goomba = NULL;
 	tree = NULL;
 	arrow = NULL;
@@ -64,6 +68,8 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	mario_2_actions_time.push_back(MARIO_2_ACTION_10_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_11_TIME);
 	mario_2_actions_time.push_back(MARIO_2_ACTION_12_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_13_TIME);
+	mario_2_actions_time.push_back(MARIO_2_ACTION_14_TIME);
 }
 
 void CIntroScene::Load()
@@ -547,9 +553,15 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			obj = new CKoopaGreenNormal(x, y, NULL); 
 			obj->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
 			obj->Hide();
+			CKoopaGreenNormal* koopa = (CKoopaGreenNormal*) obj;
+			koopa->SetDirection(1);
 
 			if (koopa_1 == NULL) koopa_1 = (CKoopaGreenNormal*)obj;
-			else koopa_2 = (CKoopaGreenNormal*)obj;
+			else if (koopa_2 == NULL) koopa_2 = (CKoopaGreenNormal*)obj;
+			else if (koopa_3 == NULL) koopa_3 = (CKoopaGreenNormal*)obj;
+			else if (koopa_4 == NULL) koopa_4 = (CKoopaGreenNormal*)obj;
+			else if (koopa_5 == NULL) koopa_5 = (CKoopaGreenNormal*)obj;
+
 			break;
 		}
 
@@ -717,13 +729,25 @@ void CIntroScene::ProcessMario()
 		mario_2->SetState(MARIO_STATE_IDLE);
 		map->GetTileLayer(ID_TILE_LAYER_BACKGROUND_3)->UnHide();
 		arrow->UnHide();
+		koopa_3->UnHide();
+		key_handler = new CIntroKeyEventHandler(this);
+		break;
+	}
+	case 13:
+	{
+		koopa_4->UnHide();
+		break;
+	}
+	case 14:
+	{
+		koopa_5->UnHide();
 		break;
 	}
 	default:
 		break;
 	}
 
-	//DebugOutTitle(L"now - sequence_start: %d", now - mario_1_last_action_time);
+	DebugOutTitle(L"now - sequence_start: %d", now - mario_2_last_action_time);
 	//DebugOutTitle(L"mario_2_cur_action %i, mario_2_state: %i", mario_2_current_action, mario_2->GetState());
 }
 
