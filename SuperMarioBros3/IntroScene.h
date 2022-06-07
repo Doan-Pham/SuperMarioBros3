@@ -14,6 +14,7 @@
 
 #include "GameTitle.h"
 #include "Tree.h"
+#include "IntroArrow.h"
 
 // These numbers mean that action "x" will last for "y"time
 #define MARIO_1_ACTION_0_TIME	1000
@@ -47,6 +48,7 @@ protected:
 	CKoopaGreenNormal* koopa_2;
 	CGoomba* goomba;
 	CTree* tree;
+	CIntroArrow* arrow;
 
 	CMario* mario_1;
 	vector<ULONGLONG> mario_1_actions_time;
@@ -76,5 +78,6 @@ public:
 	void Unload();
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	void PurgeDeletedObjects();
+	LPGAMEOBJECT GetArrow() { return arrow; }
 };
 

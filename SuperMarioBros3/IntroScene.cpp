@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "IntroScene.h"
+#include "IntroKeyEventHandler.h"
 
 #include "PlatformTile.h"
 #include "Curtain.h"
@@ -27,9 +28,10 @@
 
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
-	this->map = NULL;
+	map = NULL;
 	mario_1 = NULL;
 	mario_2 = NULL;
+	key_handler = new CIntroKeyEventHandler(this);
 
 	title = NULL;
 	leaf = NULL;
@@ -38,6 +40,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	koopa_2 = NULL;
 	goomba = NULL;
 	tree = NULL;
+	arrow = NULL;
 
 	mario_1_last_action_time = -1;
 	mario_1_current_action = -1;
@@ -505,6 +508,14 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 			break;
 		}
 
+		case OBJECT_TYPE_INTRO_ARROW:
+		{
+			obj = new CIntroArrow(x, y);
+			obj->Hide();
+			arrow = (CIntroArrow*)obj;
+			break;
+		}
+
 		case OBJECT_TYPE_ENEMY_GOOMBA_BROWN_NORMAL:
 		{
 			obj = new CGoomba(x, y);
@@ -705,6 +716,7 @@ void CIntroScene::ProcessMario()
 	{
 		mario_2->SetState(MARIO_STATE_IDLE);
 		map->GetTileLayer(ID_TILE_LAYER_BACKGROUND_3)->UnHide();
+		arrow->UnHide();
 		break;
 	}
 	default:
@@ -764,7 +776,8 @@ void CIntroScene::Unload()
 		map->Clear();
 		map = NULL;
 	}
-
+	// Wihtout this, the items and enemies mario kills in intro scene still give him scores, ... etc
+	CGame::GetInstance()->ResetAchievements();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);

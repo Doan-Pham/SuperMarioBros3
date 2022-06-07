@@ -25,6 +25,11 @@ using namespace std;
 
 #define MARIO_DEFAULT_LIVES_COUNT		3
 #define PLAY_SCENE_DEFAULT_TIME			300
+
+//The coordinates parsed from the Tiled software need to be adjusted to be in sync with Mario
+//because Tiled uses the top-left corner convention, while this program uses center-center 
+#define COORDINATE_ADJUST_SYNC_TILED 8
+
 /*
 	Our simple game framework
 */
@@ -123,6 +128,7 @@ public:
 	void UpdateCoins(int coin) { coins += coin; }
 	void UpdateLives(int life) { lives += life; }
 	void AddCardAcquired(int card_type) { this->cardsAcquired.push_back(card_type); }
+	void ResetAchievements() { scores = 0; coins = 0; lives = MARIO_DEFAULT_LIVES_COUNT; }
 
 	void ResetPlaysceneTimeLeft() { this->playSceneTimeLeft = PLAY_SCENE_DEFAULT_TIME; }
 	void UpdatePlaysceneTimeLeft(int time) 
