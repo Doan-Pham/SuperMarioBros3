@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="13">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="14">
  <properties>
   <property name="objectTypeId" type="int" value="220"/>
  </properties>
@@ -61,7 +61,7 @@
 127,128,127,128,127,128,127,128,127,128,127,128,127,128,127,128,127,128,127,128
 </data>
  </layer>
- <layer id="14" name="Background_3" width="20" height="16" visible="0">
+ <layer id="14" name="Background_3" width="20" height="16">
   <properties>
    <property name="id" type="int" value="3"/>
   </properties>
@@ -75,7 +75,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,1,84,85,86,87,88,89,90,0,0,0,0,0,0,
 0,0,0,0,0,0,1,94,85,86,87,88,89,90,0,0,0,0,0,0,
 0,0,0,0,0,0,1,100,101,102,103,104,105,106,0,0,0,0,0,0,
@@ -84,6 +84,14 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="15" name="Arrow">
+  <properties>
+   <property name="objectTypeId" type="int" value="230"/>
+  </properties>
+  <object id="13" x="96" y="158">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="4" name="Mario" visible="0">
   <properties>
    <property name="objectTypeId" type="int" value="10"/>

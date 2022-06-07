@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:5d25e9fb3949509114e3455c6019af3e:9ac28a58a5ce740407a802beafb93a26:01277b35e6d1d51017dcf7e825362e9c$ -->
+<!-- $TexturePacker:SmartUpdate:2a1329f37afbde1a9d3d72ee59de4662:27e93714615c1c926b1127253a097e16:01277b35e6d1d51017dcf7e825362e9c$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -79,4 +79,5 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="84204" x="248" y="238" w="238" h="112"/>
     <sprite n="84205" x="5" y="355" w="238" h="112"/>
     <sprite n="84301" x="248" y="355" w="63" h="94"/>
+    <sprite n="84401" x="316" y="355" w="7" h="8"/>
 </TextureAtlas>

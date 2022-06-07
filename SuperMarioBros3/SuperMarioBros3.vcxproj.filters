@@ -187,6 +187,12 @@
     <ClCompile Include="Tree.cpp">
       <Filter>Game Object\IntroScene</Filter>
     </ClCompile>
+    <ClCompile Include="IntroArrow.cpp">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroKeyEventHandler.cpp">
+      <Filter>Gameplay\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -383,6 +389,12 @@
     </ClInclude>
     <ClInclude Include="Tree.h">
       <Filter>Game Object\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroArrow.h">
+      <Filter>Game Object\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroKeyEventHandler.h">
+      <Filter>Gameplay\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
