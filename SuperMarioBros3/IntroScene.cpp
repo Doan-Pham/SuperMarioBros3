@@ -31,7 +31,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 	map = NULL;
 	mario_1 = NULL;
 	mario_2 = NULL;
-	key_handler = NULL;
+	key_handler = new CIntroKeyEventHandler(this);
 
 	title = NULL;
 	leaf = NULL;
@@ -730,7 +730,6 @@ void CIntroScene::ProcessMario()
 		map->GetTileLayer(ID_TILE_LAYER_BACKGROUND_3)->UnHide();
 		arrow->UnHide();
 		koopa_3->UnHide();
-		key_handler = new CIntroKeyEventHandler(this);
 		break;
 	}
 	case 13:

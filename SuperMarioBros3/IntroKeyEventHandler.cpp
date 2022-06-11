@@ -13,7 +13,7 @@ void CIntroKeyEventHandler::OnKeyDown(int KeyCode)
 {
 	CIntroScene* currentScene = (CIntroScene*)CGame::GetInstance()->GetCurrentScene();
 	CIntroArrow* arrow = (CIntroArrow*)(currentScene)->GetArrow();
-
+	if (arrow->IsHidden()) return;
 	switch (KeyCode)
 	{
 	case DIK_UP:
