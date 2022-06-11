@@ -196,6 +196,8 @@
     <ClCompile Include="PMeter.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
+    <ClCompile Include="SpecialEffect.cpp" />
+    <ClCompile Include="SpecialEffectManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Text.cpp" />
@@ -266,6 +268,8 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SpecialEffect.h" />
+    <ClInclude Include="SpecialEffectManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Text.h" />
