@@ -219,7 +219,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
-	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
+	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -761,7 +761,7 @@ int CMario::GetAniIdSmall()
 				else
 				{
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
 				};
 			}
@@ -772,7 +772,7 @@ int CMario::GetAniIdSmall()
 				else
 				{
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
 				}
 			}
@@ -841,7 +841,7 @@ int CMario::GetAniIdBig()
 					// If p-meter is not changing or if it is increasing but not fully charged, mario's
 					// animation will be that of walking
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_RUNNING_RIGHT;
 				}
 			}
@@ -852,7 +852,7 @@ int CMario::GetAniIdBig()
 				else
 				{
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_RUNNING_LEFT;
 				}
 			}
@@ -927,7 +927,7 @@ int CMario::GetAniIdRaccoon()
 				else
 				{
 					aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_RIGHT;
 				};
 			}
@@ -938,7 +938,7 @@ int CMario::GetAniIdRaccoon()
 				else
 				{
 					aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				}
 			}
@@ -1013,7 +1013,7 @@ int CMario::GetAniIdFire()
 					// If p-meter is not changing or if it is increasing but not fully charged, mario's
 					// animation will be that of walking
 					aniId = ID_ANI_MARIO_FIRE_WALKING_RIGHT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_FIRE_RUNNING_RIGHT;
 				}
 			}
@@ -1024,7 +1024,7 @@ int CMario::GetAniIdFire()
 				else
 				{
 					aniId = ID_ANI_MARIO_FIRE_WALKING_LEFT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_FIRE_RUNNING_LEFT;
 				}
 			}
@@ -1097,7 +1097,7 @@ int CMario::GetAniIdHammer()
 					// If p-meter is not changing or if it is increasing but not fully charged, mario's
 					// animation will be that of walking
 					aniId = ID_ANI_MARIO_HAMMER_WALKING_RIGHT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_HAMMER_RUNNING_RIGHT;
 				}
 			}
@@ -1108,7 +1108,7 @@ int CMario::GetAniIdHammer()
 				else
 				{
 					aniId = ID_ANI_MARIO_HAMMER_WALKING_LEFT;
-					if (currentScene->GetPMeter()->IsFullyCharged())
+					if (currentScene != NULL && currentScene->GetPMeter()->IsFullyCharged())
 						aniId = ID_ANI_MARIO_HAMMER_RUNNING_LEFT;
 				}
 			}
@@ -1184,7 +1184,7 @@ void CMario::SetState(int state)
 		ax = 0.0f;
 		vx = 0.0f;
 		isReadyToHoldShell = false;
-
+		if (currentScene != NULL)
 		currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 
 		break;
@@ -1223,7 +1223,8 @@ void CMario::SetState(int state)
 		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
-		if (isOnPlatform && !isFlying) currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
+		if (isOnPlatform && !isFlying && currentScene != NULL) 
+			currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
 
@@ -1238,7 +1239,8 @@ void CMario::SetState(int state)
 		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
-		if (isOnPlatform && !isFlying) currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
+		if (isOnPlatform && !isFlying && currentScene != NULL) 
+			currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
 
@@ -1258,7 +1260,8 @@ void CMario::SetState(int state)
 		nx = 1;
 
 		isReadyToHoldShell = true;
-		currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
+		if (currentScene != NULL)
+			currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
 		break;
 	}
 
@@ -1278,6 +1281,7 @@ void CMario::SetState(int state)
 		nx = -1;
 
 		isReadyToHoldShell = true;
+		if (currentScene != NULL)
 		currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
 		break;
 	}
