@@ -14,14 +14,16 @@
 #include "BrickGlass.h"
 #include "PBlock.h"
 #include "Coin.h"
+#include "SpecialEffectManager.h"
 
 CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, float width, float height, 
-	const LPPLAYSCENE currentScene) : CGameObject(x, y), currentScene(currentScene)
+	const LPPLAYSCENE currentScene, int nx) : CGameObject(x, y), currentScene(currentScene)
 {
 	this->vx = vx;
 	this->vy = vy;
 	this->width = width;
 	this->height = height;
+	this->nx = nx;
 }
 void CAttackBBox::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -51,21 +53,34 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CMario*>(e->obj)) return;
 	if (dynamic_cast<CAttackBBox*>(e->obj)) return;
 	if (dynamic_cast<CGoomba*>(e->obj))
+	{
 		e->obj->SetState(GOOMBA_STATE_DIE);
+		CSpecialEffectManager::CreateSpecialEffect(x + nx * width/2, y, EFFECT_TYPE_TAIL_ATTACK);
+	}
+
 
 	else if (dynamic_cast<CGoombaRedWing*>(e->obj))
+	{
 		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
+		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
+	}
+		
 
 	else if (dynamic_cast<CKoopa*>(e->obj))
 	{
 		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 		koopa->SetDirection(nx);
 		koopa->SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
+		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
 		
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
+	{
 		e->obj->Delete();
+		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
+	}
+
 
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 	{

@@ -1368,7 +1368,7 @@ void CMario::SetState(int state)
 					x + nx * GetBBoxWidth(), y + GetBBoxHeight() / 4,
 					vx, vy,
 					GetBBoxWidth(), GetBBoxHeight() / 2,
-					currentScene);
+					currentScene, nx);
 				raccoon_tail->SetDirection(nx);
 				this->currentScene->AddObject(raccoon_tail);
 			}
