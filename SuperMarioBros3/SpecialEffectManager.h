@@ -9,17 +9,18 @@
 #define EFFECT_TYPE_SCORES_APPEAR			2
 
 #define EFFECT_TYPE_TAIL_ATTACK				3
-#define EFFECT_TYPE_PLANT_DIE				4
-#define EFFECT_TYPE_FIREBALL_COLLIDE		5
+#define EFFECT_TYPE_FIREBALL_COLLIDE		4
+#define EFFECT_TYPE_PLANT_DIE				5
 #define EFFECT_TYPE_BRICK_GLASS_BROKEN		6
 
 #define EFFECT_DEFAULT_SPEED_X				0.0f
 #define EFFECT_DEFAULT_SPEED_Y				0.0f
-#define	EFFECT_DEFAULT_TIME					50
+#define	EFFECT_DEFAULT_TIME					100
 
 #define EFFECT_COIN_APPEAR_SPEED_Y			0.2f
 
-#define ID_ANI_EFFECT_TAIL_ATTACK			8510
+#define ID_ANI_EFFECT_TAIL_ATTACK				8510
+#define ID_ANI_EFFECT_FIREBALL_COLLIDE			8520
 
 class CSpecialEffectManager
 {
@@ -50,15 +51,18 @@ public:
 			break;
 		}
 
+		case EFFECT_TYPE_FIREBALL_COLLIDE:
+		{
+			animationId = ID_ANI_EFFECT_FIREBALL_COLLIDE;
+			break;
+		}
+
 		case EFFECT_TYPE_PLANT_DIE:
 		{
 			break;
 		}
 
-		case EFFECT_TYPE_FIREBALL_COLLIDE:
-		{
-			break;
-		}
+
 		default:
 			DebugOut(L"[ERROR] Can't find special effect type: %i", effectType);
 			break;

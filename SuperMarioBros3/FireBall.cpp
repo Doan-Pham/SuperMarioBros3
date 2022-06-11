@@ -5,6 +5,8 @@
 #include "Koopa.h"
 #include "PlantRedFire.h"
 #include "PlantGreenNormal.h"
+#include "SpecialEffectManager.h"
+#include "PlatformGhost.h"
 
 CFireBall::CFireBall(float x, float y, int nx): CGameObject(x, y)
 {
@@ -37,7 +39,7 @@ void CFireBall::OnNoCollision(DWORD dt)
 
 void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (e->ny != 0 && (e->obj->IsBlocking() || dynamic_cast<CPlatformGhost*>(e->obj)))
 	{
 		vy = -FIREBALL_SPEED_Y;
 
@@ -46,30 +48,35 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 		isDestroyed = true;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
 		e->obj->SetState(GOOMBA_STATE_DIE);
 		isDestroyed = true;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
 	if (dynamic_cast<CGoombaRedWing*>(e->obj))
 	{
 		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
 		isDestroyed = true;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
 	if (dynamic_cast<CKoopa*>(e->obj))
 	{
 		e->obj->SetState(KOOPA_STATE_DIE);
 		isDestroyed = true;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
 	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
 		e->obj->Delete();
 		isDestroyed = true;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
 }
