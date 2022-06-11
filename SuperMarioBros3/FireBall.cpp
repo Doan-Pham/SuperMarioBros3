@@ -74,7 +74,7 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
-		e->obj->Delete();
+		e->obj->SetState(PLANT_STATE_DIE);
 		isDestroyed = true;
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}

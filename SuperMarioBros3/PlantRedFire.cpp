@@ -1,4 +1,5 @@
 #include "PlantRedFire.h"
+#include "SpecialEffectManager.h"
 
 
 CPlantRedFire::CPlantRedFire(float x, float y) : CGameObject(x,y)
@@ -192,6 +193,13 @@ void CPlantRedFire::SetState(int state)
 	{
 		vy = PLANT_MOVING_SPEED;
 		//DebugOutTitle(L"Plant : disappearing");
+		break;
+	}
+
+	case PLANT_STATE_DIE:
+	{
+		this->Delete();
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_PLANT_DIE);
 		break;
 	}
 	}

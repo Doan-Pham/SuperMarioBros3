@@ -21,6 +21,7 @@
 
 #define ID_ANI_EFFECT_TAIL_ATTACK				8510
 #define ID_ANI_EFFECT_FIREBALL_COLLIDE			8520
+#define ID_ANI_EFFECT_PLANT_DIE					8521
 
 class CSpecialEffectManager
 {
@@ -59,6 +60,7 @@ public:
 
 		case EFFECT_TYPE_PLANT_DIE:
 		{
+			animationId = ID_ANI_EFFECT_PLANT_DIE;
 			break;
 		}
 

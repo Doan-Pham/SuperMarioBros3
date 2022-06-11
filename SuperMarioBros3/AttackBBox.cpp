@@ -77,7 +77,7 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
-		e->obj->Delete();
+		e->obj->SetState(PLANT_STATE_DIE);
 		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
 

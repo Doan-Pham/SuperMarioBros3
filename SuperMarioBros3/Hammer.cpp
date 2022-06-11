@@ -47,7 +47,9 @@ void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 		e->obj->SetState(KOOPA_STATE_DIE);
 
 	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
-		e->obj->Delete();
+	{
+		e->obj->SetState(PLANT_STATE_DIE);
+	}
 
 	if (e->obj->IsBlocking()) isCollidable = false;
 }

@@ -1,4 +1,5 @@
 #include "PlantGreenNormal.h"
+#include "SpecialEffectManager.h"
 
 CPlantGreenNormal::CPlantGreenNormal(float x, float y) : CGameObject(x, y)
 {
@@ -96,6 +97,13 @@ void CPlantGreenNormal::SetState(int state)
 	{
 		vy = PLANT_MOVING_SPEED;
 		//DebugOutTitle(L"Plant : disappearing");
+		break;
+	}
+
+	case PLANT_STATE_DIE:
+	{
+		this->Delete();
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_PLANT_DIE);
 		break;
 	}
 	}
