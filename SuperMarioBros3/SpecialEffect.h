@@ -4,17 +4,22 @@
 class CSpecialEffect : public CGameObject
 {
 protected:
+	float ax, ay;
+
 	int animationId = -1;
 	int animationTime;
 	ULONGLONG effect_start;
 
 public:
-	CSpecialEffect(float x, float y, float vx, float vy, int animationId, int animationTime) :CGameObject(x, y) 
+	CSpecialEffect(float x, float y, float vx, float vy, float ax, float ay, int animationId, int animationTime) :CGameObject(x, y) 
 	{
 		this->vx = vx;
 		this->vy = vy;
+		this->ax = ax;
+		this->ay = ay;
 		this->animationId = animationId;
 		this->animationTime = animationTime;
+
 		effect_start = -1;
 	};
 	void Render() 
@@ -25,8 +30,13 @@ public:
 	{
 		if (effect_start == -1) effect_start = GetTickCount64();
 		else if (GetTickCount64() - effect_start > animationTime) this->Delete();
-		y += vy * dt;
+		vx += ax * dt;
+		vy += ay * dt;
+
 		x += vx * dt;
+		y += vy * dt;
+
+
 	};
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {};
 

@@ -1,5 +1,6 @@
 #include "BrickQuestionMark.h"
 #include "Mario.h"
+#include "SpecialEffectManager.h"
 
 CBrickQuestionMark::CBrickQuestionMark(float x, float y, bool isHidingItem) 
 	: CBlock(x, y)
@@ -73,6 +74,8 @@ void CBrickQuestionMark::SetState(int state)
 		{
 			if (hiddenItem != nullptr)
 				hiddenItem->SetState(ITEM_STATE_APPEARING);
+			else CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_COIN_APPEAR);
+			
 			isContentGiven = true;
 		}
 		break;
