@@ -1472,8 +1472,10 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+
 	isTransforming = true;
 	transform_start = GetTickCount64();
+	CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_MARIO_TRANSFORM);
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)

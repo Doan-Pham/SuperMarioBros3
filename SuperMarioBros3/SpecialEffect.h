@@ -24,7 +24,10 @@ public:
 	};
 	void Render() 
 	{ 
-		if (animationId > 0) CAnimations::GetInstance()->Get(animationId)->Render(x, y);
+		// We need the timer check in case the effect is not purged yet despite being deleleted
+		// (when mario's tranforming)
+		if (animationId > 0 && GetTickCount64() - effect_start <= animationTime)
+			CAnimations::GetInstance()->Get(animationId)->Render(x, y);
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
@@ -35,10 +38,11 @@ public:
 
 		x += vx * dt;
 		y += vy * dt;
-
-
 	};
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {};
 
+	// This method is for manually starting the effect's timer, in case the automatic timer-start mechanism
+	// is not used (when Update() method is not called while mario's transforming)
+	void StartEffectTimer() { effect_start = GetTickCount64(); }
 	int IsBlocking() { return 0; }
 };

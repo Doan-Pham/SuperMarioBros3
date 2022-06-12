@@ -2,7 +2,9 @@
 
 void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType, int scores)
 {
+	// In case some effects are added in intro scene
 	if (!dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene())) return;
+
 	float ax = EFFECT_DEFAULT_ACCEL;
 	float ay = EFFECT_DEFAULT_ACCEL;
 	float vx = EFFECT_DEFAULT_SPEED;
@@ -26,6 +28,12 @@ void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType
 		break;
 	}
 
+	case EFFECT_TYPE_MARIO_TRANSFORM:
+	{
+		animationId = ID_ANI_EFFECT_MARIO_TRANSFORM;
+		animationTime = EFFECT_MARIO_TRANSFORM_TIME;
+		break;
+	}
 	case EFFECT_TYPE_PLANT_DIE:
 	{
 		animationId = ID_ANI_EFFECT_PLANT_DIE;
@@ -164,8 +172,7 @@ void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType
 		break;
 	}
 	effect = new CSpecialEffect(x, y, vx, vy, ax, ay, animationId, animationTime);
-
-	// In case some effects are added in intro scene
+	if (effectType == EFFECT_TYPE_MARIO_TRANSFORM) effect->StartEffectTimer();
 
 	CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	currentScene->AddObject(effect);
