@@ -20,7 +20,7 @@
 #define KOOPA_SHELL_MOVING_SPEED	0.15f
 #define KOOPA_HOPPING_SPEED			0.15f
 #define KOOPA_SHELL_BOUNCE_SPEED_Y	0.2f
-#define KOOPA_SHELL_BOUNCE_SPPED_X	0.1f
+#define KOOPA_SHELL_BOUNCE_SPPED_X	0.05f
 
 #define KOOPA_STATE_WALKING								100
 
@@ -36,6 +36,8 @@
 #define KOOPA_STATE_DIE									900
 
 #define KOOPA_SHELL_TIMEOUT	9000
+#define KOOPA_DIE_TIMEOUT 3000
+
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CPlayScene;
@@ -53,6 +55,7 @@ protected:
 	BOOLEAN isBeingHeld;
 	BOOLEAN isOnPlatform;
 
+	ULONGLONG die_start;
 	ULONGLONG shell_start;
 	// *** CONST *** pointer to the current playscene
 	const LPPLAYSCENE currentScene;
@@ -62,14 +65,14 @@ protected:
 	virtual int GetAniId() = 0;
 	virtual void Render() = 0;
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return state != KOOPA_STATE_DIE; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e);
 
-	void OnCollisionWithPlantRedFire(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
@@ -85,5 +88,6 @@ public:
 	void SetDirection(int nx) { this->nx = nx; }
 	virtual void SetState(int state);
 	virtual int GetScoresGivenWhenHit() { return KOOPA_SCORES_GIVEN_WHEN_HIT; }
+	void SetDirectionX(int nx) { this->nx = nx; }
 };
 

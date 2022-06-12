@@ -17,6 +17,7 @@
 #include "MushroomUp.h"
 #include "Coin.h"
 #include "SpecialEffectManager.h"
+#include "PlantGreenNormal.h"
 
 
 CKoopa::CKoopa(float x, float y, const LPPLAYSCENE& currentScene)
@@ -27,6 +28,7 @@ CKoopa::CKoopa(float x, float y, const LPPLAYSCENE& currentScene)
 	isOnPlatform = false;
 
 	shell_start = -1;
+	die_start = -1;
 	nx = -1;
 	this->ay = KOOPA_GRAVITY;
 	SetState(KOOPA_STATE_WALKING);
@@ -54,6 +56,12 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
+	if (state == KOOPA_STATE_DIE && (GetTickCount64() - die_start > KOOPA_DIE_TIMEOUT))
+	{
+		isDeleted = true;
+		return;
+	}
+
 	if (isOnPlatform && state == KOOPA_STATE_HOPPING) SetState(KOOPA_STATE_HOPPING);
 	if (isOnPlatform && state == KOOPA_STATE_SHELL_STILL_UPSIDE)
 	{
@@ -104,15 +112,17 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 	}
 
+	if (dynamic_cast<CDeadZone*>(e->obj))
+		this->Delete();
+
 	if (dynamic_cast<CPlatformGhost*>(e->obj))
 		OnCollisionWithPlatformGhost(e);
-
 
 	else if (dynamic_cast<CGoomba*>(e->obj) || dynamic_cast<CGoombaRedWing*>(e->obj))
 		OnCollisionWithGoomba(e);
 
-	else if (dynamic_cast<CPlantRedFire*>(e->obj))
-		OnCollisionWithPlantRedFire(e);
+	else if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
+		OnCollisionWithPlant(e);
 
 	else if (dynamic_cast<CBrickGlass*>(e->obj))
 		OnCollisionWithBrickGlass(e);
@@ -123,8 +133,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
 
-	if (dynamic_cast<CDeadZone*>(e->obj))
-		this->Delete();
+
 }
 
 void CKoopa::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
@@ -150,18 +159,19 @@ void CKoopa::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 	}
 }
 
-void CKoopa::OnCollisionWithPlantRedFire(LPCOLLISIONEVENT e)
+void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
 	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
 		return;
-	CPlantRedFire* plant = dynamic_cast<CPlantRedFire*>(e->obj);
-	CGame::GetInstance()->UpdateScores(plant->GetScoresGivenWhenHit());
-	plant->Delete();
+	e->obj->SetState(PLANT_STATE_DIE);
+	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
+
+	CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_TAIL_ATTACK);
 }
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
+	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE && !isBeingHeld)
 		return;
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
@@ -257,11 +267,13 @@ void CKoopa::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 void CKoopa::SetState(int state)
 {
+	if (this->state == KOOPA_STATE_DIE) return;
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	case KOOPA_STATE_WALKING:
 	{
+		isBeingHeld = false;
 		isShell = false;
 		vx = nx * KOOPA_WALKING_SPEED;
 		ay = KOOPA_GRAVITY;
@@ -389,10 +401,11 @@ void CKoopa::SetState(int state)
 			attachedBBox->Delete();
 			attachedBBox = NULL;
 		}
-		vx = 0;
-		vy = 0;
-		ay = 0;
-		isDeleted = true;
+
+		die_start = GetTickCount64();
+		vx = nx * KOOPA_SHELL_BOUNCE_SPPED_X;
+		vy = -KOOPA_SHELL_BOUNCE_SPEED_Y/2;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, KOOPA_SCORES_GIVEN_WHEN_HIT);
 		break;
 	}
 	}

@@ -62,11 +62,19 @@ void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 
 	if (dynamic_cast<CKoopa*>(e->obj))
-		e->obj->SetState(KOOPA_STATE_DIE);
+	{
+		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+		koopa->SetDirectionX(nx);
+		koopa->SetState(KOOPA_STATE_DIE);
+
+		CGame::GetInstance()->UpdateScores(koopa->GetScoresGivenWhenHit());
+	}
+
 
 	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
 		e->obj->SetState(PLANT_STATE_DIE);
+		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	}
 
 	if (e->obj->IsBlocking()) isCollidable = false;

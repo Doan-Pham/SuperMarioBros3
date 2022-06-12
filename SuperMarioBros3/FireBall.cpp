@@ -83,15 +83,22 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CKoopa*>(e->obj))
 	{
-		e->obj->SetState(KOOPA_STATE_DIE);
-		isDestroyed = true;
+		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+		koopa->SetDirectionX(nx);
+		koopa->SetState(KOOPA_STATE_DIE);
+
+		CGame::GetInstance()->UpdateScores(koopa->GetScoresGivenWhenHit());
+
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
+		isDestroyed = true;
 	}
 
 	if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
 		e->obj->SetState(PLANT_STATE_DIE);
 		isDestroyed = true;
+
+		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
