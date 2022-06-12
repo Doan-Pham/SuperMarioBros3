@@ -67,7 +67,7 @@ void CPlantGreenNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CPlantGreenNormal::Render()
 {
 	CAnimations::GetInstance()->Get(ID_ANI_PLANT_GREEN_NORMAL)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	//DebugOut(L"plant_x : %0.5f, plant_y : %0.5f \n", x, y);
 }
 
@@ -104,6 +104,7 @@ void CPlantGreenNormal::SetState(int state)
 	{
 		this->Delete();
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_PLANT_DIE);
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, PLANT_SCORES_GIVEN_WHEN_HIT);
 		break;
 	}
 	}

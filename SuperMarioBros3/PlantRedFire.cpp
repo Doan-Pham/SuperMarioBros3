@@ -200,6 +200,7 @@ void CPlantRedFire::SetState(int state)
 	{
 		this->Delete();
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_PLANT_DIE);
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, PLANT_SCORES_GIVEN_WHEN_HIT);
 		break;
 	}
 	}

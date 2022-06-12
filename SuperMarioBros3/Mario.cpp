@@ -28,6 +28,7 @@
 #include "GoombaRedWing.h"
 #include "Coin.h"
 #include "Card.h"
+#include "SpecialEffectManager.h"
 
 CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	: CGameObject(x, y), currentScene(currentScene)
@@ -292,6 +293,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+			CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, goomba->GetScoresGivenWhenHit());
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -339,6 +341,8 @@ void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 			else goomba->SetState(GOOMBA_RED_WING_STATE_DIE);
 
 			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+			CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, goomba->GetScoresGivenWhenHit());
+
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -399,6 +403,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			break;
 		}
 		CGame::GetInstance()->UpdateScores(koopa->GetScoresGivenWhenHit());
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, koopa->GetScoresGivenWhenHit());
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else // Collides with koopa on x-axis
@@ -502,9 +507,23 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CLeaf*>(e->obj)) SetLevel(MARIO_LEVEL_RACCOON);
+	if (dynamic_cast<CLeaf*>(e->obj))
+	{
+		SetLevel(MARIO_LEVEL_RACCOON);
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, e->obj->GetScoresGivenWhenHit());
+	}
+	// We need the ! check because mushroom_up inherits from mushroom_big so dynamic cast still works
 	else if (dynamic_cast<CMushroomBig*>(e->obj) && !dynamic_cast<CMushroomUp*>(e->obj))
+	{
 		SetLevel(MARIO_LEVEL_BIG);
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, e->obj->GetScoresGivenWhenHit());
+	}
+		
+	else if (dynamic_cast<CMushroomUp*>(e->obj))
+	{
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_1UP_APPEAR);
+
+	}
 	else if (dynamic_cast<CCoin*>(e->obj))
 	{
 		CCoin* coin = dynamic_cast<CCoin*>(e->obj);

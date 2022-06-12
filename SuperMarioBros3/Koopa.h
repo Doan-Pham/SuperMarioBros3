@@ -39,7 +39,7 @@
 #define BLOCK_PUSH_FACTOR_GHOST_PLATFORM 1.0f
 
 class CPlayScene;
-typedef CPlayScene* LPPLAYSCENE;
+class CMario;
 
 class CKoopa : public CGameObject
 {
