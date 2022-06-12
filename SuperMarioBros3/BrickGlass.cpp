@@ -66,6 +66,7 @@ void CBrickGlass::SetState(int state)
 	{
 	case BRICK_STATE_NORMAL:
 		ay = 0;
+		isBlocking = true;
 		break;
 
 	case BRICK_STATE_HIT_BY_MARIO:
