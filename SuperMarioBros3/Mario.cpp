@@ -210,13 +210,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOutTitle(L"isTailWhipping %d, nx %d ", isTailWhipping, nx);
 	//DebugOutTitle(L"Current state %d", this->state);
 
-	if (isHoldingShell)
-		shellBeingHeld->SetPosition(x + nx * GetBBoxWidth() / 2, y);
-
 	if (isTailWhipping)
 	{
 		raccoon_tail->SetSpeed(vx, vy);
 		raccoon_tail->SetPosition(x + nx * GetBBoxWidth() / 2, y + GetBBoxHeight() / 4);
+	}
+
+	if (isHoldingShell)
+	{
+		shellBeingHeld->SetPosition(x + nx * GetBBoxWidth() / 2, y);
+		shellBeingHeld->SetSpeed(vx, vy);
 	}
 
 	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
@@ -438,6 +441,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				{
 					isHoldingShell = true;
 					shellBeingHeld = koopa;
+					shellBeingHeld->SetPosition(x + nx * GetBBoxWidth() / 2, y);
 					if (koopa->GetState() == KOOPA_STATE_SHELL_STILL_DOWNSIDE)
 						koopa->SetState(KOOPA_STATE_SHELL_MARIO_HOLD_DOWNSIDE);
 
@@ -522,7 +526,6 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CMushroomUp*>(e->obj))
 	{
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_1UP_APPEAR);
-
 	}
 	else if (dynamic_cast<CCoin*>(e->obj))
 	{
