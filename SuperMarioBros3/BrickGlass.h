@@ -21,6 +21,7 @@
 #define COIN_COINS_GIVEN_WHEN_HIT 1
 
 #define BECOME_COIN_TIMEOUT		5000
+
 class CBrickGlass : public CBlock
 {
 protected:
@@ -33,7 +34,7 @@ protected:
 
 	bool isHidingUpMushroom;
 	bool isHidingPBlock;
-
+	bool isBlocking = true;
 	// This variable is to stop mario from making the brick bounce after its content is
 	// already given
 	bool isHitByMario;
@@ -42,7 +43,7 @@ protected:
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	int IsBlocking() { return state != BRICK_STATE_BECOME_COIN; }
+	int IsBlocking() { return isBlocking; }
 	// Lower than items to cover them
 	virtual int GetRenderPriority() { return 20; }
 

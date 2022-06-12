@@ -1,4 +1,5 @@
 #include "Coin.h"
+#include "SpecialEffectManager.h"
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -46,6 +47,11 @@ void CCoin::SetState(int state)
 	{
 	case COIN_STATE_BECOME_BRICK:
 		become_brick_start = GetTickCount64();
+		break;
+
+	case COIN_STATE_AS_BRICK_HIT_BY_MARIO:
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_BRICK_GLASS_BROKEN);
+		Delete();
 		break;
 	}
 }

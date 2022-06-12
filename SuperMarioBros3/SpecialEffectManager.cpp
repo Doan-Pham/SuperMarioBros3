@@ -2,6 +2,7 @@
 
 void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType, int scores)
 {
+	if (!dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene())) return;
 	float ax = EFFECT_DEFAULT_ACCEL;
 	float ay = EFFECT_DEFAULT_ACCEL;
 	float vx = EFFECT_DEFAULT_SPEED;
@@ -9,6 +10,7 @@ void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType
 
 	int animationId = -1;
 	int animationTime = EFFECT_DEFAULT_TIME;
+	CSpecialEffect* effect;
 
 	switch (effectType)
 	{
@@ -112,16 +114,59 @@ void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType
 		break;
 	}
 
+	case EFFECT_TYPE_BRICK_GLASS_BROKEN:
+	{
+		CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		effect = new CSpecialEffect(
+			x, y,
+			EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_X,
+			-EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_Y_HIGH,
+			ax, EFFECT_BRICK_GLASS_BROKEN_APPEAR_GRAVITY,
+			ID_ANI_EFFECT_BRICK_GLASS_BROKEN,
+			EFFECT_BRICK_GLASS_BROKEN_APPEAR_TIME);
+
+		currentScene->AddObject(effect);
+
+		effect = new CSpecialEffect(
+			x, y,
+			EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_X,
+			-EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_Y_LOW,
+			ax, EFFECT_BRICK_GLASS_BROKEN_APPEAR_GRAVITY,
+			ID_ANI_EFFECT_BRICK_GLASS_BROKEN,
+			EFFECT_BRICK_GLASS_BROKEN_APPEAR_TIME);
+
+		currentScene->AddObject(effect);
+
+		effect = new CSpecialEffect(
+			x, y,
+			-EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_X,
+			-EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_Y_HIGH,
+			ax, EFFECT_BRICK_GLASS_BROKEN_APPEAR_GRAVITY,
+			ID_ANI_EFFECT_BRICK_GLASS_BROKEN,
+			EFFECT_BRICK_GLASS_BROKEN_APPEAR_TIME);
+
+		currentScene->AddObject(effect);
+
+		effect = new CSpecialEffect(
+			x, y,
+			-EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_X,
+			-EFFECT_BRICK_GLASS_BROKEN_APPEAR_SPEED_Y_LOW,
+			ax, EFFECT_BRICK_GLASS_BROKEN_APPEAR_GRAVITY,
+			ID_ANI_EFFECT_BRICK_GLASS_BROKEN,
+			EFFECT_BRICK_GLASS_BROKEN_APPEAR_TIME);
+
+		currentScene->AddObject(effect);
+		return;
+		break;
+	}
 	default:
 		DebugOut(L"[ERROR] Can't find special effect type: %i", effectType);
 		break;
 	}
-	CSpecialEffect* effect = new CSpecialEffect(x, y, vx, vy, ax, ay, animationId, animationTime);
-	
+	effect = new CSpecialEffect(x, y, vx, vy, ax, ay, animationId, animationTime);
+
 	// In case some effects are added in intro scene
-	if (dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene()))
-	{
-		CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		currentScene->AddObject(effect);
-	}
+
+	CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	currentScene->AddObject(effect);
 }

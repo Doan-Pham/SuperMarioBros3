@@ -303,7 +303,9 @@ void CKoopa::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 	CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 	if (coin->GetState() == COIN_STATE_BECOME_BRICK)
-		coin->Delete();
+	{
+		e->obj->SetState(COIN_STATE_AS_BRICK_HIT_BY_MARIO);
+	}
 }
 
 void CKoopa::SetState(int state)

@@ -25,6 +25,7 @@ CAttackBBox::CAttackBBox(float x, float y, float vx, float vy, float width, floa
 	this->height = height;
 	this->nx = nx;
 }
+
 void CAttackBBox::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x - width / 2;
@@ -88,12 +89,13 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 		koopa->SetDirection(nx);
 		koopa->SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
 		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
-	}
-		
+	}		
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 	{
 		e->obj->SetState(PLANT_STATE_DIE);
+
+		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
 
@@ -144,7 +146,7 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 		CGame::GetInstance()->UpdateCoins(e->obj->GetCoinsGivenWhenHit());
-		e->obj->Delete();
+		e->obj->SetState(COIN_STATE_AS_BRICK_HIT_BY_MARIO);
 	}
 }
 

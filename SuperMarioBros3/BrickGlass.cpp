@@ -1,5 +1,6 @@
 #include "BrickGlass.h"
 #include "Mario.h"
+#include "SpecialEffectManager.h"
 
 CBrickGlass::CBrickGlass(float x, float y, bool isHidingUpMushroom, bool isHidingPBlock)
 	: CBlock(x, y)
@@ -34,6 +35,7 @@ void CBrickGlass::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(BRICK_STATE_NORMAL);
 	}
+
 	if ((isHidingUpMushroom || isHidingPBlock) && state == BRICK_STATE_HIT_BY_MARIO)
 	{
 		vy += ay * dt;
@@ -77,7 +79,11 @@ void CBrickGlass::SetState(int state)
 			}
 		}
 		else
+		{
+			CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_BRICK_GLASS_BROKEN);
 			Delete();
+		}
+
 		break;
 
 	case BRICK_STATE_GIVE_CONTENT:
@@ -98,9 +104,13 @@ void CBrickGlass::SetState(int state)
 
 	case BRICK_STATE_BECOME_COIN:
 		// Brick_glass that contains items still remains normal so the p-block can stand on it
-		if (isHidingUpMushroom || isHidingPBlock) 
-			CGameObject::SetState(BRICK_STATE_HIT_BY_MARIO);
-		else become_coin_start = GetTickCount64();
+		if (isHidingUpMushroom || isHidingPBlock)
+			isBlocking = true;
+		else
+		{
+			become_coin_start = GetTickCount64();
+			isBlocking = false;
+		}
 		break;
 	}
 }
