@@ -1,6 +1,7 @@
 #include "Goomba.h"
 #include "Mario.h"
 #include "DeadZone.h"
+#include "SpecialEffectManager.h"
 
 CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 {
@@ -16,7 +17,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
+	if ((state == GOOMBA_STATE_DIE  && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT)) || 
+		(state == GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT + GOOMBA_DIE_DELAY)))
 	{
 		isDeleted = true;
 		return;
@@ -56,10 +58,9 @@ void CGoomba::Render()
 {
 	int aniId = ID_ANI_GOOMBA_WALKING;
 	if (state == GOOMBA_STATE_DIE) 
-	{
 		aniId = ID_ANI_GOOMBA_DIE;
-	}
-
+	else if (state == GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS)
+		aniId = ID_ANI_GOOMBA_HIT_BY_DEADLY_ATTACKS;
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
 	//RenderBoundingBox();
 }
@@ -69,17 +70,27 @@ void CGoomba::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-		case GOOMBA_STATE_DIE:
-			die_start = GetTickCount64();
-			y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE)/2;
-			vx = 0;
-			vy = 0;
-			ay = 0; 
-			break;
-		case GOOMBA_STATE_WALKING: 
-			vx = -GOOMBA_WALKING_SPEED;
-			break;
+	case GOOMBA_STATE_WALKING:
+		vx = -GOOMBA_WALKING_SPEED;
+		break;
+
+	case GOOMBA_STATE_DIE:
+		die_start = GetTickCount64();
+		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
+		vx = 0;
+		vy = 0;
+		ay = 0;
+		break;
+
+	case GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS:
+		die_start = GetTickCount64();
+		vx = nx * GOOMBA_WALKING_SPEED;
+		vy = -GOOMBA_DIE_BOUNCE_SPEED;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, GOOMBA_SCORES_GIVEN_WHEN_HIT);
+		break;
 	}
+
+	DebugOutTitle(L"goomba_vx : %0.5f, goomba_nx : %i", vx, nx);
 }
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)

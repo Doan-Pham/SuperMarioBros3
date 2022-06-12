@@ -3,6 +3,7 @@
 
 #include "DeadZone.h"
 #include "PlatformGhost.h"
+#include "SpecialEffectManager.h"
 
 CGoombaRedWing::CGoombaRedWing(float x, float y) : CGameObject(x, y)
 {
@@ -38,8 +39,8 @@ void CGoombaRedWing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOutTitle(L"x %0.5f, y %0.5f, vx %0.5f, vy %0.5f", x, y, vx, vy);
 	vy += ay * dt;
 
-	if ((state == GOOMBA_RED_WING_STATE_DIE) && 
-		(GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
+	if ((state == GOOMBA_RED_WING_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) || 
+		(state == GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT + GOOMBA_DIE_DELAY)))
 	{
 		isDeleted = true;
 		return;
@@ -92,6 +93,7 @@ void CGoombaRedWing::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 		vy = 0;
 	}
 }
+
 void CGoombaRedWing::Render()
 {
 	int aniId = ID_ANI_GOOMBA_RED_WING_WALKING_CLOSED_WING;
@@ -107,6 +109,9 @@ void CGoombaRedWing::Render()
 
 	else if (state == GOOMBA_RED_WING_STATE_DIE)
 		aniId = ID_ANI_GOOMBA_RED_WING_DIE;
+
+	else if (state == GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS)
+		aniId = ID_ANI_GOOMBA_RED_WING_HIT_BY_DEADLY_ATTACKS;
 	//aniId = ID_ANI_GOOMBA_RED_WING_WALKING_CLOSED_WING;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
@@ -114,6 +119,7 @@ void CGoombaRedWing::Render()
 
 void CGoombaRedWing::SetState(int state)
 {
+	if (this->state == GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS) return;
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -150,7 +156,17 @@ void CGoombaRedWing::SetState(int state)
 		vy = 0;
 		ay = 0;
 		break;
+
+	case GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS:
+	{
+		die_start = GetTickCount64();
+		vx = nx * GOOMBA_WALKING_SPEED;
+		vy = -GOOMBA_RED_WING_DIE_BOUNCE_SPEED;
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, GOOMBA_RED_WING_SCORES_GIVEN_WHEN_HIT);
+		break;
 	}
+	}
+
 }
 
 void CGoombaRedWing::GetBoundingBox(float& left, float& top, float& right, float& bottom)

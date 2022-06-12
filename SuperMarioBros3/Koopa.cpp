@@ -16,6 +16,7 @@
 #include "Leaf.h"
 #include "MushroomUp.h"
 #include "Coin.h"
+#include "SpecialEffectManager.h"
 
 
 CKoopa::CKoopa(float x, float y, const LPPLAYSCENE& currentScene)
@@ -165,23 +166,29 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
 		CGoomba* goomba = (dynamic_cast<CGoomba*>(e->obj));
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
-		{
-			goomba->SetState(GOOMBA_STATE_DIE);
-			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
-		}
+		if (goomba->GetState() == GOOMBA_STATE_DIE ||
+			goomba->GetState() == GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS)
+			return;
+
+		goomba->SetDirectionX(nx);
+		goomba->SetState(GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
 	else if (dynamic_cast<CGoombaRedWing*>(e->obj))
 	{
 		CGoombaRedWing* goomba = (dynamic_cast<CGoombaRedWing*>(e->obj));
-		if (goomba->GetState() != GOOMBA_RED_WING_STATE_DIE)
-		{
-			goomba->SetState(GOOMBA_RED_WING_STATE_DIE);
-			CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
-		}
+		if (goomba->GetState() == GOOMBA_RED_WING_STATE_DIE ||
+			goomba->GetState() == GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS)
+			return;
+
+		goomba->SetDirectionX(nx);
+		goomba->SetState(GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
-
-
 }
 
 void CKoopa::OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e)

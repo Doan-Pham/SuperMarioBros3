@@ -53,14 +53,30 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
-		e->obj->SetState(GOOMBA_STATE_DIE);
+		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+		if (goomba->GetState() == GOOMBA_STATE_DIE ||
+			goomba->GetState() == GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS)
+			return;
+
+		goomba->SetDirectionX(nx);
+		goomba->SetState(GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+
 		isDestroyed = true;
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}
 
 	if (dynamic_cast<CGoombaRedWing*>(e->obj))
 	{
-		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
+		CGoombaRedWing* goomba = dynamic_cast<CGoombaRedWing*>(e->obj);
+		if (goomba->GetState() == GOOMBA_RED_WING_STATE_DIE ||
+			goomba->GetState() == GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS)
+			return;
+
+		goomba->SetDirectionX(nx);
+		goomba->SetState(GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+
 		isDestroyed = true;
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_FIREBALL_COLLIDE);
 	}

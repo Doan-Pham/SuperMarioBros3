@@ -54,14 +54,30 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CAttackBBox*>(e->obj)) return;
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
-		e->obj->SetState(GOOMBA_STATE_DIE);
-		CSpecialEffectManager::CreateSpecialEffect(x + nx * width/2, y, EFFECT_TYPE_TAIL_ATTACK);
+		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+		if (goomba->GetState() == GOOMBA_STATE_DIE ||
+			goomba->GetState() == GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS)
+			return;
+
+		goomba->SetDirectionX(nx);
+		goomba->SetState(GOOMBA_STATE_HIT_BY_DEADLY_ATTACKS);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+
+		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
 
 
 	else if (dynamic_cast<CGoombaRedWing*>(e->obj))
 	{
-		e->obj->SetState(GOOMBA_RED_WING_STATE_DIE);
+		CGoombaRedWing* goomba = dynamic_cast<CGoombaRedWing*>(e->obj);
+		if (goomba->GetState() == GOOMBA_RED_WING_STATE_DIE ||
+			goomba->GetState() == GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS) 
+			return;
+
+		goomba->SetDirectionX(nx);
+		goomba->SetState(GOOMBA_RED_WING_STATE_HIT_BY_DEADLY_ATTACKS);
+		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
+
 		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
 	}
 		
