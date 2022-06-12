@@ -76,6 +76,8 @@ protected:
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+
 	void OnCollisionWithBrickQuestionMark(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithBrickGlass(LPCOLLISIONEVENT e);

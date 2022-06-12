@@ -86,19 +86,19 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 	//if (isBeingHeld)
-	//DebugOut(L"[INFO] Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f \n", x, y, vx, vy);
+	DebugOutTitle(L"[INFO] Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f , isBeingHeld : %i", x, y, vx, vy, isBeingHeld);
 }
 
 
 void CKoopa::OnNoCollision(DWORD dt)
 {
+	if (isBeingHeld) return;
 	x += vx * dt;
 	y += vy * dt;
 };
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CKoopa*>(e->obj)) return;
 	if (dynamic_cast<CMario*>(e->obj)) return;
 
 	if (e->ny != 0 && e->obj->IsBlocking())
@@ -115,11 +115,14 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CDeadZone*>(e->obj))
 		this->Delete();
 
-	if (dynamic_cast<CPlatformGhost*>(e->obj))
+	if (dynamic_cast<CPlatformGhost*>(e->obj) && !isBeingHeld)
 		OnCollisionWithPlatformGhost(e);
 
 	else if (dynamic_cast<CGoomba*>(e->obj) || dynamic_cast<CGoombaRedWing*>(e->obj))
 		OnCollisionWithGoomba(e);
+
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 
 	else if (dynamic_cast<CPlantRedFire*>(e->obj) || dynamic_cast<CPlantGreenNormal*>(e->obj))
 		OnCollisionWithPlant(e);
@@ -132,7 +135,6 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	else if (dynamic_cast<CBrickQuestionMark*>(e->obj))
 		OnCollisionWithBrickQuestionMark(e);
-
 
 }
 
@@ -161,18 +163,30 @@ void CKoopa::OnCollisionWithPlatformGhost(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE)
+	if (!(state == KOOPA_STATE_SHELL_MOVING_DOWNSIDE ||
+		state == KOOPA_STATE_SHELL_MOVING_UPSIDE ||
+		isBeingHeld))
 		return;
+
 	e->obj->SetState(PLANT_STATE_DIE);
 	CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
-
 	CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_TAIL_ATTACK);
+
+	if (isBeingHeld)
+	{
+		CMario* mario = (CMario*)this->currentScene->GetPlayer();
+		mario->ReleaseHeldShell();
+		SetState(KOOPA_STATE_DIE);
+	}
 }
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPA_STATE_SHELL_MOVING_DOWNSIDE && state != KOOPA_STATE_SHELL_MOVING_UPSIDE && !isBeingHeld)
+	if (!(state == KOOPA_STATE_SHELL_MOVING_DOWNSIDE ||
+		state == KOOPA_STATE_SHELL_MOVING_UPSIDE ||
+		isBeingHeld))
 		return;
+
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
 		CGoomba* goomba = (dynamic_cast<CGoomba*>(e->obj));
@@ -198,6 +212,33 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		CGame::GetInstance()->UpdateScores(goomba->GetScoresGivenWhenHit());
 
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_TAIL_ATTACK);
+	}
+	if (isBeingHeld)
+	{
+		CMario* mario = (CMario*)this->currentScene->GetPlayer();
+		mario->ReleaseHeldShell();
+		SetState(KOOPA_STATE_DIE);
+	}
+}
+
+void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	if (!(state == KOOPA_STATE_SHELL_MOVING_DOWNSIDE ||
+		state == KOOPA_STATE_SHELL_MOVING_UPSIDE ||
+		isBeingHeld))
+		return;
+
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	koopa->SetDirectionX(nx);
+	koopa->SetState(KOOPA_STATE_DIE);
+
+	CGame::GetInstance()->UpdateScores(koopa->GetScoresGivenWhenHit());
+	CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_TAIL_ATTACK);
+	if (isBeingHeld)
+	{
+		CMario* mario = (CMario*)this->currentScene->GetPlayer();
+		mario->ReleaseHeldShell();
+		SetState(KOOPA_STATE_DIE);
 	}
 }
 
@@ -405,7 +446,10 @@ void CKoopa::SetState(int state)
 		die_start = GetTickCount64();
 		vx = nx * KOOPA_SHELL_BOUNCE_SPPED_X;
 		vy = -KOOPA_SHELL_BOUNCE_SPEED_Y/2;
-		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, KOOPA_SCORES_GIVEN_WHEN_HIT);
+		ay = KOOPA_GRAVITY;
+		if (!isBeingHeld)
+			CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, KOOPA_SCORES_GIVEN_WHEN_HIT);
+		isBeingHeld = false;
 		break;
 	}
 	}
