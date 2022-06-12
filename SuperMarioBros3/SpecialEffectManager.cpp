@@ -117,6 +117,11 @@ void CSpecialEffectManager::CreateSpecialEffect(float x, float y, int effectType
 		break;
 	}
 	CSpecialEffect* effect = new CSpecialEffect(x, y, vx, vy, ax, ay, animationId, animationTime);
-	CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	currentScene->AddObject(effect);
+	
+	// In case some effects are added in intro scene
+	if (dynamic_cast<LPPLAYSCENE>(CGame::GetInstance()->GetCurrentScene()))
+	{
+		CPlayScene* currentScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		currentScene->AddObject(effect);
+	}
 }
