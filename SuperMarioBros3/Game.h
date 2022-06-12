@@ -26,6 +26,16 @@ using namespace std;
 #define MARIO_DEFAULT_LIVES_COUNT		3
 #define PLAY_SCENE_DEFAULT_TIME			300
 
+// The game has 8 levels of acquired scores:
+#define SCORES_LVL1						100
+#define SCORES_LVL2						200
+#define SCORES_LVL3						400
+#define SCORES_LVL4						800
+#define SCORES_LVL5						1000
+#define SCORES_LVL6						2000
+#define SCORES_LVL7						4000
+#define SCORES_LVL8						8000
+
 //The coordinates parsed from the Tiled software need to be adjusted to be in sync with Mario
 //because Tiled uses the top-left corner convention, while this program uses center-center 
 #define COORDINATE_ADJUST_SYNC_TILED 8

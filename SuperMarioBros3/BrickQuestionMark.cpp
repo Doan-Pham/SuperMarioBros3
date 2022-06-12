@@ -74,8 +74,11 @@ void CBrickQuestionMark::SetState(int state)
 		{
 			if (hiddenItem != nullptr)
 				hiddenItem->SetState(ITEM_STATE_APPEARING);
-			else CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_COIN_APPEAR);
-			
+			else
+			{
+				CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_COIN_APPEAR);
+				CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, BRICK_SCORES_GIVEN_WHEN_HIT);
+			}
 			isContentGiven = true;
 		}
 		break;
