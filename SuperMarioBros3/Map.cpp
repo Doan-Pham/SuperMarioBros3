@@ -29,6 +29,17 @@ void CMap::Add(LPTILELAYER layer)
 
 void CMap::Update(DWORD dt)
 {
+	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
+	// When mario is transforming, no updates, only render!
+	CMario* mario = (CMario*)player;
+	if (mario->IsTransforming())
+	{
+		if (GetTickCount64() - mario->GetTransformStart() > MARIO_TRANSFORM_TIMEOUT) mario->StopTransforming();
+		else return;
+	}
+
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	vector<LPGAMEOBJECT> coObjects;
@@ -39,10 +50,6 @@ void CMap::Update(DWORD dt)
 			coObjects.push_back(objects[i]);
 		}
 	}
-
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
-
 
 	if (isPBlockTurnedOn)
 	{
@@ -135,8 +142,6 @@ void CMap::Update(DWORD dt)
 
 	// Update camera to follow mario on x-axis
 	cam_x = player_x - game->GetBackBufferWidth() / 2;
-
-	CMario* mario = (CMario*)player;
 
 	// Camera only follows mario on y-axis if he's flying and he's above a certain point
 	if (isCameraYDefaultValue)

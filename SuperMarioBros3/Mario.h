@@ -282,6 +282,8 @@ class CKoopa;
 #define MARIO_RACCOON_TAIL_WHIP_ANI_TIMEOUT 200
 
 #define MARIO_FIRE_THROW_FIREBALL_ANI_TIMEOUT 200
+
+#define MARIO_TRANSFORM_TIMEOUT		600
 #pragma endregion 
 
 #define MARIO_FIRE_MAX_FIREBALLS_NUM	2
@@ -305,6 +307,9 @@ class CMario : public CGameObject
 
 	BOOLEAN isReadyToGoPipe;
 	BOOLEAN isGoingThroughPipe;
+
+	// When mario's level is changed
+	BOOLEAN isTransforming;
 
 	// This vector manages how many fireballs mario can throw, when and how the fireballs are deleted
 	vector<CFireBall*> fireBalls;
@@ -332,6 +337,8 @@ class CMario : public CGameObject
 
 	ULONGLONG throw_fireball_start;
 	ULONGLONG throw_hammer_start;
+
+	ULONGLONG transform_start;
 
 	BOOLEAN isOnPlatform;
 
@@ -376,6 +383,10 @@ public:
 	BOOLEAN IsFlying() { return isFlying; }
 
 	BOOLEAN IsTrulyFalling() { return isTrulyFalling; }
+
+	BOOLEAN IsTransforming() { return isTransforming; }
+	void StopTransforming() { isTransforming = false; }
+	ULONGLONG GetTransformStart() { return transform_start; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);

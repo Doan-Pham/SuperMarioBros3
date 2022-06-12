@@ -44,6 +44,7 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	isThrowingHammer = false;
 	isReadyToGoPipe = false;
 	isGoingThroughPipe = false;
+	isTransforming = false;
 
 	ny = 0;
 
@@ -63,6 +64,8 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 
 	throw_fireball_start = -1;
 	throw_hammer_start = -1;
+
+	transform_start = -1;
 	isOnPlatform = false;
 
 	shellBeingHeld = NULL;
@@ -378,7 +381,7 @@ void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-
+	if (koopa->GetState() == KOOPA_STATE_DIE) return;
 	// jump on top >> turn koopa to shell or to walking (if it has wings)
 	if (e->ny < 0)
 	{
@@ -1160,6 +1163,10 @@ int CMario::GetAniIdHammer()
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
+
+	// Mario is not rendered when he's transforming, only the transforming effect is rendered
+	if (isTransforming) return;
+
 	int aniId = -1;
 
 	if (state == MARIO_STATE_DIE)
@@ -1465,6 +1472,8 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+	isTransforming = true;
+	transform_start = GetTickCount64();
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
