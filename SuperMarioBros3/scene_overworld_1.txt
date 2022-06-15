@@ -1,4 +1,6 @@
 [SETTINGS]
+#World ID of this scene
+world	1
 
 # list of objects' srpites to load in this scene
 [SPRITE]

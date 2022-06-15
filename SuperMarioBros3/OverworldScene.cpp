@@ -59,6 +59,7 @@ void COverworldScene::Load()
 		string line(str);
 
 		if (line[0] == '#' || line == "") continue;	// skip comment lines and empty lines
+		if (line == "[SETTINGS]") { section = SCENE_SECTION_SETTINGS; continue; }
 		if (line == "[SPRITE]") { section = SCENE_SECTION_SPRITE; continue; }
 		if (line == "[ANIMATION]") { section = SCENE_SECTION_ANIMATION; continue; };
 		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; };
@@ -138,6 +139,15 @@ void COverworldScene::Unload()
 
 void COverworldScene::_ParseSection_SETTINGS(string line)
 {
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	if (tokens[0] == "world")
+	{
+		world_id = atoi(tokens[1].c_str());
+	}
+	else
+		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
 }
 
 void COverworldScene::_ParseSection_SPRITE(string line)

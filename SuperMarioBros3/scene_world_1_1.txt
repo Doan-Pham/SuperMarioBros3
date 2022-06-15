@@ -2,6 +2,9 @@
 #Starting map
 start	111
 
+#World ID of this scene
+world	1
+
 #Associated overworld_scene
 overworld_scene	10
 

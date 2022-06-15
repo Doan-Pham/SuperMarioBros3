@@ -11,6 +11,7 @@ protected:
 	LPKEYEVENTHANDLER key_handler;
 	int id;
 	LPCWSTR sceneFilePath;
+	int world_id;
 
 public: 
 	CScene(int id, LPCWSTR filePath)
@@ -18,6 +19,7 @@ public:
 		this->id = id;
 		this->sceneFilePath = filePath;
 		this->key_handler = NULL;
+		world_id = -1;
 	}
 
 	LPKEYEVENTHANDLER GetKeyEventHandler() { return key_handler; }
@@ -25,6 +27,7 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0; 
+	virtual int GetWorldId() { return world_id; }
 };
 typedef CScene * LPSCENE;
 

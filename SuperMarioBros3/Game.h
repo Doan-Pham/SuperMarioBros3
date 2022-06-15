@@ -36,6 +36,15 @@ using namespace std;
 #define SCORES_LVL7						4000
 #define SCORES_LVL8						8000
 
+#define ID_WORLD_1	1
+#define ID_WORLD_2	2
+#define ID_WORLD_3	3
+#define ID_WORLD_4	4
+#define ID_WORLD_5	5
+#define ID_WORLD_6	6
+#define ID_WORLD_7	7
+#define ID_WORLD_8	8
+
 //The coordinates parsed from the Tiled software need to be adjusted to be in sync with Mario
 //because Tiled uses the top-left corner convention, while this program uses center-center 
 #define COORDINATE_ADJUST_SYNC_TILED 8
@@ -73,7 +82,6 @@ class CGame
 	int scores = 0;
 	int lives = MARIO_DEFAULT_LIVES_COUNT;
 	int playSceneTimeLeft = PLAY_SCENE_DEFAULT_TIME;
-	int currentWorld = 1;
 
 	vector<int> cardsAcquired;
 	HINSTANCE hInstance;
@@ -153,7 +161,7 @@ public:
 		score = this->scores; 
 		coin = this->coins; 
 		lives = this->lives;
-		currentWorld = this->currentWorld;
+		currentWorld = scenes[current_scene]->GetWorldId();
 		time = this->playSceneTimeLeft;
 	}
 	vector<int> GetCardsAcquired() { return this->cardsAcquired; }
