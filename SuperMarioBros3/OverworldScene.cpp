@@ -11,6 +11,7 @@
 #include "Animations.h"
 
 #include "OverworldMario.h"
+#include "OverworldDecoration.h"
 
 #define MAX_SCENE_LINE 1024
 
@@ -543,6 +544,12 @@ void COverworldScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGr
 			break;
 		}
 
+		case OBJECT_TYPE_OVERWORLD_DECORATION:
+		{
+			obj = new COverworldDecoration(x, y);
+
+			break;
+		}
 		default:
 		{
 			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);

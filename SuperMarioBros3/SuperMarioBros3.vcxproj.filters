@@ -199,6 +199,9 @@
     <ClCompile Include="SpecialEffectManager.cpp">
       <Filter>Game Object\Other</Filter>
     </ClCompile>
+    <ClCompile Include="OverworldDecoration.cpp">
+      <Filter>Game Object\OverworldScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TileLayer.h">
@@ -407,6 +410,9 @@
     </ClInclude>
     <ClInclude Include="SpecialEffectManager.h">
       <Filter>Game Object\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldDecoration.h">
+      <Filter>Game Object\OverworldScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

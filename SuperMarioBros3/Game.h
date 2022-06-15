@@ -164,6 +164,12 @@ public:
 		currentWorld = scenes[current_scene]->GetWorldId();
 		time = this->playSceneTimeLeft;
 	}
+	int GetCurrentWorld()
+	{
+		return scenes[current_scene]->GetWorldId();
+	}
+
+
 	vector<int> GetCardsAcquired() { return this->cardsAcquired; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
