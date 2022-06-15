@@ -79,7 +79,7 @@ protected:
 public:
 	CIntroScene(int id, LPCWSTR filePath);
 	void Load();
-	void ProcessMario();
+	void ProcessActions();
 	void Update(DWORD dt);
 	void Render();
 	void Unload();

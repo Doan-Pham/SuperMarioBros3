@@ -576,7 +576,7 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 	}
 }
 
-void CIntroScene::ProcessMario()
+void CIntroScene::ProcessActions()
 {
 	ULONGLONG now = GetTickCount64();
 	if (mario_1_current_action == -1)
@@ -752,7 +752,9 @@ void CIntroScene::ProcessMario()
 
 void CIntroScene::Update(DWORD dt)
 {
-	ProcessMario();
+	if (mario_2->IsTransforming()) mario_2->StopTransforming();
+
+	ProcessActions();
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 0; i < objects.size(); i++)
 	{
