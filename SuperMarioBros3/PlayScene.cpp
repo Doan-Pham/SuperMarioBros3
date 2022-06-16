@@ -92,9 +92,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 #define MAX_SCENE_LINE 1024
 
-//The coordinates parsed from the Tiled software need to be adjusted to be in sync with Mario
-//because Tiled uses the top-left corner convention, while this program uses center-center 
-#define COORDINATE_ADJUST_SYNC_TILED 8
 
 void CPlayScene::Load()
 {
@@ -162,7 +159,11 @@ void CPlayScene::_ParseSection_SETTINGS(string line)
 
 		current_map = next_map;
 	}
-	if (tokens[0] == "overworld_scene")
+	else if (tokens[0] == "world")
+	{
+		world_id = atoi(tokens[1].c_str());
+	}
+	else if (tokens[0] == "overworld_scene")
 	{
 		overworld_scene_id = atoi(tokens[1].c_str());
 	}

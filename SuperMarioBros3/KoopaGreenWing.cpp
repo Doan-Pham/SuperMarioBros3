@@ -45,7 +45,7 @@ void CKoopaGreenWing::Render()
 		return;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 	//DebugOutTitle(L"koopa's state: %d", state);
 	//DebugOut(L"[INFO] Koopa's Render() has been called \n");

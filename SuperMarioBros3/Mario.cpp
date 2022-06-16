@@ -78,6 +78,13 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	//if (state == MARIO_STATE_FALLING && ((vx + ax * dt)*nx < 0))
+	//{
+	//	ax = 0.0f;
+	//	vx = 0.0f;
+	//	nx = -nx;
+	//}
+
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -205,7 +212,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// This fixes a bug where mario's collisions with items like mushroom and leaf are not detected
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (dynamic_cast<CItem*>(coObjects->at(i)) && 
+		if (dynamic_cast<CItem*>(coObjects->at(i)) &&
 			CCollision::GetInstance()->RegularAABB(this, coObjects->at(i)))
 			OnCollisionWith(new CCollisionEvent(-1, -1, -1, -1, -1, coObjects->at(i), this));
 		//DebugOut(L"Regular AABB happened \n");
@@ -225,7 +232,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		shellBeingHeld->SetSpeed(vx, vy);
 	}
 
-	//DebugOut(L"level: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f \n", level, x, y, vx, ax);
+	DebugOutTitle(L"vx : %0.5f, ax : %0.5f, nx : %i", vx, ax, nx);
+	//DebugOutTitle(L"state: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f , nx : %i \n", state, x, y, vx, ax, nx);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
 }
 
@@ -525,7 +533,7 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 		SetLevel(MARIO_LEVEL_BIG);
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_SCORES_APPEAR, e->obj->GetScoresGivenWhenHit());
 	}
-		
+
 	else if (dynamic_cast<CMushroomUp*>(e->obj))
 	{
 		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_1UP_APPEAR);
@@ -626,7 +634,7 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 
 
 	// This prevens the case where mario stands near the edge and go through pipe
-	if (mario_l <= pipe_l || mario_r >= pipe_r ) return;
+	if (mario_l <= pipe_l || mario_r >= pipe_r) return;
 
 	// Reset pipe's isBlocking flag
 	if (isGoingThroughPipe)
@@ -637,7 +645,7 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 		return;
 	}
 
-	if ((pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_UPSIDE && ny > 0 && e->ny < 0 && e->nx == 0) || 
+	if ((pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_UPSIDE && ny > 0 && e->ny < 0 && e->nx == 0) ||
 		(pipe->GetDirection() == PIPE_DIRECTION_VERTICAL_DOWNSIDE && ny < 0 && e->ny > 0 && e->nx == 0))
 	{
 		SetState(MARIO_STATE_GO_THROUGH_PIPE);
@@ -1199,7 +1207,7 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE || this->state == MARIO_STATE_COURSE_CLEAR ) return;
+	if (this->state == MARIO_STATE_DIE || this->state == MARIO_STATE_COURSE_CLEAR) return;
 
 	switch (state)
 	{
@@ -1210,11 +1218,12 @@ void CMario::SetState(int state)
 
 		//if (level == MARIO_LEVEL_RACCOON)
 		//	DebugOutTitle(L"STATE_IDLE HAS BEEN CALLED WHILE BEING RACCOON");
+		//ax = (- nx * MARIO_ACCEL_WALK_X)/2;
 		ax = 0.0f;
 		vx = 0.0f;
 		isReadyToHoldShell = false;
 		if (currentScene != NULL)
-		currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
+			currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 
 		break;
 	}
@@ -1246,13 +1255,14 @@ void CMario::SetState(int state)
 	case MARIO_STATE_WALKING_RIGHT:
 	{
 		if (isSitting) break;
+		//isSitting = false;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
 		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
-		if (isOnPlatform && !isFlying && currentScene != NULL) 
+		if (isOnPlatform && !isFlying && currentScene != NULL)
 			currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
@@ -1261,6 +1271,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_WALKING_LEFT:
 	{
 		if (isSitting) break;
+		//isSitting = false;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
@@ -1268,7 +1279,7 @@ void CMario::SetState(int state)
 		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
-		if (isOnPlatform && !isFlying && currentScene != NULL) 
+		if (isOnPlatform && !isFlying && currentScene != NULL)
 			currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 		break;
 	}
@@ -1311,7 +1322,7 @@ void CMario::SetState(int state)
 
 		isReadyToHoldShell = true;
 		if (currentScene != NULL)
-		currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
+			currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
 		break;
 	}
 
@@ -1370,7 +1381,7 @@ void CMario::SetState(int state)
 		// Because mario's default state is MARIO_STATE_FALLING which could overwrite 
 		// MARIO_STATE_GO_THROUGH_PIPE and mess up his speed
 		if (isGoingThroughPipe) return;
-			ay = MARIO_GRAVITY;
+		ay = MARIO_GRAVITY;
 		break;
 	}
 
@@ -1472,10 +1483,12 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
-
-	isTransforming = true;
-	transform_start = GetTickCount64();
-	CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_MARIO_TRANSFORM);
+	if (!isTransforming)
+	{
+		isTransforming = true;
+		transform_start = GetTickCount64();
+		CSpecialEffectManager::CreateSpecialEffect(x, y, EFFECT_TYPE_MARIO_TRANSFORM);
+	}
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
