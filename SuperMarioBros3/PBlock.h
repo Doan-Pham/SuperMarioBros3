@@ -20,6 +20,7 @@ protected:
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 public:
 	CPBlock(float x, float y) : CBlock(x, y) { SetState(P_BLOCK_STATE_NORMAL); };
+	int IsBlocking() { return state == P_BLOCK_STATE_NORMAL; }
 	virtual void SetState(int state);
 
 };

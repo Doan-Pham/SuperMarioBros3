@@ -10,6 +10,6 @@ public:
 	CBlock(float x, float y) : CGameObject(x, y) {}
 	virtual void Render() = 0;
 	virtual void Update(DWORD dt) {}
-
+	virtual int IsBlocking() { return 1; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

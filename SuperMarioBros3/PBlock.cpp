@@ -22,20 +22,10 @@ void CPBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CPBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	if (state == P_BLOCK_STATE_NORMAL)
-	{
-		l = x - BLOCK_BBOX_WIDTH / 2;
-		t = y - BLOCK_BBOX_HEIGHT / 2;
-		r = l + BLOCK_BBOX_WIDTH;
-		b = t + BLOCK_BBOX_HEIGHT;
-	}
-	else
-	{
-		l = x - P_BLOCK_AFTER_HIT_BBOX_WIDTH / 2;
-		t = y - P_BLOCK_AFTER_HIT_BBOX_HEIGHT / 2;
-		r = l + P_BLOCK_AFTER_HIT_BBOX_WIDTH;
-		b = t + P_BLOCK_AFTER_HIT_BBOX_HEIGHT;
-	}
+	l = x - BLOCK_BBOX_WIDTH / 2;
+	t = y - BLOCK_BBOX_HEIGHT / 2;
+	r = l + BLOCK_BBOX_WIDTH;
+	b = t + BLOCK_BBOX_HEIGHT;
 }
 
 void CPBlock::SetState(int state)
