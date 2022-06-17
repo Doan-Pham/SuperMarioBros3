@@ -30,8 +30,8 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int
 	mapGrid = new CGridManager((mapRightEdge /gridSize) + 1, (mapBottomEdge /gridSize) + 1);
 	firstVisibleGridX = -1;
 	firstVisibleGridY = -1;
-	shownGridsX = -1;
-	shownGridsY = -1;
+	lastVisibleGridX = -1;
+	lastVisibleGridY = -1;
 
 	player = NULL;
 	clearCourseCard = NULL;
@@ -87,16 +87,16 @@ void CMap::Update(DWORD dt)
 	firstVisibleGridX = cam_x / mapGrid->GetGridSize();
 	firstVisibleGridY = cam_y / mapGrid->GetGridSize();
 
-	shownGridsX = SCREEN_WIDTH / mapGrid->GetGridSize();
-	shownGridsY = SCREEN_HEIGHT / mapGrid->GetGridSize();
+	lastVisibleGridX = min(mapGrid->GetGridCountX(), firstVisibleGridX + SCREEN_WIDTH / mapGrid->GetGridSize() + 1);
+	lastVisibleGridY = min(mapGrid->GetGridCountY(), firstVisibleGridY + SCREEN_HEIGHT / mapGrid->GetGridSize() + 1);
 
 	vector<LPGAMEOBJECT> coObjects;
 	objects.clear();
 	vector<LPGAMEOBJECT>::iterator iterator;
 
-	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
+	for (int i = firstVisibleGridY; i < lastVisibleGridY; i++)
 	{
-		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
+		for (int j = firstVisibleGridX; j < lastVisibleGridX; j++)
 		{
 			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
 			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
@@ -262,7 +262,7 @@ void CMap::Update(DWORD dt)
 	//	player_x, player_y, mapTopEdge, mapBottomEdge, game->GetBackBufferWidth(), game->GetBackBufferHeight());
 
 	//DebugOut(L"Game loop count: %i \n", gameLoopCount);
-	//DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
+	DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
 	PurgeDeletedObjects();
