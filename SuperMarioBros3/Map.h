@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Text.h"
 #include "Card.h"
+#include "GridManager.h"
 
 #define COORDINATE_ADJUST_SYNC_TILED 8
 #define BOTTOM_HUD_HEIGHT 50
@@ -35,14 +36,20 @@ protected:
 	int tileWidth;
 	int tileHeight;
 
+	float mapLeftEdge, mapTopEdge, mapRightEdge, mapBottomEdge;
+
 	LPCWSTR mapFilePath;
 	std::vector<LPTILESET> tileSets;
 	std::vector<LPTILELAYER> tileLayers;
 	std::vector<LPGAMEOBJECT> objects;
 
+	int gameLoopCount;
+
+	CGridManager* mapGrid;
+	int firstVisibleGridX, firstVisibleGridY, shownGridsX, shownGridsY;
+
 	unordered_map<string, CText*> texts;
 	CCard* clearCourseCard;
-
 	bool isPBlockTurnedOn;
 
 	// This flag shows if camera's y coord has been modified (ex: when mario flies past a certain 
@@ -52,11 +59,17 @@ protected:
 	bool isAddedAcquiredCard;
 
 public:
-	CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, int tileHeight);
+	CMap(int id, LPCWSTR mapFilePath, int width, int height, int
+		tileWidth, int tileHeight, int gridSize = GRID_SIZE_STANDARD);
 
 	void Add(LPTILELAYER layer);
 	void Add(LPTILESET tileSet) { tileSets.push_back(tileSet); };
-	void Add(LPGAMEOBJECT object) { objects.push_back(object); };
+	void Add(LPGAMEOBJECT object) 
+	{ 
+		mapGrid->PutObjectInGrid(object);
+		objects.push_back(object); 
+	};
+
 	void AddText(string textContent, CText* text) { texts[textContent] = text; }
 	void AddClearCourseCard(CCard* card) { this->clearCourseCard = card; }
 

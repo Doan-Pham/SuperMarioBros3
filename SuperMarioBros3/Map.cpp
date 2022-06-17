@@ -2,8 +2,10 @@
 #include "BrickGlass.h"
 #include "Coin.h"
 #include "Mario.h"
+#include "Game.h"
 
-CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, int tileHeight)
+CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int 
+	tileWidth, int tileHeight, int gridSize)
 {
 	this->id = id;
 	this->mapFilePath = mapFilePath;
@@ -11,10 +13,25 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int tileWidth, in
 	this->height = height;
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
+	gameLoopCount = 0;
+
+	// Adjust the left, top edges to see the cropped tiles
+	this->mapLeftEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+	this->mapTopEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+
+	// Adjust the right, bottom edges to avoid seeing empty tiles
+	this->mapRightEdge = (float)(width * tileWidth - COORDINATE_ADJUST_SYNC_TILED);
+	this->mapBottomEdge = (float)(height * tileHeight - COORDINATE_ADJUST_SYNC_TILED) + BOTTOM_HUD_HEIGHT;
 
 	isPBlockTurnedOn = false;
 	isCameraYDefaultValue = true;
 	isAddedAcquiredCard = false;
+
+	mapGrid = new CGridManager((mapRightEdge /gridSize) + 1, (mapBottomEdge /gridSize) + 1);
+	firstVisibleGridX = -1;
+	firstVisibleGridY = -1;
+	shownGridsX = -1;
+	shownGridsY = -1;
 
 	player = NULL;
 	clearCourseCard = NULL;
@@ -36,20 +53,11 @@ void CMap::Update(DWORD dt)
 	CMario* mario = (CMario*)player;
 	if (mario->IsTransforming())
 	{
-		if (GetTickCount64() - mario->GetTransformStart() > MARIO_TRANSFORM_TIMEOUT) mario->StopTransforming();
+		if (GetTickCount64() - mario->GetTransformStart() > MARIO_TRANSFORM_TIMEOUT)
+			mario->StopTransforming();
 		else return;
 	}
 
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		if (!objects[i]->IsHidden())
-		{
-			coObjects.push_back(objects[i]);
-		}
-	}
 
 	if (isPBlockTurnedOn)
 	{
@@ -71,28 +79,91 @@ void CMap::Update(DWORD dt)
 	CPlayScene* currentScene = (CPlayScene*)game->GetCurrentScene();
 
 	float cam_x, cam_y;
-;	game->GetCamPos(cam_x, cam_y);
+	game->GetCamPos(cam_x, cam_y);
 
-	for (size_t i = 0; i < objects.size(); i++)
+	int updateCallsCount = 0;
+
+
+	firstVisibleGridX = cam_x / mapGrid->GetGridSize();
+	firstVisibleGridY = cam_y / mapGrid->GetGridSize();
+
+	shownGridsX = SCREEN_WIDTH / mapGrid->GetGridSize();
+	shownGridsY = SCREEN_HEIGHT / mapGrid->GetGridSize();
+
+	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT>::iterator iterator;
+
+	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
 	{
-		// TODO: A very simple implementation to only update objects near camera
-		float object_x, object_y;
-		objects[i]->GetPosition(object_x, object_y);
-		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
-			object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
-			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
-			object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET)
-
-			objects[i]->Update(dt, &coObjects);
+		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
+		{
+			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
+			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
+				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
+			{
+				if (!(*iterator)->IsHidden())coObjects.push_back(*iterator);
+			}
+		}
 	}
 
-	// Adjust the left, top edges to see the cropped tiles
-	float mapLeftEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
-	float mapTopEdge = 0 - COORDINATE_ADJUST_SYNC_TILED;
+	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
+// TO-DO: This is a "dirty" way, need a more organized way 
+	//vector<LPGAMEOBJECT> coObjects;
+	//for (size_t i = 1; i < objects.size(); i++)
+	//{
+	//	if (!objects[i]->IsHidden())
+	//	{
+	//		coObjects.push_back(objects[i]);
+	//	}
+	//}
+	//for (int i = firstVisibleGridY; i < min(mapGrid->GetGridCountY(), firstVisibleGridY + maxGridY + 1); i++)
+	//{
+	//	for (int j = firstVisibleGridX; j < min(mapGrid->GetGridCountX(), firstVisibleGridX + maxGridX + 1) ; j++)
+	//	{
+	//		mapGrid->GetGridObjects(i, j, grid_objects_begin, grid_objects_end);
+	//		for (iterator = grid_objects_begin; iterator != grid_objects_end;iterator++)
+	//		{
+	//			(*iterator)->Update(dt, &coObjects);
+	//			updateCallsCount++;
+	//		}
+	//	}
+	//}
+	gameLoopCount++;
+	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
+	{
+		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
+		{
+			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
+			vector<LPGAMEOBJECT>::iterator iterator;
+			for (iterator = mapGrid->GetGridObjectsBegin(i, j); 
+				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
+			{
+				(*iterator)->Update(dt, &coObjects);
+				//if (iterator == grid_objects_end)
+				//{
+				//	DebugOut(L"The break statement was called! \n");
+				//	break;
+				//}
+				updateCallsCount++;
+			}
+		}
+	}
 
-	// Adjust the right, bottom edges to avoid seeing empty tiles
-	float mapRightEdge = (float)(width * tileWidth - COORDINATE_ADJUST_SYNC_TILED);
-	float mapBottomEdge = (float)(height * tileHeight - COORDINATE_ADJUST_SYNC_TILED) + BOTTOM_HUD_HEIGHT;
+	//for (size_t i = 0; i < objects.size(); i++)
+	//{
+	//	// TODO: A very simple implementation to only update objects near camera
+	//	float object_x, object_y;
+	//	objects[i]->GetPosition(object_x, object_y);
+	//	if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
+	//		object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
+	//		object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
+	//		object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET)
+
+	//	{
+	//		objects[i]->Update(dt, &coObjects);
+	//		updateCallsCount++;
+	//	}	
+	//}
 
 
 	float player_x, player_y;
@@ -182,6 +253,8 @@ void CMap::Update(DWORD dt)
 	//DebugOutTitle(L"mario_x: %0.2f mario_y : %0.2f, top_edge : %0.2f, bot_edge : %0.2f, back_buff_w : %0.2f, back_buff_h : %0.2f",
 	//	player_x, player_y, mapTopEdge, mapBottomEdge, game->GetBackBufferWidth(), game->GetBackBufferHeight());
 
+	DebugOut(L"Game loop count: %i \n", gameLoopCount);
+	//DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
 	PurgeDeletedObjects();
@@ -194,27 +267,50 @@ void CMap::Render()
 
 	// A lambda expression to sort vector objects according to the object's render priority
 	// Objects with higher priority will be rendered first and can be covered by other objects
-	sort(objects.begin(), objects.end(),
-		[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
-		{
-			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
-		});
+	//sort(objects.begin(), objects.end(),
+	//	[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
+	//	{
+	//		return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
+	//	});
 
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
-	for (unsigned int i = 0; i < objects.size(); i++)
-	{
-		// TODO: A very simple implementation to only render objects near camera
-		float object_x, object_y;
-		objects[i]->GetPosition(object_x, object_y);
 
-		if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
-			object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
-			object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
-			object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET &&
-			!objects[i]->IsHidden())
-			objects[i]->Render();
+	int renderCallsCount = 0;
+	vector<LPGAMEOBJECT>::iterator iterator;
+	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
+	{
+		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
+		{
+			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
+			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
+				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
+			{
+				if (!(*iterator)->IsHidden())
+				{
+					(*iterator)->Render();
+					renderCallsCount++;
+				}
+			}
+		}
 	}
+	//for (unsigned int i = 0; i < objects.size(); i++)
+	//{
+	//	// TODO: A very simple implementation to only render objects near camera
+	//	float object_x, object_y;
+	//	objects[i]->GetPosition(object_x, object_y);
+
+	//	if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
+	//		object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
+	//		object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
+	//		object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET &&
+	//		!objects[i]->IsHidden())
+	//	{
+	//		objects[i]->Render();
+	//		renderCallsCount++;
+	//	}	
+	//}
+	//DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
 };
 
 // Clear all map's objects, tilelayers and tilesets
@@ -241,6 +337,7 @@ void CMap::Clear()
 
 	objects.clear();
 	player = NULL;
+	mapGrid->Clear();
 }
 
 bool CMap::IsGameObjectDeleted(const LPGAMEOBJECT& o)
@@ -250,19 +347,27 @@ bool CMap::IsGameObjectDeleted(const LPGAMEOBJECT& o)
 
 void CMap::PurgeDeletedObjects()
 {
-	vector<LPGAMEOBJECT>::iterator it;
-	for (it = objects.begin(); it != objects.end(); it++)
+	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
 	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
+		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
 		{
-			delete o;
-			*it = NULL;
+			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
+			mapGrid->PurgeGridDeletedObjects(i, j);
 		}
 	}
+	//vector<LPGAMEOBJECT>::iterator it;
+	//for (it = objects.begin(); it != objects.end(); it++)
+	//{
+	//	LPGAMEOBJECT o = *it;
+	//	if (o->IsDeleted() && o != NULL)
+	//	{
+	//		delete o;
+	//		*it = NULL;
+	//	}
+	//}
 
-	// Swap all the deleted objects to the end then erase them automatically
-	objects.erase(
-		std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
-		objects.end());
+	//// Swap all the deleted objects to the end then erase them automatically
+	//objects.erase(
+	//	std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
+	//	objects.end());
 }
