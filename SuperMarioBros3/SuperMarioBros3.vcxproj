@@ -167,6 +167,7 @@
     <ClCompile Include="GameTitle.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GoombaRedWing.cpp" />
+    <ClCompile Include="GridManager.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="IntroArrow.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="GameTitle.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GoombaRedWing.h" />
+    <ClInclude Include="GridManager.h" />
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="IntroArrow.h" />
