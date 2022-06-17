@@ -16,6 +16,9 @@ CGameObject::CGameObject()
 	state = -1;
 	isDeleted = false;
 	isHidden = false;
+
+	current_grid_row_index = -1;
+	current_grid_col_index = -1;
 }
 
 void CGameObject::RenderBoundingBox()

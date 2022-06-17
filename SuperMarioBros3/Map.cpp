@@ -105,8 +105,8 @@ void CMap::Update(DWORD dt)
 				if (!(*iterator)->IsHidden())
 				{
 					coObjects.push_back(*iterator);
-					objects.push_back(*iterator);
 				}
+				objects.push_back(*iterator);
 			}
 		}
 	}
@@ -154,7 +154,12 @@ void CMap::Update(DWORD dt)
 	//}
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		int old_grid_row_index, old_grid_col_index;
+		objects[i]->GetCurrentGrid(old_grid_row_index, old_grid_col_index);
+
 		objects[i]->Update(dt, &coObjects);
+
+		mapGrid->PutObjectInGrid(objects[i], old_grid_row_index, old_grid_col_index);
 		updateCallsCount++;
 	}
 	//for (size_t i = 0; i < objects.size(); i++)
