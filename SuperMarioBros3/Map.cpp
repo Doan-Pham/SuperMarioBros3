@@ -266,7 +266,10 @@ void CMap::Update(DWORD dt)
 	//DebugOutTitle(L"mario_x: %0.2f mario_y : %0.2f, top_edge : %0.2f, bot_edge : %0.2f, back_buff_w : %0.2f, back_buff_h : %0.2f",
 	//	player_x, player_y, mapTopEdge, mapBottomEdge, game->GetBackBufferWidth(), game->GetBackBufferHeight());
 
+	DebugOut(L"scene is clear : %i", currentScene->IsCourseClear());
 	//DebugOut(L"Game loop count: %i \n", gameLoopCount);
+	//DebugOutTitle(L"first grid x : %i, last grid x : %i, first grid y : %i, last grid y : %i", 
+		//firstVisibleGridX, lastVisibleGridX, firstVisibleGridY, lastVisibleGridY);
 	DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
@@ -309,7 +312,8 @@ void CMap::Render()
 	//}
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Render();
+		if (!(objects[i])->IsHidden())
+			objects[i]->Render();
 		renderCallsCount++;
 	}
 	DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
@@ -351,8 +355,6 @@ void CMap::Clear()
 	{
 		mapFilePath = NULL;
 	}
-	for (unsigned int i = 0; i < objects.size(); i++)
-		delete objects[i];
 
 	objects.clear();
 	player = NULL;
