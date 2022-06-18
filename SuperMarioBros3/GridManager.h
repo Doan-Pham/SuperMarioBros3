@@ -3,8 +3,10 @@
 #include <vector>
 #include "GameObject.h"
 #include "debug.h"
+
 #define GRID_SIZE_STANDARD	32
 
+#define SMOOTH_GRID_CHANGE_OFFSET	50
 class CGameObject;
 typedef CGameObject* LPGAMEOBJECT;
 
@@ -88,61 +90,21 @@ public:
 
 	int GetGridSize() { return gridSize; }
 
-	void PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index = -1, int old_grid_col_index = -1)
-	{
-		float obj_x, obj_y;
-		obj->GetPosition(obj_x, obj_y);
+	void PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index = -1, int old_grid_col_index = -1);
 
-		int new_grid_row_index = obj_y / gridSize;
-		int new_grid_col_index = obj_x / gridSize;
-		if (new_grid_row_index >= gridCountY || new_grid_col_index >= gridCountX)
-		{
-			DebugOut(L"[INFO] Objects are outside the map, can't add objects to grids");
-			return;
-		}
-		// Object is not in any grid yet
-		if (old_grid_row_index == -1 && old_grid_col_index == -1)
-		{	
-			gridMatrix[new_grid_row_index][new_grid_col_index].AddObject(obj);
-			//DebugOut(L"grid_i : %i, grid_j : %i, grid_objects_count: %i \n",
-				//grid_row_index, grid_col_index, gridMatrix[grid_row_index][grid_col_index].GetObjectsCount());
-		}
-		// Object' old grid is different from new grid
-		else if(new_grid_row_index != old_grid_row_index || new_grid_col_index != old_grid_col_index)
-		{
-			gridMatrix[old_grid_row_index][old_grid_col_index].RemoveObject(obj);
-			gridMatrix[new_grid_row_index][new_grid_col_index].AddObject(obj);
-		}
-		obj->SetCurrentGrid(new_grid_row_index, new_grid_col_index);
-	}
-	void RemoveObjectFromGrid(LPGAMEOBJECT obj, int grid_row_index, int grid_col_index)
-	{
-		gridMatrix[grid_row_index][grid_col_index].RemoveObject(obj);
-	}
-	vector<LPGAMEOBJECT>::iterator GetGridObjectsBegin(int grid_row_index, int grid_col_index)
-	{
-		return gridMatrix[grid_row_index][grid_col_index].GetObjectsBegin();
-	}
+	void RemoveObjectFromGrid(LPGAMEOBJECT obj, int grid_row_index, int grid_col_index);
 
-	vector<LPGAMEOBJECT>::iterator GetGridObjectsEnd(int grid_row_index, int grid_col_index)
-	{
-		return gridMatrix[grid_row_index][grid_col_index].GetObjectsEnd();
-	}
-	bool IsGridObjectsEmpty(int grid_row_index, int grid_col_index)
-	{
-		return gridMatrix[grid_row_index][grid_col_index].IsEmpty();
-	}
+	vector<LPGAMEOBJECT>::iterator GetGridObjectsBegin(int grid_row_index, int grid_col_index);
 
-	void PurgeGridDeletedObjects(int grid_row_index, int grid_col_index)
-	{
-		gridMatrix[grid_row_index][grid_col_index].PurgeDeletedObjects();
-	}
-	void Clear()
-	{
-		for (int i = 0; i < gridCountY; i++) {
-			delete gridMatrix[i];
-		}
-		delete gridMatrix;
-	}
+
+	vector<LPGAMEOBJECT>::iterator GetGridObjectsEnd(int grid_row_index, int grid_col_index);
+
+	bool IsGridObjectsEmpty(int grid_row_index, int grid_col_index);
+
+
+	void PurgeGridDeletedObjects(int grid_row_index, int grid_col_index);
+
+	void Clear();
+
 };
 
