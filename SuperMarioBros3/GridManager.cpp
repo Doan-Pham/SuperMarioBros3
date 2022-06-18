@@ -46,7 +46,7 @@ void CGridManager::PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index, int
 		else if (obj_bottom >= cam_y && obj_bottom <= cam_y + SCREEN_HEIGHT) new_grid_row_index = grid_bottom;
 		else if (obj_top > cam_y) new_grid_row_index = grid_top;
 		else if (obj_bottom < cam_y) new_grid_row_index = grid_bottom;
-		if (obj_top - SMOOTH_GRID_CHANGE_OFFSET < cam_y && obj_bottom + SMOOTH_GRID_CHANGE_OFFSET > cam_y) 
+		if ((obj_top - SMOOTH_GRID_CHANGE_OFFSET*2) < cam_y && (obj_bottom + SMOOTH_GRID_CHANGE_OFFSET*2 )> cam_y) 
 			new_grid_row_index = (cam_y + SCREEN_HEIGHT / 2) / gridSize;
 	}
 	// Object is not in any grid yet
