@@ -94,7 +94,15 @@ void CGridManager::Clear()
 {
 	for (int i = 0; i < gridCountY; i++)
 	{
-		delete gridMatrix[i];
+		for (int j = 0; j < gridCountX; j++)
+		{
+			if (!(gridMatrix[i][j].IsEmpty()))
+			gridMatrix[i][j].Clear();
+		}
 	}
-	delete gridMatrix;
+	for (int i = 0; i < gridCountY; i++)
+	{
+		delete[] gridMatrix[i];
+	}
+	delete[] gridMatrix;
 }

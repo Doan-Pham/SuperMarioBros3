@@ -57,6 +57,18 @@ public:
 				[](const LPGAMEOBJECT& o)-> bool {return o == NULL; }),
 			objects.end());
 	}
+
+	void Clear()
+	{
+		vector<LPGAMEOBJECT>::iterator it;
+		for (it = objects.begin(); it != objects.end(); it++)
+		{
+			LPGAMEOBJECT o = *it;
+			delete o;
+			*it = NULL;
+		}
+		objects.clear();
+	}
 	void RemoveObject(LPGAMEOBJECT obj)
 	{
 		objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
