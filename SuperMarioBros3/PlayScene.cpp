@@ -948,6 +948,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			CMario* mario = (CMario*)GetPlayer();
 			mario->SetState(MARIO_STATE_DIE);
+			CGame::GetInstance()->UpdateLives(-1);
 		}
 	}
 
@@ -976,6 +977,14 @@ void CPlayScene::Unload()
 		maps[current_map]->Clear();
 		maps[current_map] = NULL;
 	}
+	for (auto temp : maps)
+	{
+		LPMAP map = temp.second;
+		if (map != NULL) map->Clear();
+	}
+
+	maps.clear();
+
 	isGameOver = false;
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
