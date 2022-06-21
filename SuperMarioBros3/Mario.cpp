@@ -237,6 +237,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOutTitle(L"vx : %0.5f, ax : %0.5f, nx : %i", vx, ax, nx);
 	//DebugOutTitle(L"state: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f , nx : %i \n", state, x, y, vx, ax, nx);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
+	//DebugOutTitle(L"isReadyToHoldShell : %d", isReadyToHoldShell);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -331,7 +332,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 				}
 				else
 				{
-					level = MARIO_LEVEL_BIG;
+					SetLevel(MARIO_LEVEL_BIG);
 					StartUntouchable();
 				}
 			}
@@ -380,7 +381,7 @@ void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 				}
 				else
 				{
-					level = MARIO_LEVEL_BIG;
+					SetLevel(MARIO_LEVEL_BIG);
 					StartUntouchable();
 				}
 			}
@@ -443,7 +444,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				}
 				else
 				{
-					level = MARIO_LEVEL_BIG;
+					SetLevel(MARIO_LEVEL_BIG);
 					StartUntouchable();
 				}
 			}
@@ -514,7 +515,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 			}
 			else
 			{
-				level = MARIO_LEVEL_BIG;
+				SetLevel(MARIO_LEVEL_BIG);
 				StartUntouchable();
 			}
 		}
@@ -582,13 +583,13 @@ void CMario::OnCollisionWithFireShot(LPCOLLISIONEVENT e)
 			if (isSitting) e->obj->Delete();
 			else
 			{
-				level = MARIO_LEVEL_BIG;
+				SetLevel(MARIO_LEVEL_BIG);
 				StartUntouchable();
 			}
 		}
 		else
 		{
-			level = MARIO_LEVEL_BIG;
+			SetLevel(MARIO_LEVEL_BIG);
 			StartUntouchable();
 		}
 	}
@@ -1223,7 +1224,6 @@ void CMario::SetState(int state)
 		//ax = (- nx * MARIO_ACCEL_WALK_X)/2;
 		ax = 0.0f;
 		vx = 0.0f;
-		isReadyToHoldShell = false;
 		if (currentScene != NULL)
 			currentScene->GetPMeter()->SetState(P_METER_STATE_DECREASING);
 
@@ -1238,7 +1238,6 @@ void CMario::SetState(int state)
 			isSitting = true;
 			vx = 0; vy = 0.0f;
 			y += MARIO_SIT_HEIGHT_ADJUST;
-			isReadyToHoldShell = false;
 		}
 		break;
 	}
@@ -1261,7 +1260,6 @@ void CMario::SetState(int state)
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
-		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
 		if (isOnPlatform && !isFlying && currentScene != NULL)
@@ -1278,7 +1276,6 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 
-		isReadyToHoldShell = false;
 		// As long as mario's still in the state flying, he can fly again, even if he's on the
 		// platform
 		if (isOnPlatform && !isFlying && currentScene != NULL)
@@ -1301,7 +1298,6 @@ void CMario::SetState(int state)
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 
-		isReadyToHoldShell = true;
 		if (currentScene != NULL)
 			currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
 		break;
@@ -1322,7 +1318,6 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 
-		isReadyToHoldShell = true;
 		if (currentScene != NULL)
 			currentScene->GetPMeter()->SetState(P_METER_STATE_INCREASING);
 		break;
@@ -1406,7 +1401,7 @@ void CMario::SetState(int state)
 				raccoon_tail = new CAttackBBox(
 					x + nx * GetBBoxWidth(), y + GetBBoxHeight() / 4,
 					vx, vy,
-					GetBBoxWidth(), GetBBoxHeight() / 2,
+					GetBBoxWidth()*2, GetBBoxHeight() / 2,
 					currentScene, nx);
 				raccoon_tail->SetDirection(nx);
 				this->currentScene->AddObject(raccoon_tail);

@@ -403,6 +403,7 @@ public:
 	// This is so that mario will always be the first object in the vector "objects"
 	virtual int GetRenderPriority() { return 99999999; }
 
+	void SetReadyToHoldShell(bool isReady) { isReadyToHoldShell = isReady; }
 	bool IsHoldingShell() { return isHoldingShell; }
 
 	// This if for when koopa turns back to shell and mario no longer holds the shell

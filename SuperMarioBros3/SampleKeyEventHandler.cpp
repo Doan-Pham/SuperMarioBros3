@@ -152,7 +152,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 
 	case DIK_A:
 		if (mario->IsHoldingShell()) mario->KickHeldShell();
-
+		else mario->SetReadyToHoldShell(false);
 		break;
 	}
 }
@@ -163,6 +163,7 @@ void CSampleKeyHandler::KeyState(BYTE* states)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetState() == MARIO_STATE_COURSE_CLEAR ||
 		mario->GetState() == MARIO_STATE_GO_THROUGH_PIPE) return;
+	if (game->IsKeyDown(DIK_A)) mario->SetReadyToHoldShell(true);
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
