@@ -28,10 +28,10 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int
 	isAddedAcquiredCard = false;
 
 	mapGrid = new CGridManager((mapRightEdge /gridSize) + 1, (mapBottomEdge /gridSize) + 1);
-	firstVisibleGridX = -1;
-	firstVisibleGridY = -1;
-	lastVisibleGridX = -1;
-	lastVisibleGridY = -1;
+	firstProcessedGridX = -1;
+	firstProcessedGridY = -1;
+	lastProcessedGridX = -1;
+	lastProcessedGridY = -1;
 
 	player = NULL;
 	clearCourseCard = NULL;
@@ -84,74 +84,42 @@ void CMap::Update(DWORD dt)
 	int updateCallsCount = 0;
 
 
-	firstVisibleGridX = cam_x / mapGrid->GetGridSize();
-	firstVisibleGridY = cam_y / mapGrid->GetGridSize();
+	firstProcessedGridX = max(0, cam_x / mapGrid->GetGridSize() - 1);
+	firstProcessedGridY = max(0, cam_y / mapGrid->GetGridSize() - 1);
 
-	lastVisibleGridX = min(mapGrid->GetGridCountX(), firstVisibleGridX + SCREEN_WIDTH / mapGrid->GetGridSize() + 1);
-	lastVisibleGridY = min(mapGrid->GetGridCountY(), firstVisibleGridY + SCREEN_HEIGHT / mapGrid->GetGridSize() + 1);
+	lastProcessedGridX = min(mapGrid->GetGridCountX() - 1, firstProcessedGridX + SCREEN_WIDTH / mapGrid->GetGridSize() + 1);
+	lastProcessedGridY = min(mapGrid->GetGridCountY() - 1, firstProcessedGridY + SCREEN_HEIGHT / mapGrid->GetGridSize() + 1);
 
 	vector<LPGAMEOBJECT> coObjects;
-	objects.clear();
+
 	vector<LPGAMEOBJECT>::iterator iterator;
 
-	for (int i = firstVisibleGridY; i < lastVisibleGridY; i++)
+	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
 	{
-		for (int j = firstVisibleGridX; j < lastVisibleGridX; j++)
+		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
 		{
 			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
 			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
 				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
 			{
 				if (!(*iterator)->IsHidden())
-				{
 					coObjects.push_back(*iterator);
-				}
-				objects.push_back(*iterator);
 			}
 		}
 	}
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-// TO-DO: This is a "dirty" way, need a more organized way 
-	//vector<LPGAMEOBJECT> coObjects;
-	//for (size_t i = 1; i < objects.size(); i++)
-	//{
-	//	if (!objects[i]->IsHidden())
-	//	{
-	//		coObjects.push_back(objects[i]);
-	//	}
-	//}
-	//for (int i = firstVisibleGridY; i < min(mapGrid->GetGridCountY(), firstVisibleGridY + maxGridY + 1); i++)
-	//{
-	//	for (int j = firstVisibleGridX; j < min(mapGrid->GetGridCountX(), firstVisibleGridX + maxGridX + 1) ; j++)
-	//	{
-	//		mapGrid->GetGridObjects(i, j, grid_objects_begin, grid_objects_end);
-	//		for (iterator = grid_objects_begin; iterator != grid_objects_end;iterator++)
-	//		{
-	//			(*iterator)->Update(dt, &coObjects);
-	//			updateCallsCount++;
-	//		}
-	//	}
-	//}
+	objects.clear();
+	for (int i = firstProcessedGridY; i <= lastProcessedGridY; i++)
+	{
+		for (int j = firstProcessedGridX; j <= lastProcessedGridX; j++)
+		{
+			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
+			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
+				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
+				objects.push_back(*iterator);
+		}
+	}
 	gameLoopCount++;
-	//for (int i = 0; i < mapGrid->GetGridCountY(); i++)
-	//{
-	//	for (int j = 0; j < mapGrid->GetGridCountX(); j++)
-	//	{
-	//		if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
-	//		vector<LPGAMEOBJECT>::iterator iterator;
-	//		for (iterator = mapGrid->GetGridObjectsBegin(i, j); 
-	//			iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
-	//		{
-	//			(*iterator)->Update(dt, &coObjects);
-	//			if (iterator == grid_objects_end)
-	//			{
-	//				DebugOut(L"The break statement was called! \n");
-	//				break;
-	//			}
-	//			updateCallsCount++;
-	//		}
-	//	}
-	//}
+	
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		int old_grid_row_index, old_grid_col_index;
@@ -162,21 +130,6 @@ void CMap::Update(DWORD dt)
 		mapGrid->PutObjectInGrid(objects[i], old_grid_row_index, old_grid_col_index);
 		updateCallsCount++;
 	}
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	// TODO: A very simple implementation to only update objects near camera
-	//	float object_x, object_y;
-	//	objects[i]->GetPosition(object_x, object_y);
-	//	if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
-	//		object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
-	//		object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
-	//		object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET)
-
-	//	{
-	//		objects[i]->Update(dt, &coObjects);
-	//		updateCallsCount++;
-	//	}	
-	//}
 
 
 	float player_x, player_y;
@@ -266,10 +219,10 @@ void CMap::Update(DWORD dt)
 	//DebugOutTitle(L"mario_x: %0.2f mario_y : %0.2f, top_edge : %0.2f, bot_edge : %0.2f, back_buff_w : %0.2f, back_buff_h : %0.2f",
 	//	player_x, player_y, mapTopEdge, mapBottomEdge, game->GetBackBufferWidth(), game->GetBackBufferHeight());
 
-	DebugOut(L"scene is clear : %i", currentScene->IsCourseClear());
+	//DebugOut(L"scene is course clear : %i \n", currentScene->IsCourseClear());
 	//DebugOut(L"Game loop count: %i \n", gameLoopCount);
-	//DebugOutTitle(L"first grid x : %i, last grid x : %i, first grid y : %i, last grid y : %i", 
-		//firstVisibleGridX, lastVisibleGridX, firstVisibleGridY, lastVisibleGridY);
+	DebugOutTitle(L"first grid x : %i, last grid x : %i, first grid y : %i, last grid y : %i", 
+		firstProcessedGridX, lastProcessedGridX, firstProcessedGridY, lastProcessedGridY);
 	DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
@@ -289,27 +242,7 @@ void CMap::Render()
 			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
 		});
 
-	float cam_x, cam_y;
-	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
-
 	int renderCallsCount = 0;
-	//vector<LPGAMEOBJECT>::iterator iterator;
-	//for (int i = 0; i < mapGrid->GetGridCountY(); i++)
-	//{
-	//	for (int j = 0; j < mapGrid->GetGridCountX(); j++)
-	//	{
-	//		if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
-	//		for (iterator = mapGrid->GetGridObjectsBegin(i, j);
-	//			iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
-	//		{
-	//			if (!(*iterator)->IsHidden())
-	//			{
-	//				(*iterator)->Render();
-	//				renderCallsCount++;
-	//			}
-	//		}
-	//	}
-	//}
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		if (!(objects[i])->IsHidden())
@@ -317,23 +250,7 @@ void CMap::Render()
 		renderCallsCount++;
 	}
 	DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
-	//for (unsigned int i = 0; i < objects.size(); i++)
-	//{
-	//	// TODO: A very simple implementation to only render objects near camera
-	//	float object_x, object_y;
-	//	objects[i]->GetPosition(object_x, object_y);
 
-	//	if (object_x >= cam_x - CAMERA_SURROUNDING_OFFSET &&
-	//		object_x <= cam_x + SCREEN_WIDTH + CAMERA_SURROUNDING_OFFSET &&
-	//		object_y >= cam_y - CAMERA_SURROUNDING_OFFSET &&
-	//		object_y <= cam_y + SCREEN_HEIGHT + CAMERA_SURROUNDING_OFFSET &&
-	//		!objects[i]->IsHidden())
-	//	{
-	//		objects[i]->Render();
-	//		renderCallsCount++;
-	//	}	
-	//}
-	//DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
 };
 
 // Clear all map's objects, tilelayers and tilesets

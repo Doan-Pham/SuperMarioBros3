@@ -46,7 +46,7 @@ protected:
 	int gameLoopCount;
 
 	CGridManager* mapGrid;
-	int firstVisibleGridX, firstVisibleGridY, lastVisibleGridX, lastVisibleGridY;
+	int firstProcessedGridX, firstProcessedGridY, lastProcessedGridX, lastProcessedGridY;
 
 	unordered_map<string, CText*> texts;
 	CCard* clearCourseCard;
