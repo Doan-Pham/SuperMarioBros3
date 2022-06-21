@@ -85,8 +85,10 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	isOnPlatform = false;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
 	//if (isBeingHeld)
-	DebugOutTitle(L"[INFO] Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f , isBeingHeld : %i", x, y, vx, vy, isBeingHeld);
+	//DebugOutTitle(L"Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f , isBeingHeld : %i", x, y, vx, vy, isBeingHeld);
+	//DebugOutTitle(L"Koopa x : %0.5f, koopa y : %0.5f, vx: %0.5f, vy :%0.5f , state : %i", x, y, vx, vy, state);
 }
 
 
@@ -377,14 +379,21 @@ void CKoopa::SetState(int state)
 		break;
 	}
 
+	case KOOPA_STATE_HIT_BY_MARIO_TAIL:
+	{
+		// Need to set this or else a mechanism in Update() method will stop shell from bouncing
+		isOnPlatform = false;
+		
+		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
+		vx = nx * KOOPA_SHELL_BOUNCE_SPPED_X;
+		vy = -KOOPA_SHELL_BOUNCE_SPEED_Y;
+		SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
+	}
+
 	case KOOPA_STATE_SHELL_STILL_UPSIDE:
 	{
 		isShell = true;
 		shell_start = GetTickCount64();
-		y -= (KOOPA_NORMAL_BBOX_HEIGHT - KOOPA_SHELL_BBOX_HEIGHT);
-		vx = nx * KOOPA_SHELL_BOUNCE_SPPED_X;
-		vy = -KOOPA_SHELL_BOUNCE_SPEED_Y;
-
 		if (attachedBBox != NULL)
 		{
 			attachedBBox->Delete();

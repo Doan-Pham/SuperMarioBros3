@@ -87,7 +87,7 @@ void CAttackBBox::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 		koopa->SetDirection(nx);
-		koopa->SetState(KOOPA_STATE_SHELL_STILL_UPSIDE);
+		koopa->SetState(KOOPA_STATE_HIT_BY_MARIO_TAIL);
 		CSpecialEffectManager::CreateSpecialEffect(x + nx * width / 2, y, EFFECT_TYPE_TAIL_ATTACK);
 	}		
 
