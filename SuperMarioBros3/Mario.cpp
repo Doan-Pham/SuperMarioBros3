@@ -1390,11 +1390,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_TAIL_WAGGING:
 	{
 		tail_wag_start = GetTickCount64();
-		ay = MARIO_GRAVITY_SLOW_FALL;
-
-		// Assign vy = 0 to avoid the stacking of vy from STATE_FALLING, this stacking will just
-		// overwhelme the ay assigned here
-		vy = 0;
+		ay = 0;
+		vy = MARIO_SPEED_SLOW_FALL;
 		break;
 	}
 
