@@ -1195,7 +1195,7 @@ void CMario::Render()
 	//DebugOutTitle(L"aniId: %d", aniId);
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y : %0.5f, vx: %0.5f, vy: %0.5f", x, y, vx, vy);
@@ -1513,25 +1513,36 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	{
 		if (isSitting)
 		{
-			left = x - MARIO_RACCOON_SITTING_BBOX_WIDTH / 2;
 			top = y - MARIO_RACCOON_SITTING_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACCOON_SITTING_BBOX_WIDTH;
 			bottom = top + MARIO_RACCOON_SITTING_BBOX_HEIGHT;
-		}
-		else if (isTailWhipping)
-		{
-			left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
-			top = y - MARIO_RACCOON_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACCOON_BBOX_WIDTH;
-			bottom = top + MARIO_RACCOON_BBOX_HEIGHT;
+			if (nx > 0)
+			{
+				right = x + MARIO_RACCOON_SITTING_BBOX_WIDTH / 2;
+				left = right - MARIO_BIG_SITTING_BBOX_WIDTH;
+			}
+			else
+			{
+				left = x - MARIO_RACCOON_SITTING_BBOX_WIDTH / 2;
+				right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
+			}
 		}
 		else
 		{
-			left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
 			top = y - MARIO_RACCOON_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACCOON_BBOX_WIDTH;
 			bottom = top + MARIO_RACCOON_BBOX_HEIGHT;
+
+			if (nx > 0)
+			{
+				right = x + MARIO_RACCOON_BBOX_WIDTH / 2;
+				left = right - MARIO_BIG_BBOX_WIDTH;
+			}
+			else
+			{
+				left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+			}
 		}
+
 	}
 	else
 	{
