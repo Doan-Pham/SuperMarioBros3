@@ -232,7 +232,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		shellBeingHeld->SetSpeed(vx, vy);
 	}
 
-	DebugOutTitle(L"vx : %0.5f, ax : %0.5f, nx : %i", vx, ax, nx);
+	//DebugOutTitle(L"x : %0.5f, y : %0.5f, current_grid_x : %i, current_grid_y : %i", x, y, 
+		//current_grid_col_index, current_grid_row_index);
+	//DebugOutTitle(L"vx : %0.5f, ax : %0.5f, nx : %i", vx, ax, nx);
 	//DebugOutTitle(L"state: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f , nx : %i \n", state, x, y, vx, ax, nx);
 	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
 }
@@ -324,7 +326,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 				}
 				else if (level == MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					SetLevel(MARIO_LEVEL_SMALL);
 					StartUntouchable();
 				}
 				else
@@ -373,7 +375,7 @@ void CMario::OnCollisionWithGoombaRedWing(LPCOLLISIONEVENT e)
 				}
 				else if (level == MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					SetLevel(MARIO_LEVEL_SMALL);
 					StartUntouchable();
 				}
 				else
@@ -436,7 +438,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				}
 				else if (level == MARIO_LEVEL_BIG)
 				{
-					level = MARIO_LEVEL_SMALL;
+					SetLevel(MARIO_LEVEL_SMALL);
 					StartUntouchable();
 				}
 				else
@@ -500,7 +502,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_SMALL;
+			SetLevel(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 		}
 		else
@@ -572,7 +574,7 @@ void CMario::OnCollisionWithFireShot(LPCOLLISIONEVENT e)
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
-			level = MARIO_LEVEL_SMALL;
+			SetLevel(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 		}
 		else if (level == MARIO_LEVEL_HAMMER)
