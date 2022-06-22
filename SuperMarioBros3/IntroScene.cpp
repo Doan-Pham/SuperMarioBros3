@@ -14,6 +14,7 @@
 
 #include "Utils.h"
 #include "debug.h"
+#include <codecvt>
 
 #define MAX_SCENE_LINE 1024
 
@@ -226,7 +227,7 @@ void CIntroScene::LoadMap(LPCWSTR mapFile)
 {
 	//Convert mapFile (type - wchar*) to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
-	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
+	string stringMapFile = wstring_convert<codecvt_utf8<wchar_t>>().to_bytes(wideStringMapFile);
 	const char* charMapFile = stringMapFile.c_str();
 
 	DebugOut(L"[INFO] Start loading map from : %s \n", wideStringMapFile.c_str());

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <codecvt>
 
 #include "PlayScene.h"
 
@@ -288,7 +289,7 @@ void CPlayScene::LoadMap(LPCWSTR mapFile)
 
 	//Convert mapFile (type - wchar*) to char* because TinyXml doesn't support wchar
 	wstring wideStringMapFile(mapFile);
-	string stringMapFile(wideStringMapFile.begin(), wideStringMapFile.end());
+	string stringMapFile = wstring_convert<codecvt_utf8<wchar_t>>().to_bytes(wideStringMapFile);
 	const char* charMapFile = stringMapFile.c_str();
 
 	TiXmlDocument doc(charMapFile);
