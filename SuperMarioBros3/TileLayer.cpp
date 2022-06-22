@@ -24,8 +24,8 @@ void CTileLayer::Render()
 	// Only render tiles that will appear inside the camera
 	float camX, camY = 0.0f;
 	CGame::GetInstance()->GetCamPos(camX, camY);
-	int firstVisibleTileIndexX = camX / TILE_WIDTH_STANDARD;
-	int firstVisibleTileIndexY = camY / TILE_HEIGHT_STANDARD;
+	int firstVisibleTileIndexX = (int)camX / TILE_WIDTH_STANDARD;
+	int firstVisibleTileIndexY = (int)camY / TILE_HEIGHT_STANDARD;
 
 	int maxTilesX = SCREEN_WIDTH / TILE_WIDTH_STANDARD;
 	int maxTilesY = SCREEN_HEIGHT / TILE_HEIGHT_STANDARD;
@@ -44,7 +44,7 @@ void CTileLayer::Render()
 
 			// Somehow we have to put the "k" var initialization outside the loop or else the
 			// vector won't take it as element index
-			int k = 0;
+			unsigned int k = 0;
 			for (; k < tileSets.size()-1; k++);
 			{
 				if (tileGid <= tileSets[k]->GetLastGid() && tileGid >= tileSets[k]->GetFirstGid())
@@ -52,8 +52,8 @@ void CTileLayer::Render()
 			}
 
 			tileSets[usedTileSetIndex]->Draw(
-				j * TILE_WIDTH_STANDARD ,
-				i * TILE_HEIGHT_STANDARD ,
+				(float) j * TILE_WIDTH_STANDARD ,
+				(float) i * TILE_HEIGHT_STANDARD ,
 				tileGid);
 
 			//renderCount++;

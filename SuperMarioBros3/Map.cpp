@@ -27,7 +27,7 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int
 	isCameraYDefaultValue = true;
 	isAddedAcquiredCard = false;
 
-	mapGrid = new CGridManager((mapRightEdge /gridSize) + 1, (mapBottomEdge /gridSize) + 1);
+	mapGrid = new CGridManager((int) (mapRightEdge /gridSize) + 1, (int) (mapBottomEdge /gridSize) + 1);
 	firstProcessedGridX = -1;
 	firstProcessedGridY = -1;
 	lastProcessedGridX = -1;
@@ -84,8 +84,8 @@ void CMap::Update(DWORD dt)
 	int updateCallsCount = 0;
 
 
-	firstProcessedGridX = max(0, cam_x / mapGrid->GetGridSize() - 1);
-	firstProcessedGridY = max(0, cam_y / mapGrid->GetGridSize() - 1);
+	firstProcessedGridX = max(0, (int)cam_x / mapGrid->GetGridSize() - 1);
+	firstProcessedGridY = max(0, (int)cam_y / mapGrid->GetGridSize() - 1);
 
 	lastProcessedGridX = min(mapGrid->GetGridCountX() - 1, firstProcessedGridX + SCREEN_WIDTH / mapGrid->GetGridSize() + 1);
 	lastProcessedGridY = min(mapGrid->GetGridCountY() - 1, firstProcessedGridY + SCREEN_HEIGHT / mapGrid->GetGridSize() + 1);
@@ -221,9 +221,9 @@ void CMap::Update(DWORD dt)
 
 	//DebugOut(L"scene is course clear : %i \n", currentScene->IsCourseClear());
 	//DebugOut(L"Game loop count: %i \n", gameLoopCount);
-	DebugOutTitle(L"first grid x : %i, last grid x : %i, first grid y : %i, last grid y : %i", 
-		firstProcessedGridX, lastProcessedGridX, firstProcessedGridY, lastProcessedGridY);
-	DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
+	//DebugOutTitle(L"first grid x : %i, last grid x : %i, first grid y : %i, last grid y : %i", 
+	//	firstProcessedGridX, lastProcessedGridX, firstProcessedGridY, lastProcessedGridY);
+	//DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
 	PurgeDeletedObjects();
@@ -249,7 +249,7 @@ void CMap::Render()
 			objects[i]->Render();
 		renderCallsCount++;
 	}
-	DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
+	//DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
 
 };
 
@@ -293,16 +293,6 @@ void CMap::PurgeDeletedObjects()
 			mapGrid->PurgeGridDeletedObjects(i, j);
 		}
 	}
-	//vector<LPGAMEOBJECT>::iterator it;
-	//for (it = objects.begin(); it != objects.end(); it++)
-	//{
-	//	LPGAMEOBJECT o = *it;
-	//	if (o->IsDeleted() && o != NULL)
-	//	{
-	//		delete o;
-	//		*it = NULL;
-	//	}
-	//}
 
 	// Swap all the deleted objects to the end then erase them automatically
 	objects.erase(

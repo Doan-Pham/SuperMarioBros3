@@ -5,8 +5,8 @@ void CGridManager::PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index, int
 	float obj_x, obj_y;
 	obj->GetPosition(obj_x, obj_y);
 
-	int new_grid_row_index = obj_y / gridSize;
-	int new_grid_col_index = obj_x / gridSize;
+	int new_grid_row_index = (int)obj_y / gridSize;
+	int new_grid_col_index = (int)obj_x / gridSize;
 	if (new_grid_row_index >= gridCountY || new_grid_col_index >= gridCountX ||
 		new_grid_row_index < 0 || new_grid_col_index < 0)
 	{
@@ -23,21 +23,21 @@ void CGridManager::PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index, int
 	// If object's GetBoundingBox() makes some changes to parameter
 	if (obj_left != -1.0f)
 	{
-		grid_left = obj_left / gridSize;
-		grid_top = obj_top / gridSize;
-		grid_right = obj_right / gridSize;
-		grid_bottom = obj_bottom / gridSize;
+		grid_left = (int)obj_left / gridSize;
+		grid_top = (int)obj_top / gridSize;
+		grid_right = (int)obj_right / gridSize;
+		grid_bottom = (int)obj_bottom / gridSize;
 	}
 	float cam_x, cam_y;
- 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
+	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	if (grid_left != new_grid_col_index || grid_right != new_grid_col_index)
 	{
 		if (obj_left > cam_x && obj_left < cam_x + SCREEN_WIDTH) new_grid_col_index = grid_left;
 		else if (obj_right >= cam_x && obj_right <= cam_x + SCREEN_WIDTH) new_grid_col_index = grid_right;
 		else if (obj_left > cam_x) new_grid_col_index = grid_left;
 		else if (obj_right < cam_x) new_grid_col_index = grid_right;
-		if (obj_left - SMOOTH_GRID_CHANGE_OFFSET < cam_x && obj_right + SMOOTH_GRID_CHANGE_OFFSET > cam_x) 
-			new_grid_col_index =(cam_x + SCREEN_WIDTH/2) / gridSize;
+		if (obj_left - SMOOTH_GRID_CHANGE_OFFSET < cam_x && obj_right + SMOOTH_GRID_CHANGE_OFFSET > cam_x)
+			new_grid_col_index = (int)(cam_x + SCREEN_WIDTH / 2) / gridSize;
 	}
 
 	if (grid_top != new_grid_row_index || grid_bottom != new_grid_row_index)
@@ -46,8 +46,8 @@ void CGridManager::PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index, int
 		else if (obj_bottom >= cam_y && obj_bottom <= cam_y + SCREEN_HEIGHT) new_grid_row_index = grid_bottom;
 		else if (obj_top > cam_y) new_grid_row_index = grid_top;
 		else if (obj_bottom < cam_y) new_grid_row_index = grid_bottom;
-		if ((obj_top - SMOOTH_GRID_CHANGE_OFFSET*2) < cam_y && (obj_bottom + SMOOTH_GRID_CHANGE_OFFSET*2 )> cam_y) 
-			new_grid_row_index = (cam_y + SCREEN_HEIGHT / 2) / gridSize;
+		if ((obj_top - SMOOTH_GRID_CHANGE_OFFSET * 2) < cam_y && (obj_bottom + SMOOTH_GRID_CHANGE_OFFSET * 2) > cam_y)
+			new_grid_row_index = (int)(cam_y + SCREEN_HEIGHT / 2) / gridSize;
 	}
 	// Object is not in any grid yet
 	if (old_grid_row_index == -1 && old_grid_col_index == -1)
@@ -97,7 +97,7 @@ void CGridManager::Clear()
 		for (int j = 0; j < gridCountX; j++)
 		{
 			if (!(gridMatrix[i][j].IsEmpty()))
-			gridMatrix[i][j].Clear();
+				gridMatrix[i][j].Clear();
 		}
 	}
 	for (int i = 0; i < gridCountY; i++)

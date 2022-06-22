@@ -15,8 +15,8 @@ class CMario;
 
 #define	PLANT_RENDER_PRIORITY	10
 
-#define PLANT_BBOX_WIDTH 16
-#define PLANT_BBOX_HEIGHT 32
+#define PLANT_RED_FIRE_BBOX_WIDTH 16
+#define PLANT_RED_FIRE_BBOX_HEIGHT 32
 
 #define PLANT_MOVING_SPEED 0.07f
 
@@ -66,7 +66,7 @@ protected:
 	float disappearing_destination_y;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void GetPositionRelativeToMario(int mario_x, int mario_y, int& nx, int& ny);
+	void GetPositionRelativeToMario(float mario_x, float mario_y, int& nx, int& ny);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 

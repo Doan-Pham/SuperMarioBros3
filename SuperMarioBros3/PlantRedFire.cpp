@@ -12,7 +12,7 @@ CPlantRedFire::CPlantRedFire(float x, float y) : CGameObject(x,y)
 	relative_ny_to_mario = -1;
 
 	isMarioInFireZone = false;
-	appearing_destination_y = y - PLANT_BBOX_HEIGHT;
+	appearing_destination_y = y - PLANT_RED_FIRE_BBOX_HEIGHT;
 	disappearing_destination_y = y;
 
 	SetState(PLANT_STATE_HIDING);
@@ -20,13 +20,13 @@ CPlantRedFire::CPlantRedFire(float x, float y) : CGameObject(x,y)
 
 void CPlantRedFire::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - PLANT_BBOX_WIDTH / 2;
-	top = y - PLANT_BBOX_HEIGHT / 2;
-	right = left + PLANT_BBOX_WIDTH;
-	bottom = top + PLANT_BBOX_HEIGHT;
+	left = x - PLANT_RED_FIRE_BBOX_WIDTH / 2;
+	top = y - PLANT_RED_FIRE_BBOX_HEIGHT / 2;
+	right = left + PLANT_RED_FIRE_BBOX_WIDTH;
+	bottom = top + PLANT_RED_FIRE_BBOX_HEIGHT;
 }
 
-void CPlantRedFire::GetPositionRelativeToMario(int mario_x, int mario_y, int& nx, int& ny)
+void CPlantRedFire::GetPositionRelativeToMario(float mario_x, float mario_y, int& nx, int& ny)
 {
 	if (mario_x < x) nx = -1;
 	else nx = 1;
@@ -181,7 +181,7 @@ void CPlantRedFire::SetState(int state)
 	case PLANT_STATE_FIRING:
 	{
 		fire_start = GetTickCount64();
-		CFireShot* fireBall = new CFireShot(x, y - PLANT_BBOX_HEIGHT/4, 
+		CFireShot* fireBall = new CFireShot(x, y - PLANT_RED_FIRE_BBOX_HEIGHT/4, 
 			fireshot_dest_x, fireshot_dest_y);
 
 		((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->AddObject(fireBall);

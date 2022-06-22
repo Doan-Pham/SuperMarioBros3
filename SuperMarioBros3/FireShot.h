@@ -16,14 +16,14 @@ class CFireShot : public CGameObject
 {
 protected:
 	int nx, ny; //fire ball direction
-	int destination_x, destination_y; //mario's position
+	float destination_x, destination_y; //mario's position
 
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 public:
-	CFireShot(float x, float y, int destination_x, int destination_y);
+	CFireShot(float x, float y, float destination_x, float destination_y);
 
 };
 

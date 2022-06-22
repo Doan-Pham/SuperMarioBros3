@@ -12,7 +12,7 @@ protected:
 	int height;				// Unit: cell 
 
 public:
-	CCurtain(float x, float y, float height) :CGameObject(x, y)
+	CCurtain(float x, float y, int height) :CGameObject(x, y)
 	{
 		this->height = height;
 		this->vy = -CURTAIN_SPEED_Y;

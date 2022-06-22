@@ -84,7 +84,7 @@ void CHUD::Update(DWORD dt)
 
 	// CARDS
 	vector<int> card_types = CGame::GetInstance()->GetCardsAcquired();
-	for (int i = 0; i < card_types.size();i++)
+	for (unsigned int i = 0; i < card_types.size();i++)
 	{
 		cardsAcquired[i]->SetCurrentType(card_types[i]);
 	};

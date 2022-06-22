@@ -550,10 +550,10 @@ void CIntroScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup)
 
 		case OBJECT_TYPE_ENEMY_KOOPA_GREEN_NORMAL:
 		{
-			obj = new CKoopaGreenNormal(x, y, NULL); 
+			obj = new CKoopaGreenNormal(x, y, NULL);
 			obj->SetState(KOOPA_STATE_SHELL_STILL_DOWNSIDE);
 			obj->Hide();
-			CKoopaGreenNormal* koopa = (CKoopaGreenNormal*) obj;
+			CKoopaGreenNormal* koopa = (CKoopaGreenNormal*)obj;
 			koopa->SetDirection(1);
 
 			if (koopa_1 == NULL) koopa_1 = (CKoopaGreenNormal*)obj;
@@ -586,7 +586,7 @@ void CIntroScene::ProcessActions()
 	}
 	else
 	{
-		DWORD t = mario_1_actions_time[mario_1_current_action];
+		ULONGLONG t = mario_1_actions_time[mario_1_current_action];
 		if (now - mario_1_last_action_time > t)
 		{
 			mario_1_current_action++;
@@ -632,7 +632,7 @@ void CIntroScene::ProcessActions()
 	}
 	else
 	{
-		DWORD t = mario_2_actions_time[mario_2_current_action];
+		ULONGLONG t = mario_2_actions_time[mario_2_current_action];
 		if (now - mario_2_last_action_time > t)
 		{
 			mario_2_current_action++;

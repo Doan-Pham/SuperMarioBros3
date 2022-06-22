@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Sprites.h"
 
-#define ID_SPRITE_MISC_INTRO_ARROW		84401
+#define ID_SPRITE_INTRO_ARROW		84401
 
 #define ARROW_STATE_MOVE_UP				100
 #define ARROW_STATE_MOVE_DOWN			200
@@ -34,7 +34,7 @@ public:
 
 	void Render()
 	{
-		CSprites::GetInstance()->Get(ID_SPRITE_MISC_INTRO_ARROW)->Draw(x, y);
+		CSprites::GetInstance()->Get(ID_SPRITE_INTRO_ARROW)->Draw(x, y);
 	};
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 	{

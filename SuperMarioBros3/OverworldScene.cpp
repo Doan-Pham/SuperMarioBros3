@@ -30,8 +30,8 @@ COverworldScene::COverworldScene(int id, LPCWSTR filePath) : CScene(id, filePath
 	player = NULL;
 	map = NULL;
 	key_handler = new COverworldKeyEventHandler(this);
-	float back_buffer_width = CGame::GetInstance()->GetBackBufferWidth();
-	float back_buffer_height = CGame::GetInstance()->GetBackBufferHeight();
+	float back_buffer_width = (float)CGame::GetInstance()->GetBackBufferWidth();
+	float back_buffer_height = (float)CGame::GetInstance()->GetBackBufferHeight();
 
 	pMeter = new CPMeter();
 
@@ -101,7 +101,7 @@ void COverworldScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-			objects[i]->Update(dt, &coObjects);
+		objects[i]->Update(dt, &coObjects);
 	}
 	bottomHUD->Update(dt);
 	DebugOutTitle(L"Current node: %i, destination node: %i", current_node, destination_node);
@@ -113,7 +113,7 @@ void COverworldScene::Render()
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
-			objects[i]->Render();
+		objects[i]->Render();
 	}
 	bottomHUD->Render();
 }

@@ -10,7 +10,7 @@ CPlantGreenNormal::CPlantGreenNormal(float x, float y) : CGameObject(x, y)
 	relative_ny_to_mario = -1;
 
 	isMarioInFireZone = false;
-	appearing_destination_y = y - PLANT_BBOX_HEIGHT;
+	appearing_destination_y = y - PLANT_GREEN_NORMAL_BBOX_HEIGHT;
 	disappearing_destination_y = y;
 
 	SetState(PLANT_STATE_HIDING);
@@ -18,10 +18,10 @@ CPlantGreenNormal::CPlantGreenNormal(float x, float y) : CGameObject(x, y)
 
 void CPlantGreenNormal::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - PLANT_BBOX_WIDTH / 2;
-	top = y - PLANT_BBOX_HEIGHT / 2;
-	right = left + PLANT_BBOX_WIDTH;
-	bottom = top + PLANT_BBOX_HEIGHT;
+	left = x - PLANT_GREEN_NORMAL_BBOX_WIDTH / 2;
+	top = y - PLANT_GREEN_NORMAL_BBOX_HEIGHT / 2;
+	right = left + PLANT_GREEN_NORMAL_BBOX_WIDTH;
+	bottom = top + PLANT_GREEN_NORMAL_BBOX_HEIGHT;
 }
 
 void CPlantGreenNormal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

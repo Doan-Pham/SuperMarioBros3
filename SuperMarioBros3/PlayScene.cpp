@@ -60,8 +60,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 	reduce_time_start = -1;
 
-	float back_buffer_width = CGame::GetInstance()->GetBackBufferWidth();
-	float back_buffer_height = CGame::GetInstance()->GetBackBufferHeight();
+	float back_buffer_width = (float)CGame::GetInstance()->GetBackBufferWidth();
+	float back_buffer_height = (float)CGame::GetInstance()->GetBackBufferHeight();
 
 	pMeter = new CPMeter();
 
@@ -826,7 +826,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 			obj = new CPipe(
 				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
 				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
-				(int)width / cellWidth, (int)height / cellHeight,
+				(int)(width / cellWidth), (int)(height / cellHeight),
 				cellWidth, cellHeight,
 				direction, isMarioSpawnLocation, isContainingPortal);
 			if (isMarioSpawnLocation)
@@ -986,6 +986,7 @@ void CPlayScene::Unload()
 	maps.clear();
 
 	isGameOver = false;
+	isCourseClear = false;
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	//CTextures::GetInstance()->Clear();

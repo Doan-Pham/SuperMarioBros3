@@ -1,12 +1,12 @@
 #include "FireShot.h"
 
-CFireShot::CFireShot(float x, float y, int destination_x, int destination_y)
+CFireShot::CFireShot(float x, float y, float destination_x, float destination_y)
 	: CGameObject(x, y)
 {
 	this->destination_x = destination_x;
 	this->destination_y = destination_y;
-	this->nx = (destination_x - x) / abs(destination_x - x);
-	this->ny = (destination_y - y) / abs(destination_y - y);
+	this->nx = (int)(destination_x - x) / (int) abs(destination_x - x);
+	this->ny = (int)(destination_y - y) / (int) abs(destination_y - y);
 
 	// This vx adjustment keeps the time fireshot takes to reach mario the same
 	// TODO: This is not how it goes in the original game, however it's because in our framework, vx vy

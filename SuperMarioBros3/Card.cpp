@@ -73,7 +73,7 @@ void CCard::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 
 void CCard::SetCurrentType(int set_card_type)
 {
-	for (int i = 0; i < card_types.size(); i++)
+	for (unsigned int i = 0; i < card_types.size(); i++)
 	{
 		if (card_types[i] == set_card_type)
 		{
