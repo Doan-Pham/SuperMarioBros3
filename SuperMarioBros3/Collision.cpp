@@ -210,8 +210,9 @@ void CCollision::Filter( LPGAMEOBJECT objSrc,
 		if (c->isDeleted) continue;
 		if (c->obj->IsDeleted()) continue; 
 
-		// ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
-		if (filterBlock == 1 && !c->obj->IsBlocking()) 
+		// ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc) or 
+		// if object source having IsSlippingThroughBlocks = 1 (like hammer)
+		if (filterBlock == 1 && (!c->obj->IsBlocking() || objSrc->IsSlippingThroughBlocks()))
 		{
 			continue;
 		}

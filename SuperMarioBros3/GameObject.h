@@ -80,6 +80,10 @@ public:
 	// Is this object blocking other object? If YES, collision framework will automatically push the other object
 	virtual int IsBlocking() { return 1; }
 
+	// If this method return 1, the collision framework will ignore the object's collisions with blocks
+	virtual int IsSlippingThroughBlocks() { return 0; }
+
+
 	//If an object is hidden, player has to hit the container for that hidden object first to
 	//make that object appear, only then mario can collide with that hidden object
 	virtual bool IsHidden() { return isHidden; }

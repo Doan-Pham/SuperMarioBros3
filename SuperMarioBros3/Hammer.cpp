@@ -12,7 +12,6 @@ CHammer::CHammer(float x, float y, int nx) : CGameObject(x, y)
 	vx = nx * HAMMER_SPEED_X;
 	vy = -HAMMER_SPEED_Y;
 	ay = HAMMER_GRAVITY;
-	isCollidable = true;
 }
 
 void CHammer::Render()
@@ -35,8 +34,6 @@ void CHammer::OnNoCollision(DWORD dt)
 
 void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	isCollidable = true;
-
 	if (dynamic_cast<CGoomba*>(e->obj))
 	{
 		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
@@ -76,8 +73,6 @@ void CHammer::OnCollisionWith(LPCOLLISIONEVENT e)
 		e->obj->SetState(PLANT_STATE_DIE);
 		CGame::GetInstance()->UpdateScores(e->obj->GetScoresGivenWhenHit());
 	}
-
-	if (e->obj->IsBlocking()) isCollidable = false;
 }
 void CHammer::GetBoundingBox(float& l, float& t, float& r, float& b)
 {

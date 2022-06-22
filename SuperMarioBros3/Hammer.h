@@ -20,14 +20,14 @@ protected:
 	int nx; //hammer x direction
 	float ay;
 
-	bool isCollidable;
-
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 
-	int IsCollidable() { return isCollidable; };
+	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
+	int IsSlippingThroughBlocks() { return 1; }
+
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 public:
