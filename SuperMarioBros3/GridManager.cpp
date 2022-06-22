@@ -10,8 +10,8 @@ void CGridManager::PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index, int
 	if (new_grid_row_index >= gridCountY || new_grid_col_index >= gridCountX ||
 		new_grid_row_index < 0 || new_grid_col_index < 0)
 	{
-		DebugOut(L"[INFO] Objects are outside the map, can't add objects to grids : row_index : %i, col_index : %i\n",
-			new_grid_row_index, new_grid_col_index);
+		//DebugOut(L"[INFO] Objects are outside the map, can't add objects to grids : row_index : %i, col_index : %i\n",
+		//	new_grid_row_index, new_grid_col_index);
 		return;
 	}
 	float obj_left = -1.0f, obj_top = -1.0f, obj_right = -1.0f, obj_bottom = -1.0f;

@@ -4,9 +4,10 @@
 #include "GameObject.h"
 #include "debug.h"
 
-#define GRID_SIZE_STANDARD	32
+#define GRID_SIZE_STANDARD	64
 
 #define SMOOTH_GRID_CHANGE_OFFSET	50
+
 class CGameObject;
 typedef CGameObject* LPGAMEOBJECT;
 
