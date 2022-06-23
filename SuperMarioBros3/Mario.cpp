@@ -65,6 +65,8 @@ CMario::CMario(float x, float y, const LPPLAYSCENE& currentScene)
 	throw_fireball_start = -1;
 	throw_hammer_start = -1;
 
+	mario_pipe_slip_destination = -1;
+		 
 	transform_start = -1;
 	isOnPlatform = false;
 
@@ -203,6 +205,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+	if (isGoingThroughPipe)
+	{
+		if ((ny < 0 && (y + vy * dt) < mario_pipe_slip_destination) || 
+			(ny > 0 && (y + vy * dt) > mario_pipe_slip_destination))
+		{
+			isGoingThroughPipe = false;
+			SetState(MARIO_STATE_FALLING);
+		}
+	}
 	isKicking = false;
 	isOnPlatform = false;
 
@@ -236,7 +247,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//current_grid_col_index, current_grid_row_index);
 	//DebugOutTitle(L"vx : %0.5f, ax : %0.5f, nx : %i", vx, ax, nx);
 	//DebugOutTitle(L"state: %d, mario_x : %0.5f, mario_y: %0.5f, mario_vx: %0.5f, ax : %0.5f , nx : %i \n", state, x, y, vx, ax, nx);
-	//DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
+	DebugOutTitle(L"state: %d,  mario_vy: %0.5f, ay : %0.5f , isGoingThroughPipe %i", state, vy, ay, isGoingThroughPipe);
 	//DebugOutTitle(L"isReadyToHoldShell : %d", isReadyToHoldShell);
 }
 
@@ -614,12 +625,20 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 		// to true and not reset
 		SetState(MARIO_STATE_SIT_RELEASE);
 
+		if (spawnPipeLocation->GetDirection() == PIPE_DIRECTION_VERTICAL_UPSIDE) ny = -1;
+		else if (spawnPipeLocation->GetDirection() == PIPE_DIRECTION_VERTICAL_DOWNSIDE) ny = 1;
+		SetState(MARIO_STATE_GO_THROUGH_PIPE);
+
 		// Setting this fixes the bug where mario is stuck to a pipe that is mario spawn spot
-		SetState(MARIO_STATE_FALLING);
-		currentScene->InitiateSwitchMap(p->GetMapId());
+		//SetState(MARIO_STATE_FALLING);
 		float pipe_l, pipe_t, pipe_r, pipe_b;
 		spawnPipeLocation->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
-		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t - GetBBoxHeight());
+		this->SetPosition((pipe_l + pipe_r) / 2, pipe_t);
+
+		if (ny > 0) mario_pipe_slip_destination = pipe_b + GetBBoxHeight()/2;
+		else if (ny < 0) mario_pipe_slip_destination = pipe_t - GetBBoxHeight()/2;
+
+		currentScene->InitiateSwitchMap(p->GetMapId());
 	}
 	else if (p->GetSceneId() != -1) CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
@@ -627,14 +646,18 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 {
 	CPipe* pipe = (CPipe*)e->obj;
-	if (pipe->IsMarioSpawnLocation() || !pipe->IsContainingPortal() || !isReadyToGoPipe) return;
+	if (!pipe->IsContainingPortal() || !isReadyToGoPipe) return;
 
+	//if (pipe->IsMarioSpawnLocation()) SetState(MARIO_STATE_FALLING);
 
 	float pipe_l, pipe_t, pipe_r, pipe_b;
 	pipe->GetBoundingBox(pipe_l, pipe_t, pipe_r, pipe_b);
 	float mario_l, mario_t, mario_r, mario_b;
 	this->GetBoundingBox(mario_l, mario_t, mario_r, mario_b);
 
+	ny = -pipe->GetDirection();
+	if (ny > 0) mario_pipe_slip_destination = pipe_b + GetBBoxHeight();
+	else if (ny < 0) mario_pipe_slip_destination = pipe_t - GetBBoxHeight();
 
 	// This prevens the case where mario stands near the edge and go through pipe
 	if (mario_l <= pipe_l || mario_r >= pipe_r) return;
@@ -1196,7 +1219,7 @@ void CMario::Render()
 	//DebugOutTitle(L"aniId: %d", aniId);
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	float cam_x, cam_y;
 	CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	//DebugOutTitle(L"mario_x : %0.5f, mario_y : %0.5f, vx: %0.5f, vy: %0.5f", x, y, vx, vy);

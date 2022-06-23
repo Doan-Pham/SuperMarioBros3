@@ -317,6 +317,8 @@ class CMario : public CGameObject
 	CAttackBBox* raccoon_tail;
 
 	CPipe* spawnPipeLocation;
+	float mario_pipe_slip_destination;
+
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
