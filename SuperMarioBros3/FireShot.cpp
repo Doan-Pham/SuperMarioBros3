@@ -5,8 +5,10 @@ CFireShot::CFireShot(float x, float y, float destination_x, float destination_y)
 {
 	this->destination_x = destination_x;
 	this->destination_y = destination_y;
-	this->nx = (int)(destination_x - x) / (int) abs(destination_x - x);
-	this->ny = (int)(destination_y - y) / (int) abs(destination_y - y);
+
+	// This prevents the case where destination_x == x (or des_y == y) which leads to division by 0 error
+	this->nx = (destination_x - x ) == 0 ? 0 : (int)(destination_x - x) / (int) abs(destination_x - x);
+	this->ny = (destination_y - y ) == 0 ? 0 : (int)(destination_y - y) / (int) abs(destination_y - y);
 
 	// This vx adjustment keeps the time fireshot takes to reach mario the same
 	// TODO: This is not how it goes in the original game, however it's because in our framework, vx vy
