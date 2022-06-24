@@ -774,6 +774,10 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 			// -1: vertical upside, 1: vertical downside, 2: horizontal
 			int direction = -999;
+
+			// 1: Green; 2: Black
+			int appearanceType = 0;
+
 			bool isMarioSpawnLocation = 0;
 			bool isContainingPortal = 0;
 
@@ -783,6 +787,16 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				; currentProprety != nullptr
 				; currentProprety = currentProprety->NextSiblingElement())
 			{
+				if (currentProprety->Attribute("name") == string("appearanceType"))
+				{
+					appearanceType = atoi(currentProprety->Attribute("value"));
+					if (appearanceType == 0)
+					{
+						DebugOut(L"[ERROR] Pipe's appearance type unknown: %i\n", appearanceType);
+						return;
+					}
+				}
+
 				if (currentProprety->Attribute("name") == string("direction"))
 				{
 					direction = atoi(currentProprety->Attribute("value"));
@@ -824,12 +838,24 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 				}
 			}
 
+			float pipe_x, pipe_y;
+			if (direction == PIPE_DIRECTION_VERTICAL_UPSIDE)
+			{
+				pipe_x = x + width / 2 - COORDINATE_ADJUST_SYNC_TILED;
+				pipe_y = y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED;
+			} 
+			else if (direction == PIPE_DIRECTION_VERTICAL_DOWNSIDE)
+			{
+				pipe_x = x + width / 2 - COORDINATE_ADJUST_SYNC_TILED;
+				pipe_y = y + height - cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED;
+			}
+
 			obj = new CPipe(
-				x + width / 2 - COORDINATE_ADJUST_SYNC_TILED,
-				y + cellHeight / 2 - COORDINATE_ADJUST_SYNC_TILED,
+				pipe_x,pipe_y,
 				(int)(width / cellWidth), (int)(height / cellHeight),
 				cellWidth, cellHeight,
-				direction, isMarioSpawnLocation, isContainingPortal);
+				direction, appearanceType, isMarioSpawnLocation, isContainingPortal);
+
 			if (isMarioSpawnLocation)
 			{
 				CMario* mario = (CMario*)maps[mapId]->GetPlayer();
