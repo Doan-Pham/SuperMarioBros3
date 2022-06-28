@@ -94,40 +94,52 @@ void CMap::Update(DWORD dt)
 
 	vector<LPGAMEOBJECT>::iterator iterator;
 
-	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
-	{
-		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
-		{
-			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
-			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
-				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
-			{
-				if (!(*iterator)->IsHidden())
-					coObjects.push_back(*iterator);
-			}
-		}
-	}
+	//for (int i = 0; i < mapGrid->GetGridCountY(); i++)
+	//{
+	//	for (int j = 0; j < mapGrid->GetGridCountX(); j++)
+	//	{
+	//		if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
+	//		for (iterator = mapGrid->GetGridObjectsBegin(i, j);
+	//			iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
+	//		{
+	//			if (!(*iterator)->IsHidden())
+	//				coObjects.push_back(*iterator);
+	//		}
+	//	}
+	//}
 	objects.clear();
 	for (int i = firstProcessedGridY; i <= lastProcessedGridY; i++)
 	{
 		for (int j = firstProcessedGridX; j <= lastProcessedGridX; j++)
 		{
 			if (mapGrid->IsGridObjectsEmpty(i, j)) continue;
-			for (iterator = mapGrid->GetGridObjectsBegin(i, j);
+			for (iterator = mapGrid->GetGridObjectsBegin(i, j); 
 				iterator != mapGrid->GetGridObjectsEnd(i, j); ++iterator)
+			{
+				if (!(*iterator)->IsHidden())
+					coObjects.push_back(*iterator);
 				objects.push_back(*iterator);
+			}
 		}
 	}
 	gameLoopCount++;
 	
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		int old_grid_row_index, old_grid_col_index;
-		objects[i]->GetCurrentGrid(old_grid_row_index, old_grid_col_index);
+		int old_first_grid_row_index, old_last_grid_row_index, 
+			old_first_grid_col_index, old_last_grid_col_index;
+
+		objects[i]->GetCurrentGrid(
+			old_first_grid_row_index, old_first_grid_col_index, 
+			old_last_grid_row_index, old_last_grid_col_index);
 
 		objects[i]->Update(dt, &coObjects);
 
-		mapGrid->PutObjectInGrid(objects[i], old_grid_row_index, old_grid_col_index);
+		mapGrid->PutObjectInGrid(
+			objects[i], 
+			old_first_grid_row_index, old_first_grid_col_index,
+			old_last_grid_row_index, old_last_grid_col_index);
+
 		updateCallsCount++;
 	}
 
@@ -285,6 +297,21 @@ bool CMap::IsGameObjectDeleted(const LPGAMEOBJECT& o)
 
 void CMap::PurgeDeletedObjects()
 {
+	vector<LPGAMEOBJECT>::iterator it;
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objects.erase(
+		std::remove_if(objects.begin(), objects.end(),
+			[](const LPGAMEOBJECT& o)-> bool {return o->IsDeleted(); }),
+		objects.end());
+
 	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
 	{
 		for (int j = 0; j < mapGrid->GetGridCountX(); j++)
@@ -294,9 +321,4 @@ void CMap::PurgeDeletedObjects()
 		}
 	}
 
-	// Swap all the deleted objects to the end then erase them automatically
-	objects.erase(
-		std::remove_if(objects.begin(), objects.end(), 
-			[](const LPGAMEOBJECT& o)-> bool {return o->IsDeleted(); }),
-		objects.end());
 }
