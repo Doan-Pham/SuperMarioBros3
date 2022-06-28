@@ -17,7 +17,7 @@ using namespace std;
 class CGameObject
 {
 protected:
-
+	int id;
 	float x; 
 	float y;
 
@@ -39,6 +39,8 @@ public:
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
+	int GetId() { return this->id; }
+	void SetId(int id) { this->id = id; }
 
 	void GetCurrentGrid(
 		int& current_first_grid_row_index, int& current_first_grid_col_index, 

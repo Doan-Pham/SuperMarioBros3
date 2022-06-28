@@ -470,6 +470,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 	}
 
 	CGameObject* obj = NULL;
+	int id = -999;
 	int objectType = -999;
 	float x = -999;
 	float y = -999;
@@ -498,6 +499,13 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 		; currentElementObject != nullptr
 		; currentElementObject = currentElementObject->NextSiblingElement())
 	{
+		id = (int)atoi(currentElementObject->Attribute("id"));
+		if (id == -999)
+		{
+			DebugOut(L"[ERROR] Object doesn't have id: %i", id);
+			return;
+		}
+
 		x = (float)atof(currentElementObject->Attribute("x"));
 		y = (float)atof(currentElementObject->Attribute("y"));
 
@@ -934,12 +942,12 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 
 		default:
 		{
-			DebugOut(L"[ERROR] Object type id does not exist: %i\n", objectType);
+			DebugOut(L"[ERROR] Object type does not exist: %i\n", objectType);
 			return;
 		}
 		}
-
-		//objects.push_back(obj);
+		
+		obj->SetId(id);
 		maps[mapId]->Add(obj);
 	}
 }

@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Map.h"
 #include "BrickGlass.h"
 #include "Coin.h"
@@ -122,6 +124,24 @@ void CMap::Update(DWORD dt)
 			}
 		}
 	}
+
+	// Remove duplicate objects in 2 objects vector
+	auto lessThanLambda = [](const LPGAMEOBJECT& first_object, const LPGAMEOBJECT& second_object)
+	{
+		return first_object->GetId() < second_object->GetId();
+	};
+
+	auto equalLambda = [](const LPGAMEOBJECT& first_object, const LPGAMEOBJECT& second_object)
+	{
+		return first_object->GetId() == second_object->GetId();
+	};
+
+	sort(coObjects.begin(), coObjects.end(), lessThanLambda);
+	coObjects.erase(unique(coObjects.begin(), coObjects.end(), equalLambda), coObjects.end());
+
+	sort(objects.begin(), objects.end(), lessThanLambda);
+	objects.erase(unique(objects.begin(), objects.end(), equalLambda), objects.end());
+
 	gameLoopCount++;
 	
 	for (size_t i = 0; i < objects.size(); i++)
@@ -235,7 +255,7 @@ void CMap::Update(DWORD dt)
 	//DebugOut(L"Game loop count: %i \n", gameLoopCount);
 	//DebugOutTitle(L"first grid x : %i, last grid x : %i, first grid y : %i, last grid y : %i", 
 	//	firstProcessedGridX, lastProcessedGridX, firstProcessedGridY, lastProcessedGridY);
-	//DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
+	DebugOut(L"Update() method calls count: %i \n", updateCallsCount);
 	CGame::GetInstance()->SetCamPos(cam_x, cam_y);
 
 	PurgeDeletedObjects();
@@ -261,7 +281,7 @@ void CMap::Render()
 			objects[i]->Render();
 		renderCallsCount++;
 	}
-	//DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
+	DebugOut(L"Render() method calls count: %i \n", renderCallsCount);
 
 };
 
@@ -308,8 +328,7 @@ void CMap::PurgeDeletedObjects()
 		}
 	}
 	objects.erase(
-		std::remove_if(objects.begin(), objects.end(),
-			[](const LPGAMEOBJECT& o)-> bool {return o->IsDeleted(); }),
+		std::remove_if(objects.begin(), objects.end(), CMap::IsGameObjectDeleted),
 		objects.end());
 
 	for (int i = 0; i < mapGrid->GetGridCountY(); i++)
