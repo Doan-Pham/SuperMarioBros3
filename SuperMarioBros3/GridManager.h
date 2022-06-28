@@ -42,16 +42,16 @@ public:
 	int GetObjectsCount() { return objects.size(); }
 	void PurgeDeletedObjects()
 	{
-		vector<LPGAMEOBJECT>::iterator it;
-		for (it = objects.begin(); it != objects.end(); it++)
-		{
-			LPGAMEOBJECT o = *it;
-			if (o->IsDeleted())
-			{
-				delete o;
-				*it = NULL;
-			}
-		}
+		//vector<LPGAMEOBJECT>::iterator it;
+		//for (it = objects.begin(); it != objects.end(); it++)
+		//{
+		//	LPGAMEOBJECT o = *it;
+		//	if (o->IsDeleted())
+		//	{
+		//		delete o;
+		//		*it = NULL;
+		//	}
+		//}
 
 		objects.erase(
 			std::remove_if(objects.begin(), objects.end(),
@@ -103,7 +103,12 @@ public:
 
 	int GetGridSize() { return gridSize; }
 
-	void PutObjectInGrid(LPGAMEOBJECT obj, int old_grid_row_index = -1, int old_grid_col_index = -1);
+	void PutObjectInGrid(
+		LPGAMEOBJECT obj, 
+		int old_first_grid_row_index = -1, 
+		int old_first_grid_col_index = -1, 
+		int old_last_grid_row_index = -1, 
+		int old_last_grid_col_index = -1);
 
 	void RemoveObjectFromGrid(LPGAMEOBJECT obj, int grid_row_index, int grid_col_index);
 
