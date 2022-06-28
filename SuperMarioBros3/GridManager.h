@@ -60,6 +60,10 @@ public:
 
 	void Clear()
 	{
+		// For objects that stay in mutiple grids, if they deleted in one grid, then deleted again in next grid
+		// an error will occur
+		PurgeDeletedObjects();
+
 		vector<LPGAMEOBJECT>::iterator it;
 		for (it = objects.begin(); it != objects.end(); it++)
 		{
