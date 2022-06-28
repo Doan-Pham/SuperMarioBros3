@@ -505,6 +505,7 @@ void CPlayScene::_ParseSection_OBJECTGROUP(TiXmlElement* xmlElementObjectGroup, 
 			DebugOut(L"[ERROR] Object doesn't have id: %i", id);
 			return;
 		}
+		if (id > maps[mapId]->GetMaxObjectId()) maps[mapId]->SetMaxObjectId(id);
 
 		x = (float)atof(currentElementObject->Attribute("x"));
 		y = (float)atof(currentElementObject->Attribute("y"));

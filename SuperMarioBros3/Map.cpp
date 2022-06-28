@@ -15,6 +15,8 @@ CMap::CMap(int id, LPCWSTR mapFilePath, int width, int height, int
 	this->height = height;
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
+	this->maxObjectId = -1;
+	
 	gameLoopCount = 0;
 
 	// Adjust the left, top edges to see the cropped tiles
@@ -142,6 +144,14 @@ void CMap::Update(DWORD dt)
 	sort(objects.begin(), objects.end(), lessThanLambda);
 	objects.erase(unique(objects.begin(), objects.end(), equalLambda), objects.end());
 
+	// A lambda expression to sort vector objects according to the object's render priority
+	// Objects with higher priority will be rendered first and can be covered by other objects
+	sort(objects.begin(), objects.end(),
+		[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
+		{
+			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
+		});
+
 	gameLoopCount++;
 	
 	for (size_t i = 0; i < objects.size(); i++)
@@ -265,14 +275,6 @@ void CMap::Render()
 {
 	for (unsigned int i = 0; i < tileLayers.size(); i++)
 		tileLayers[i]->Render();
-
-	// A lambda expression to sort vector objects according to the object's render priority
-	// Objects with higher priority will be rendered first and can be covered by other objects
-	sort(objects.begin(), objects.end(),
-		[](const LPGAMEOBJECT& firstObject, const LPGAMEOBJECT& secondObject) -> bool
-		{
-			return firstObject->GetRenderPriority() > secondObject->GetRenderPriority();
-		});
 
 	int renderCallsCount = 0;
 	for (unsigned int i = 0; i < objects.size(); i++)

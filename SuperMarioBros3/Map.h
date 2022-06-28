@@ -42,6 +42,7 @@ protected:
 	std::vector<LPTILESET> tileSets;
 	std::vector<LPTILELAYER> tileLayers;
 	std::vector<LPGAMEOBJECT> objects;
+	int maxObjectId;
 
 	int gameLoopCount;
 
@@ -66,6 +67,12 @@ public:
 	void Add(LPTILESET tileSet) { tileSets.push_back(tileSet); };
 	void Add(LPGAMEOBJECT object) 
 	{ 
+		// Objects that are not preloaded but added in-game, so they don't have id
+		if (object->GetId() == -1)
+		{
+			maxObjectId++;
+			object->SetId(maxObjectId);
+		}
 		mapGrid->PutObjectInGrid(object);
 		objects.push_back(object); 
 	};
@@ -76,7 +83,9 @@ public:
 	virtual void Update(DWORD dt);
 	void Render();
 	void Clear();
-	void SetPlayer(LPGAMEOBJECT player) { this->player = player; }
+
+	int GetMaxObjectId() { return maxObjectId; }
+	void SetMaxObjectId(int maxObjectId) { this->maxObjectId = maxObjectId; }
 
 	void GetSize(int& width, int& height)
 	{
@@ -88,6 +97,7 @@ public:
 	};
 
 	LPGAMEOBJECT GetPlayer() { return player; }
+	void SetPlayer(LPGAMEOBJECT player) { this->player = player; }
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	void PurgeDeletedObjects();
